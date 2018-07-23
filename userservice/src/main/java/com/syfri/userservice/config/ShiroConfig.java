@@ -57,7 +57,7 @@ public class ShiroConfig implements EnvironmentAware {
 		//设置session失效时间30min
 		sessionManager.setGlobalSessionTimeout(30*60*1000);
 		//Redis会话管理
-		sessionManager.setSessionDAO(redisSessionDAO());
+//		sessionManager.setSessionDAO(redisSessionDAO());
 		return sessionManager;
 	}
 
@@ -107,8 +107,8 @@ public class ShiroConfig implements EnvironmentAware {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		securityManager.setRealm(myShiroRealm());
 		securityManager.setSessionManager(sessionManager);
-		securityManager.setCacheManager(redisCacheManager());
-//		securityManager.setCacheManager(ehCacheManager());
+//		securityManager.setCacheManager(redisCacheManager());
+		securityManager.setCacheManager(ehCacheManager());
 		securityManager.setRememberMeManager(rememberMeManager());
 		return securityManager;
 	}
