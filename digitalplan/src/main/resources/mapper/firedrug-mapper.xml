@@ -177,7 +177,7 @@
 	<update  id="doUpdateByVO"  parameterType="FiredrugVO"> 
 		UPDATE   YAGL_WL_XFYJXX  
 		<set>
-			<if test="uuid != null">uuid=#{uuid},</if>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
 			<if test="yjbm != null">yjbm=#{yjbm},</if>
 			<if test="yjmc != null">yjmc=#{yjmc},</if>
 			<if test="ssdz != null">ssdz=#{ssdz},</if>
@@ -189,17 +189,23 @@
 			<if test="zcbl != null">zcbl=#{zcbl},</if>
 			<if test="czl != null">czl=#{czl},</if>
 			<if test="kcl != null">kcl=#{kcl},</if>
-			<if test="scsj != null">scsj=TO_DATE(#{scsj},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="scsj != null">scsj=TO_DATE(#{scsj},'yyyy/MM/dd HH24:mi:ss'),</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="bz != null">bz=#{bz},</if>
 			<if test="jdh != null">jdh=#{jdh},</if>
-			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy/MM/dd HH24:mi:ss'),</if>
 			<if test="reserve1 != null">reserve1=#{reserve1},</if>
 			<if test="reserve2 != null">reserve2=#{reserve2},</if>
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 			<if test="hhb != null">hhb=#{hhb},</if>
+			<!--<if test="cjrid != null">cjrid=#{cjrid},</if>-->
+			<!--<if test="cjrmc != null">cjrmc=#{cjrmc},</if>-->
+			<!--<if test="cjsj != null">cjsj=sysdate,</if>-->
+			<if test="xgrid != null">xgrid=#{xgrid},</if>
+			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
+			<if test="xgsj != null">xgsj=sysdate</if>
 		</set>
 		WHERE  UUID = #{uuid}
 	</update>

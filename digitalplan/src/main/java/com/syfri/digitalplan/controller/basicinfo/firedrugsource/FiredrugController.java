@@ -43,8 +43,8 @@ public class FiredrugController  extends BaseController<FiredrugVO>{
 
 	@ApiOperation(value="删除消防药剂",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="消防药剂")
-	@PostMapping("/doDeleteDanger")
-	public @ResponseBody ResultVO doDeleteDanger(@RequestBody List<FiredrugVO> firedrugList) {
+	@PostMapping("/doDeleteDrug")
+	public @ResponseBody ResultVO doDeleteDrug(@RequestBody List<FiredrugVO> firedrugList) {
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(firedrugService.doDeleteDrug(firedrugList));
