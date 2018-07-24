@@ -36,4 +36,20 @@ public class FiredrugServiceImpl extends BaseServiceImpl<FiredrugVO> implements 
 		return firedrugDAO.doSearchByVO(firedrugVO);
 	}
 
+	public int doDeleteDrug(List<FiredrugVO> firedrugList) {
+		int count = 0;
+		if (firedrugList.size() > 0) {
+			for (FiredrugVO dangerVO : firedrugList) {
+				FiredrugVO vo = new FiredrugVO();
+				vo.setUuid(dangerVO.getUuid());
+				vo.setXgrid(dangerVO.getXgrid());
+				vo.setXgrmc(dangerVO.getXgrmc());
+				vo.setXgsj("1");
+				vo.setDeleteFlag("Y");
+				count = count + firedrugDAO.doUpdateByVO(vo);
+			}
+		}
+		return count;
+	}
+
 }

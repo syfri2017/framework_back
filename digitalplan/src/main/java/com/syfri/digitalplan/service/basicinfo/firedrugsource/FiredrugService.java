@@ -9,5 +9,5 @@ public interface FiredrugService  extends BaseService<FiredrugVO>{
 
     /*--查询：消防药剂.--*/
     List<FiredrugVO> doFindlist(FiredrugVO firedrugVO);
-
+    int doDeleteDrug(List<FiredrugVO> firedrugList);
 }

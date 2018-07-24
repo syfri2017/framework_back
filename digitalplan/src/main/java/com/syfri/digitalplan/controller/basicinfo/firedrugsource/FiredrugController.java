@@ -1,5 +1,9 @@
 package com.syfri.digitalplan.controller.basicinfo.firedrugsource;
 
+import com.syfri.baseapi.model.ResultVO;
+import com.syfri.baseapi.utils.EConstants;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import com.syfri.digitalplan.model.basicinfo.firedrugsource.FiredrugVO;
 import com.syfri.digitalplan.service.basicinfo.firedrugsource.FiredrugService;
 import com.syfri.baseapi.controller.BaseController;
+
+import java.util.List;
 
 
 @RestController
@@ -21,5 +27,45 @@ public class FiredrugController  extends BaseController<FiredrugVO>{
 		return this.firedrugService;
 	}
 
+	@ApiOperation(value="消防药剂新增",notes="新增")
+	@ApiImplicitParam(name="vo",value="消防药剂")
+	@PostMapping("/insertByVO")
+	public @ResponseBody ResultVO insertByVO(@RequestBody FiredrugVO firedrugVO){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(firedrugService.doInsertByVO(firedrugVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 
+	@ApiOperation(value="删除消防药剂",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="消防药剂")
+	@PostMapping("/doDeleteDanger")
+	public @ResponseBody ResultVO doDeleteDanger(@RequestBody List<FiredrugVO> firedrugList) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(firedrugService.doDeleteDrug(firedrugList));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+//
+//	@ApiOperation(value="修改消防药剂",notes="列表信息")
+//	@ApiImplicitParam(name="vo",value="消防药剂")
+//	@PostMapping("/doUpdateDanger")
+//	public @ResponseBody ResultVO doUpdateDanger(@RequestBody FiredrugVO firedrugVO) {
+//		ResultVO resultVO = ResultVO.build();
+//		try{
+//			resultVO.setResult(firedrugService.doUpdateDanger(firedrugVO));
+//		}catch(Exception e){
+//			logger.error("{}",e.getMessage());
+//			resultVO.setCode(EConstants.CODE.FAILURE);
+//		}
+//		return resultVO;
+//	}
 }
