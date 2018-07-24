@@ -54,18 +54,18 @@ public class FiredrugController  extends BaseController<FiredrugVO>{
 		}
 		return resultVO;
 	}
-//
-//	@ApiOperation(value="修改消防药剂",notes="列表信息")
-//	@ApiImplicitParam(name="vo",value="消防药剂")
-//	@PostMapping("/doUpdateDanger")
-//	public @ResponseBody ResultVO doUpdateDanger(@RequestBody FiredrugVO firedrugVO) {
-//		ResultVO resultVO = ResultVO.build();
-//		try{
-//			resultVO.setResult(firedrugService.doUpdateDanger(firedrugVO));
-//		}catch(Exception e){
-//			logger.error("{}",e.getMessage());
-//			resultVO.setCode(EConstants.CODE.FAILURE);
-//		}
-//		return resultVO;
-//	}
+
+	@ApiOperation(value="修改消防药剂",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="消防药剂")
+	@PostMapping("/doUpdateDrug")
+	public @ResponseBody ResultVO doUpdateDrug(@RequestBody FiredrugVO firedrugVO) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(firedrugService.doUpdateDrug(firedrugVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }

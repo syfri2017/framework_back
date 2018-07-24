@@ -52,4 +52,10 @@ public class FiredrugServiceImpl extends BaseServiceImpl<FiredrugVO> implements 
 		return count;
 	}
 
+	public int doUpdateDrug(FiredrugVO firedrugVO) {
+		firedrugVO.setXgsj("1");
+		int count = firedrugDAO.doUpdateByVO(firedrugVO);
+		return count;
+	}
+
 }
