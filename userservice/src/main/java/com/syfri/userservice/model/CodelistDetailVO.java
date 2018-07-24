@@ -23,6 +23,14 @@ public class CodelistDetailVO extends ValueObject implements Serializable{
 	private String alterName;	//修改人
 	private String alterTime;	//修改时间
 
+	public CodelistDetailVO() {
+	}
+
+	public CodelistDetailVO(String codeValue, String remark) {
+		this.codeValue = codeValue;
+		this.remark = remark;
+	}
+
 	public String getPkid(){
 		return pkid;
 	}

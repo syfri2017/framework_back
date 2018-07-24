@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import com.syfri.userservice.model.*;
+import com.syfri.userservice.utils.CurrentUserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -404,6 +405,20 @@ public class CodelistController  extends BaseController<CodelistVO>{
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(codelistService.doFindXzqhCodelist(codetype));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	@ApiOperation(value="查询行政区划",notes="查询")
+	@ApiImplicitParam(name="codetype",value="代码类型")
+	@GetMapping("/getXzqhTreeByUser")
+	public @ResponseBody ResultVO getXzqhTreeByUser(){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(codelistService.getXzqhTreeByUser(CurrentUserUtil.getCurrentUser().getOrganizationVO().getXzqh()));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);

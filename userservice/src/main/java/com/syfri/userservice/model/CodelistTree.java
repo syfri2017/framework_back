@@ -13,6 +13,14 @@ public class CodelistTree extends ValueObject implements Serializable{
 	private String codeValue;
 	private List<CodelistTree> children;
 
+	public CodelistTree() {
+	}
+
+	public CodelistTree(String codeName, String codeValue) {
+		this.codeName = codeName;
+		this.codeValue = codeValue;
+	}
+
 	public String getCodeName() { return codeName; }
 	public void setCodeName(String codeName) { this.codeName = codeName; }
 	public String getCodeValue() { return codeValue; }

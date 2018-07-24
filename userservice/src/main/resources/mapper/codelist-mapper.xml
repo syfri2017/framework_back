@@ -255,4 +255,18 @@
 		AND SUBSTR(t.code_value,3,6) = '0000'
 		ORDER BY code_value
 	</select>
+
+	<!--根据行政区划代码模糊查询-->
+	<select id="doFindXzqhByDm" resultType="CodelistDetailVO" parameterType="CodelistDetailVO">
+		SELECT code_value codeValue,code_name codeName
+		FROM SYS_CODELIST_DETAIL t  WHERE t.DELETE_FLAG = 'N' AND codetype = 'XZQH'
+		AND code_value like concat(#{codeValue},'%')
+		<if test="remark=='second'">
+			AND SUBSTR(code_value,5,2) = '00' AND SUBSTR(code_value,3,4) != '0000'
+		</if>
+		<if test="remark=='third'">
+			AND SUBSTR(code_value,5,2) != '00'
+		</if>
+		ORDER BY code_value
+	</select>
 </mapper>

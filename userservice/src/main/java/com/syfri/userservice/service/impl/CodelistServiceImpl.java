@@ -4,6 +4,7 @@ import com.syfri.userservice.model.CodelistDetailVO;
 import com.syfri.userservice.model.CodelistParams;
 import com.syfri.userservice.model.CodelistTree;
 import com.syfri.userservice.utils.CurrentUserUtil;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,10 @@ import com.syfri.userservice.dao.CodelistDAO;
 import com.syfri.userservice.model.CodelistVO;
 import com.syfri.userservice.service.CodelistService;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
 @Service("codelistService")
@@ -397,4 +397,42 @@ public class CodelistServiceImpl extends BaseServiceImpl<CodelistVO> implements 
         }
         return codelistTrees;
     }
+	/*--查询行政区划树状结构 by li.xue.--*/
+	@Override
+	public List<CodelistTree> getXzqhTreeByUser(String xzqh){
+		List<CodelistTree> provinceTrees = new ArrayList<>();
+		List<CodelistDetailVO> provinceList;
+		if(StringUtils.isEmpty(xzqh)){
+			//31个省
+			provinceList = ((CodelistService) AopContext.currentProxy()).doFindXzqhCodelist("XZQH");
+		}else{
+			CodelistDetailVO codelistDetailVO = new CodelistDetailVO();
+			codelistDetailVO.setCodeValue(xzqh.substring(0,2)+"0000");
+			codelistDetailVO.setCodetype("XZQH");
+			provinceList = codelistDAO.doFindCodelistDetail(codelistDetailVO);
+		}
+		for(CodelistDetailVO vo : provinceList){
+			CodelistTree provinceTree = new CodelistTree(vo.getCodeName(), vo.getCodeValue());
+			List<CodelistDetailVO> cityList = codelistDAO.doFindXzqhByDm(new CodelistDetailVO(vo.getCodeValue().substring(0,2), "second"));
+			List<CodelistTree> cityTrees = new ArrayList<>();
+			for(CodelistDetailVO cityVo : cityList){
+				CodelistTree cityTree = new CodelistTree(cityVo.getCodeName(), cityVo.getCodeValue());
+				List<CodelistDetailVO> regionList = codelistDAO.doFindXzqhByDm(new CodelistDetailVO(cityVo.getCodeValue().substring(0,4), "third"));
+				List<CodelistTree> regionTrees = new ArrayList<>();
+				for(CodelistDetailVO regionVo : regionList) {
+					CodelistTree regionTree = new CodelistTree(regionVo.getCodeName(), regionVo.getCodeValue());
+					regionTrees.add(regionTree);
+				}
+				if(!regionTrees.isEmpty()){
+					cityTree.setChildren(regionTrees);
+				}
+				cityTrees.add(cityTree);
+			}
+			if(!cityTrees.isEmpty()){
+				provinceTree.setChildren(cityTrees);
+			}
+			provinceTrees.add(provinceTree);
+		}
+		return provinceTrees;
+	}
 }
