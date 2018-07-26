@@ -57,7 +57,7 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
     /*--通过Dzid查询队站树 by li.xue 2018/7/25.--*/
     public List<XfdzTree> doFindDzTreeByUser(XfdzVO xfdzVO) {
         List<XfdzTree> zongTrees = new ArrayList<>();
-        XfdzTree zongTree = new XfdzTree(xfdzVO.getDzid(), xfdzVO.getDzjc());
+        XfdzTree zongTree = new XfdzTree(xfdzVO.getDzid(), xfdzVO.getDzjc(), xfdzVO.getDzbm());
         List<XfdzTree> zhiTrees = xfdzDAO.doFindXfdzBySjdzid(xfdzVO.getDzid());
         List<XfdzTree> zhiChildren = new ArrayList<>();
         for(XfdzTree zhiTree : zhiTrees){
