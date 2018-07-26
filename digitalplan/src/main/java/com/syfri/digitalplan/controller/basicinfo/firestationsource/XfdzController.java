@@ -12,6 +12,8 @@ import com.syfri.digitalplan.model.basicinfo.firestationsource.XfdzVO;
 import com.syfri.digitalplan.service.basicinfo.firestationsource.XfdzService;
 import com.syfri.baseapi.controller.BaseController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("xfdz")
 public class XfdzController extends BaseController<XfdzVO> {
@@ -66,4 +68,89 @@ public class XfdzController extends BaseController<XfdzVO> {
         return resultVO;
     }
 
+    /**
+     * 通过登录用户获取队站树
+     * by li.xue 20180725
+     */
+    @ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
+    @ApiImplicitParam(name = "vo", value = "队站对象")
+    @PostMapping("/findSjdzByUser")
+    public @ResponseBody ResultVO findSjdzByUser(@RequestBody XfdzVO xfdzVO) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(xfdzService.doFindDzTreeByUser(xfdzVO));
+        } catch (Exception e) {
+            logger.error("{}", e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
+
+    @ApiOperation(value="判断队站名称是否已存在",notes="列表信息")
+    @ApiImplicitParam(name="vo",value="消防队站")
+    @GetMapping("/doCheckName/{dzmc}")
+    public @ResponseBody ResultVO doCheckName(@PathVariable String dzmc) {
+        ResultVO resultVO = ResultVO.build();
+        try{
+            resultVO.setResult(xfdzService.doCheckName(dzmc));
+        }catch(Exception e){
+            logger.error("{}",e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
+
+    /**
+     * 新增队站
+     * by li.xue 20180725
+     */
+    @ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
+    @ApiImplicitParam(name = "vo", value = "队站对象")
+    @PostMapping("/insertByXfdzVO")
+    public @ResponseBody ResultVO insertByXfdzVO(@RequestBody XfdzVO xfdzVO) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(xfdzService.doInsertByXfdzVO(xfdzVO));
+        } catch (Exception e) {
+            logger.error("{}", e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
+
+    /**
+     * 修改队站
+     * by li.xue 20180725
+     */
+    @ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
+    @ApiImplicitParam(name = "vo", value = "队站对象")
+    @PostMapping("/updateByXfdzVO")
+    public @ResponseBody ResultVO updateByXfdzVO(@RequestBody XfdzVO xfdzVO) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(xfdzService.doUpdateByXfdzVO(xfdzVO));
+        } catch (Exception e) {
+            logger.error("{}", e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
+
+    /**
+     * 批量删除队站
+     * by li.xue 20180725
+     */
+    @ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
+    @ApiImplicitParam(name = "vo", value = "队站对象")
+    @PostMapping("/doDeleteBatch")
+    public @ResponseBody ResultVO doDeleteBatch(@RequestBody List<XfdzVO> list) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(xfdzService.doDeleteBatch(list));
+        } catch (Exception e) {
+            logger.error("{}", e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
 }

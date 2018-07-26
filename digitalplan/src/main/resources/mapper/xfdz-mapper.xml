@@ -230,7 +230,7 @@
 			<if test="gxzddws != null">gxzddws=#{gxzddws},</if>
 			<if test="xqmj != null">xqmj=#{xqmj},</if>
 			<if test="xqfw != null">xqfw=#{xqfw},</if>
-			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="bz != null">bz=#{bz},</if>
 			<if test="jdh != null">jdh=#{jdh},</if>
@@ -610,6 +610,14 @@
 		ORDER BY t.dzbm
 	</select>
 
-	<!-- -->
+	<!-- 根据上级队站ID查询队站列表 by li.xue -->
+	<select id="doFindXfdzBySjdzid" parameterType="String" resultType="XfdzTree">
+		SELECT dzid,dzjc FROM YAGL_XFDZ WHERE delete_flag = 'N' AND sjdzid = #{value} order by dzbm
+	</select>
+
+	<!--3.根据队站名称查询-->
+	<select id="doCheckName" parameterType="String" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_XFDZ t WHERE DELETE_FLAG = 'N' AND dzmc = #{value}
+	</select>
 
 </mapper>
