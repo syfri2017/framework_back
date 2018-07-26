@@ -105,11 +105,29 @@
 		<if test="gisY_max != null and gisY_max != '' ">
 			and t.gis_Y &lt; #{gisY_max}
 		</if>
+		<if test="cjrid != null and cjrid != '' ">
+			and t.cjrid = #{cjrid}
+		</if>
+		<if test="cjrmc != null and cjrmc != '' ">
+			and t.cjrmc = #{cjrmc}
+		</if>
+		<if test="cjsj != null and cjsj != '' ">
+			and t.cjsj = #{cjsj}
+		</if>
+		<if test="xgrid != null and xgrid != '' ">
+			and t.xgrid = #{xgrid}
+		</if>
+		<if test="xgrmc != null and xgrmc != '' ">
+			and t.xgrmc = #{xgrmc}
+		</if>
+		<if test="xgsj != null and xgsj != '' ">
+			and t.xgsj = #{xgsj}
+		</if>
 	</sql>
 
 	<!--2.查询内容-->
 	<sql id="SQL_CONTENT">
-		t.uuid uuid,
+        t.uuid uuid,
 		t.clbm clbm,
 		t.clmc clmc,
 		t.ssdz ssdz,
@@ -138,7 +156,13 @@
 		t.reserve3 reserve3,
 		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
 		t.gis_x gisX,
-		t.gis_y gisY
+		t.gis_y gisY,
+		t.cjrid cjrid,
+		t.cjrmc cjrmc,
+		TO_CHAR(t.cjsj,'yyyy-MM-dd HH24:mi:ss') cjsj,
+		t.xgrid xgrid,
+		t.xgrmc xgrmc,
+		TO_CHAR(t.xgsj,'yyyy-MM-dd HH24:mi:ss') xgsj
 	</sql>
 
 	<!--3.查询记录数-->
@@ -249,23 +273,23 @@
 		ORDER BY XZQH,CLLX,CPHM ASC
 	</select>
 
-	<!--6.按照VO插入-->
+	<!--6.按照VO插入 pkid uuid -->
 	<insert  id="doInsertByVO"  parameterType="FireengineVO">
-		<selectKey resultType="String" order="BEFORE" keyProperty="pkid">
-			SELECT SYS_GUID() AS pkid FROM DUAL
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
 		</selectKey>
-		INSERT INTO YAGL_WL_XFCLXX(uuid,clbm,clmc,ssdz,ssdzmc,xzqh,cllx,cphm,clzt,sccj,jglgd,sbll,zsl,xfpll,sbedyl,czmhjlb,czmhjl,mhjhhb,gpsbh,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,gis_x,gis_y)
-		VALUES(#{uuid,jdbcType=VARCHAR},#{clbm,jdbcType=VARCHAR},#{clmc,jdbcType=VARCHAR},#{ssdz,jdbcType=VARCHAR},#{ssdzmc,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{cllx,jdbcType=DOUBLE},#{cphm,jdbcType=VARCHAR},#{clzt,jdbcType=VARCHAR},#{sccj,jdbcType=VARCHAR},#{jglgd,jdbcType=DOUBLE},#{sbll,jdbcType=DOUBLE},#{zsl,jdbcType=DOUBLE},#{xfpll,jdbcType=DOUBLE},#{sbedyl,jdbcType=DOUBLE},#{czmhjlb,jdbcType=VARCHAR},#{czmhjl,jdbcType=DOUBLE},#{mhjhhb,jdbcType=VARCHAR},#{gpsbh,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{gisX,jdbcType=DOUBLE},#{gisY,jdbcType=DOUBLE})
+		INSERT INTO YAGL_WL_XFCLXX(uuid,clbm,clmc,ssdz,ssdzmc,xzqh,cllx,cphm,clzt,sccj,jglgd,sbll,zsl,xfpll,sbedyl,czmhjlb,czmhjl,mhjhhb,gpsbh,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,gis_x,gis_y,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{clbm,jdbcType=VARCHAR},#{clmc,jdbcType=VARCHAR},#{ssdz,jdbcType=VARCHAR},#{ssdzmc,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{cllx,jdbcType=DOUBLE},#{cphm,jdbcType=VARCHAR},#{clzt,jdbcType=VARCHAR},#{sccj,jdbcType=VARCHAR},#{jglgd,jdbcType=DOUBLE},#{sbll,jdbcType=DOUBLE},#{zsl,jdbcType=DOUBLE},#{xfpll,jdbcType=DOUBLE},#{sbedyl,jdbcType=DOUBLE},#{czmhjlb,jdbcType=VARCHAR},#{czmhjl,jdbcType=DOUBLE},#{mhjhhb,jdbcType=VARCHAR},#{gpsbh,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{gisX,jdbcType=DOUBLE},#{gisY,jdbcType=DOUBLE},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE})
 	</insert>
 
 	<!--7.批量插入-->
 	<insert  id="doBatchInsertByList"  parameterType="java.util.List">
-		INSERT INTO YAGL_WL_XFCLXX(uuid,clbm,clmc,ssdz,ssdzmc,xzqh,cllx,cphm,clzt,sccj,jglgd,sbll,zsl,xfpll,sbedyl,czmhjlb,czmhjl,mhjhhb,gpsbh,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,gis_x,gis_y)
-		SELECT SYS_GUID() pkid, A.*
+		INSERT INTO YAGL_WL_XFCLXX(uuid,clbm,clmc,ssdz,ssdzmc,xzqh,cllx,cphm,clzt,sccj,jglgd,sbll,zsl,xfpll,sbedyl,czmhjlb,czmhjl,mhjhhb,gpsbh,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,gis_x,gis_y,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj)
+		SELECT SYS_GUID() uuid, A.*
 		FROM (
 		<foreach collection="list" item="item" index="index" separator="UNION ALL" >
 			SELECT
-			#{item.uuid,jdbcType=VARCHAR} uuid,#{item.clbm,jdbcType=VARCHAR} clbm,#{item.clmc,jdbcType=VARCHAR} clmc,#{item.ssdz,jdbcType=VARCHAR} ssdz,#{item.ssdzmc,jdbcType=VARCHAR} ssdzmc,#{item.xzqh,jdbcType=VARCHAR} xzqh,#{item.cllx,jdbcType=DOUBLE} cllx,#{item.cphm,jdbcType=VARCHAR} cphm,#{item.clzt,jdbcType=VARCHAR} clzt,#{item.sccj,jdbcType=VARCHAR} sccj,#{item.jglgd,jdbcType=DOUBLE} jglgd,#{item.sbll,jdbcType=DOUBLE} sbll,#{item.zsl,jdbcType=DOUBLE} zsl,#{item.xfpll,jdbcType=DOUBLE} xfpll,#{item.sbedyl,jdbcType=DOUBLE} sbedyl,#{item.czmhjlb,jdbcType=VARCHAR} czmhjlb,#{item.czmhjl,jdbcType=DOUBLE} czmhjl,#{item.mhjhhb,jdbcType=VARCHAR} mhjhhb,#{item.gpsbh,jdbcType=VARCHAR} gpsbh,'N' delete_flag,#{item.datasource,jdbcType=VARCHAR} datasource,#{item.bz,jdbcType=VARCHAR} bz,#{item.jdh,jdbcType=VARCHAR} jdh,#{item.sjc,jdbcType=DATE} sjc,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.gisX,jdbcType=DOUBLE} gis_x,#{item.gisY,jdbcType=DOUBLE} gis_y
+			#{item.uuid,jdbcType=VARCHAR} uuid,#{item.clbm,jdbcType=VARCHAR} clbm,#{item.clmc,jdbcType=VARCHAR} clmc,#{item.ssdz,jdbcType=VARCHAR} ssdz,#{item.ssdzmc,jdbcType=VARCHAR} ssdzmc,#{item.xzqh,jdbcType=VARCHAR} xzqh,#{item.cllx,jdbcType=DOUBLE} cllx,#{item.cphm,jdbcType=VARCHAR} cphm,#{item.clzt,jdbcType=VARCHAR} clzt,#{item.sccj,jdbcType=VARCHAR} sccj,#{item.jglgd,jdbcType=DOUBLE} jglgd,#{item.sbll,jdbcType=DOUBLE} sbll,#{item.zsl,jdbcType=DOUBLE} zsl,#{item.xfpll,jdbcType=DOUBLE} xfpll,#{item.sbedyl,jdbcType=DOUBLE} sbedyl,#{item.czmhjlb,jdbcType=VARCHAR} czmhjlb,#{item.czmhjl,jdbcType=DOUBLE} czmhjl,#{item.mhjhhb,jdbcType=VARCHAR} mhjhhb,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.gpsbh,jdbcType=VARCHAR} gpsbh,'N' delete_flag,#{item.datasource,jdbcType=VARCHAR} datasource,#{item.bz,jdbcType=VARCHAR} bz,#{item.jdh,jdbcType=VARCHAR} jdh,#{item.sjc,jdbcType=DATE} sjc,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.gisX,jdbcType=DOUBLE} gis_x,#{item.gisY,jdbcType=DOUBLE} gis_y,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.xgsj,jdbcType=DATE} xgsj
 			FROM DUAL
 		</foreach>
 		) A
@@ -273,14 +297,14 @@
 
 	<!--8.按主键逻辑删除-->
 	<update id="doDeleteById"  parameterType="String"> 
-		UPDATE  YAGL_WL_XFCLXX t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.PKID = #{value}
+		UPDATE  YAGL_WL_XFCLXX t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.UUID = #{value}
 	</update>
 
 	<!--9.按复合条件逻辑更新-->
 	<update  id="doUpdateByVO"  parameterType="FireengineVO">
 		UPDATE   YAGL_WL_XFCLXX
 		<set>
-			<if test="uuid != null">uuid=#{uuid},</if>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
 			<if test="clbm != null">clbm=#{clbm},</if>
 			<if test="clmc != null">clmc=#{clmc},</if>
 			<if test="ssdz != null">ssdz=#{ssdz},</if>
@@ -299,7 +323,7 @@
 			<if test="czmhjl != null">czmhjl=#{czmhjl},</if>
 			<if test="mhjhhb != null">mhjhhb=#{mhjhhb},</if>
 			<if test="gpsbh != null">gpsbh=#{gpsbh},</if>
-			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="bz != null">bz=#{bz},</if>
 			<if test="jdh != null">jdh=#{jdh},</if>
@@ -309,17 +333,24 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="gisX != null">gis_x=#{gisX},</if>
-			<if test="gisY != null">gis_y=#{gisY}</if>
+			<if test="gisY != null">gis_y=#{gisY},</if>
+			<!--<if test="cjrid != null">cjrid=#{cjrid},</if>-->
+			<!--<if test="cjrmc != null">cjrmc=#{cjrmc},</if>-->
+			<!--<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>-->
+			<if test="xgrid != null">xgrid=#{xgrid},</if>
+			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
+			<if test="xgsj != null">xgsj=sysdate</if>
+
 		</set>
-		WHERE  PKID = #{pkid}
+		WHERE  UUID = #{uuid}
 	</update>
 
 	<!--10.批量修改-->
 	<update id="doBatchUpdateByList"  parameterType="java.util.List">
-		INSERT INTO YAGL_WL_XFCLXX(uuid,clbm,clmc,ssdz,ssdzmc,xzqh,cllx,cphm,clzt,sccj,jglgd,sbll,zsl,xfpll,sbedyl,czmhjlb,czmhjl,mhjhhb,gpsbh,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,gis_x,gis_y)
+		INSERT INTO YAGL_WL_XFCLXX(uuid,clbm,clmc,ssdz,ssdzmc,xzqh,cllx,cphm,clzt,sccj,jglgd,sbll,zsl,xfpll,sbedyl,czmhjlb,czmhjl,mhjhhb,xgrid,xgrmc,gpsbh,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,gis_x,gis_y)
 		VALUES
 		<foreach collection="list" item="item" index="index" separator="," >
-			#{item.uuid,jdbcType=VARCHAR} uuid,#{item.clbm,jdbcType=VARCHAR} clbm,#{item.clmc,jdbcType=VARCHAR} clmc,#{item.ssdz,jdbcType=VARCHAR} ssdz,#{item.ssdzmc,jdbcType=VARCHAR} ssdzmc,#{item.xzqh,jdbcType=VARCHAR} xzqh,#{item.cllx,jdbcType=DOUBLE} cllx,#{item.cphm,jdbcType=VARCHAR} cphm,#{item.clzt,jdbcType=VARCHAR} clzt,#{item.sccj,jdbcType=VARCHAR} sccj,#{item.jglgd,jdbcType=DOUBLE} jglgd,#{item.sbll,jdbcType=DOUBLE} sbll,#{item.zsl,jdbcType=DOUBLE} zsl,#{item.xfpll,jdbcType=DOUBLE} xfpll,#{item.sbedyl,jdbcType=DOUBLE} sbedyl,#{item.czmhjlb,jdbcType=VARCHAR} czmhjlb,#{item.czmhjl,jdbcType=DOUBLE} czmhjl,#{item.mhjhhb,jdbcType=VARCHAR} mhjhhb,#{item.gpsbh,jdbcType=VARCHAR} gpsbh,'N' delete_flag,#{item.datasource,jdbcType=VARCHAR} datasource,#{item.bz,jdbcType=VARCHAR} bz,#{item.jdh,jdbcType=VARCHAR} jdh,#{item.sjc,jdbcType=DATE} sjc,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.gisX,jdbcType=DOUBLE} gis_x,#{item.gisY,jdbcType=DOUBLE} gis_y
+			#{item.uuid,jdbcType=VARCHAR} uuid,#{item.clbm,jdbcType=VARCHAR} clbm,#{item.clmc,jdbcType=VARCHAR} clmc,#{item.ssdz,jdbcType=VARCHAR} ssdz,#{item.ssdzmc,jdbcType=VARCHAR} ssdzmc,#{item.xzqh,jdbcType=VARCHAR} xzqh,#{item.cllx,jdbcType=DOUBLE} cllx,#{item.cphm,jdbcType=VARCHAR} cphm,#{item.clzt,jdbcType=VARCHAR} clzt,#{item.sccj,jdbcType=VARCHAR} sccj,#{item.jglgd,jdbcType=DOUBLE} jglgd,#{item.sbll,jdbcType=DOUBLE} sbll,#{item.zsl,jdbcType=DOUBLE} zsl,#{item.xfpll,jdbcType=DOUBLE} xfpll,#{item.sbedyl,jdbcType=DOUBLE} sbedyl,#{item.czmhjlb,jdbcType=VARCHAR} czmhjlb,#{item.czmhjl,jdbcType=DOUBLE} czmhjl,#{item.mhjhhb,jdbcType=VARCHAR} mhjhhb,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.gpsbh,jdbcType=VARCHAR} gpsbh,'N' delete_flag,#{item.datasource,jdbcType=VARCHAR} datasource,#{item.bz,jdbcType=VARCHAR} bz,#{item.jdh,jdbcType=VARCHAR} jdh,#{item.sjc,jdbcType=DATE} sjc,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.gisX,jdbcType=DOUBLE} gis_x,#{item.gisY,jdbcType=DOUBLE} gis_y
 		</foreach>
 		ON DUPLICATE KEY UPDATE
 		uuid = VALUES(uuid),
@@ -351,7 +382,13 @@
 		reserve3 = VALUES(reserve3),
 		reserve4 = VALUES(reserve4),
 		gis_x = VALUES(gis_x),
-		gis_y = VALUES(gis_y)
+		gis_y = VALUES(gis_y),
+		cjrid = VALUES(cjrid),
+		cjrmc = VALUES(cjrmc),
+		cjsj = VALUES(cjsj),
+		xgrid = VALUES(xgrid),
+		xgrmc = VALUES(xgrmc),
+		xgsj = VALUES(xgsj)
 	</update>
 
 	<!--11.根据对象查询记录-->
