@@ -135,7 +135,7 @@ public class XfdzVO extends ValueObject implements Serializable{
 	public String getZqcls(){
 		return zqcls;
 	}
-	public void setZqcls(String zqcl){
+	public void setZqcls(String zqcls){
 		this.zqcls = zqcls;
 	}
 	public String getZbqcs() {

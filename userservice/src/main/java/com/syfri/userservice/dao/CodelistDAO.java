@@ -37,4 +37,6 @@ public interface CodelistDAO extends BaseDAO<CodelistVO>{
 
 	/*--查询行政区划，只保留31个省.--*/
 	List<CodelistDetailVO> doFindXzqhCodelist(String codetype);
+
+	List<CodelistDetailVO> doFindXzqhByDm(CodelistDetailVO codelistDetailVO);
 }
