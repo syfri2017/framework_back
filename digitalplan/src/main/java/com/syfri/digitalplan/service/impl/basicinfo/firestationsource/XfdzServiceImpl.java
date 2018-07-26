@@ -92,6 +92,7 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
     /*--修改消防队站 by li.xue 2018/7/25.--*/
     @Override
     public XfdzVO doUpdateByXfdzVO(XfdzVO xfdzVO){
+        xfdzDAO.doUpdateByVO(xfdzVO);
         return xfdzVO;
     }
 
