@@ -10,7 +10,7 @@
 			and t.clbm LIKE concat(concat('%',#{clbm}),'%')
 		</if>
 		<if test="clmc != null and clmc != '' ">
-			and t.clmc = #{clmc}
+			and t.clmc LIKE concat(concat('%',#{clmc},'%'))
 		</if>
 		<!--<if test="ssdz != null and ssdz != '' ">-->
 			<!--and t.ssdz = #{ssdz}-->
@@ -204,7 +204,7 @@
 		Left Join SYS_CODELIST_DETAIL c6
 		On c5.CODEID = c6.CODEID
 		And c6.DELETE_FLAG = 'N'
-		and substr(t.CLZT,2,1) = substr(c6.CODE_VALUE,1,1)
+		and t.CLZT = c6.CODE_VALUE
 		<!-- 车载灭火剂类别 -->
 		Left Join SYS_CODELIST c7
 		on c7.CODETYPE = 'YJLX'
