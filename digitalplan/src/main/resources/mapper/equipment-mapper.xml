@@ -145,8 +145,8 @@
 		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
 			SELECT SYS_GUID() AS uuid FROM DUAL
 		</selectKey>
-		INSERT INTO YAGL_WL_XFZBXX(uuid,zbbm,zbmc,ssdz,ssdzmc,xzqh,zblx,sccj,zcbl,kysl,zzsl,shsl,ztsl,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
-		VALUES(#{uuid,jdbcType=VARCHAR},#{zbbm,jdbcType=VARCHAR},#{zbmc,jdbcType=VARCHAR},#{ssdz,jdbcType=VARCHAR},#{ssdzmc,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{zblx,jdbcType=DOUBLE},#{sccj,jdbcType=VARCHAR},#{zcbl,jdbcType=DOUBLE},#{kysl,jdbcType=DOUBLE},#{zzsl,jdbcType=DOUBLE},#{shsl,jdbcType=DOUBLE},#{ztsl,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+		INSERT INTO YAGL_WL_XFZBXX(uuid,zbbm,zbmc,ssdz,ssdzmc,xzqh,zblx,sccj,zcbl,kysl,zzsl,shsl,ztsl,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{zbbm,jdbcType=VARCHAR},#{zbmc,jdbcType=VARCHAR},#{ssdz,jdbcType=VARCHAR},#{ssdzmc,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{zblx,jdbcType=DOUBLE},#{sccj,jdbcType=VARCHAR},#{zcbl,jdbcType=DOUBLE},#{kysl,jdbcType=DOUBLE},#{zzsl,jdbcType=DOUBLE},#{shsl,jdbcType=DOUBLE},#{ztsl,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE})
 	</insert>
 
 	<!--7.批量插入-->

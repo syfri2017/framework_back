@@ -62,7 +62,13 @@
 		t.reserve1 reserve1,
 		t.reserve2 reserve2,
 		t.reserve3 reserve3,
-		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
+		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
+		t.cjrid cjrid,
+		t.cjrmc cjrmc,
+		TO_CHAR(t.cjsj,'yyyy-MM-dd HH24:mi:ss') cjsj,
+		t.xgrid xgrid,
+		t.xgrmc xgrmc,
+		TO_CHAR(t.xgsj,'yyyy-MM-dd HH24:mi:ss') xgsj
 	</sql>
 
 	<!--3.查询记录数-->
@@ -77,7 +83,7 @@
 			<include refid="SQL_CONTENT"/>
 		FROM YAGL_WL_XFZBXX_CL t  WHERE t.DELETE_FLAG = 'N' 
 			<include refid="SQL_CONDITION"/>
-		ORDER BY ZBBM
+		ORDER BY cjsj
 	</select>
 
 	<!--5.根据ID查询记录-->
@@ -93,8 +99,8 @@
 		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
 			SELECT SYS_GUID() AS uuid FROM DUAL
 		</selectKey>
-		INSERT INTO YAGL_WL_XFZBXX_CL(uuid,zbid,clid,clmc,clzzs,bz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
-		VALUES(#{uuid,jdbcType=VARCHAR},#{zbid,jdbcType=VARCHAR},#{clid,jdbcType=VARCHAR},#{clmc,jdbcType=VARCHAR},#{clzzs,jdbcType=DOUBLE},#{bz,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+		INSERT INTO YAGL_WL_XFZBXX_CL(uuid,zbid,clid,clmc,clzzs,bz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{zbid,jdbcType=VARCHAR},#{clid,jdbcType=VARCHAR},#{clmc,jdbcType=VARCHAR},#{clzzs,jdbcType=DOUBLE},#{bz,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE})
 	 </insert>
 
 	<!--7.批量插入-->
