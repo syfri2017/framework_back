@@ -1,8 +1,7 @@
 package com.syfri.digitalplan.dao.basicinfo.firestationsource;
 
 import com.syfri.baseapi.dao.BaseDAO;
-import com.syfri.digitalplan.model.basicinfo.firestationsource.XfdzTree;
-import com.syfri.digitalplan.model.basicinfo.firestationsource.XfdzVO;
+import com.syfri.digitalplan.model.basicinfo.firestationsource.*;
 
 import java.util.List;
 
@@ -25,4 +24,34 @@ public interface XfdzDAO extends BaseDAO<XfdzVO>{
 
     /*--判断队站名称是否存在 by li.xue 2018/07/25.--*/
     int doCheckName(String dzmc);
+
+    /*--插入总队从表 by li.xue 2018/07/27.--*/
+    int doInsertZongdByVO(ZongdVO zongdVO);
+
+    /*--插入支队从表 by li.xue 2018/07/27.--*/
+    int doInsertZhidByVO(ZhidVO zhidVO);
+
+    /*--插入大队从表 by li.xue 2018/07/27.--*/
+    int doInsertDadByVO(DadVO dadVO);
+
+    /*--插入中队从表 by li.xue 2018/07/27.--*/
+    int doInsertZhongdByVO(ZhongdVO zhongdVO);
+
+    /*--插入其他消防队伍从表 by li.xue 2018/07/27.--*/
+    int doInsertQtxfdwByVO(QtxfdwVO qtxfdwVO);
+
+    /*--修改总队从表 by li.xue 2018/07/27.--*/
+    int doUpdateZongdByVO(ZongdVO zongdVO);
+
+    /*--修改支队从表 by li.xue 2018/07/27.--*/
+    int doUpdateZhidByVO(ZhidVO zhidVO);
+
+    /*--修改大队从表 by li.xue 2018/07/27.--*/
+    int doUpdateDadByVO(DadVO dadVO);
+
+    /*--修改中队从表 by li.xue 2018/07/27.--*/
+    int doUpdateZhongdByVO(ZhongdVO zhongdVO);
+
+    /*--修改其他消防队伍从表 by li.xue 2018/07/27.--*/
+    int doUpdateQtxfdwByVO(QtxfdwVO qtxfdwVO);
 }

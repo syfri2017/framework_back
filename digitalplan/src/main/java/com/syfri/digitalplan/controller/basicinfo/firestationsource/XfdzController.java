@@ -33,8 +33,7 @@ public class XfdzController extends BaseController<XfdzVO> {
     @ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
     @ApiImplicitParam(name = "vo", value = "队站对象")
     @PostMapping("/findDzDetailByVo")
-    public @ResponseBody
-    ResultVO findById(@RequestBody XfdzVO xfdzVO) {
+    public @ResponseBody ResultVO findById(@RequestBody XfdzVO xfdzVO) {
         ResultVO resultVO = ResultVO.build();
         try {
             resultVO.setResult(xfdzService.doFindDzDetailByVo(xfdzVO));
