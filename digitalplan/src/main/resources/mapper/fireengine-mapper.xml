@@ -10,7 +10,7 @@
 			and t.clbm LIKE concat(concat('%',#{clbm}),'%')
 		</if>
 		<if test="clmc != null and clmc != '' ">
-			and t.clmc LIKE concat(concat('%',#{clmc},'%'))
+			and t.clmc LIKE concat(concat('%',#{clmc}),'%')
 		</if>
 		<!--<if test="ssdz != null and ssdz != '' ">-->
 			<!--and t.ssdz = #{ssdz}-->
@@ -28,7 +28,7 @@
 			and t.cphm LIKE concat(concat('%',#{cphm}),'%')
 		</if>
 		<if test="clzt != null and clzt != '' ">
-			and substr(t.clzt,2,1) = substr(#{clzt},1,1)
+			and t.clzt = #{clzt}
 		</if>
 		<if test="sccj != null and sccj != '' ">
 			and t.sccj = #{sccj}
@@ -179,7 +179,7 @@
 		c4.CODE_NAME cllxmc,
 		c6.CODE_NAME clztmc,
 		c8.CODE_NAME czmhjlbmc,
-		c9.DZMC ssdzmc
+		c9.DZJC ssdzmc
 		FROM YAGL_WL_XFCLXX t
 		<!-- 行政区划 -->
 		Left Join SYS_CODELIST c1
@@ -222,7 +222,7 @@
 		</if>
 		WHERE t.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
-		ORDER BY XZQH,CLLX,CPHM ASC
+		ORDER BY CLBM ASC
 	</select>
 
 	<!--5.根据ID查询记录-->
