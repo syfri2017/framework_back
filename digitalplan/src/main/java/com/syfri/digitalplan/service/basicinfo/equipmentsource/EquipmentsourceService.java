@@ -17,6 +17,6 @@ public interface EquipmentsourceService  extends BaseService<EquipmentVO>{
 
     int doDeleteEquipment(List<EquipmentVO> equipmentList);
 
-    int doUpdateEquipment(EquipmentVO equipmentVO);
+    EquipmentVO doUpdateEquipment(EquipmentVO equipmentVO);
 
 }

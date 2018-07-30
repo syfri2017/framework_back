@@ -195,7 +195,7 @@
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=sysdate</if>
+			xgsj=sysdate
 		</set>
 		WHERE  UUID = #{uuid}
 	</update>
