@@ -13,4 +13,10 @@ public interface EquipmentsourceService  extends BaseService<EquipmentVO>{
     /*--根据重点单位ID获取重点单位详情-*/
     List<EquipmentVO> doFindDetailById(String id);
 
+    EquipmentVO doInsertEquipment(EquipmentVO equipmentVO);
+
+    int doDeleteEquipment(List<EquipmentVO> equipmentList);
+
+    EquipmentVO doUpdateEquipment(EquipmentVO equipmentVO);
+
 }

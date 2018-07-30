@@ -1,6 +1,7 @@
 package com.syfri.digitalplan.model.basicinfo.equipmentsource;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.syfri.baseapi.model.ValueObject;
 
@@ -30,6 +31,71 @@ public class EquipmentVO extends ValueObject implements Serializable{
 	private String reserve2;	//备用字段2
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
+	private String cjrid;	//创建人ID
+
+	public String getCjrid() {
+		return cjrid;
+	}
+
+	public void setCjrid(String cjrid) {
+		this.cjrid = cjrid;
+	}
+
+	public String getCjrmc() {
+		return cjrmc;
+	}
+
+	public void setCjrmc(String cjrmc) {
+		this.cjrmc = cjrmc;
+	}
+
+	public String getCjsj() {
+		return cjsj;
+	}
+
+	public void setCjsj(String cjsj) {
+		this.cjsj = cjsj;
+	}
+
+	public String getXgrid() {
+		return xgrid;
+	}
+
+	public void setXgrid(String xgrid) {
+		this.xgrid = xgrid;
+	}
+
+	public String getXgrmc() {
+		return xgrmc;
+	}
+
+	public void setXgrmc(String xgrmc) {
+		this.xgrmc = xgrmc;
+	}
+
+	public String getXgsj() {
+		return xgsj;
+	}
+
+	public void setXgsj(String xgsj) {
+		this.xgsj = xgsj;
+	}
+
+	private String cjrmc;	//创建人名称
+	private String cjsj;	//创建时间
+	private String xgrid;	//修改人ID
+	private String xgrmc;	//修改人姓名
+	private String xgsj;	//修改时间
+
+	public List<EquipengineVO> getEquipengineVOList() {
+		return equipengineVOList;
+	}
+
+	public void setEquipengineVOList(List<EquipengineVO> equipengineVOList) {
+		this.equipengineVOList = equipengineVOList;
+	}
+
+	private List<EquipengineVO> equipengineVOList;
 
 	public String getUuid(){
 		return uuid;
