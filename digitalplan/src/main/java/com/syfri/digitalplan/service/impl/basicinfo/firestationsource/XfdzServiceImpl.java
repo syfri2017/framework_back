@@ -176,31 +176,31 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
                         ZongdVO zongdVO = new ZongdVO();
                         zongdVO.setDzid(vo.getDzid());
                         zongdVO.setDeleteFlag("Y");
-                        xfdzDAO.doUpdateZongdByVO(zongdVO);
+                        xfdzDAO.doDeleteZongdByDzid(zongdVO);
                         break;
                     case "03":
                         ZhidVO zhidVO = new ZhidVO();
                         zhidVO.setDzid(vo.getDzid());
                         zhidVO.setDeleteFlag("Y");
-                        xfdzDAO.doUpdateZhidByVO(zhidVO);
+                        xfdzDAO.doDeleteZhidByDzid(zhidVO);
                         break;
                     case "05":
                         DadVO dadVO = new DadVO();
                         dadVO.setDzid(vo.getDzid());
                         dadVO.setDeleteFlag("Y");
-                        xfdzDAO.doUpdateDadByVO(dadVO);
+                        xfdzDAO.doDeleteDadByDzid(dadVO);
                         break;
                     case "09":
                         ZhongdVO zhongdVO = new ZhongdVO();
                         zhongdVO.setDzid(vo.getDzid());
                         zhongdVO.setDeleteFlag("Y");
-                        xfdzDAO.doUpdateZhongdByVO(zhongdVO);
+                        xfdzDAO.doDeleteZhongdByDzid(zhongdVO);
                         break;
                     case "0A":
                         QtxfdwVO qtxfdwVO = new QtxfdwVO();
                         qtxfdwVO.setDzid(vo.getDzid());
                         qtxfdwVO.setDeleteFlag("Y");
-                        xfdzDAO.doUpdateQtxfdwByVO(qtxfdwVO);
+                        xfdzDAO.doDeleteQtxfdwByDzid(qtxfdwVO);
                         break;
                 }
             }

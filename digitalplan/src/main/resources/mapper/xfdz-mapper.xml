@@ -240,7 +240,10 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="gisX != null">gis_x=#{gisX},</if>
-			<if test="gisY != null">gis_y=#{gisY}</if>
+			<if test="gisY != null">gis_y=#{gisY},</if>
+			<if test="xgrid != null">xgrid=#{xgrid},</if>
+			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
+			xgsj=TO_DATE(TO_CHAR(SYSDATE,'yyyy-MM-dd HH24:mi:ss'),'yyyy-MM-dd HH24:mi:ss')
 		</set>
 		WHERE  dzid = #{dzid}
 	</update>
@@ -806,6 +809,31 @@
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
 		WHERE  UUID = #{uuid}
+	</update>
+
+	<!-- 逻辑删除总队 by li.xue -->
+	<update id="doDeleteZongdByDzid"  parameterType="String">
+		UPDATE  YAGL_XFDZ_ZONGD t SET t.DELETE_FLAG = 'Y'  WHERE 1=1 AND t.dzid = #{dzid}
+	</update>
+
+	<!-- 逻辑删除支队 by li.xue -->
+	<update id="doDeleteZhidByDzid"  parameterType="String">
+		UPDATE  YAGL_XFDZ_ZHID t SET t.DELETE_FLAG = 'Y'  WHERE 1=1 AND t.dzid = #{dzid}
+	</update>
+
+	<!-- 逻辑删除大队 by li.xue -->
+	<update id="doDeleteDadByDzid"  parameterType="String">
+		UPDATE  YAGL_XFDZ_DAD t SET t.DELETE_FLAG = 'Y'  WHERE 1=1 AND t.dzid = #{dzid}
+	</update>
+
+	<!-- 逻辑删除中队 by li.xue -->
+	<update id="doDeleteZhongdByDzid"  parameterType="String">
+		UPDATE  YAGL_XFDZ_ZHONGD t SET t.DELETE_FLAG = 'Y'  WHERE 1=1 AND t.dzid = #{dzid}
+	</update>
+
+	<!-- 逻辑删除其他消防队伍 by li.xue -->
+	<update id="doDeleteQtxfdwByDzid"  parameterType="String">
+		UPDATE  YAGL_XFDZ_QTXFDW t SET t.DELETE_FLAG = 'Y'  WHERE 1=1 AND t.dzid = #{dzid}
 	</update>
 
 </mapper>
