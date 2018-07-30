@@ -137,7 +137,7 @@
 		SELECT
 		<include refid="SQL_CONTENT"/>
 		FROM YAGL_WL_XFZBXX t
-		WHERE t.DELETE_FLAG = 'N' AND  t.PKID = #{value}
+		WHERE t.DELETE_FLAG = 'N' AND  t.UUID = #{value}
 	</select>
 
 	<!--6.按照VO插入-->
@@ -164,14 +164,14 @@
 
 	<!--8.按主键逻辑删除-->
 	<update id="doDeleteById"  parameterType="String">
-		UPDATE  YAGL_WL_XFZBXX t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.PKID = #{value}
+		UPDATE  YAGL_WL_XFZBXX t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.UUID = #{value}
 	</update>
 
 	<!--9.按复合条件逻辑更新-->
 	<update  id="doUpdateByVO"  parameterType="EquipmentVO">
 		UPDATE   YAGL_WL_XFZBXX
 		<set>
-			<if test="uuid != null">uuid=#{uuid},</if>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
 			<if test="zbbm != null">zbbm=#{zbbm},</if>
 			<if test="zbmc != null">zbmc=#{zbmc},</if>
 			<if test="ssdz != null">ssdz=#{ssdz},</if>
@@ -184,7 +184,7 @@
 			<if test="zzsl != null">zzsl=#{zzsl},</if>
 			<if test="shsl != null">shsl=#{shsl},</if>
 			<if test="ztsl != null">ztsl=#{ztsl},</if>
-			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="bz != null">bz=#{bz},</if>
 			<if test="jdh != null">jdh=#{jdh},</if>
@@ -192,7 +192,10 @@
 			<if test="reserve1 != null">reserve1=#{reserve1},</if>
 			<if test="reserve2 != null">reserve2=#{reserve2},</if>
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
-			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="xgrid != null">xgrid=#{xgrid},</if>
+			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
+			xgsj=sysdate
 		</set>
 		WHERE  UUID = #{uuid}
 	</update>
