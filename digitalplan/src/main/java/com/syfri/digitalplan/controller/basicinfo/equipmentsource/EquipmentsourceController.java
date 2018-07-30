@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import com.syfri.digitalplan.service.basicinfo.equipmentsource.EquipmentsourceService;
 import com.syfri.baseapi.controller.BaseController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("equipmentsource")
 public class EquipmentsourceController  extends BaseController<EquipmentVO>{
@@ -36,6 +38,34 @@ public class EquipmentsourceController  extends BaseController<EquipmentVO>{
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(equipmentsourceService.doInsertEquipment(equipmentVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	@ApiOperation(value="删除装备器材",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="装备器材")
+	@PostMapping("/doDeleteEquipment")
+	public @ResponseBody ResultVO doDeleteEquipment(@RequestBody List<EquipmentVO> equipmentList) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(equipmentsourceService.doDeleteEquipment(equipmentList));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	@ApiOperation(value="修改消防药剂",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="消防药剂")
+	@PostMapping("/doUpdateEquipment")
+	public @ResponseBody ResultVO doUpdateEquipment(@RequestBody EquipmentVO equipmentVO) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(equipmentsourceService.doUpdateEquipment(equipmentVO));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);

@@ -48,4 +48,26 @@ public class EquipmentsourceServiceImpl extends BaseServiceImpl<EquipmentVO> imp
 		}
 		return equipmentVO;
 	}
+
+	public int doDeleteEquipment(List<EquipmentVO> equipmentList) {
+		int count = 0;
+		if (equipmentList.size() > 0) {
+			for (EquipmentVO equipmentVO : equipmentList) {
+				EquipmentVO vo = new EquipmentVO();
+				vo.setUuid(equipmentVO.getUuid());
+				vo.setXgrid(equipmentVO.getXgrid());
+				vo.setXgrmc(equipmentVO.getXgrmc());
+				vo.setXgsj("1");
+				vo.setDeleteFlag("Y");
+				count = count + equipmentsourceDAO.doUpdateByVO(vo);
+			}
+		}
+		return count;
+	}
+
+	public int doUpdateEquipment(EquipmentVO equipmentVO) {
+		equipmentVO.setXgsj("1");
+		int count = equipmentsourceDAO.doUpdateByVO(equipmentVO);
+		return count;
+	}
 }
