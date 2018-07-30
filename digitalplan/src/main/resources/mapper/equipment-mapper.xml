@@ -129,7 +129,7 @@
 		Left Join SYS_CODELIST_DETAIL c4 On c4.CODEID = c3.CODEID And c4.DELETE_FLAG = 'N' and t.ZBLX = c4.CODE_VALUE
 		WHERE t.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
-		ORDER BY ssdz,zbmc ASC
+		ORDER BY zbbm ASC
 	</select>
 
 	<!--5.根据ID查询记录-->

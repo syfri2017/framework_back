@@ -13,7 +13,7 @@
 		 and t.clid = #{clid}
 		</if>
 		<if test="clmc != null and clmc != '' ">
-		 and t.clmc = #{clmc}
+		 and t.clmc LIKE concat(concat('%',#{clmc}),'%')
 		</if>
 		<if test="clzzs != null and clzzs != '' ">
 		 and t.clzzs = #{clzzs}
