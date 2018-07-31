@@ -418,7 +418,12 @@ public class CodelistController  extends BaseController<CodelistVO>{
 	public @ResponseBody ResultVO getXzqhTreeByUser(){
 		ResultVO resultVO = ResultVO.build();
 		try{
-			resultVO.setResult(codelistService.getXzqhTreeByUser(CurrentUserUtil.getCurrentUser().getOrganizationVO().getXzqh()));
+			OrganizationVO organizationVO = CurrentUserUtil.getCurrentUser().getOrganizationVO();
+			if(organizationVO!=null && "公安部消防局".equals(organizationVO.getJgmc())){
+				resultVO.setResult(codelistService.getXzqhTreeByUser(null));
+			}else{
+				resultVO.setResult(codelistService.getXzqhTreeByUser(organizationVO.getXzqh()));
+			}
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
