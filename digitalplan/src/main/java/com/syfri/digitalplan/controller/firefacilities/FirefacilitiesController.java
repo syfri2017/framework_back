@@ -37,4 +37,19 @@ public class FirefacilitiesController  extends BaseController<FirefacilitiesVO>{
 	}
 
 
+	@ApiOperation(value="查询安全设施详情",notes="详情信息")
+	@ApiImplicitParam(name="vo",value = "业务实体")
+	@PostMapping("doFindXfssDetail")
+	public @ResponseBody ResultVO doFindXfssDetail(@RequestBody FirefacilitiesVO vo) {
+		ResultVO resultVO = ResultVO.build();
+		try {
+			resultVO.setResult(firefacilitiesService.doFindXfssDetail(vo));
+		} catch (Exception e) {
+			logger.error("{}",e.getMessage());
+		}
+		return resultVO;
+	}
+
+
+
 }

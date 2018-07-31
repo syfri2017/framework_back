@@ -10,7 +10,7 @@
 		 and t.jzid = #{jbxx_jzid}
 		</if>
 		<if test="jbxx_xfssmc != null and jbxx_xfssmc != '' ">
-		 and t.xfssmc = #{jbxx_xfssmc}
+		 and t.xfssmc LIKE concat(concat('%',#{jbxx_xfssmc}),'%')
 		</if>
 		<if test="jbxx_xfsslx != null and jbxx_xfsslx != '' ">
 		 and t.xfsslx = #{jbxx_xfsslx}
@@ -78,8 +78,22 @@
 	<!--4.按条件查询记录-->
 	<select id="doSearchListByVO" parameterType="FirefacilitiesVO"  resultType="FirefacilitiesVO"> 
 		SELECT 
-			<include refid="SQL_CONTENT"/>
-		FROM YAGL_XFSS t  WHERE t.DELETE_FLAG = 'N' 
+			<include refid="SQL_CONTENT"/>,
+			c2.code_name jbxx_xfsslxmc,
+			dz.dwmc jbxx_zddwmc,
+			jz.jzmc jbxx_jzmc
+		FROM YAGL_XFSS t
+		<!--消防设施类型-->
+		Left Join SYS_CODELIST c1 on c1.CODETYPE = 'XFSSLX' And c1.DELETE_FLAG = 'N'
+		Left Join SYS_CODELIST_DETAIL c2 On c2.CODEID = c1.CODEID And c2.DELETE_FLAG = 'N' and t.XFSSLX = c2.CODE_VALUE
+		<!--重点单位-->
+		Left Join Yagl_Dx_Zddw dz On dz.uuid = t.zddwid And dz.DELETE_FLAG = 'N'
+		<!--建筑-->
+		Left Join Yagl_Dwjzxx jz On jz.jzid = t.jzid And jz.DELETE_FLAG = 'N'
+		WHERE t.DELETE_FLAG = 'N'
+		<if test="jbxx_jzmc != null and jbxx_jzmc != '' ">
+			and jz.jzmc LIKE concat(concat('%',#{jbxx_jzmc}),'%')
+		</if>
 			<include refid="SQL_CONDITION"/>
 	</select>
 
