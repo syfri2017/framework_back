@@ -108,6 +108,9 @@
 		<if test="gisY != null and gisY != '' ">
 			and t.gis_y = #{gisY}
 		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
 	</sql>
 
 	<!--2.查询内容-->

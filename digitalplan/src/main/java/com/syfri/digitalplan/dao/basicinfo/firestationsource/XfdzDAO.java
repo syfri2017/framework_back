@@ -69,4 +69,19 @@ public interface XfdzDAO extends BaseDAO<XfdzVO>{
 
     /*--修改其他消防队伍从表 by li.xue 2018/07/27.--*/
     int doDeleteQtxfdwByDzid(QtxfdwVO qtxfdwVO);
+
+    /*--根据队站ID查询总队记录数 by li.xue 2018/08/02.--*/
+    int doCountZongdByDzid(String dzid);
+
+    /*--根据队站ID查询支队记录数 by li.xue 2018/08/02.--*/
+	int doCountZhidByDzid(String dzid);
+
+	/*--根据队站ID查询大队记录数 by li.xue 2018/08/02.--*/
+    int doCountDadByDzid(String dzid);
+
+	/*--根据队站ID查询中队记录数 by li.xue 2018/08/02.--*/
+    int doCountZhongdByDzid(String dzid);
+
+	/*--根据队站ID查询其他消防队伍记录数 by li.xue 2018/08/02.--*/
+    int doCountQtxfdwByDzid(String dzid);
 }
