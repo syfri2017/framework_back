@@ -159,11 +159,13 @@ public class FirefacilitiesVO extends ValueObject implements Serializable{
 
 	private String jbxx_xfssid;	//消防设施ID（主键）
 	private String jbxx_jzid;	//建筑分区ID
+	private String jbxx_jzmc;	//建筑分区名称
 	private String jbxx_xfssmc;	//消防设施名称
 	private String jbxx_xfsslx;	//消防设施类型
+	private String jbxx_xfsslxmc;	//消防设施类型名称
 	private String jbxx_iszddw;	//是否重点单位消防设施
 	private String jbxx_zddwid;	//重点单位ID
-
+	private String jbxx_zddwmc;	//重点单位名称
 	private String jbxx_deleteFlag;	//删除标志
 	private String jbxx_datasource;	//数据来源[100000一体化]
 	private String jbxx_bz;	//备注
@@ -190,6 +192,14 @@ public class FirefacilitiesVO extends ValueObject implements Serializable{
 		this.jbxx_jzid = jbxx_jzid;
 	}
 
+	public String getJbxx_jzmc() {
+		return jbxx_jzmc;
+	}
+
+	public void setJbxx_jzmc(String jbxx_jzmc) {
+		this.jbxx_jzmc = jbxx_jzmc;
+	}
+
 	public String getJbxx_xfssmc() {
 		return jbxx_xfssmc;
 	}
@@ -206,6 +216,14 @@ public class FirefacilitiesVO extends ValueObject implements Serializable{
 		this.jbxx_xfsslx = jbxx_xfsslx;
 	}
 
+	public String getJbxx_xfsslxmc() {
+		return jbxx_xfsslxmc;
+	}
+
+	public void setJbxx_xfsslxmc(String jbxx_xfsslxmc) {
+		this.jbxx_xfsslxmc = jbxx_xfsslxmc;
+	}
+
 	public String getJbxx_iszddw() {
 		return jbxx_iszddw;
 	}
@@ -220,6 +238,14 @@ public class FirefacilitiesVO extends ValueObject implements Serializable{
 
 	public void setJbxx_zddwid(String jbxx_zddwid) {
 		this.jbxx_zddwid = jbxx_zddwid;
+	}
+
+	public String getJbxx_zddwmc() {
+		return jbxx_zddwmc;
+	}
+
+	public void setJbxx_zddwmc(String jbxx_zddwmc) {
+		this.jbxx_zddwmc = jbxx_zddwmc;
 	}
 
 	public String getJbxx_deleteFlag() {

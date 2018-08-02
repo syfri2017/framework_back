@@ -8,22 +8,22 @@ public class Firefacilities_fhfqVO extends FirefacilitiesVO implements Serializa
 
 	private static final long serialVersionUID = 1L;
 
-	private String uuid;	//undefined
-	private String xfssid;	//undefined
-	private String qymj;	//undefined
-	private String qywz;	//undefined
-	private String fgss;	//undefined
-	private String fgwz;	//undefined
+	private String uuid;	//主键
+	private String xfssid;	//消防设施ID
+	private String qymj;	//区域面积(m2)
+	private String qywz;	//区域位置
+	private String fgss;	//分隔设施
+	private String fgwz;	//分隔位置
 
-	private String deleteFlag;	//undefined
-	private String datasource;	//undefined
+	private String deleteFlag;	//删除标志
+	private String datasource;	//数据来源[100000一体化]
 
-	private String jdh;	//undefined
-	private String sjc;	//undefined
-	private String reserve1;	//undefined
-	private String reserve2;	//undefined
-	private String reserve3;	//undefined
-	private String reserve4;	//undefined
+	private String jdh;	//节点号
+	private String sjc;	//时间戳
+	private String reserve1;	//备用字段1
+	private String reserve2;	//备用字段2
+	private String reserve3;	//备用字段3
+	private String reserve4;	//备用字段4
 
 	public String getUuid(){
 		return uuid;
