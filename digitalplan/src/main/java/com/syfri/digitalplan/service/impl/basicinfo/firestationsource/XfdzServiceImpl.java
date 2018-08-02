@@ -1,6 +1,8 @@
 package com.syfri.digitalplan.service.impl.basicinfo.firestationsource;
 
+import com.syfri.digitalplan.controller.basicinfo.firestationsource.XfdzController;
 import com.syfri.digitalplan.model.basicinfo.firestationsource.*;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,72 +89,72 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
         //插入主表
         xfdzDAO.doInsertByVO(xfdzVO);
         //插入从表
-        if(!xfdzVO.getDzlx().isEmpty()){
-            switch(xfdzVO.getDzlx().substring(0,2)){
-                case "02":
-                    ZongdVO zongdVO = xfdzVO.getZongdVO();
-                    zongdVO.setDzid(xfdzVO.getDzid());
-                    xfdzDAO.doInsertZongdByVO(zongdVO);
-                    break;
-                case "03":
-                    ZhidVO zhidVO = xfdzVO.getZhidVO();
-                    zhidVO.setDzid(xfdzVO.getDzid());
-                    xfdzDAO.doInsertZhidByVO(zhidVO);
-                    break;
-                case "05":
-                    DadVO dadVO = xfdzVO.getDadVO();
-                    dadVO.setDzid(xfdzVO.getDzid());
-                    xfdzDAO.doInsertDadByVO(dadVO);
-                    break;
-                case "09":
-                    ZhongdVO zhongdVO = xfdzVO.getZhongdVO();
-                    zhongdVO.setDzid(xfdzVO.getDzid());
-                    xfdzDAO.doInsertZhongdByVO(zhongdVO);
-                    break;
-                case "0A":
-                    QtxfdwVO qtxfdwVO = xfdzVO.getQtxfdwVO();
-                    qtxfdwVO.setDzid(xfdzVO.getDzid());
-                    xfdzDAO.doInsertQtxfdwByVO(qtxfdwVO);
-                    break;
-            }
-        }
+        ((XfdzService) AopContext.currentProxy()).doExeInsertOrUpdate(xfdzVO);
         return xfdzVO;
     }
 
     /*--修改消防队站 by li.xue 2018/7/25.--*/
     @Override
     public XfdzVO doUpdateByXfdzVO(XfdzVO xfdzVO){
+        //修改主表
         xfdzDAO.doUpdateByVO(xfdzVO);
+        //修改或插入从表
+        ((XfdzService) AopContext.currentProxy()).doExeInsertOrUpdate(xfdzVO);
+        return xfdzVO;
+    }
+
+    /*--判断队站从表执行新增还是修改.--*/
+    @Override
+    public void doExeInsertOrUpdate(XfdzVO xfdzVO){
         if(!xfdzVO.getDzlx().isEmpty()){
             switch(xfdzVO.getDzlx().substring(0,2)){
                 case "02":
                     ZongdVO zongdVO = xfdzVO.getZongdVO();
                     zongdVO.setDzid(xfdzVO.getDzid());
-                    xfdzDAO.doUpdateZongdByVO(zongdVO);
+                    if(xfdzDAO.doCountZongdByDzid(xfdzVO.getDzid())>0){
+                        xfdzDAO.doUpdateZongdByVO(zongdVO);
+                    }else{
+                        xfdzDAO.doInsertZongdByVO(zongdVO);
+                    }
                     break;
                 case "03":
                     ZhidVO zhidVO = xfdzVO.getZhidVO();
                     zhidVO.setDzid(xfdzVO.getDzid());
-                    xfdzDAO.doInsertZhidByVO(zhidVO);
+                    if(xfdzDAO.doCountZhidByDzid(xfdzVO.getDzid())>0){
+                        xfdzDAO.doUpdateZhidByVO(zhidVO);
+                    }else{
+                        xfdzDAO.doInsertZhidByVO(zhidVO);
+                    }
                     break;
                 case "05":
                     DadVO dadVO = xfdzVO.getDadVO();
                     dadVO.setDzid(xfdzVO.getDzid());
-                    xfdzDAO.doUpdateDadByVO(dadVO);
+                    if(xfdzDAO.doCountDadByDzid(xfdzVO.getDzid())>0){
+                        xfdzDAO.doUpdateDadByVO(dadVO);
+                    }else{
+                        xfdzDAO.doInsertDadByVO(dadVO);
+                    }
                     break;
                 case "09":
                     ZhongdVO zhongdVO = xfdzVO.getZhongdVO();
                     zhongdVO.setDzid(xfdzVO.getDzid());
-                    xfdzDAO.doUpdateZhongdByVO(zhongdVO);
+                    if(xfdzDAO.doCountZhongdByDzid(xfdzVO.getDzid())>0){
+                        xfdzDAO.doUpdateZhongdByVO(zhongdVO);
+                    }else{
+                        xfdzDAO.doInsertZhongdByVO(zhongdVO);
+                    }
                     break;
                 case "0A":
                     QtxfdwVO qtxfdwVO = xfdzVO.getQtxfdwVO();
                     qtxfdwVO.setDzid(xfdzVO.getDzid());
-                    xfdzDAO.doUpdateQtxfdwByVO(qtxfdwVO);
+                    if(xfdzDAO.doCountQtxfdwByDzid(xfdzVO.getDzid())>0){
+                        xfdzDAO.doUpdateQtxfdwByVO(qtxfdwVO);
+                    }else{
+                        xfdzDAO.doInsertQtxfdwByVO(qtxfdwVO);
+                    }
                     break;
             }
         }
-        return xfdzVO;
     }
 
     /*--判断队站名称是否存在 by li.xue 2018/7/25.--*/

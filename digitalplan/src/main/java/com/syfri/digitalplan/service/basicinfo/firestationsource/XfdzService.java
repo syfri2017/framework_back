@@ -19,6 +19,9 @@ public interface XfdzService  extends BaseService<XfdzVO>{
     /*--修改消防队站 by li.xue 2018/7/25.--*/
     XfdzVO doUpdateByXfdzVO(XfdzVO xfdzVO);
 
+    /*--判断队站从表执行新增还是修改 by li.xue 2018/08/02.--*/
+    public void doExeInsertOrUpdate(XfdzVO xfdzVO);
+
     /*--判断队站名称是否存在 by li.xue 2018/7/25.--*/
     int doCheckName(String dzmc);
 
