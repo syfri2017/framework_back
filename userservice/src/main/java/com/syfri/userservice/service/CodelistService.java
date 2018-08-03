@@ -23,7 +23,7 @@ public interface CodelistService  extends BaseService<CodelistVO>{
 	CodelistVO doUpdateCodelist(CodelistVO codelistVO);
 
 	/*--删除：代码集.--*/
-	void doDeleteCodelist(String codeid);
+	int doDeleteCodelist(List<CodelistVO> list);
 
 	/*--查询从表：根据代码集详情对象查询.--*/
 	List<CodelistDetailVO> doFindCodelistDetail(CodelistDetailVO codelistDetailVO);
@@ -35,7 +35,7 @@ public interface CodelistService  extends BaseService<CodelistVO>{
 	CodelistDetailVO doUpdateCodelistDetail(CodelistDetailVO codelistDetailVO);
 
 	/*--删除从表：根据主键删除.--*/
-	void doDeleteCodelistDetail(String pkid);
+	int doDeleteCodelistDetail(List<CodelistDetailVO> list);
 
 	/*--根据代码类型查询代码集.--*/
 	List<CodelistDetailVO> doFindCodelistByType(String codetype);

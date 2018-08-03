@@ -170,7 +170,10 @@
 		<include refid="SQL_CONTENT"/>
 		FROM SYS_CODELIST t  WHERE t.DELETE_FLAG = 'N'
 		<if test="codetype != null and codetype != '' ">
-			and (t.codetype = #{codetype} or t.codetype_name LIKE concat(concat('%',#{codetype}),'%'))
+			and t.codetype LIKE concat(concat('%',#{codetype}),'%')
+		</if>
+		<if test="codetypeName != null and codetypeName != '' ">
+			and t.codetype_name LIKE concat(concat('%',#{codetypeName}),'%')
 		</if>
 		<if test="createTimeBegin != null and createTimeBegin != '' ">
 			and t.create_time &gt;= to_date(#{createTimeBegin},'yyyy-MM-dd')
@@ -178,6 +181,7 @@
 		<if test="createTimeEnd != null and createTimeEnd != '' ">
 			and t.create_time &lt;= to_date(#{createTimeEnd},'yyyy-MM-dd')
 		</if>
+		ORDER BY nvl(t.alter_time,t.create_time) DESC
 	</select>
 
 	<!--12.从表查询：根据代码类型查询代码集-->
@@ -191,7 +195,7 @@
 			and t.codeid = #{codeid}
 		</if>
 		<if test="codeValue != null and codeValue != '' ">
-			and t.code_value = #{codeValue}
+			and t.code_value LIKE concat(concat('%',#{codeValue}),'%')
 		</if>
 		<if test="codeName != null and codeName != '' ">
 			and t.code_name LIKE concat(concat('%',#{codeName}),'%')

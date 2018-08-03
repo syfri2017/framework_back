@@ -76,6 +76,7 @@
 			<include refid="SQL_CONTENT"/>
 		FROM SYS_PERMISSION t  WHERE t.DELETE_FLAG = 'N'
 			<include refid="SQL_CONDITION"/>
+		ORDER BY nvl(t.alter_time,t.create_time) DESC
 	</select>
 
 	<!--5.根据ID查询记录-->

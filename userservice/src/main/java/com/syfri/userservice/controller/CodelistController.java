@@ -1,8 +1,5 @@
 package com.syfri.userservice.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.syfri.baseapi.model.ResultVO;
@@ -120,16 +117,10 @@ public class CodelistController  extends BaseController<CodelistVO>{
 	@ApiImplicitParam(name="id",value="代码集主键")
 	@RequiresPermissions("system/codelist:delete")
 	@PostMapping("/deleteByIds")
-	public @ResponseBody ResultVO deleteByIds(@RequestBody String id){
-		JSONObject jsonObject = JSON.parseObject(id);
-		JSONArray ids = jsonObject.getJSONArray("ids");
+	public @ResponseBody ResultVO deleteByIds(@RequestBody List<CodelistVO> list){
 		ResultVO resultVO = ResultVO.build();
 		try{
-			for(int i=0;i<ids.size();i++){
-				String codelistid = (String)ids.get(i);
-				codelistService.doDeleteCodelist(codelistid);
-			}
-			resultVO.setMsg("删除成功");
+			resultVO.setResult(codelistService.doDeleteCodelist(list));;
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
@@ -255,16 +246,10 @@ public class CodelistController  extends BaseController<CodelistVO>{
 	@ApiImplicitParam(name="id",value="代码值主键")
 	@RequiresPermissions("system/codelist:delete")
 	@PostMapping("/detail/deleteByIds")
-	public @ResponseBody ResultVO deleteDetailByIds(@RequestBody String id){
-		JSONObject jsonObject = JSON.parseObject(id);
-		JSONArray ids = jsonObject.getJSONArray("ids");
+	public @ResponseBody ResultVO deleteDetailByIds(@RequestBody List<CodelistDetailVO> list){
 		ResultVO resultVO = ResultVO.build();
 		try{
-			for(int i=0;i<ids.size();i++){
-				String pkid = (String)ids.get(i);
-				codelistService.doDeleteCodelistDetail(pkid);
-			}
-			resultVO.setMsg("删除成功");
+			resultVO.setResult(codelistService.doDeleteCodelistDetail(list));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
