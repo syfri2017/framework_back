@@ -13,6 +13,9 @@ public interface XfdzService  extends BaseService<XfdzVO>{
     /*--通过Dzid查询队站树 by li.xue 2018/7/25.--*/
     List<XfdzTree> doFindDzTreeByUser(XfdzVO xfdzVO);
 
+    /*--通过Dzid查询队站树ALL(包括公安部消防局) by li.xue 2018/7/25.--*/
+    List<XfdzTree> doFindDzTreeByUserAll(XfdzVO xfdzVO);
+
     /*--新增消防队站 by li.xue 2018/7/25.--*/
     XfdzVO doInsertByXfdzVO(XfdzVO xfdzVO);
 

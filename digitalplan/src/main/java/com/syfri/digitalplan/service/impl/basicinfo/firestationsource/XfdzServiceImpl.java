@@ -1,7 +1,7 @@
 package com.syfri.digitalplan.service.impl.basicinfo.firestationsource;
 
-import com.syfri.digitalplan.controller.basicinfo.firestationsource.XfdzController;
 import com.syfri.digitalplan.model.basicinfo.firestationsource.*;
+import com.syfri.digitalplan.service.redis.RedisService;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,9 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
 
     @Autowired
     private XfdzDAO xfdzDAO;
+
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public XfdzDAO getBaseDAO() {
@@ -81,6 +84,46 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
         }
         zongTrees.add(zongTree);
         return zongTrees;
+    }
+    /*--通过Dzid查询队站树ALL(包括公安部消防局) by li.xue 2018/7/25.--*/
+    public List<XfdzTree> doFindDzTreeByUserAll(XfdzVO xfdzVO) {
+        List<XfdzTree> tree1s = new ArrayList<>();
+        if (redisService.exists("xfdzTree" + xfdzVO.getDzid())) {
+            tree1s = (List<XfdzTree>) redisService.get("xfdzTree" + xfdzVO.getDzid());
+        }else{
+            XfdzTree tree1 = new XfdzTree(xfdzVO.getDzid(), xfdzVO.getDzjc(), xfdzVO.getDzbm());
+            List<XfdzTree> tree2s = xfdzDAO.doFindXfdzBySjdzid(xfdzVO.getDzid());
+            List<XfdzTree> tree2Children = new ArrayList<>();
+            for (XfdzTree tree2 : tree2s) {
+                List<XfdzTree> tree3s = xfdzDAO.doFindXfdzBySjdzid(tree2.getDzid());
+                List<XfdzTree> tree3Children = new ArrayList<>();
+                for (XfdzTree tree3 : tree3s) {
+                    List<XfdzTree> tree4s = xfdzDAO.doFindXfdzBySjdzid(tree3.getDzid());
+                    List<XfdzTree> tree4Children = new ArrayList<>();
+                    for (XfdzTree tree4 : tree4s) {
+                        List<XfdzTree> tree5s = xfdzDAO.doFindXfdzBySjdzid(tree4.getDzid());
+                        if (!tree5s.isEmpty()) {
+                            tree4.setChildren(tree5s);
+                        }
+                        tree4Children.add(tree4);
+                    }
+                    if (!tree4s.isEmpty()) {
+                        tree3.setChildren(tree4s);
+                    }
+                    tree3Children.add(tree3);
+                }
+                if (!tree3Children.isEmpty()) {
+                    tree2.setChildren(tree3Children);
+                }
+                tree2Children.add(tree2);
+            }
+            if (!tree2Children.isEmpty()) {
+                tree1.setChildren(tree2Children);
+            }
+            tree1s.add(tree1);
+            redisService.set("xfdzTree"+xfdzVO.getDzid(), tree1s);
+        }
+        return tree1s;
     }
 
     /*--新增消防队站 by li.xue 2018/7/25.--*/
