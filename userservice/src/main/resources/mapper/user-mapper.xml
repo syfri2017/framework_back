@@ -210,7 +210,7 @@
 	<select id="doFindByVO" parameterType="UserVO"  resultType="UserVO">  
 		SELECT 
 		<include refid="SQL_CONTENT"/>
-		FROM SYS_USER t 
+		FROM SYS_USER t
 		WHERE t.DELETE_FLAG = 'N' 
 		<include refid="SQL_CONDITION"/>
 	</select>
@@ -231,14 +231,16 @@
 		<result property="phone" column="phone"/>
 		<result property="mobile" column="mobile"/>
 		<result property="email" column="email"/>
-		<result property="createName" column="create_name"/>
-		<result property="createTime" column="create_time"/>
-		<result property="alterName" column="alter_name"/>
-		<result property="alterTime" column="alter_time"/>
-		<result property="organizationId" column="organization_id"/>
+		<result property="createName" column="createName"/>
+		<result property="createTime" column="createTime"/>
+		<result property="alterName" column="alterName"/>
+		<result property="alterTime" column="alterTime"/>
+		<result property="organizationId" column="organizationId"/>
+		<result property="organizationName" column="organizationName"/>
 		<collection property="roles" ofType="com.syfri.userservice.model.RoleVO">
 			<id property="roleid" column="roleid"></id>
 			<result property="rolename" column="rolename"/>
+			<result property="roleinfo" column="roleinfo"/>
 		</collection>
 	</resultMap>
 
@@ -249,15 +251,18 @@
 		,a.password
 		,r.roleid
 		,r.rolename
+		,r.roleinfo
+		,jgjc organizationName
 		FROM SYS_USER t
 		INNER JOIN SYS_ACCOUNT a ON t.userid = a.userid
 		LEFT JOIN (select userid,roleid from SYS_ACCOUNT_ROLE where delete_flag = 'N') m ON t.userid = m.userid
-		LEFT JOIN (select roleid,rolename from SYS_ROLE where delete_flag = 'N') r ON r.roleid = m.roleid
+		LEFT JOIN (select roleid,rolename,roleinfo from SYS_ROLE where delete_flag = 'N') r ON r.roleid = m.roleid
+		LEFT JOIN sys_organization s ON t.organization_id = s.uuid
 		WHERE t.DELETE_FLAG = 'N' AND a.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
 		<if test="username != null and username != '' ">
-			and a.username = #{username}
+			and a.username LIKE concat(concat('%',#{username}),'%')
 		</if>
-		ORDER BY t.create_time DESC
+		ORDER BY NVL(t.alter_time,t.create_time) DESC
 	</select>
 </mapper>

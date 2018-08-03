@@ -7,7 +7,7 @@
 		 and t.roleid = #{roleid}
 		</if>
 		<if test="rolename != null and rolename != '' ">
-		 and t.rolename = #{rolename}
+		 and t.rolename LIKE concat(concat('%',#{rolename}),'%')
 		</if>
 		<if test="roleinfo != null and roleinfo != '' ">
 		 and t.roleinfo = #{roleinfo}
@@ -212,7 +212,7 @@
 
 		WHERE t.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
-		ORDER BY t.create_time DESC
+		ORDER BY nvl(t.alter_time,t.create_time) DESC
 	</select>
 
 	<!--14.新增角色时批量插入用权限（向中间表中）-->

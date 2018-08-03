@@ -221,12 +221,12 @@ public class TestController extends BaseController<UserVO>{
 	}
 
 	//14
-	@RequestMapping("deleteUser")
-	@ResponseBody
-	@RequiresPermissions("user:delete")
-	public void deleteUser(){
-		userService.doDeleteUserRoles("3");
-	}
+//	@RequestMapping("deleteUser")
+//	@ResponseBody
+//	@RequiresPermissions("user:delete")
+//	public void deleteUser(){
+//		userService.doDeleteUserRoles("3");
+//	}
 
 	//15
 	@RequestMapping("getRoles")

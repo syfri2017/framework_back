@@ -14,6 +14,11 @@ public class ValueObject implements Serializable {
 	private String orderName;
 	private String orderRule;
 
+	/*--组织机构--*/
+	private String orgUuid; //机构主键
+	private String orgJgid; //机构ID
+
+
 	public int getPageSize() {
 		return pageSize;
 	}
@@ -52,5 +57,21 @@ public class ValueObject implements Serializable {
 
 	public String toJson(){
 		return JSONObject.toJSONString(this);
+	}
+
+	public String getOrgUuid() {
+		return orgUuid;
+	}
+
+	public void setOrgUuid(String orgUuid) {
+		this.orgUuid = orgUuid;
+	}
+
+	public String getOrgJgid() {
+		return orgJgid;
+	}
+
+	public void setOrgJgid(String orgJgid) {
+		this.orgJgid = orgJgid;
 	}
 }
