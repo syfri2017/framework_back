@@ -84,4 +84,55 @@ public class XfsyController  extends BaseController<XfsyVO>{
 		}
 		return resultVO;
 	}
+
+	/**
+	 * 新增水源
+	 * by yushch 20180802
+	 */
+	@ApiOperation(value = "通过vo新增水源", notes = "查询一条信息")
+	@ApiImplicitParam(name = "vo", value = "水源对象")
+	@PostMapping("/insertByXfsyVO")
+	public @ResponseBody ResultVO insertByXfsyVO(@RequestBody XfsyVO xfsyVO) {
+		ResultVO resultVO = ResultVO.build();
+		try {
+			resultVO.setResult(xfsyService.doInsertByXfdzVO(xfsyVO));
+		} catch (Exception e) {
+			logger.error("{}", e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	/**
+	 * 水源修改
+	 * by yushch 20180803
+	 */
+	@ApiOperation(value = "通过vo修改队站", notes = "查询一条信息")
+	@ApiImplicitParam(name = "vo", value = "水源对象")
+	@PostMapping("/updateByXfsyVO")
+	public @ResponseBody ResultVO updateByXfsyVO(@RequestBody XfsyVO xfsyVO) {
+		ResultVO resultVO = ResultVO.build();
+		try {
+			resultVO.setResult(xfsyService.doUpdateByXfsyVO(xfsyVO));
+		} catch (Exception e) {
+			logger.error("{}", e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	//批量删除 yushch 20180803
+	@ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
+	@ApiImplicitParam(name = "vo", value = "队站对象")
+	@PostMapping("/doDeleteBatch")
+	public @ResponseBody ResultVO doDeleteBatch(@RequestBody List<XfsyVO> list) {
+		ResultVO resultVO = ResultVO.build();
+		try {
+			resultVO.setResult(xfsyService.doDeleteBatch(list));
+		} catch (Exception e) {
+			logger.error("{}", e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }

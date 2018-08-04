@@ -36,8 +36,14 @@ public class XfsyVO extends ValueObject implements Serializable{
     private String reserve2;	//undefined
     private String reserve3;	//undefined
     private String reserve4;	//undefined
+    private String cjrid;
+    private String cjrmc;
+    private String cjsj;
+    private String xgrid;
+    private String xgrmc;
+    private String xgsj;
 
-	private String sylxmc;  //水源类型名称
+    private String sylxmc;  //水源类型名称
 	private String xzqhmc;    //行政区域名称
 	private String kyztmc;  //可用状态
     private String sygsmc;	//水源归属名称
@@ -316,6 +322,43 @@ public class XfsyVO extends ValueObject implements Serializable{
     public void setReserve4(String reserve4){
         this.reserve4 = reserve4;
     }
+    public String getCjrid() {
+        return cjrid;
+    }
+    public void setCjrid(String cjrid) {
+        this.cjrid = cjrid;
+    }
+    public String getCjrmc() {
+        return cjrmc;
+    }
+    public void setCjrmc(String cjrmc) {
+        this.cjrmc = cjrmc;
+    }
+    public String getCjsj() {
+        return cjsj;
+    }
+    public void setCjsj(String cjsj) {
+        this.cjsj = cjsj;
+    }
+    public String getXgrid() {
+        return xgrid;
+    }
+    public void setXgrid(String xgrid) {
+        this.xgrid = xgrid;
+    }
+    public String getXgrmc() {
+        return xgrmc;
+    }
+    public void setXgrmc(String xgrmc) {
+        this.xgrmc = xgrmc;
+    }
+    public String getXgsj() {
+        return xgsj;
+    }
+    public void setXgsj(String xgsj) {
+        this.xgsj = xgsj;
+    }
+
     public String getSygsmc() {
         return sygsmc;
     }
