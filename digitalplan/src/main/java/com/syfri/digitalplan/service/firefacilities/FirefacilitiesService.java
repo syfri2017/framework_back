@@ -14,4 +14,7 @@ public interface FirefacilitiesService extends BaseService<FirefacilitiesVO> {
 
     public FirefacilitiesVO doInsertFirefacilities(FirefacilitiesVO firefacilitiesVO);
 
+    public FirefacilitiesVO doUpdateFirefacilities(FirefacilitiesVO firefacilitiesVO);
+
+    public FirefacilitiesVO doDeleteFirefacilities(FirefacilitiesVO firefacilitiesVO);
 }

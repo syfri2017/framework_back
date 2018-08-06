@@ -816,7 +816,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--疏散楼梯VO插入-->
@@ -845,7 +845,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--消防电梯VO插入-->
@@ -874,7 +874,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--避难层VO插入-->
@@ -902,7 +902,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--应急广播VO插入-->
@@ -931,7 +931,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--消防水系统-消防泵房VO插入-->
@@ -963,7 +963,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--消防水系统-消防水箱VO插入-->
@@ -993,7 +993,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--消防水系统-消防水池VO插入-->
@@ -1025,7 +1025,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--消防水系统-室内消火栓VO插入-->
@@ -1055,7 +1055,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--消防水系统-室外消火栓VO插入-->
@@ -1085,7 +1085,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--消防水系统-水泵接合器VO插入-->
@@ -1116,7 +1116,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--消防水系统-喷淋系统VO插入-->
@@ -1145,7 +1145,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--消防水系统-冷却水系统VO插入-->
@@ -1175,7 +1175,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--消防水系统-固定水炮VO插入-->
@@ -1205,7 +1205,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--消防水系统-半固定设施VO插入-->
@@ -1234,7 +1234,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--泡沫系统-泡沫泵房VO插入-->
@@ -1265,7 +1265,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--泡沫系统-泡沫消火栓VO插入-->
@@ -1294,7 +1294,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--泡沫系统-固定泡沫炮VO插入-->
@@ -1324,7 +1324,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--泡沫系统-泡沫发生器VO插入-->
@@ -1355,7 +1355,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--泡沫系统-半固定设施VO插入-->
@@ -1384,7 +1384,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--蒸汽灭火系统-固定式VO插入-->
@@ -1414,7 +1414,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--蒸汽灭火系统-半固定式VO插入-->
@@ -1444,7 +1444,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--消防控制室VO插入-->
@@ -1474,7 +1474,7 @@
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="deleteFlag != null">delete_flag=#{deleteFlag}</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--防排烟措施-排烟口/出烟口VO插入-->
@@ -1501,7 +1501,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--防排烟措施-防排烟系统VO插入-->
@@ -1529,7 +1529,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--防火分区VO插入-->
@@ -1559,7 +1559,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--其他灭火系统-气体灭火系统VO插入-->
@@ -1587,7 +1587,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--其他灭火系统-干粉灭火系统VO插入-->
@@ -1615,7 +1615,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 	<!--其他消防设施VO插入-->
@@ -1643,7 +1643,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE  xfssid = #{xfssid}
 	</update>
 
 </mapper>

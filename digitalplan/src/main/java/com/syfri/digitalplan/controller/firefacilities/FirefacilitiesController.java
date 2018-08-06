@@ -65,6 +65,7 @@ public class FirefacilitiesController extends BaseController<FirefacilitiesVO> {
             int count = 0;
             for (FirefacilitiesVO facilitiesVO : facilitiesList) {
                 facilitiesVO.setJbxx_deleteFlag("Y");
+                firefacilitiesService.doDeleteFirefacilities(facilitiesVO);
                 count = count + firefacilitiesService.doUpdateByVO(facilitiesVO);
             }
             resultVO.setResult(count);
@@ -75,14 +76,30 @@ public class FirefacilitiesController extends BaseController<FirefacilitiesVO> {
         return resultVO;
     }
 
-    @ApiOperation(value = "安全设施新增", notes = "新增")
-    @ApiImplicitParam(name = "vo", value = "安全设施")
+    @ApiOperation(value = "消防设施新增", notes = "新增")
+    @ApiImplicitParam(name = "vo", value = "消防设施")
     @PostMapping("/insertByVO")
     public @ResponseBody
     ResultVO insertByVO(@RequestBody FirefacilitiesVO firefacilitiesVO) {
         ResultVO resultVO = ResultVO.build();
         try {
+            firefacilitiesService.doInsertByVO(firefacilitiesVO);
             resultVO.setResult(firefacilitiesService.doInsertFirefacilities(firefacilitiesVO));
+        } catch (Exception e) {
+            logger.error("{}", e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
+
+    @ApiOperation(value = "修改消防设施", notes = "列表信息")
+    @ApiImplicitParam(name = "vo", value = "消防设施")
+    @PostMapping("/doUpdateFirefacilities")
+    public @ResponseBody
+    ResultVO doUpdateFirefacilities(@RequestBody FirefacilitiesVO firefacilitiesVO) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(firefacilitiesService.doUpdateFirefacilities(firefacilitiesVO));
         } catch (Exception e) {
             logger.error("{}", e.getMessage());
             resultVO.setCode(EConstants.CODE.FAILURE);

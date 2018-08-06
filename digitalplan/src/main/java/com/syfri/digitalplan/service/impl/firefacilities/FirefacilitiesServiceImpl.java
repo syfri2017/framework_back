@@ -527,9 +527,8 @@ public class FirefacilitiesServiceImpl extends BaseServiceImpl<FirefacilitiesVO>
         return detailVo;
     }
 
-    @Override
+    //消防设施从表新增
     public FirefacilitiesVO doInsertFirefacilities(FirefacilitiesVO firefacilitiesVO) {
-        firefacilitiesDAO.doInsertByVO(firefacilitiesVO);
         String xfsslx = firefacilitiesVO.getJbxx_xfsslx();
         String xfssid = firefacilitiesVO.getJbxx_xfssid();
         Map detailMap = firefacilitiesVO.getDetailMap();
@@ -782,4 +781,471 @@ public class FirefacilitiesServiceImpl extends BaseServiceImpl<FirefacilitiesVO>
         }
         return firefacilitiesVO;
     }
+
+    //消防设施主从表修改
+    public FirefacilitiesVO doUpdateFirefacilities(FirefacilitiesVO firefacilitiesVO) {
+        String xfsslx = firefacilitiesVO.getJbxx_xfsslx();
+        String xfssid = firefacilitiesVO.getJbxx_xfssid();
+        FirefacilitiesVO vo1 = firefacilitiesDAO.doFindById(xfssid);//原主表数据查询
+        firefacilitiesDAO.doUpdateByVO(firefacilitiesVO);//新主表数据修改
+        if (!vo1.getJbxx_xfsslx().equals(xfsslx)) {//消防设施类型改变
+            this.doDeleteFirefacilities(vo1);//删除原类型从表数据
+            this.doInsertFirefacilities(firefacilitiesVO);//增加新类型从表数据
+        } else {//消防设施类型未改变，做从表修改
+            Map detailMap = firefacilitiesVO.getDetailMap();
+            switch (xfsslx) {
+                //安全疏散措施
+                case "1000":
+                    break;
+                case "1001":
+                    Firefacilities_aqsscs_aqckVO aqckVO = new Firefacilities_aqsscs_aqckVO();
+                    aqckVO.setXfssid(xfssid);
+                    aqckVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
+                    aqckVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    firefacilitiesDAO.doUpdateAqckByVO(aqckVO);
+                    break;
+                case "1002":
+                    Firefacilities_aqsscs_ssltVO ssltVO = new Firefacilities_aqsscs_ssltVO();
+                    ssltVO.setXfssid(xfssid);
+                    ssltVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
+                    ssltVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    firefacilitiesDAO.doUpdateSsltByVO(ssltVO);
+                    break;
+                case "1003":
+                    Firefacilities_aqsscs_xfdtVO xfdtVO = new Firefacilities_aqsscs_xfdtVO();
+                    xfdtVO.setXfssid(xfssid);
+                    xfdtVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
+                    xfdtVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    firefacilitiesDAO.doUpdateXfdtByVO(xfdtVO);
+                    break;
+                case "1004":
+                    Firefacilities_aqsscs_bncVO bncVO = new Firefacilities_aqsscs_bncVO();
+                    bncVO.setXfssid(xfssid);
+                    bncVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    firefacilitiesDAO.doUpdateBncByVO(bncVO);
+                    break;
+                case "1005":
+                    Firefacilities_aqsscs_yjgbVO yjgbVO = new Firefacilities_aqsscs_yjgbVO();
+                    yjgbVO.setXfssid(xfssid);
+                    yjgbVO.setYwyjgb(detailMap.get("ywyjgb") != null ? detailMap.get("ywyjgb").toString() : "");
+                    yjgbVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    firefacilitiesDAO.doUpdateYjgbByVO(yjgbVO);
+                    break;
+                //消防水系统
+                case "2000":
+                    break;
+                case "2001":
+                    Firefacilities_xfsxt_xfbfVO xfbfVO = new Firefacilities_xfsxt_xfbfVO();
+                    xfbfVO.setXfssid(xfssid);
+                    xfbfVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    xfbfVO.setPlbsl(detailMap.get("plbsl") != null ? detailMap.get("plbsl").toString() : "");
+                    xfbfVO.setPlbzdll(detailMap.get("plbzdll") != null ? detailMap.get("plbzdll").toString() : "");
+                    xfbfVO.setXhssl(detailMap.get("xhssl") != null ? detailMap.get("xhssl").toString() : "");
+                    xfbfVO.setXhszdll(detailMap.get("xhszdll") != null ? detailMap.get("xhszdll").toString() : "");
+                    firefacilitiesDAO.doUpdateXfbfByVO(xfbfVO);
+                    break;
+                case "2002":
+                    Firefacilities_xfsxt_xfsxVO xfsxVO = new Firefacilities_xfsxt_xfsxVO();
+                    xfsxVO.setXfssid(xfssid);
+                    xfsxVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    xfsxVO.setBjsd(detailMap.get("bjsd") != null ? detailMap.get("bjsd").toString() : "");
+                    xfsxVO.setSxrl(detailMap.get("sxrl") != null ? detailMap.get("sxrl").toString() : "");
+                    firefacilitiesDAO.doUpdateXfsxByVO(xfsxVO);
+                    break;
+                case "2003":
+                    Firefacilities_xfsxt_xfscVO xfscVO = new Firefacilities_xfsxt_xfscVO();
+                    xfscVO.setXfssid(xfssid);
+                    xfscVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    xfscVO.setYwqsj(detailMap.get("ywqsj") != null ? detailMap.get("ywqsj").toString() : "");
+                    xfscVO.setBjsd(detailMap.get("bjsd") != null ? detailMap.get("bjsd").toString() : "");
+                    xfscVO.setQsjwz(detailMap.get("qsjwz") != null ? detailMap.get("qsjwz").toString() : "");
+                    xfscVO.setSxrl(detailMap.get("sxrl") != null ? detailMap.get("sxrl").toString() : "");
+                    firefacilitiesDAO.doUpdateXfscByVO(xfscVO);
+                    break;
+                case "2004":
+                    Firefacilities_xfsxt_snxhsVO snxhsVO = new Firefacilities_xfsxt_snxhsVO();
+                    snxhsVO.setXfssid(xfssid);
+                    snxhsVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    snxhsVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
+                    snxhsVO.setSfky(detailMap.get("sfky") != null ? detailMap.get("sfky").toString() : "");
+                    firefacilitiesDAO.doUpdateSnxhsByVO(snxhsVO);
+                    break;
+                case "2005":
+                    Firefacilities_xfsxt_swxhsVO swxhsVO = new Firefacilities_xfsxt_swxhsVO();
+                    swxhsVO.setXfssid(xfssid);
+                    swxhsVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    swxhsVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
+                    swxhsVO.setSfky(detailMap.get("sfky") != null ? detailMap.get("sfky").toString() : "");
+                    firefacilitiesDAO.doUpdateSwxhsByVO(swxhsVO);
+                    break;
+                case "2006":
+                    Firefacilities_xfsxt_sbjhqVO sbjhqVO = new Firefacilities_xfsxt_sbjhqVO();
+                    sbjhqVO.setXfssid(xfssid);
+                    sbjhqVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    sbjhqVO.setAzxs(detailMap.get("azxs") != null ? detailMap.get("azxs").toString() : "");
+                    sbjhqVO.setXh(detailMap.get("xh") != null ? detailMap.get("xh").toString() : "");
+                    sbjhqVO.setJskcc(detailMap.get("jskcc") != null ? detailMap.get("jskcc").toString() : "");
+                    firefacilitiesDAO.doUpdateSbjhqByVO(sbjhqVO);
+                    break;
+                case "2007":
+                    Firefacilities_xfsxt_plxtVO plxtVO = new Firefacilities_xfsxt_plxtVO();
+                    plxtVO.setXfssid(xfssid);
+                    plxtVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    plxtVO.setYwplxt(detailMap.get("ywplxt") != null ? detailMap.get("ywplxt").toString() : "");
+                    firefacilitiesDAO.doUpdatePlxtByVO(plxtVO);
+                    break;
+                case "2008":
+                    Firefacilities_xfsxt_lqsxtVO lqsxtVO = new Firefacilities_xfsxt_lqsxtVO();
+                    lqsxtVO.setXfssid(xfssid);
+                    lqsxtVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    lqsxtVO.setGsqd(detailMap.get("gsqd") != null ? detailMap.get("gsqd").toString() : "");
+                    lqsxtVO.setYwlqsxt(detailMap.get("ywlqsxt") != null ? detailMap.get("ywlqsxt").toString() : "");
+                    firefacilitiesDAO.doUpdateLqsxtByVO(lqsxtVO);
+                    break;
+                case "2009":
+                    Firefacilities_xfsxt_gdspVO gdspVO = new Firefacilities_xfsxt_gdspVO();
+                    gdspVO.setXfssid(xfssid);
+                    gdspVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    gdspVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
+                    gdspVO.setIsky(detailMap.get("isky") != null ? detailMap.get("isky").toString() : "");
+                    firefacilitiesDAO.doUpdateGdspByVO(gdspVO);
+                    break;
+                case "2010":
+                    Firefacilities_xfsxt_bgdssVO bgdssVO = new Firefacilities_xfsxt_bgdssVO();
+                    bgdssVO.setXfssid(xfssid);
+                    bgdssVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    bgdssVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
+                    firefacilitiesDAO.doUpdateBgdssByVO(bgdssVO);
+                    break;
+                //泡沫系统
+                case "3000":
+                    break;
+                case "3001":
+                    Firefacilities_pmxt_pmbfVO pmbfVO = new Firefacilities_pmxt_pmbfVO();
+                    pmbfVO.setXfssid(xfssid);
+                    pmbfVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    pmbfVO.setPmylx(detailMap.get("pmylx") != null ? detailMap.get("pmylx").toString() : "");
+                    pmbfVO.setPmycl(detailMap.get("pmycl") != null ? detailMap.get("pmycl").toString() : "");
+                    pmbfVO.setPmbzdll(detailMap.get("pmbzdll") != null ? detailMap.get("pmbzdll").toString() : "");
+                    firefacilitiesDAO.doUpdatePmbfByVO(pmbfVO);
+                    break;
+                case "3002":
+                    Firefacilities_pmxt_pmxhsVO pmxhsVO = new Firefacilities_pmxt_pmxhsVO();
+                    pmxhsVO.setXfssid(xfssid);
+                    pmxhsVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    pmxhsVO.setIsky(detailMap.get("isky") != null ? detailMap.get("isky").toString() : "");
+                    firefacilitiesDAO.doUpdatePmxhsByVO(pmxhsVO);
+                    break;
+                case "3003":
+                    Firefacilities_pmxt_gdpmpVO gdpmpVO = new Firefacilities_pmxt_gdpmpVO();
+                    gdpmpVO.setXfssid(xfssid);
+                    gdpmpVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    gdpmpVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
+                    gdpmpVO.setSfky(detailMap.get("sfky") != null ? detailMap.get("sfky").toString() : "");
+                    firefacilitiesDAO.doInsertGdpmpByVO(gdpmpVO);
+                    break;
+                case "3004":
+                    Firefacilities_pmxt_pmfsqVO pmfsqVO = new Firefacilities_pmxt_pmfsqVO();
+                    pmfsqVO.setXfssid(xfssid);
+                    pmfsqVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    pmfsqVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
+                    pmfsqVO.setSl(detailMap.get("xh") != null ? detailMap.get("xh").toString() : "");
+                    pmfsqVO.setSl(detailMap.get("ll") != null ? detailMap.get("ll").toString() : "");
+                    firefacilitiesDAO.doInsertPmfsqByVO(pmfsqVO);
+                    break;
+                case "3005":
+                    Firefacilities_pmxt_bgdssVO PmBgdssVO = new Firefacilities_pmxt_bgdssVO();
+                    PmBgdssVO.setXfssid(xfssid);
+                    PmBgdssVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    PmBgdssVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
+                    firefacilitiesDAO.doInsertPmBgdssByVO(PmBgdssVO);
+                    break;
+                //蒸汽灭火系统
+                case "4000":
+                    break;
+                case "4001":
+                    Firefacilities_zqmhxt_gdsVO gdsVO = new Firefacilities_zqmhxt_gdsVO();
+                    gdsVO.setXfssid(xfssid);
+                    gdsVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    gdsVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
+                    gdsVO.setEdyl(detailMap.get("edyl") != null ? detailMap.get("edyl").toString() : "");
+                    firefacilitiesDAO.doInsertGdsByVO(gdsVO);
+                    break;
+                case "4002":
+                    Firefacilities_zqmhxt_bgdsVO bgdsVO = new Firefacilities_zqmhxt_bgdsVO();
+                    bgdsVO.setXfssid(xfssid);
+                    bgdsVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    bgdsVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
+                    bgdsVO.setEdyl(detailMap.get("edyl") != null ? detailMap.get("edyl").toString() : "");
+                    firefacilitiesDAO.doInsertBgdsByVO(bgdsVO);
+                    break;
+                //消防控制室
+                case "5000":
+                    Firefacilities_xfkzsVO xfkzsVO = new Firefacilities_xfkzsVO();
+                    xfkzsVO.setXfssid(xfssid);
+                    xfkzsVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    xfkzsVO.setIsldkz(detailMap.get("isldkz") != null ? detailMap.get("isldkz").toString() : "");
+                    xfkzsVO.setIszdbj(detailMap.get("iszdbj") != null ? detailMap.get("iszdbj").toString() : "");
+                    firefacilitiesDAO.doInsertXfkzsByVO(xfkzsVO);
+                    break;
+                //防排烟设施
+                case "6000":
+                    break;
+                case "6001":
+                    Firefacilities_fpycs_pycykVO pycykVO = new Firefacilities_fpycs_pycykVO();
+                    pycykVO.setXfssid(xfssid);
+                    pycykVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    firefacilitiesDAO.doInsertPycykByVO(pycykVO);
+                    break;
+                case "6002":
+                    Firefacilities_fpycs_fpyxtVO fpyxtVO = new Firefacilities_fpycs_fpyxtVO();
+                    fpyxtVO.setXfssid(xfssid);
+                    fpyxtVO.setIsky(detailMap.get("isky") != null ? detailMap.get("isky").toString() : "");
+                    fpyxtVO.setQbwz(detailMap.get("qbwz") != null ? detailMap.get("qbwz").toString() : "");
+                    firefacilitiesDAO.doInsertFpyxtByVO(fpyxtVO);
+                    break;
+                //防火分区
+                case "7000":
+                    Firefacilities_fhfqVO fhfqVO = new Firefacilities_fhfqVO();
+                    fhfqVO.setXfssid(xfssid);
+                    fhfqVO.setQymj(detailMap.get("qymj") != null ? detailMap.get("qymj").toString() : "");
+                    fhfqVO.setQywz(detailMap.get("qywz") != null ? detailMap.get("qywz").toString() : "");
+                    fhfqVO.setFgss(detailMap.get("fgss") != null ? detailMap.get("fgss").toString() : "");
+                    fhfqVO.setFgwz(detailMap.get("fgwz") != null ? detailMap.get("fgwz").toString() : "");
+                    firefacilitiesDAO.doInsertFhfqByVO(fhfqVO);
+                    break;
+                //其他灭火系统
+                case "8000":
+                    break;
+                case "8001":
+                    Firefacilities_qtmhxt_qtmhxtVO qtmhxtVO = new Firefacilities_qtmhxt_qtmhxtVO();
+                    qtmhxtVO.setXfssid(xfssid);
+                    qtmhxtVO.setQbwz(detailMap.get("qbwz") != null ? detailMap.get("qbwz").toString() : "");
+                    qtmhxtVO.setZyfw(detailMap.get("zyfw") != null ? detailMap.get("zyfw").toString() : "");
+                    firefacilitiesDAO.doInsertQtmhxtByVO(qtmhxtVO);
+                    break;
+                case "8002":
+                    Firefacilities_qtmhxt_gfmhxtVO gfmhxtVO = new Firefacilities_qtmhxt_gfmhxtVO();
+                    gfmhxtVO.setXfssid(xfssid);
+                    gfmhxtVO.setQbwz(detailMap.get("qbwz") != null ? detailMap.get("qbwz").toString() : "");
+                    gfmhxtVO.setZyfw(detailMap.get("zyfw") != null ? detailMap.get("zyfw").toString() : "");
+                    firefacilitiesDAO.doInsertGfmhxtByVO(gfmhxtVO);
+                    break;
+                //其他消防设施
+                case "9000":
+                    Firefacilities_qtxfssVO qtxfssVO = new Firefacilities_qtxfssVO();
+                    qtxfssVO.setXfssid(xfssid);
+                    qtxfssVO.setMs(detailMap.get("ms") != null ? detailMap.get("ms").toString() : "");
+                    qtxfssVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
+                    firefacilitiesDAO.doInsertQtxfssByVO(qtxfssVO);
+                    break;
+            }
+        }
+        return firefacilitiesVO;
+    }
+
+    //消防设施从表删除
+    public FirefacilitiesVO doDeleteFirefacilities(FirefacilitiesVO firefacilitiesVO) {
+        String xfsslx = firefacilitiesVO.getJbxx_xfsslx();
+        String xfssid = firefacilitiesVO.getJbxx_xfssid();
+        switch (xfsslx) {
+            //安全疏散措施
+            case "1000":
+                break;
+            case "1001":
+                Firefacilities_aqsscs_aqckVO aqckVO = new Firefacilities_aqsscs_aqckVO();
+                aqckVO.setXfssid(xfssid);
+                aqckVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateAqckByVO(aqckVO);
+                break;
+            case "1002":
+                Firefacilities_aqsscs_ssltVO ssltVO = new Firefacilities_aqsscs_ssltVO();
+                ssltVO.setXfssid(xfssid);
+                ssltVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateSsltByVO(ssltVO);
+                break;
+            case "1003":
+                Firefacilities_aqsscs_xfdtVO xfdtVO = new Firefacilities_aqsscs_xfdtVO();
+                xfdtVO.setXfssid(xfssid);
+                xfdtVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateXfdtByVO(xfdtVO);
+                break;
+            case "1004":
+                Firefacilities_aqsscs_bncVO bncVO = new Firefacilities_aqsscs_bncVO();
+                bncVO.setXfssid(xfssid);
+                bncVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateBncByVO(bncVO);
+                break;
+            case "1005":
+                Firefacilities_aqsscs_yjgbVO yjgbVO = new Firefacilities_aqsscs_yjgbVO();
+                yjgbVO.setXfssid(xfssid);
+                yjgbVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateYjgbByVO(yjgbVO);
+                break;
+            //消防水系统
+            case "2000":
+                break;
+            case "2001":
+                Firefacilities_xfsxt_xfbfVO xfbfVO = new Firefacilities_xfsxt_xfbfVO();
+                xfbfVO.setXfssid(xfssid);
+                xfbfVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateXfbfByVO(xfbfVO);
+                break;
+            case "2002":
+                Firefacilities_xfsxt_xfsxVO xfsxVO = new Firefacilities_xfsxt_xfsxVO();
+                xfsxVO.setXfssid(xfssid);
+                xfsxVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateXfsxByVO(xfsxVO);
+                break;
+            case "2003":
+                Firefacilities_xfsxt_xfscVO xfscVO = new Firefacilities_xfsxt_xfscVO();
+                xfscVO.setXfssid(xfssid);
+                xfscVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateXfscByVO(xfscVO);
+                break;
+            case "2004":
+                Firefacilities_xfsxt_snxhsVO snxhsVO = new Firefacilities_xfsxt_snxhsVO();
+                snxhsVO.setXfssid(xfssid);
+                snxhsVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateSnxhsByVO(snxhsVO);
+                break;
+            case "2005":
+                Firefacilities_xfsxt_swxhsVO swxhsVO = new Firefacilities_xfsxt_swxhsVO();
+                swxhsVO.setXfssid(xfssid);
+                swxhsVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateSwxhsByVO(swxhsVO);
+                break;
+            case "2006":
+                Firefacilities_xfsxt_sbjhqVO sbjhqVO = new Firefacilities_xfsxt_sbjhqVO();
+                sbjhqVO.setXfssid(xfssid);
+                sbjhqVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateSbjhqByVO(sbjhqVO);
+                break;
+            case "2007":
+                Firefacilities_xfsxt_plxtVO plxtVO = new Firefacilities_xfsxt_plxtVO();
+                plxtVO.setXfssid(xfssid);
+                plxtVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdatePlxtByVO(plxtVO);
+                break;
+            case "2008":
+                Firefacilities_xfsxt_lqsxtVO lqsxtVO = new Firefacilities_xfsxt_lqsxtVO();
+                lqsxtVO.setXfssid(xfssid);
+                lqsxtVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateLqsxtByVO(lqsxtVO);
+                break;
+            case "2009":
+                Firefacilities_xfsxt_gdspVO gdspVO = new Firefacilities_xfsxt_gdspVO();
+                gdspVO.setXfssid(xfssid);
+                gdspVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateGdspByVO(gdspVO);
+                break;
+            case "2010":
+                Firefacilities_xfsxt_bgdssVO bgdssVO = new Firefacilities_xfsxt_bgdssVO();
+                bgdssVO.setXfssid(xfssid);
+                bgdssVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdateBgdssByVO(bgdssVO);
+                break;
+            //泡沫系统
+            case "3000":
+                break;
+            case "3001":
+                Firefacilities_pmxt_pmbfVO pmbfVO = new Firefacilities_pmxt_pmbfVO();
+                pmbfVO.setXfssid(xfssid);
+                pmbfVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdatePmbfByVO(pmbfVO);
+                break;
+            case "3002":
+                Firefacilities_pmxt_pmxhsVO pmxhsVO = new Firefacilities_pmxt_pmxhsVO();
+                pmxhsVO.setXfssid(xfssid);
+                pmxhsVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doUpdatePmxhsByVO(pmxhsVO);
+                break;
+            case "3003":
+                Firefacilities_pmxt_gdpmpVO gdpmpVO = new Firefacilities_pmxt_gdpmpVO();
+                gdpmpVO.setXfssid(xfssid);
+                gdpmpVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doInsertGdpmpByVO(gdpmpVO);
+                break;
+            case "3004":
+                Firefacilities_pmxt_pmfsqVO pmfsqVO = new Firefacilities_pmxt_pmfsqVO();
+                pmfsqVO.setXfssid(xfssid);
+                pmfsqVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doInsertPmfsqByVO(pmfsqVO);
+                break;
+            case "3005":
+                Firefacilities_pmxt_bgdssVO PmBgdssVO = new Firefacilities_pmxt_bgdssVO();
+                PmBgdssVO.setXfssid(xfssid);
+                PmBgdssVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doInsertPmBgdssByVO(PmBgdssVO);
+                break;
+            //蒸汽灭火系统
+            case "4000":
+                break;
+            case "4001":
+                Firefacilities_zqmhxt_gdsVO gdsVO = new Firefacilities_zqmhxt_gdsVO();
+                gdsVO.setXfssid(xfssid);
+                gdsVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doInsertGdsByVO(gdsVO);
+                break;
+            case "4002":
+                Firefacilities_zqmhxt_bgdsVO bgdsVO = new Firefacilities_zqmhxt_bgdsVO();
+                bgdsVO.setXfssid(xfssid);
+                bgdsVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doInsertBgdsByVO(bgdsVO);
+                break;
+            //消防控制室
+            case "5000":
+                Firefacilities_xfkzsVO xfkzsVO = new Firefacilities_xfkzsVO();
+                xfkzsVO.setXfssid(xfssid);
+                xfkzsVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doInsertXfkzsByVO(xfkzsVO);
+                break;
+            //防排烟设施
+            case "6000":
+                break;
+            case "6001":
+                Firefacilities_fpycs_pycykVO pycykVO = new Firefacilities_fpycs_pycykVO();
+                pycykVO.setXfssid(xfssid);
+                pycykVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doInsertPycykByVO(pycykVO);
+                break;
+            case "6002":
+                Firefacilities_fpycs_fpyxtVO fpyxtVO = new Firefacilities_fpycs_fpyxtVO();
+                fpyxtVO.setXfssid(xfssid);
+                fpyxtVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doInsertFpyxtByVO(fpyxtVO);
+                break;
+            //防火分区
+            case "7000":
+                Firefacilities_fhfqVO fhfqVO = new Firefacilities_fhfqVO();
+                fhfqVO.setXfssid(xfssid);
+                fhfqVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doInsertFhfqByVO(fhfqVO);
+                break;
+            //其他灭火系统
+            case "8000":
+                break;
+            case "8001":
+                Firefacilities_qtmhxt_qtmhxtVO qtmhxtVO = new Firefacilities_qtmhxt_qtmhxtVO();
+                qtmhxtVO.setXfssid(xfssid);
+                qtmhxtVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doInsertQtmhxtByVO(qtmhxtVO);
+                break;
+            case "8002":
+                Firefacilities_qtmhxt_gfmhxtVO gfmhxtVO = new Firefacilities_qtmhxt_gfmhxtVO();
+                gfmhxtVO.setXfssid(xfssid);
+                gfmhxtVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doInsertGfmhxtByVO(gfmhxtVO);
+                break;
+            //其他消防设施
+            case "9000":
+                Firefacilities_qtxfssVO qtxfssVO = new Firefacilities_qtxfssVO();
+                qtxfssVO.setXfssid(xfssid);
+                qtxfssVO.setDeleteFlag("Y");
+                firefacilitiesDAO.doInsertQtxfssByVO(qtxfssVO);
+                break;
+        }
+        return firefacilitiesVO;
+    }
+
 }
