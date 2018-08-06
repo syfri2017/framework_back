@@ -14,6 +14,8 @@ import com.syfri.digitalplan.model.buildingzoning.BuildingVO;
 import com.syfri.digitalplan.service.buildingzoning.BuildingService;
 import com.syfri.baseapi.controller.BaseController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("building")
 public class BuildingController  extends BaseController<BuildingVO>{
@@ -43,5 +45,71 @@ public class BuildingController  extends BaseController<BuildingVO>{
 		}
 		return resultVO;
 	}
+	/**
+	 * @Description: 删除单体建筑信息
+	 * @Param: [fireegineList, fireegineVo]
+	 * @Return: com.syfri.baseapi.
+	 * @Author: zhaijianchen
+	 * @Modified By:
+	 * @Date: 2018/7/31 15:52
+	 */
+	@ApiOperation(value="删除单体建筑信息",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="单体建筑")
+	@PostMapping("/doDeleteBuildingzoning")
+	public @ResponseBody ResultVO doDeleteBuildingzoning(@RequestBody List<BuildingVO> buildingList) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(buildingService.doDeleteBuildingzoning(buildingList));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	/**
+	 * @Description: 单体建筑新增
+	 * @Param: [VO]
+	 * @Return: com.syfri.baseapi.model.ResultVO
+	 * @Author: zhaijianchen
+	 * @Modified By:
+	 * @Date: 2018/7/31 15:44
+	 */
+	@ApiOperation(value="单体建筑新增",notes="新增")
+	@ApiImplicitParam(name="vo",value="单体建筑")
+	@PostMapping("/insertByVO")
+	public @ResponseBody ResultVO insertByVO(@RequestBody BuildingVO buildingVO){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(buildingService.doInsertByVO(buildingVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	/**
+	 * @Description: 单体建筑修改
+	 * @Param: [BuildingVO]
+	 * @Return: com.syfri.baseapi.model.ResultVO
+	 * @Author: zhaijianchen
+	 * @Modified By:
+	 * @Date: 2018/7/31 16:13
+	 */
+	@ApiOperation(value="修改单体建筑",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="单体建筑")
+	@PostMapping("/doUpdateBuildingzoning")
+	public @ResponseBody ResultVO doUpdateBuildingzoning(@RequestBody BuildingVO buildingVO) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(buildingService.doUpdateBuildingzoning(buildingVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
 
 }

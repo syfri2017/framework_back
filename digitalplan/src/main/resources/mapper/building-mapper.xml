@@ -54,8 +54,25 @@
 		<if test="reserve4 != null and reserve4 != '' ">
 		 and t.reserve4 = #{reserve4}
 		</if>
+		<if test="cjrid != null and cjrid != '' ">
+			and t.cjrid = #{cjrid}
+		</if>
+		<if test="cjrmc != null and cjrmc != '' ">
+			and t.cjrmc = #{cjrmc}
+		</if>
+		<if test="cjsj != null and cjsj != '' ">
+			and t.cjsj = #{cjsj}
+		</if>
+		<if test="xgrid != null and xgrid != '' ">
+			and t.xgrid = #{xgrid}
+		</if>
+		<if test="xgrmc != null and xgrmc != '' ">
+			and t.xgrmc = #{xgrmc}
+		</if>
+		<if test="xgsj != null and xgsj != '' ">
+			and t.xgsj = #{xgsj}
+		</if>
 	</sql>
-
 	<!--2.查询内容-->
 	<sql id="SQL_CONTENT">
 		t.jzid jzid,
@@ -74,7 +91,13 @@
 		t.reserve1 reserve1,
 		t.reserve2 reserve2,
 		t.reserve3 reserve3,
-		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
+		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
+		t.cjrid cjrid,
+		t.cjrmc cjrmc,
+		TO_CHAR(t.cjsj,'yyyy-MM-dd HH24:mi:ss') cjsj,
+		t.xgrid xgrid,
+		t.xgrmc xgrmc,
+		TO_CHAR(t.xgsj,'yyyy-MM-dd HH24:mi:ss') xgsj
 	</sql>
 	<!--建筑分区建筑类 查询内容-->
 	<sql id="SQL_JZ_CONTENT">
@@ -173,26 +196,26 @@
 		<!--建筑分区类型关联代码集-->
 		Left Join SYS_CODELIST c1 on c1.CODETYPE = 'JZLX' And c1.DELETE_FLAG = 'N'
 		Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and t.jzlx = c2.CODE_VALUE
-		WHERE t.DELETE_FLAG = 'N' AND  t.JZID = #{value}
+		WHERE t.DELETE_FLAG = 'N' AND  t.JZID = #{jzid}
 	</select>
 
 	<!--6.按照VO插入-->
 	<insert  id="doInsertByVO"  parameterType="BuildingVO"> 
-		<selectKey resultType="String" order="BEFORE" keyProperty="JZID">
-			SELECT SYS_GUID() AS JZID FROM DUAL
+		<selectKey resultType="String" order="BEFORE" keyProperty="jzid">
+			SELECT SYS_GUID() AS jzid FROM DUAL
 		</selectKey>
-		INSERT INTO YAGL_DWJZXX(jzid,jzmc,jzlx,jzwz,lon,lat,xqxclx,yjddsc,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
-		VALUES(#{jzid,jdbcType=VARCHAR},#{jzmc,jdbcType=VARCHAR},#{jzlx,jdbcType=VARCHAR},#{jzwz,jdbcType=VARCHAR},#{lon,jdbcType=DOUBLE},#{lat,jdbcType=DOUBLE},#{xqxclx,jdbcType=VARCHAR},#{yjddsc,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+		INSERT INTO YAGL_DWJZXX(jzid,jzmc,jzlx,jzwz,lon,lat,xqxclx,yjddsc,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj)
+		VALUES(#{jzid,jdbcType=VARCHAR},#{jzmc,jdbcType=VARCHAR},#{jzlx,jdbcType=VARCHAR},#{jzwz,jdbcType=VARCHAR},#{lon,jdbcType=DOUBLE},#{lat,jdbcType=DOUBLE},#{xqxclx,jdbcType=VARCHAR},#{yjddsc,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE})
 	 </insert>
 
 	<!--7.批量插入-->
 	<insert  id="doBatchInsertByList"  parameterType="java.util.List"> 
-		INSERT INTO YAGL_DWJZXX(jzid,jzmc,jzlx,jzwz,lon,lat,xqxclx,yjddsc,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		INSERT INTO YAGL_DWJZXX(jzid,jzmc,jzlx,jzwz,lon,lat,xqxclx,yjddsc,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj)
 		SELECT SYS_GUID() jzid, A.*
 		FROM ( 
 		<foreach collection="list" item="item" index="index" separator="UNION ALL" >
 		SELECT
-			#{item.jzid,jdbcType=VARCHAR} jzid,#{item.jzmc,jdbcType=VARCHAR} jzmc,#{item.jzlx,jdbcType=VARCHAR} jzlx,#{item.jzwz,jdbcType=VARCHAR} jzwz,#{item.lon,jdbcType=DOUBLE} lon,#{item.lat,jdbcType=DOUBLE} lat,#{item.xqxclx,jdbcType=VARCHAR} xqxclx,#{item.yjddsc,jdbcType=DOUBLE} yjddsc,'N' delete_flag,#{item.datasource,jdbcType=VARCHAR} datasource,#{item.bz,jdbcType=VARCHAR} bz,#{item.jdh,jdbcType=VARCHAR} jdh,#{item.sjc,jdbcType=DATE} sjc,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4
+			#{item.jzid,jdbcType=VARCHAR} jzid,#{item.jzmc,jdbcType=VARCHAR} jzmc,#{item.jzlx,jdbcType=VARCHAR} jzlx,#{item.jzwz,jdbcType=VARCHAR} jzwz,#{item.lon,jdbcType=DOUBLE} lon,#{item.lat,jdbcType=DOUBLE} lat,#{item.xqxclx,jdbcType=VARCHAR} xqxclx,#{item.yjddsc,jdbcType=DOUBLE} yjddsc,'N' delete_flag,#{item.datasource,jdbcType=VARCHAR} datasource,#{item.bz,jdbcType=VARCHAR} bz,#{item.jdh,jdbcType=VARCHAR} jdh,#{item.sjc,jdbcType=DATE} sjc,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.xgsj,jdbcType=DATE} xgsj
 		FROM DUAL
 		</foreach>
 		) A
@@ -201,6 +224,18 @@
 	<!--8.按主键逻辑删除-->
 	<update id="doDeleteById"  parameterType="String"> 
 		UPDATE  YAGL_DWJZXX t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.JZID = #{value}
+	</update>
+	<!--1020.按主键逻辑删除-->
+	<update id="doDeleteJzlById"  parameterType="String">
+		UPDATE  YAGL_DWJZXX_JZL t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.JZID = #{value}
+	</update>
+	<!--30.按主键逻辑删除-->
+	<update id="doDeleteZzlById"  parameterType="String">
+		UPDATE  YAGL_DWJX_ZZL t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.JZID = #{value}
+	</update>
+	<!--40.按主键逻辑删除-->
+	<update id="doDeleteCglById"  parameterType="String">
+		UPDATE  YAGL_DWJX_CGL t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.JZID = #{value}
 	</update>
 
 	<!--9.按复合条件逻辑更新-->
@@ -215,7 +250,7 @@
 			<if test="lat != null">lat=#{lat},</if>
 			<if test="xqxclx != null">xqxclx=#{xqxclx},</if>
 			<if test="yjddsc != null">yjddsc=#{yjddsc},</if>
-			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="bz != null">bz=#{bz},</if>
 			<if test="jdh != null">jdh=#{jdh},</if>
@@ -223,10 +258,108 @@
 			<if test="reserve1 != null">reserve1=#{reserve1},</if>
 			<if test="reserve2 != null">reserve2=#{reserve2},</if>
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
-			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<!--<if test="cjrid != null">cjrid=#{cjrid},</if>-->
+			<!--<if test="cjrmc != null">cjrmc=#{cjrmc},</if>-->
+			<!--<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>-->
+			<if test="xgrid != null">xgrid=#{xgrid},</if>
+			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
+			<if test="xgsj != null">xgsj=sysdate</if>
 		</set>
 		WHERE  JZID = #{jzid}
 	</update>
+
+	<!-- 10，20按复合条件逻辑更新 -->
+	<update  id="doUpdateJzlByVO"  parameterType="BuildingVO">
+		UPDATE   YAGL_DWJZXX_JZL
+		<set>
+			<if test="jzl_jzid != null">jzl_jzid=#{jzl_jzid},</if>
+			<if test="jzl_jzqk != null">jzl_jzqk=#{jzl_jzqk},</if>
+			<if test="jzl_jzsyxz != null">jzl_jzsyxz=#{jzl_jzsyxz},</if>
+			<if test="jzl_jzjg != null">jzl_jzjg=#{jzl_jzjg},</if>
+			<if test="jzl_gnms != null">jzl_gnms=#{jzl_gnms},</if>
+			<if test="jzl_zdmj != null">jzl_zdmj=#{jzl_zdmj},</if>
+			<if test="jzl_dsgd != null">jzl_dsgd=#{jzl_dsgd},</if>
+			<if test="jzl_dxgd != null">jzl_dxgd=#{jzl_dxgd},</if>
+			<if test="jzl_dscs != null">jzl_dscs=#{jzl_dscs},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<!--<if test="cjrid != null">cjrid=#{cjrid},</if>-->
+			<!--<if test="cjrmc != null">cjrmc=#{cjrmc},</if>-->
+			<!--<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>-->
+			<if test="xgrid != null">xgrid=#{xgrid},</if>
+			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
+			<if test="xgsj != null">xgsj=sysdate</if>
+		</set>
+		WHERE  JZID = #{jzid}
+	</update>
+	<!-- 30类按复合条件逻辑更新 -->
+	<update  id="doUpdateZzlByVO"  parameterType="BuildingVO">
+		UPDATE   YAGL_DWJX_ZZL
+		<set>
+			<if test="zzl_jzid != null">zzl_jzid=#{zzl_jzid},</if>
+			<if test="zzl_jzjg != null">zzl_jzjg=#{zzl_jzjg},</if>
+			<if test="zzl_zdmj != null">zzl_zdmj=#{zzl_zdmj},</if>
+			<if test="zzl_zzgd != null">zzl_zzgd=#{zzl_zzgd},</if>
+			<if test="zzl_jsfzr != null">zzl_jsfzr=#{zzl_jsfzr},</if>
+			<if test="zzl_jsfzrdh != null">zzl_jsfzrdh=#{zzl_jsfzrdh},</if>
+			<if test="zzl_zzzc != null">zzl_zzzc=#{zzl_zzzc},</if>
+			<if test="zzl_ylxx != null">zzl_ylxx=#{zzl_ylxx},</if>
+			<if test="zzl_cwxx != null">zzl_cwxx=#{zzl_cwxx},</if>
+			<if test="zzl_gylc != null">zzl_gylc=#{zzl_gylc},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<!--<if test="cjrid != null">cjrid=#{cjrid},</if>-->
+			<!--<if test="cjrmc != null">cjrmc=#{cjrmc},</if>-->
+			<!--<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>-->
+			<if test="xgrid != null">xgrid=#{xgrid},</if>
+			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
+			<if test="xgsj != null">xgsj=sysdate</if>
+		</set>
+		WHERE  JZID = #{jzid}
+	</update>
+	<!-- 40储罐类按复合条件逻辑更新  -->
+	<update  id="doUpdateCglByVO"  parameterType="BuildingVO">
+		UPDATE   YAGL_DWJZXX_CGL
+		<set>
+			<if test="cgl_jzid != null">cgl_jzid=#{cgl_jzid},</if>
+			<if test="cgl_zrj != null">cgl_zrj=#{cgl_zrj},</if>
+			<if test="cgl_cgsl != null">cgl_cgsl=#{cgl_cgsl},</if>
+			<if test="cgl_cgjg != null">cgl_cgjg=#{cgl_cgjg},</if>
+			<if test="cgl_ccjzms != null">cgl_ccjzms=#{cgl_ccjzms},</if>
+			<if test="cgl_jsfzr != null">cgl_jsfzr=#{cgl_jsfzr},</if>
+			<if test="cgl_jsfzrdh != null">cgl_jsfzrdh=#{cgl_jsfzrdh},</if>
+			<if test="cgl_plqkd != null">cgl_plqkd=#{cgl_plqkd},</if>
+			<if test="cgl_plqkx != null">cgl_plqkx=#{cgl_plqkx},</if>
+			<if test="cgl_plqkn != null">cgl_plqkn=#{cgl_plqkn},</if>
+			<if test="cgl_plqkb != null">cgl_plqkb=#{cgl_plqkb},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<!--<if test="cjrid != null">cjrid=#{cjrid},</if>-->
+			<!--<if test="cjrmc != null">cjrmc=#{cjrmc},</if>-->
+			<!--<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>-->
+			<if test="xgrid != null">xgrid=#{xgrid},</if>
+			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
+			<if test="xgsj != null">xgsj=sysdate</if>
+		</set>
+		WHERE  JZID = #{jzid}
+	</update>
+
 
 	<!--10.批量修改-->
 	<update id="doBatchUpdateByList"  parameterType="java.util.List">
@@ -252,7 +385,13 @@
 			reserve1 = VALUES(reserve1),
 			reserve2 = VALUES(reserve2),
 			reserve3 = VALUES(reserve3),
-			reserve4 = VALUES(reserve4)
+			reserve4 = VALUES(reserve4),
+			cjrid = VALUES(cjrid),
+			cjrmc = VALUES(cjrmc),
+			cjsj = VALUES(cjsj),
+			xgrid = VALUES(xgrid),
+			xgrmc = VALUES(xgrmc),
+			xgsj = VALUES(xgsj)
 	</update>
 
 	<!--11.根据对象查询记录-->
