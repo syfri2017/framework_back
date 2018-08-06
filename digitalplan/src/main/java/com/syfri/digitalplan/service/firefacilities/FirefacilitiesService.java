@@ -7,8 +7,11 @@ import com.syfri.digitalplan.model.firefacilities.*;
 import java.util.List;
 import java.util.Map;
 
-public interface FirefacilitiesService  extends BaseService<FirefacilitiesVO>{
+public interface FirefacilitiesService extends BaseService<FirefacilitiesVO> {
     public Map<String, List> doFindlist(FirefacilitiesVO vo);
+
     public ValueObject doFindXfssDetail(FirefacilitiesVO vo);
+
+    public FirefacilitiesVO doInsertFirefacilities(FirefacilitiesVO firefacilitiesVO);
 
 }

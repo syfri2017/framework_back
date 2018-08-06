@@ -1,6 +1,7 @@
 package com.syfri.digitalplan.model.firefacilities;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import com.syfri.baseapi.model.ValueObject;
 
@@ -159,13 +160,10 @@ public class FirefacilitiesVO extends ValueObject implements Serializable{
 
 	private String jbxx_xfssid;	//消防设施ID（主键）
 	private String jbxx_jzid;	//建筑分区ID
-	private String jbxx_jzmc;	//建筑分区名称
 	private String jbxx_xfssmc;	//消防设施名称
 	private String jbxx_xfsslx;	//消防设施类型
-	private String jbxx_xfsslxmc;	//消防设施类型名称
 	private String jbxx_iszddw;	//是否重点单位消防设施
 	private String jbxx_zddwid;	//重点单位ID
-	private String jbxx_zddwmc;	//重点单位名称
 	private String jbxx_deleteFlag;	//删除标志
 	private String jbxx_datasource;	//数据来源[100000一体化]
 	private String jbxx_bz;	//备注
@@ -175,6 +173,25 @@ public class FirefacilitiesVO extends ValueObject implements Serializable{
 	private String jbxx_reserve2;	//备用字段2
 	private String jbxx_reserve3;	//备用字段3
 	private String jbxx_reserve4;	//备用字段4
+	private String cjrid;	//创建人ID
+	private String cjrmc;	//创建人名称
+	private String cjsj;	//创建时间
+	private String xgrid;	//修改人ID
+	private String xgrmc;	//修改人姓名
+	private String xgsj;	//修改时间
+
+	private String jbxx_jzmc;	//建筑分区名称
+	private String jbxx_xfsslxmc;	//消防设施类型名称
+	private String jbxx_zddwmc;	//重点单位名称
+	private Map detailMap;
+
+	public Map getDetailMap() {
+		return detailMap;
+	}
+
+	public void setDetailMap(Map detailMap) {
+		this.detailMap = detailMap;
+	}
 
 	public String getJbxx_xfssid() {
 		return jbxx_xfssid;
@@ -318,5 +335,53 @@ public class FirefacilitiesVO extends ValueObject implements Serializable{
 
 	public void setJbxx_reserve4(String jbxx_reserve4) {
 		this.jbxx_reserve4 = jbxx_reserve4;
+	}
+
+	public String getCjrid() {
+		return cjrid;
+	}
+
+	public void setCjrid(String cjrid) {
+		this.cjrid = cjrid;
+	}
+
+	public String getCjrmc() {
+		return cjrmc;
+	}
+
+	public void setCjrmc(String cjrmc) {
+		this.cjrmc = cjrmc;
+	}
+
+	public String getCjsj() {
+		return cjsj;
+	}
+
+	public void setCjsj(String cjsj) {
+		this.cjsj = cjsj;
+	}
+
+	public String getXgrid() {
+		return xgrid;
+	}
+
+	public void setXgrid(String xgrid) {
+		this.xgrid = xgrid;
+	}
+
+	public String getXgrmc() {
+		return xgrmc;
+	}
+
+	public void setXgrmc(String xgrmc) {
+		this.xgrmc = xgrmc;
+	}
+
+	public String getXgsj() {
+		return xgsj;
+	}
+
+	public void setXgsj(String xgsj) {
+		this.xgsj = xgsj;
 	}
 }
