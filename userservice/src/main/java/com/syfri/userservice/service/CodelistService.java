@@ -63,4 +63,7 @@ public interface CodelistService  extends BaseService<CodelistVO>{
 
 	/*--查询行政区划树状结构 by li.xue.--*/
 	List<CodelistTree> getXzqhTreeByUser(String xzqh);
+
+	/*--查询泡沫液类型树状结构 by liurui.--*/
+	List<CodelistTree> doFindPmylxlisttree(String codetype);
 }
