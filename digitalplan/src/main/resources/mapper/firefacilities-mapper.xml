@@ -48,6 +48,15 @@
 		<if test="jbxx_reserve4 != null and jbxx_reserve4 != '' ">
 		 and t.reserve4 = #{jbxx_reserve4}
 		</if>
+		<if test="xgrid != null and xgrid != '' ">
+			and t.xgrid = #{xgrid}
+		</if>
+		<if test="xgrmc != null and xgrmc != '' ">
+			and t.xgrmc = #{xgrmc}
+		</if>
+		<if test="xgsj != null and xgsj != '' ">
+			and t.xgsj = #{xgsj}
+		</if>
 	</sql>
 
 	<!--2.查询内容-->
@@ -143,20 +152,20 @@
 		UPDATE   YAGL_XFSS  
 		<set>
 			<!--<if test="xfssid != null">xfssid=#{xfssid},</if>-->
-			<if test="jzid != null">jzid=#{jbxx_jzid},</if>
-			<if test="xfssmc != null">xfssmc=#{jbxx_xfssmc},</if>
-			<if test="xfsslx != null">xfsslx=#{jbxx_xfsslx},</if>
-			<if test="iszddw != null">iszddw=#{jbxx_iszddw},</if>
-			<if test="zddwid != null">zddwid=#{jbxx_zddwid},</if>
-			<if test="deleteFlag != null">delete_flag=#{jbxx_deleteFlag},</if>
-			<if test="datasource != null">datasource=#{jbxx_datasource},</if>
-			<if test="bz != null">bz=#{jbxx_bz},</if>
-			<if test="jdh != null">jdh=#{jbxx_jdh},</if>
-			<if test="sjc != null">sjc=TO_DATE(#{jbxx_sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="reserve1 != null">reserve1=#{jbxx_reserve1},</if>
-			<if test="reserve2 != null">reserve2=#{jbxx_reserve2},</if>
-			<if test="reserve3 != null">reserve3=#{jbxx_reserve3},</if>
-			<if test="reserve4 != null">reserve4=TO_DATE(#{jbxx_reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="jbxx_jzid != null">jzid=#{jbxx_jzid},</if>
+			<if test="jbxx_xfssmc != null">xfssmc=#{jbxx_xfssmc},</if>
+			<if test="jbxx_xfsslx != null">xfsslx=#{jbxx_xfsslx},</if>
+			<if test="jbxx_iszddw != null">iszddw=#{jbxx_iszddw},</if>
+			<if test="jbxx_zddwid != null">zddwid=#{jbxx_zddwid},</if>
+			<if test="jbxx_deleteFlag != null">delete_flag=#{jbxx_deleteFlag},</if>
+			<if test="jbxx_datasource != null">datasource=#{jbxx_datasource},</if>
+			<if test="jbxx_bz != null">bz=#{jbxx_bz},</if>
+			<if test="jbxx_jdh != null">jdh=#{jbxx_jdh},</if>
+			<if test="jbxx_sjc != null">sjc=TO_DATE(#{jbxx_sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="jbxx_reserve1 != null">reserve1=#{jbxx_reserve1},</if>
+			<if test="jbxx_reserve2 != null">reserve2=#{jbxx_reserve2},</if>
+			<if test="jbxx_reserve3 != null">reserve3=#{jbxx_reserve3},</if>
+			<if test="jbxx_reserve4 != null">reserve4=TO_DATE(#{jbxx_reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
 			xgsj=sysdate
