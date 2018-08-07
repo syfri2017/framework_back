@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
 @Service("xfsyService")
@@ -74,4 +75,91 @@ public class XfsyServiceImpl extends BaseServiceImpl<XfsyVO> implements XfsyServ
 
 		return list;
 	}
+
+	//插入水源 by yushch 20180802
+	@Override
+	public XfsyVO doInsertByXfdzVO(XfsyVO xfsyVO) {
+		if(!xfsyVO.getSylx().isEmpty()){
+			switch (xfsyVO.getSylx()){
+				case "01":
+					xfsyDAO.doInsertXhsByVo(xfsyVO);
+					xfsyVO.setSysxxxid(xfsyVO.getXhs_uuid());
+					break;
+			}
+		}
+		xfsyDAO.doInsertByVO(xfsyVO);
+		return xfsyVO;
+	}
+
+	/*--修改消防水源 by yushch 20180803.--*/
+	@Override
+	public XfsyVO doUpdateByXfsyVO(XfsyVO xfsyVO){
+		if(!xfsyVO.getSylx().isEmpty()){
+			String sysxxxid = xfsyVO.getSysxxxid();
+			switch(xfsyVO.getSylx()) {
+				case "01":
+					int count = xfsyDAO.doCountXhsBySxid(sysxxxid);
+					if (count > 0)
+						xfsyDAO.doUpdateXhsByVo(xfsyVO);
+					else{
+						String temp_id = getUUID();
+						xfsyVO.setXhs_uuid(temp_id);
+						xfsyVO.setSysxxxid(temp_id);
+						xfsyDAO.doInsertXhsByVo(xfsyVO);
+					}
+					break;
+				case "02":
+
+					break;
+				case "03":
+
+					break;
+				case "04":
+
+					break;
+			}
+		}
+		xfsyDAO.doUpdateByVO(xfsyVO);
+		return xfsyVO;
+	}
+
+	public static String getUUID(){
+		UUID uuid=UUID.randomUUID();
+		String str = uuid.toString();
+		String uuidStr=str.replace("-", "");
+		return uuidStr;
+	}
+
+	//批量删除 by yushch 20180803
+	/*--批量删除队站 by li.xue 2018/7/25*/
+	@Override
+	public int doDeleteBatch(List<XfsyVO> list){
+		int deleteNums = 0;
+		for(XfsyVO vo : list){
+			//删除主表
+			vo.setDeleteFlag("Y");
+			xfsyDAO.doUpdateByVO(vo);
+			//删除从表
+			if(!vo.getSylx().isEmpty()){
+				switch(vo.getSylx()){
+					case "01":
+						String uuid = vo.getSysxxxid();
+						xfsyDAO.doDeleteXhsByUuid(uuid);
+						break;
+					case "02":
+
+						break;
+					case "03":
+
+						break;
+					case "04":
+
+						break;
+				}
+			}
+			deleteNums++;
+		}
+		return deleteNums;
+	}
+
 }

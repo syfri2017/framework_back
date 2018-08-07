@@ -108,6 +108,9 @@
 		<if test="gisY != null and gisY != '' ">
 			and t.gis_y = #{gisY}
 		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
 	</sql>
 
 	<!--2.查询内容-->
@@ -289,7 +292,7 @@
 		gis_y = VALUES(gis_y)
 	</update>
 
-	<!--根据id关联总队表查询总队队站详情-->
+	<!--11.根据id关联总队表查询总队队站详情-->
 	<resultMap id="DzZongDMap" type="com.syfri.digitalplan.model.basicinfo.firestationsource.XfdzVO">
 		<id property="dzid" column="dzid"/>
 		<result property="sjdzid" column="sjdzid"/>
@@ -347,7 +350,7 @@
 		<include refid="SQL_CONDITION"/>
 	</select>
 
-	<!--根据id关联支队表查询支队队站详情-->
+	<!--12.根据id关联支队表查询支队队站详情-->
 	<resultMap id="DzZhiDMap" type="com.syfri.digitalplan.model.basicinfo.firestationsource.XfdzVO">
 		<id property="dzid" column="dzid"/>
 		<result property="sjdzid" column="sjdzid"/>
@@ -407,7 +410,7 @@
 		<include refid="SQL_CONDITION"/>
 	</select>
 
-	<!--根据id关联大队表查询大队队站详情-->
+	<!--13.根据id关联大队表查询大队队站详情-->
 	<resultMap id="DzDaDMap" type="com.syfri.digitalplan.model.basicinfo.firestationsource.XfdzVO">
 		<id property="dzid" column="dzid"/>
 		<result property="sjdzid" column="sjdzid"/>
@@ -473,7 +476,7 @@
 		<include refid="SQL_CONDITION"/>
 	</select>
 
-	<!--根据id关联大队表查询中队队站详情-->
+	<!--14.根据id关联大队表查询中队队站详情-->
 	<resultMap id="DzZhongDMap" type="com.syfri.digitalplan.model.basicinfo.firestationsource.XfdzVO">
 		<id property="dzid" column="dzid"/>
 		<result property="sjdzid" column="sjdzid"/>
@@ -543,7 +546,7 @@
 		<include refid="SQL_CONDITION"/>
 	</select>
 
-	<!--根据id关联其他消防队伍表查询他消防队伍队站详情-->
+	<!--15.根据id关联其他消防队伍表查询他消防队伍队站详情-->
 	<resultMap id="DzQtxfdwDMap" type="com.syfri.digitalplan.model.basicinfo.firestationsource.XfdzVO">
 		<id property="dzid" column="dzid"/>
 		<result property="sjdzid" column="sjdzid"/>
@@ -596,7 +599,7 @@
 		<include refid="SQL_CONDITION"/>
 	</select>
 
-	<!--查询行政区划所在省的所有队站-->
+	<!--16.查询行政区划所在省的所有队站-->
 	<select id="doSearchProvinceList" parameterType="XfdzVO"  resultType="XfdzVO">
 		SELECT
 		<include refid="SQL_CONTENT"/>,
@@ -613,7 +616,7 @@
 		ORDER BY t.dzbm
 	</select>
 
-	<!-- 根据上级队站ID查询队站列表 by li.xue -->
+	<!-- 17.根据上级队站ID查询队站列表 by li.xue -->
 	<select id="doFindXfdzBySjdzid" parameterType="String" resultType="XfdzTree">
 		SELECT dzid,dzjc,dzbm FROM YAGL_XFDZ WHERE delete_flag = 'N' AND sjdzid = #{value} order by dzbm
 	</select>
@@ -623,7 +626,7 @@
 		SELECT COUNT(0) AS NUM FROM YAGL_XFDZ t WHERE DELETE_FLAG = 'N' AND dzmc = #{value}
 	</select>
 
-	<!-- 按照总队VO插入 by li.xue -->
+	<!-- 18.按照总队VO插入 by li.xue -->
 	<insert id="doInsertZongdByVO" parameterType="com.syfri.digitalplan.model.basicinfo.firestationsource.ZongdVO">
 		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
 			SELECT SYS_GUID() AS uuid FROM DUAL
@@ -632,7 +635,7 @@
 		VALUES(#{uuid,jdbcType=VARCHAR},#{dzid,jdbcType=VARCHAR},#{xygbrs,jdbcType=DOUBLE},#{zfzzxfys,jdbcType=DOUBLE},#{wzgys,jdbcType=DOUBLE},#{xxzhids,jdbcType=DOUBLE},#{xxzhongds,jdbcType=DOUBLE},#{zdzxm,jdbcType=VARCHAR},#{zdzlxfs,jdbcType=VARCHAR},#{zdzwxm,jdbcType=VARCHAR},#{zdzwlxfs,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
 	</insert>
 
-	<!-- 按照支队VO插入 by li.xue -->
+	<!-- 19.按照支队VO插入 by li.xue -->
 	<insert id="doInsertZhidByVO" parameterType="com.syfri.digitalplan.model.basicinfo.firestationsource.ZhidVO">
 		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
 			SELECT SYS_GUID() AS uuid FROM DUAL
@@ -641,7 +644,7 @@
 		VALUES(#{uuid,jdbcType=VARCHAR},#{dzid,jdbcType=VARCHAR},#{xygbrs,jdbcType=DOUBLE},#{zfzzxfys,jdbcType=DOUBLE},#{xfwys,jdbcType=DOUBLE},#{xxdads,jdbcType=DOUBLE},#{xxzhongds,jdbcType=DOUBLE},#{sfdljj,jdbcType=VARCHAR},#{zdzxm,jdbcType=VARCHAR},#{zdzlxfs,jdbcType=VARCHAR},#{zdzwxm,jdbcType=VARCHAR},#{zdzwlxfs,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
 	</insert>
 
-	<!-- 按照大队VO插入 by li.xue -->
+	<!-- 20.按照大队VO插入 by li.xue -->
 	<insert id="doInsertDadByVO" parameterType="com.syfri.digitalplan.model.basicinfo.firestationsource.DadVO">
 		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
 			SELECT SYS_GUID() AS uuid FROM DUAL
@@ -650,7 +653,7 @@
 		VALUES(#{uuid,jdbcType=VARCHAR},#{dzid,jdbcType=VARCHAR},#{xygbrs,jdbcType=DOUBLE},#{zfzzxfys,jdbcType=DOUBLE},#{xfwys,jdbcType=DOUBLE},#{xxzhongds,jdbcType=DOUBLE},#{sfdljj,jdbcType=VARCHAR},#{ddzxm,jdbcType=VARCHAR},#{ddzlxfs,jdbcType=VARCHAR},#{jdyxm,jdbcType=VARCHAR},#{jdylxfs,jdbcType=VARCHAR},#{fddzxm,jdbcType=VARCHAR},#{fddzlxfs,jdbcType=VARCHAR},#{fjdyxm,jdbcType=VARCHAR},#{fjdylxfs,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
 	</insert>
 
-	<!-- 按照中队VO插入 by li.xue -->
+	<!-- 21.按照中队VO插入 by li.xue -->
 	<insert id="doInsertZhongdByVO" parameterType="com.syfri.digitalplan.model.basicinfo.firestationsource.ZhongdVO">
 		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
 			SELECT SYS_GUID() AS uuid FROM DUAL
@@ -659,7 +662,7 @@
 		VALUES(#{uuid,jdbcType=VARCHAR},#{dzid,jdbcType=VARCHAR},#{xyrs,jdbcType=DOUBLE},#{zfzzxfys,jdbcType=DOUBLE},#{mrzqrs,jdbcType=DOUBLE},#{zdzxm,jdbcType=VARCHAR},#{zdzlxfs,jdbcType=VARCHAR},#{zdyxm,jdbcType=VARCHAR},#{zdylxfs,jdbcType=VARCHAR},#{fzdyxm,jdbcType=VARCHAR},#{fzdylxfs,jdbcType=VARCHAR},#{fzdzxm1,jdbcType=VARCHAR},#{fzdzlxfs1,jdbcType=VARCHAR},#{fzdzxm2,jdbcType=VARCHAR},#{fzdzlxfs2,jdbcType=VARCHAR},#{fzdzxm3,jdbcType=VARCHAR},#{fzdzlxfs3,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
 	</insert>
 
-	<!-- 按照其他消防队伍VO插入 by li.xue -->
+	<!-- 22.按照其他消防队伍VO插入 by li.xue -->
 	<insert id="doInsertQtxfdwByVO" parameterType="com.syfri.digitalplan.model.basicinfo.firestationsource.QtxfdwVO">
 		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
 			SELECT SYS_GUID() AS uuid FROM DUAL
@@ -668,7 +671,7 @@
 		VALUES(#{uuid,jdbcType=VARCHAR},#{dzid,jdbcType=VARCHAR},#{xfdyzrs,jdbcType=DOUBLE},#{mrzqrs,jdbcType=DOUBLE},#{gxdw,jdbcType=VARCHAR},#{gxdwlxfs,jdbcType=VARCHAR},#{dzxm,jdbcType=VARCHAR},#{dzlxfs,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
 	</insert>
 
-	<!--修改总队 by li.xue -->
+	<!--23.修改总队 by li.xue -->
 	<update  id="doUpdateZongdByVO"  parameterType="com.syfri.digitalplan.model.basicinfo.firestationsource.ZongdVO">
 		UPDATE YAGL_XFDZ_ZONGD
 		<set>
@@ -692,10 +695,10 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE UUID = #{uuid}
+		WHERE DZID = #{dzid} AND DELETE_FLAG = 'N'
 	</update>
 
-	<!--修改支队 by li.xue -->
+	<!-- 24.修改支队 by li.xue -->
 	<update  id="doUpdateZhidByVO"  parameterType="com.syfri.digitalplan.model.basicinfo.firestationsource.ZhidVO">
 		UPDATE  YAGL_XFDZ_ZHID
 		<set>
@@ -720,10 +723,10 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE UUID = #{uuid}
+		WHERE DZID = #{dzid} AND DELETE_FLAG = 'N'
 	</update>
 
-	<!--修改大队 by li.xue -->
+	<!-- 25.修改大队 by li.xue -->
 	<update  id="doUpdateDadByVO"  parameterType="com.syfri.digitalplan.model.basicinfo.firestationsource.DadVO">
 		UPDATE   YAGL_XFDZ_DAD
 		<set>
@@ -751,10 +754,10 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  UUID = #{uuid}
+		WHERE DZID = #{dzid} AND DELETE_FLAG = 'N'
 	</update>
 
-	<!--修改中队 by li.xue -->
+	<!-- 26.修改中队 by li.xue -->
 	<update  id="doUpdateZhongdByVO"  parameterType="com.syfri.digitalplan.model.basicinfo.firestationsource.ZhongdVO">
 		UPDATE   YAGL_XFDZ_ZHONGD
 		<set>
@@ -784,10 +787,10 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  UUID = #{uuid}
+		WHERE DZID = #{dzid} AND DELETE_FLAG = 'N'
 	</update>
 
-	<!--修改其他消防队伍 by li.xue -->
+	<!-- 27.修改其他消防队伍 by li.xue -->
 	<update  id="doUpdateQtxfdwByVO"  parameterType="QtxfdwVO">
 		UPDATE   YAGL_XFDZ_QTXFDW
 		<set>
@@ -808,32 +811,57 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  UUID = #{uuid}
+		WHERE DZID = #{dzid} AND DELETE_FLAG = 'N'
 	</update>
 
-	<!-- 逻辑删除总队 by li.xue -->
+	<!-- 28.逻辑删除总队 by li.xue -->
 	<update id="doDeleteZongdByDzid"  parameterType="String">
 		UPDATE  YAGL_XFDZ_ZONGD t SET t.DELETE_FLAG = 'Y'  WHERE 1=1 AND t.dzid = #{dzid}
 	</update>
 
-	<!-- 逻辑删除支队 by li.xue -->
+	<!-- 29.逻辑删除支队 by li.xue -->
 	<update id="doDeleteZhidByDzid"  parameterType="String">
 		UPDATE  YAGL_XFDZ_ZHID t SET t.DELETE_FLAG = 'Y'  WHERE 1=1 AND t.dzid = #{dzid}
 	</update>
 
-	<!-- 逻辑删除大队 by li.xue -->
+	<!-- 30.逻辑删除大队 by li.xue -->
 	<update id="doDeleteDadByDzid"  parameterType="String">
 		UPDATE  YAGL_XFDZ_DAD t SET t.DELETE_FLAG = 'Y'  WHERE 1=1 AND t.dzid = #{dzid}
 	</update>
 
-	<!-- 逻辑删除中队 by li.xue -->
+	<!-- 31.逻辑删除中队 by li.xue -->
 	<update id="doDeleteZhongdByDzid"  parameterType="String">
 		UPDATE  YAGL_XFDZ_ZHONGD t SET t.DELETE_FLAG = 'Y'  WHERE 1=1 AND t.dzid = #{dzid}
 	</update>
 
-	<!-- 逻辑删除其他消防队伍 by li.xue -->
+	<!-- 32.逻辑删除其他消防队伍 by li.xue -->
 	<update id="doDeleteQtxfdwByDzid"  parameterType="String">
 		UPDATE  YAGL_XFDZ_QTXFDW t SET t.DELETE_FLAG = 'Y'  WHERE 1=1 AND t.dzid = #{dzid}
 	</update>
+
+	<!-- 33.根据队站ID查询总队记录数 by li.xue -->
+	<select id="doCountZongdByDzid" parameterType="String" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_XFDZ_ZONGD t WHERE DELETE_FLAG = 'N' AND t.dzid = #{value}
+	</select>
+
+	<!-- 34.根据队站ID查询支队记录数 by li.xue -->
+	<select id="doCountZhidByDzid" parameterType="String" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_XFDZ_ZHID t WHERE DELETE_FLAG = 'N' AND t.dzid = #{value}
+	</select>
+
+	<!-- 35.根据队站ID查询大队记录数 by li.xue -->
+	<select id="doCountDadByDzid" parameterType="String" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_XFDZ_DAD t WHERE DELETE_FLAG = 'N' AND t.dzid = #{value}
+	</select>
+
+	<!-- 36.根据队站ID查询中队记录数 by li.xue -->
+	<select id="doCountZhongdByDzid" parameterType="String" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_XFDZ_ZHONGD t WHERE DELETE_FLAG = 'N' AND t.dzid = #{value}
+	</select>
+
+	<!-- 37.根据队站ID查询其他消防队伍记录数 by li.xue -->
+	<select id="doCountQtxfdwByDzid" parameterType="String" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_XFDZ_QTXFDW t WHERE DELETE_FLAG = 'N' AND t.dzid = #{dzid}
+	</select>
 
 </mapper>

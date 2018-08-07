@@ -1,8 +1,12 @@
 package com.syfri.digitalplan.model.basicinfo.firestationsource;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class XfdzTree {
+public class XfdzTree implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
 	private String dzid;
 	private String dzjc;
 	private String dzbm;

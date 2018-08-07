@@ -10,10 +10,10 @@
 			and t.sybm = #{sybm}
 		</if>
 		<if test="symc != null and symc != '' ">
-			and t.symc = #{symc}
+			and t.symc LIKE concat(concat('%',#{symc}),'%')
 		</if>
 		<if test="sydz != null and sydz != '' ">
-			and t.sydz = #{sydz}
+			and t.sydz LIKE concat(concat('%',#{sydz}),'%')
 		</if>
 		<if test="sylx != null and sylx != '' ">
 			and t.sylx = #{sylx}
@@ -278,11 +278,11 @@
 
 	<!--6.按照VO插入-->
 	<insert  id="doInsertByVO"  parameterType="XfsyVO"> 
-		<selectKey resultType="String" order="BEFORE" keyProperty="pkid">
-			SELECT SYS_GUID() AS pkid FROM DUAL
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
 		</selectKey>
-		INSERT INTO YAGL_XFSY(uuid,sybh,symc,sydz,sylx,sysxxxid,gxdz,gxdzmc,xzqy,qsxs,kyzt,xz,gis_x,gis_y,gis_h,glid,bd_lon,bd_lat,ssld,jzsj,qysj,blgxd,blgxn,blgxx,blgxb,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
-		VALUES(#{uuid,jdbcType=VARCHAR},#{sybh,jdbcType=VARCHAR},#{symc,jdbcType=VARCHAR},#{sydz,jdbcType=VARCHAR},#{sylx,jdbcType=VARCHAR},#{sysxxxid,jdbcType=VARCHAR},#{gxdz,jdbcType=VARCHAR},#{gxdzmc,jdbcType=VARCHAR},#{xzqy,jdbcType=VARCHAR},#{qsxs,jdbcType=VARCHAR},#{kyzt,jdbcType=VARCHAR},#{xz,jdbcType=VARCHAR},#{gisX,jdbcType=DOUBLE},#{gisY,jdbcType=DOUBLE},#{gisH,jdbcType=DOUBLE},#{glid,jdbcType=VARCHAR},#{bdLon,jdbcType=DOUBLE},#{bdLat,jdbcType=DOUBLE},#{ssld,jdbcType=VARCHAR},#{jzsj,jdbcType=DATE},#{qysj,jdbcType=DATE},#{blgxd,jdbcType=VARCHAR},#{blgxn,jdbcType=VARCHAR},#{blgxx,jdbcType=VARCHAR},#{blgxb,jdbcType=VARCHAR},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},#{cjsj,jdbcType=DATE},#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+		INSERT INTO YAGL_XFSY(uuid,sybm,symc,sydz,sylx,sysxxxid,gxdz,gxdzmc,xzqh,ssdw,kyzt,sygs,gis_x,gis_y,gis_h,lon,lat,gsdw,gsdwlxfs,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{sybm,jdbcType=VARCHAR},#{symc,jdbcType=VARCHAR},#{sydz,jdbcType=VARCHAR},#{sylx,jdbcType=VARCHAR},#{sysxxxid,jdbcType=VARCHAR},#{gxdz,jdbcType=VARCHAR},#{gxdzmc,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{ssdw,jdbcType=VARCHAR},#{kyzt,jdbcType=VARCHAR},#{sygs,jdbcType=VARCHAR},#{gisX,jdbcType=DOUBLE},#{gisY,jdbcType=DOUBLE},#{gisH,jdbcType=DOUBLE},#{lon,jdbcType=DOUBLE},#{lat,jdbcType=DOUBLE},#{gsdw,jdbcType=VARCHAR},#{gsdwlxfs,jdbcType=DATE},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},TO_DATE(TO_CHAR(SYSDATE,'yyyy-MM-dd HH24:mi:ss'),'yyyy-MM-dd HH24:mi:ss'),#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
 	 </insert>
 
 	<!--7.批量插入-->
@@ -308,37 +308,31 @@
 		UPDATE   YAGL_XFSY  
 		<set>
 			<if test="uuid != null">uuid=#{uuid},</if>
-			<if test="sybh != null">sybh=#{sybh},</if>
+			<if test="sybm != null">sybm=#{sybm},</if>
 			<if test="symc != null">symc=#{symc},</if>
 			<if test="sydz != null">sydz=#{sydz},</if>
 			<if test="sylx != null">sylx=#{sylx},</if>
 			<if test="sysxxxid != null">sysxxxid=#{sysxxxid},</if>
 			<if test="gxdz != null">gxdz=#{gxdz},</if>
 			<if test="gxdzmc != null">gxdzmc=#{gxdzmc},</if>
-			<if test="xzqy != null">xzqy=#{xzqy},</if>
-			<if test="qsxs != null">qsxs=#{qsxs},</if>
+			<if test="xzqh != null">xzqh=#{xzqh},</if>
+			<if test="ssdw != null">ssdw=#{ssdw},</if>
 			<if test="kyzt != null">kyzt=#{kyzt},</if>
-			<if test="xz != null">xz=#{xz},</if>
+			<if test="sygs != null">sygs=#{sygs},</if>
 			<if test="gisX != null">gis_x=#{gisX},</if>
 			<if test="gisY != null">gis_y=#{gisY},</if>
 			<if test="gisH != null">gis_h=#{gisH},</if>
-			<if test="glid != null">glid=#{glid},</if>
-			<if test="bdLon != null">bd_lon=#{bdLon},</if>
-			<if test="bdLat != null">bd_lat=#{bdLat},</if>
-			<if test="ssld != null">ssld=#{ssld},</if>
-			<if test="jzsj != null">jzsj=TO_DATE(#{jzsj},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="qysj != null">qysj=TO_DATE(#{qysj},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="blgxd != null">blgxd=#{blgxd},</if>
-			<if test="blgxn != null">blgxn=#{blgxn},</if>
-			<if test="blgxx != null">blgxx=#{blgxx},</if>
-			<if test="blgxb != null">blgxb=#{blgxb},</if>
+			<if test="lon != null">lon=#{lon},</if>
+			<if test="lat != null">lat=#{lat},</if>
+			<if test="gsdw != null">gsdw=#{gsdw},</if>
+			<if test="gsdwlxfs != null">gsdwlxfs=#{gsdwlxfs},</if>
 			<if test="cjrid != null">cjrid=#{cjrid},</if>
 			<if test="cjrmc != null">cjrmc=#{cjrmc},</if>
 			<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=TO_DATE(#{xgsj},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="deleteFlag != null">delete_flag='N',</if>
+			xgsj=TO_DATE(TO_CHAR(SYSDATE,'yyyy-MM-dd HH24:mi:ss'),'yyyy-MM-dd HH24:mi:ss'),
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="bz != null">bz=#{bz},</if>
 			<if test="jdh != null">jdh=#{jdh},</if>
@@ -348,7 +342,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  PKID = #{pkid}
+		WHERE  uuid = #{uuid}
 	</update>
 
 	<!--10.批量修改-->
@@ -425,11 +419,12 @@
         c2.code_name sylxmc,
         c4.code_name kyztmc,
         c6.code_name xhs_szxsmc,
-        c8.code_name xhs_gwxs,
-        c10.code_name xhs_jkxs,
+        c8.code_name xhs_gwxsmc,
+        c10.code_name xhs_jkxsmc,
         c12.code_name xzqhmc,
         c14.code_name xhs_gwyllxmc,
-        txfdz.dzjc dzjc
+        txfdz.dzjc dzjc,
+		c16.code_name sygsmc
         FROM
         (SELECT
 		<include refid="SQL_CONTENT"/>
@@ -453,6 +448,8 @@
         Left Join SYS_CODELIST_DETAIL c12 On c12.CODETYPE = 'XZQH' And tt.xzqh = c12.CODE_VALUE And c12.DELETE_FLAG = 'N'
         <!--管网压力类型-->
         Left Join SYS_CODELIST_DETAIL c14 On c14.CODETYPE = 'GWYLLX' And t2.gwyllx = c14.CODE_VALUE And c14.DELETE_FLAG = 'N'
+		<!--水源归属-->
+		Left Join SYS_CODELIST_DETAIL c16 On c16.CODETYPE = 'SYGS' And tt.sygs = c16.CODE_VALUE And c16.DELETE_FLAG = 'N'
 	</select>
 	<!--关联消防水池属性-->
 	<select id="doFindSyAndXFSCByVo" parameterType="XfsyVO"  resultType="XfsyVO">
@@ -574,7 +571,7 @@
 		<!--水源可用状态-->
 		LEFT JOIN SYS_CODELIST_DETAIL c4 ON (tt.kyzt = c4.code_value AND c4.codeid='B9B2B370D9D54F6499C31523A1369C4F' AND c4.DELETE_FLAG = 'N')
 		<!--水源归属-->
-		LEFT JOIN SYS_CODELIST_DETAIL c6 ON (tt.kyzt = c6.code_value AND c6.codeid='6B2210F144AF2372E053B077770A360E' And c6.DELETE_FLAG = 'N')
+		LEFT JOIN SYS_CODELIST_DETAIL c6 ON (tt.sygs = c6.code_value AND c6.codeid='6B2210F144AF2372E053B077770A360E' And c6.DELETE_FLAG = 'N')
 	</select>
 	<!--查询消火栓-->
 	<select id="doFindXhsListByVO" parameterType="XfsyVO"  resultType="XfsyVO">
@@ -709,4 +706,46 @@
         ORDER BY t.SYBM
 	</select>
 
+	<!--向消火栓表中插入vo-->
+	<insert id="doInsertXhsByVo" parameterType="com.syfri.digitalplan.model.basicinfo.watersource.XfsyVO">
+		INSERT INTO YAGL_XFSY_XHS(uuid,szxs,gwylfw,gwxs,gwzj,gwyllx,jkxs,jkkj,zdll,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{xhs_uuid,jdbcType=VARCHAR},#{xhs_szxs,jdbcType=VARCHAR},#{xhs_gwylfw,jdbcType=VARCHAR},#{xhs_gwxs,jdbcType=VARCHAR},#{xhs_gwzj,jdbcType=DOUBLE},#{xhs_gwyllx,jdbcType=VARCHAR},#{xhs_jkxs,jdbcType=VARCHAR},#{xhs_jkkj,jdbcType=DOUBLE},#{xhs_zdll,jdbcType=DOUBLE},'N',#{xhs_datasource,jdbcType=VARCHAR},#{xhs_jdh,jdbcType=VARCHAR},#{xhs_sjc,jdbcType=DATE},#{xhs_reserve1,jdbcType=VARCHAR},#{xhs_reserve2,jdbcType=VARCHAR},#{xhs_reserve3,jdbcType=VARCHAR},#{xhs_reserve4,jdbcType=DATE})
+	</insert>
+
+	<!--根据水源属性信息id查询消火栓数量-->
+	<select id="doCountXhsBySxid" parameterType="string" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_XFSY_XHS t
+		WHERE 1=1 AND DELETE_FLAG = 'N'
+		AND t.uuid = #{value}
+	</select>
+
+	<!--通过vo更新消火栓表-->
+	<update id="doUpdateXhsByVo"  parameterType="XfsyVO">
+		UPDATE YAGL_XFSY_XHS
+		<set>
+			<if test="xhs_uuid != null">uuid=#{xhs_uuid},</if>
+			<if test="xhs_szxs != null">szxs=#{xhs_szxs},</if>
+			<if test="xhs_gwylfw != null">gwylfw=#{xhs_gwylfw},</if>
+			<if test="xhs_gwxs != null">gwxs=#{xhs_gwxs},</if>
+			<if test="xhs_gwzj != null">gwzj=#{xhs_gwzj},</if>
+			<if test="xhs_gwyllx != null">gwyllx=#{xhs_gwyllx},</if>
+			<if test="xhs_jkxs != null">jkxs=#{xhs_jkxs},</if>
+			<if test="xhs_jkkj != null">jkkj=#{xhs_jkkj},</if>
+			<if test="xhs_zdll != null">zdll=#{xhs_zdll},</if>
+			<if test="xhs_deleteFlag != null">delete_flag=#{xhs_deleteFlag},</if>
+			<if test="xhs_datasource != null">datasource=#{xhs_datasource},</if>
+			<if test="xhs_jdh != null">jdh=#{xhs_jdh},</if>
+			<if test="xhs_sjc != null">sjc=TO_DATE(#{xhs_sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="xhs_reserve1 != null">reserve1=#{xhs_reserve1},</if>
+			<if test="xhs_reserve2 != null">reserve2=#{xhs_reserve2},</if>
+			<if test="xhs_reserve3 != null">reserve3=#{xhs_reserve3},</if>
+			<if test="xhs_reserve4 != null">reserve4=TO_DATE(#{xhs_reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE UUID = #{sysxxxid}
+	</update>
+
+	<!--逻辑删除消火栓-->
+	<update id="doDeleteXhsByUuid"  parameterType="String">
+		UPDATE  YAGL_XFSY_XHS t SET t.DELETE_FLAG = 'Y'  WHERE 1=1 AND t.uuid = #{value}
+	</update>
 </mapper>

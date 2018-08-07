@@ -1,8 +1,5 @@
 package com.syfri.userservice.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.syfri.baseapi.model.ResultVO;
@@ -120,16 +117,10 @@ public class CodelistController  extends BaseController<CodelistVO>{
 	@ApiImplicitParam(name="id",value="代码集主键")
 	@RequiresPermissions("system/codelist:delete")
 	@PostMapping("/deleteByIds")
-	public @ResponseBody ResultVO deleteByIds(@RequestBody String id){
-		JSONObject jsonObject = JSON.parseObject(id);
-		JSONArray ids = jsonObject.getJSONArray("ids");
+	public @ResponseBody ResultVO deleteByIds(@RequestBody List<CodelistVO> list){
 		ResultVO resultVO = ResultVO.build();
 		try{
-			for(int i=0;i<ids.size();i++){
-				String codelistid = (String)ids.get(i);
-				codelistService.doDeleteCodelist(codelistid);
-			}
-			resultVO.setMsg("删除成功");
+			resultVO.setResult(codelistService.doDeleteCodelist(list));;
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
@@ -255,16 +246,10 @@ public class CodelistController  extends BaseController<CodelistVO>{
 	@ApiImplicitParam(name="id",value="代码值主键")
 	@RequiresPermissions("system/codelist:delete")
 	@PostMapping("/detail/deleteByIds")
-	public @ResponseBody ResultVO deleteDetailByIds(@RequestBody String id){
-		JSONObject jsonObject = JSON.parseObject(id);
-		JSONArray ids = jsonObject.getJSONArray("ids");
+	public @ResponseBody ResultVO deleteDetailByIds(@RequestBody List<CodelistDetailVO> list){
 		ResultVO resultVO = ResultVO.build();
 		try{
-			for(int i=0;i<ids.size();i++){
-				String pkid = (String)ids.get(i);
-				codelistService.doDeleteCodelistDetail(pkid);
-			}
-			resultVO.setMsg("删除成功");
+			resultVO.setResult(codelistService.doDeleteCodelistDetail(list));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
@@ -418,7 +403,12 @@ public class CodelistController  extends BaseController<CodelistVO>{
 	public @ResponseBody ResultVO getXzqhTreeByUser(){
 		ResultVO resultVO = ResultVO.build();
 		try{
-			resultVO.setResult(codelistService.getXzqhTreeByUser(CurrentUserUtil.getCurrentUser().getOrganizationVO().getXzqh()));
+			OrganizationVO organizationVO = CurrentUserUtil.getCurrentUser().getOrganizationVO();
+			if(organizationVO!=null && "公安部消防局".equals(organizationVO.getJgmc())){
+				resultVO.setResult(codelistService.getXzqhTreeByUser(null));
+			}else{
+				resultVO.setResult(codelistService.getXzqhTreeByUser(organizationVO.getXzqh()));
+			}
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
@@ -455,6 +445,20 @@ public class CodelistController  extends BaseController<CodelistVO>{
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(codelistService.doFindYjlxCodelisttree(codetype));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	@ApiOperation(value="查询泡沫液类型树状资源",notes="查询")
+	@ApiImplicitParam(name="codetype",value="代码类型")
+	@RequestMapping("/getPmylxTree/{codetype}")
+	public @ResponseBody ResultVO getPmylxTree(@PathVariable String codetype){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(codelistService.doFindPmylxlisttree(codetype));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);

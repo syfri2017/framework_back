@@ -10,7 +10,7 @@
 		 and t.jzid = #{jbxx_jzid}
 		</if>
 		<if test="jbxx_xfssmc != null and jbxx_xfssmc != '' ">
-		 and t.xfssmc = #{jbxx_xfssmc}
+		 and t.xfssmc LIKE concat(concat('%',#{jbxx_xfssmc}),'%')
 		</if>
 		<if test="jbxx_xfsslx != null and jbxx_xfsslx != '' ">
 		 and t.xfsslx = #{jbxx_xfsslx}
@@ -48,6 +48,15 @@
 		<if test="jbxx_reserve4 != null and jbxx_reserve4 != '' ">
 		 and t.reserve4 = #{jbxx_reserve4}
 		</if>
+		<if test="xgrid != null and xgrid != '' ">
+			and t.xgrid = #{xgrid}
+		</if>
+		<if test="xgrmc != null and xgrmc != '' ">
+			and t.xgrmc = #{xgrmc}
+		</if>
+		<if test="xgsj != null and xgsj != '' ">
+			and t.xgsj = #{xgsj}
+		</if>
 	</sql>
 
 	<!--2.查询内容-->
@@ -78,32 +87,52 @@
 	<!--4.按条件查询记录-->
 	<select id="doSearchListByVO" parameterType="FirefacilitiesVO"  resultType="FirefacilitiesVO"> 
 		SELECT 
-			<include refid="SQL_CONTENT"/>
-		FROM YAGL_XFSS t  WHERE t.DELETE_FLAG = 'N' 
+			<include refid="SQL_CONTENT"/>,
+			c2.code_name jbxx_xfsslxmc,
+			dz.dwmc jbxx_zddwmc,
+			jz.jzmc jbxx_jzmc
+		FROM YAGL_XFSS t
+		<!--消防设施类型-->
+		Left Join SYS_CODELIST c1 on c1.CODETYPE = 'XFSSLX' And c1.DELETE_FLAG = 'N'
+		Left Join SYS_CODELIST_DETAIL c2 On c2.CODEID = c1.CODEID And c2.DELETE_FLAG = 'N' and t.XFSSLX = c2.CODE_VALUE
+		<!--重点单位-->
+		Left Join Yagl_Dx_Zddw dz On dz.uuid = t.zddwid And dz.DELETE_FLAG = 'N'
+		<!--建筑-->
+		Left Join Yagl_Dwjzxx jz On jz.jzid = t.jzid And jz.DELETE_FLAG = 'N'
+		WHERE t.DELETE_FLAG = 'N'
+		<if test="jbxx_jzmc != null and jbxx_jzmc != '' ">
+			and jz.jzmc LIKE concat(concat('%',#{jbxx_jzmc}),'%')
+		</if>
 			<include refid="SQL_CONDITION"/>
 	</select>
 
 	<!--5.根据ID查询记录-->
 	<select id="doFindById" parameterType="FirefacilitiesVO"  resultType="FirefacilitiesVO">  
 		SELECT 
-		<include refid="SQL_CONTENT"/>
-		FROM YAGL_XFSS t 
+		<include refid="SQL_CONTENT"/>,
+		dz.dwmc jbxx_zddwmc,
+		jz.jzmc jbxx_jzmc
+		FROM YAGL_XFSS t
+		<!--重点单位-->
+		Left Join Yagl_Dx_Zddw dz On dz.uuid = t.zddwid And dz.DELETE_FLAG = 'N'
+		<!--建筑-->
+		Left Join Yagl_Dwjzxx jz On jz.jzid = t.jzid And jz.DELETE_FLAG = 'N'
 		WHERE t.DELETE_FLAG = 'N' AND  t.xfssid = #{value}
 	</select>
 
 	<!--6.按照VO插入-->
 	<insert  id="doInsertByVO"  parameterType="FirefacilitiesVO"> 
-		<selectKey resultType="String" order="BEFORE" keyProperty="pkid">
-			SELECT SYS_GUID() AS pkid FROM DUAL
+		<selectKey resultType="String" order="BEFORE" keyProperty="jbxx_xfssid">
+			SELECT SYS_GUID() AS jbxx_xfssid FROM DUAL
 		</selectKey>
-		INSERT INTO YAGL_XFSS(xfssid,jzid,xfssmc,xfsslx,iszddw,zddwid,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
-		VALUES(#{xfssid,jdbcType=VARCHAR},#{jzid,jdbcType=VARCHAR},#{xfssmc,jdbcType=VARCHAR},#{xfsslx,jdbcType=VARCHAR},#{iszddw,jdbcType=VARCHAR},#{zddwid,jdbcType=VARCHAR},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},#{cjsj,jdbcType=DATE},#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+		INSERT INTO YAGL_XFSS(xfssid,jzid,xfssmc,xfsslx,iszddw,zddwid,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj)
+		VALUES(#{jbxx_xfssid,jdbcType=VARCHAR},#{jbxx_jzid,jdbcType=VARCHAR},#{jbxx_xfssmc,jdbcType=VARCHAR},#{jbxx_xfsslx,jdbcType=VARCHAR},#{jbxx_iszddw,jdbcType=VARCHAR},#{jbxx_zddwid,jdbcType=VARCHAR},'N',#{jbxx_datasource,jdbcType=VARCHAR},#{jbxx_bz,jdbcType=VARCHAR},#{jbxx_jdh,jdbcType=VARCHAR},#{jbxx_sjc,jdbcType=DATE},#{jbxx_reserve1,jdbcType=VARCHAR},#{jbxx_reserve2,jdbcType=VARCHAR},#{jbxx_reserve3,jdbcType=VARCHAR},#{jbxx_reserve4,jdbcType=DATE},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE})
 	 </insert>
 
 	<!--7.批量插入-->
 	<insert  id="doBatchInsertByList"  parameterType="java.util.List"> 
 		INSERT INTO YAGL_XFSS(xfssid,jzid,xfssmc,xfsslx,iszddw,zddwid,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
-		SELECT SYS_GUID() pkid, A.* 
+		SELECT SYS_GUID() uuid, A.* 
 		FROM ( 
 		<foreach collection="list" item="item" index="index" separator="UNION ALL" >
 		SELECT
@@ -115,36 +144,33 @@
 
 	<!--8.按主键逻辑删除-->
 	<update id="doDeleteById"  parameterType="String"> 
-		UPDATE  YAGL_XFSS t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.PKID = #{value} 
+		UPDATE  YAGL_XFSS t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.xfssid = #{value}
 	</update>
 
 	<!--9.按复合条件逻辑更新-->
 	<update  id="doUpdateByVO"  parameterType="FirefacilitiesVO"> 
 		UPDATE   YAGL_XFSS  
 		<set>
-			<if test="xfssid != null">xfssid=#{xfssid},</if>
-			<if test="jzid != null">jzid=#{jzid},</if>
-			<if test="xfssmc != null">xfssmc=#{xfssmc},</if>
-			<if test="xfsslx != null">xfsslx=#{xfsslx},</if>
-			<if test="iszddw != null">iszddw=#{iszddw},</if>
-			<if test="zddwid != null">zddwid=#{zddwid},</if>
-			<if test="cjrid != null">cjrid=#{cjrid},</if>
-			<if test="cjrmc != null">cjrmc=#{cjrmc},</if>
-			<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<!--<if test="xfssid != null">xfssid=#{xfssid},</if>-->
+			<if test="jbxx_jzid != null">jzid=#{jbxx_jzid},</if>
+			<if test="jbxx_xfssmc != null">xfssmc=#{jbxx_xfssmc},</if>
+			<if test="jbxx_xfsslx != null">xfsslx=#{jbxx_xfsslx},</if>
+			<if test="jbxx_iszddw != null">iszddw=#{jbxx_iszddw},</if>
+			<if test="jbxx_zddwid != null">zddwid=#{jbxx_zddwid},</if>
+			<if test="jbxx_deleteFlag != null">delete_flag=#{jbxx_deleteFlag},</if>
+			<if test="jbxx_datasource != null">datasource=#{jbxx_datasource},</if>
+			<if test="jbxx_bz != null">bz=#{jbxx_bz},</if>
+			<if test="jbxx_jdh != null">jdh=#{jbxx_jdh},</if>
+			<if test="jbxx_sjc != null">sjc=TO_DATE(#{jbxx_sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="jbxx_reserve1 != null">reserve1=#{jbxx_reserve1},</if>
+			<if test="jbxx_reserve2 != null">reserve2=#{jbxx_reserve2},</if>
+			<if test="jbxx_reserve3 != null">reserve3=#{jbxx_reserve3},</if>
+			<if test="jbxx_reserve4 != null">reserve4=TO_DATE(#{jbxx_reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=TO_DATE(#{xgsj},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="deleteFlag != null">delete_flag='N',</if>
-			<if test="datasource != null">datasource=#{datasource},</if>
-			<if test="bz != null">bz=#{bz},</if>
-			<if test="jdh != null">jdh=#{jdh},</if>
-			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="reserve1 != null">reserve1=#{reserve1},</if>
-			<if test="reserve2 != null">reserve2=#{reserve2},</if>
-			<if test="reserve3 != null">reserve3=#{reserve3},</if>
-			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+			xgsj=sysdate
 		</set>
-		WHERE  PKID = #{pkid}
+		WHERE  xfssid = #{jbxx_xfssid}
 	</update>
 
 	<!--10.批量修改-->
@@ -762,4 +788,862 @@
 		FROM YAGL_XFSS_QTXFSS t  WHERE t.DELETE_FLAG = 'N'
 		AND t.xfssid = #{value}
 	</select>
+
+
+	<!--安全出口VO插入-->
+	<insert  id="doInsertAqckByVO"  parameterType="Firefacilities_aqsscs_aqckVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_AQSSCS_AQCK(uuid,xfssid,ssjz,wz,sl,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--安全出口按复合条件逻辑更新-->
+	<update  id="doUpdateAqckByVO"  parameterType="Firefacilities_aqsscs_aqckVO">
+		UPDATE   YAGL_XFSS_AQSSCS_AQCK
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="sl != null">sl=#{sl},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--疏散楼梯VO插入-->
+	<insert  id="doInsertSsltByVO"  parameterType="Firefacilities_aqsscs_ssltVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_AQSSCS_SSLT(uuid,xfssid,ssjz,wz,sl,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--疏散楼梯按复合条件逻辑更新-->
+	<update  id="doUpdateSsltByVO"  parameterType="Firefacilities_aqsscs_ssltVO">
+		UPDATE   YAGL_XFSS_AQSSCS_SSLT
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="sl != null">sl=#{sl},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--消防电梯VO插入-->
+	<insert  id="doInsertXfdtByVO"  parameterType="Firefacilities_aqsscs_xfdtVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_AQSSCS_XFDT(uuid,xfssid,ssjz,wz,sl,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--消防电梯按复合条件逻辑更新-->
+	<update  id="doUpdateXfdtByVO"  parameterType="Firefacilities_aqsscs_xfdtVO">
+		UPDATE   YAGL_XFSS_AQSSCS_XFDT
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="sl != null">sl=#{sl},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--避难层VO插入-->
+	<insert  id="doInsertBncByVO"  parameterType="Firefacilities_aqsscs_bncVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_AQSSCS_BNC(uuid,xfssid,ssjz,wz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--避难层按复合条件逻辑更新-->
+	<update  id="doUpdateBncByVO"  parameterType="Firefacilities_aqsscs_bncVO">
+		UPDATE   YAGL_XFSS_AQSSCS_BNC
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--应急广播VO插入-->
+	<insert  id="doInsertYjgbByVO"  parameterType="Firefacilities_aqsscs_yjgbVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_AQSSCS_YJGB(uuid,xfssid,ssjz,wz,ywyjgb,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{ywyjgb,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--应急广播按复合条件逻辑更新-->
+	<update  id="doUpdateYjgbByVO"  parameterType="Firefacilities_aqsscs_yjgbVO">
+		UPDATE   YAGL_XFSS_AQSSCS_YJGB
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="ywyjgb != null">ywyjgb=#{ywyjgb},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--消防水系统-消防泵房VO插入-->
+	<insert  id="doInsertXfbfByVO"  parameterType="Firefacilities_xfsxt_xfbfVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_XFSXT_XFBF(uuid,xfssid,ssjz,wz,xhssl,xhszdll,plbsl,plbzdll,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{xhssl,jdbcType=DOUBLE},#{xhszdll,jdbcType=DOUBLE},#{plbsl,jdbcType=DOUBLE},#{plbzdll,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--消防水系统-消防泵房按复合条件逻辑更新-->
+	<update  id="doUpdateXfbfByVO"  parameterType="Firefacilities_xfsxt_xfbfVO">
+		UPDATE   YAGL_XFSS_XFSXT_XFBF
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="xhssl != null">xhssl=#{xhssl},</if>
+			<if test="xhszdll != null">xhszdll=#{xhszdll},</if>
+			<if test="plbsl != null">plbsl=#{plbsl},</if>
+			<if test="plbzdll != null">plbzdll=#{plbzdll},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--消防水系统-消防水箱VO插入-->
+	<insert  id="doInsertXfsxByVO"  parameterType="Firefacilities_xfsxt_xfsxVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_XFSXT_XFSX(uuid,xfssid,ssjz,wz,sxrl,bjsd,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sxrl,jdbcType=DOUBLE},#{bjsd,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--消防水系统-消防水箱按复合条件逻辑更新-->
+	<update  id="doUpdateXfsxByVO"  parameterType="Firefacilities_xfsxt_xfsxVO">
+		UPDATE   YAGL_XFSS_XFSXT_XFSX
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="sxrl != null">sxrl=#{sxrl},</if>
+			<if test="bjsd != null">bjsd=#{bjsd},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--消防水系统-消防水池VO插入-->
+	<insert  id="doInsertXfscByVO"  parameterType="Firefacilities_xfsxt_xfscVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_XFSXT_XFSC(uuid,xfssid,ssjz,wz,sxrl,bjsd,ywqsj,qsjwz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sxrl,jdbcType=DOUBLE},#{bjsd,jdbcType=DOUBLE},#{ywqsj,jdbcType=VARCHAR},#{qsjwz,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--消防水系统-消防水池按复合条件逻辑更新-->
+	<update  id="doUpdateXfscByVO"  parameterType="Firefacilities_xfsxt_xfscVO">
+		UPDATE   YAGL_XFSS_XFSXT_XFSC
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="sxrl != null">sxrl=#{sxrl},</if>
+			<if test="bjsd != null">bjsd=#{bjsd},</if>
+			<if test="ywqsj != null">ywqsj=#{ywqsj},</if>
+			<if test="qsjwz != null">qsjwz=#{qsjwz},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--消防水系统-室内消火栓VO插入-->
+	<insert  id="doInsertSnxhsByVO"  parameterType="Firefacilities_xfsxt_snxhsVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_XFSXT_SNXHS(uuid,xfssid,ssjz,wz,sl,sfky,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},#{sfky,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--消防水系统-室内消火栓按复合条件逻辑更新-->
+	<update  id="doUpdateSnxhsByVO"  parameterType="Firefacilities_xfsxt_snxhsVO">
+		UPDATE   YAGL_XFSS_XFSXT_SNXHS
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="sl != null">sl=#{sl},</if>
+			<if test="sfky != null">sfky=#{sfky},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--消防水系统-室外消火栓VO插入-->
+	<insert  id="doInsertSwxhsByVO"  parameterType="Firefacilities_xfsxt_swxhsVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_XFSXT_SWXHS(uuid,xfssid,ssjz,wz,sl,sfky,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},#{sfky,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--消防水系统-室外消火栓按复合条件逻辑更新-->
+	<update  id="doUpdateSwxhsByVO"  parameterType="Firefacilities_xfsxt_swxhsVO">
+		UPDATE   YAGL_XFSS_XFSXT_SWXHS
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="sl != null">sl=#{sl},</if>
+			<if test="sfky != null">sfky=#{sfky},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--消防水系统-水泵接合器VO插入-->
+	<insert  id="doInsertSbjhqByVO"  parameterType="Firefacilities_xfsxt_sbjhqVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_XFSXT_SBJHQ(uuid,xfssid,ssjz,wz,xh,azxs,jskcc,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{xh,jdbcType=VARCHAR},#{azxs,jdbcType=DOUBLE},#{jskcc,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--消防水系统-水泵接合器按复合条件逻辑更新-->
+	<update  id="doUpdateSbjhqByVO"  parameterType="Firefacilities_xfsxt_sbjhqVO">
+		UPDATE   YAGL_XFSS_XFSXT_SBJHQ
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="xh != null">xh=#{xh},</if>
+			<if test="azxs != null">azxs=#{azxs},</if>
+			<if test="jskcc != null">jskcc=#{jskcc},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--消防水系统-喷淋系统VO插入-->
+	<insert  id="doInsertPlxtByVO"  parameterType="Firefacilities_xfsxt_plxtVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_XFSXT_PLXT(uuid,xfssid,ssjz,wz,ywplxt,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{ywplxt,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--消防水系统-喷淋系统按复合条件逻辑更新-->
+	<update  id="doUpdatePlxtByVO"  parameterType="Firefacilities_xfsxt_plxtVO">
+		UPDATE   YAGL_XFSS_XFSXT_PLXT
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="ywplxt != null">ywplxt=#{ywplxt},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--消防水系统-冷却水系统VO插入-->
+	<insert  id="doInsertLqsxtByVO"  parameterType="Firefacilities_xfsxt_lqsxtVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_XFSXT_LQSXT(uuid,xfssid,ssjz,wz,ywlqsxt,gsqd,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{ywlqsxt,jdbcType=VARCHAR},#{gsqd,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--消防水系统-冷却水系统按复合条件逻辑更新-->
+	<update  id="doUpdateLqsxtByVO"  parameterType="Firefacilities_xfsxt_lqsxtVO">
+		UPDATE   YAGL_XFSS_XFSXT_LQSXT
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="ywlqsxt != null">ywlqsxt=#{ywlqsxt},</if>
+			<if test="gsqd != null">gsqd=#{gsqd},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--消防水系统-固定水炮VO插入-->
+	<insert  id="doInsertGdspByVO"  parameterType="Firefacilities_xfsxt_gdspVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_XFSXT_GDSP(uuid,xfssid,ssjz,wz,sl,isky,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},#{isky,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--消防水系统-固定水炮按复合条件逻辑更新-->
+	<update  id="doUpdateGdspByVO"  parameterType="Firefacilities_xfsxt_gdspVO">
+		UPDATE   YAGL_XFSS_XFSXT_GDSP
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="sl != null">sl=#{sl},</if>
+			<if test="isky != null">isky=#{isky},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--消防水系统-半固定设施VO插入-->
+	<insert  id="doInsertBgdssByVO"  parameterType="Firefacilities_xfsxt_bgdssVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_XFSXT_BGDSS(uuid,xfssid,ssjz,wz,sl,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--消防水系统-半固定设施按复合条件逻辑更新-->
+	<update  id="doUpdateBgdssByVO"  parameterType="Firefacilities_xfsxt_bgdssVO">
+		UPDATE   YAGL_XFSS_XFSXT_BGDSS
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="sl != null">sl=#{sl},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--泡沫系统-泡沫泵房VO插入-->
+	<insert  id="doInsertPmbfByVO"  parameterType="Firefacilities_pmxt_pmbfVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_PMXT_PMBF(uuid,xfssid,ssjz,wz,pmylx,pmycl,pmbzdll,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{pmylx,jdbcType=VARCHAR},#{pmycl,jdbcType=DOUBLE},#{pmbzdll,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--泡沫系统-泡沫泵房按复合条件逻辑更新-->
+	<update  id="doUpdatePmbfByVO"  parameterType="Firefacilities_pmxt_pmbfVO">
+		UPDATE   YAGL_XFSS_PMXT_PMBF
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="pmylx != null">pmylx=#{pmylx},</if>
+			<if test="pmycl != null">pmycl=#{pmycl},</if>
+			<if test="pmbzdll != null">pmbzdll=#{pmbzdll},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--泡沫系统-泡沫消火栓VO插入-->
+	<insert  id="doInsertPmxhsByVO"  parameterType="Firefacilities_pmxt_pmxhsVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_PMXT_PMXHS(uuid,xfssid,ssjz,wz,isky,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{isky,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--泡沫系统-泡沫消火栓按复合条件逻辑更新-->
+	<update  id="doUpdatePmxhsByVO"  parameterType="Firefacilities_pmxt_pmxhsVO">
+		UPDATE   YAGL_XFSS_PMXT_PMXHS
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="isky != null">isky=#{isky},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--泡沫系统-固定泡沫炮VO插入-->
+	<insert  id="doInsertGdpmpByVO"  parameterType="Firefacilities_pmxt_gdpmpVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_PMXT_GDPMP(uuid,xfssid,ssjz,wz,sl,sfky,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},#{sfky,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--泡沫系统-固定泡沫炮按复合条件逻辑更新-->
+	<update  id="doUpdateGdpmpByVO"  parameterType="Firefacilities_pmxt_gdpmpVO">
+		UPDATE   YAGL_XFSS_PMXT_GDPMP
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="sl != null">sl=#{sl},</if>
+			<if test="sfky != null">sfky=#{sfky},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--泡沫系统-泡沫发生器VO插入-->
+	<insert  id="doInsertPmfsqByVO"  parameterType="Firefacilities_pmxt_pmfsqVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_PMXT_PMFSQ(uuid,xfssid,ssjz,wz,xh,sl,ll,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{xh,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},#{ll,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--泡沫系统-泡沫发生器按复合条件逻辑更新-->
+	<update  id="doUpdatePmfsqByVO"  parameterType="Firefacilities_pmxt_pmfsqVO">
+		UPDATE   YAGL_XFSS_PMXT_PMFSQ
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="xh != null">xh=#{xh},</if>
+			<if test="sl != null">sl=#{sl},</if>
+			<if test="ll != null">ll=#{ll},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--泡沫系统-半固定设施VO插入-->
+	<insert  id="doInsertPmBgdssByVO"  parameterType="Firefacilities_pmxt_bgdssVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_PMXT_BGDSS(uuid,xfssid,ssjz,wz,sl,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--泡沫系统-半固定设施按复合条件逻辑更新-->
+	<update  id="doUpdatePmBgdssByVO"  parameterType="Firefacilities_pmxt_bgdssVO">
+		UPDATE   YAGL_XFSS_PMXT_BGDSS
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="sl != null">sl=#{sl},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--蒸汽灭火系统-固定式VO插入-->
+	<insert  id="doInsertGdsByVO"  parameterType="Firefacilities_zqmhxt_gdsVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_ZQMHXT_GDS(uuid,xfssid,ssjz,wz,sl,edyl,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},#{edyl,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--蒸汽灭火系统-固定式按复合条件逻辑更新-->
+	<update  id="doUpdateGdsByVO"  parameterType="Firefacilities_zqmhxt_gdsVO">
+		UPDATE   YAGL_XFSS_ZQMHXT_GDS
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="sl != null">sl=#{sl},</if>
+			<if test="edyl != null">edyl=#{edyl},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--蒸汽灭火系统-半固定式VO插入-->
+	<insert  id="doInsertBgdsByVO"  parameterType="Firefacilities_zqmhxt_bgdsVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_ZQMHXT_BGDS(uuid,xfssid,ssjz,wz,sl,edyl,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{ssjz,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},#{edyl,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--蒸汽灭火系统-半固定式按复合条件逻辑更新-->
+	<update  id="doUpdateBgdsByVO"  parameterType="Firefacilities_zqmhxt_bgdsVO">
+		UPDATE   YAGL_XFSS_ZQMHXT_BGDS
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="ssjz != null">ssjz=#{ssjz},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="sl != null">sl=#{sl},</if>
+			<if test="edyl != null">edyl=#{edyl},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--消防控制室VO插入-->
+	<insert  id="doInsertXfkzsByVO"  parameterType="Firefacilities_xfkzsVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_XFKZS(uuid,xfssid,wz,iszdbj,isldkz,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,delete_flag)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{iszdbj,jdbcType=VARCHAR},#{isldkz,jdbcType=VARCHAR},#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},'N')
+	</insert>
+	<!--消防控制室按复合条件逻辑更新-->
+	<update  id="doUpdateXfkzsByVO"  parameterType="Firefacilities_xfkzsVO">
+		UPDATE   YAGL_XFSS_XFKZS
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="iszdbj != null">iszdbj=#{iszdbj},</if>
+			<if test="isldkz != null">isldkz=#{isldkz},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="bz != null">bz=#{bz},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag}</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--防排烟措施-排烟口/出烟口VO插入-->
+	<insert  id="doInsertPycykByVO"  parameterType="Firefacilities_fpycs_pycykVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_FPYCS_PYCYK(uuid,xfssid,wz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--防排烟措施-排烟口/出烟口按复合条件逻辑更新-->
+	<update  id="doUpdatePycykByVO"  parameterType="Firefacilities_fpycs_pycykVO">
+		UPDATE   YAGL_XFSS_FPYCS_PYCYK
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--防排烟措施-防排烟系统VO插入-->
+	<insert  id="doInsertFpyxtByVO"  parameterType="Firefacilities_fpycs_fpyxtVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_FPYCS_FPYXT(uuid,xfssid,qbwz,isky,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{qbwz,jdbcType=VARCHAR},#{isky,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--防排烟措施-防排烟系统按复合条件逻辑更新-->
+	<update  id="doUpdateFpyxtByVO"  parameterType="Firefacilities_fpycs_fpyxtVO">
+		UPDATE   YAGL_XFSS_FPYCS_FPYXT
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="qbwz != null">qbwz=#{qbwz},</if>
+			<if test="isky != null">isky=#{isky},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--防火分区VO插入-->
+	<insert  id="doInsertFhfqByVO"  parameterType="Firefacilities_fhfqVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_FHFQ(uuid,xfssid,qymj,qywz,fgss,fgwz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{qymj,jdbcType=DOUBLE},#{qywz,jdbcType=VARCHAR},#{fgss,jdbcType=VARCHAR},#{fgwz,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--防火分区按复合条件逻辑更新-->
+	<update  id="doUpdateFhfqByVO"  parameterType="Firefacilities_fhfqVO">
+		UPDATE   YAGL_XFSS_FHFQ
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="qymj != null">qymj=#{qymj},</if>
+			<if test="qywz != null">qywz=#{qywz},</if>
+			<if test="fgss != null">fgss=#{fgss},</if>
+			<if test="fgwz != null">fgwz=#{fgwz},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--其他灭火系统-气体灭火系统VO插入-->
+	<insert  id="doInsertQtmhxtByVO"  parameterType="Firefacilities_qtmhxt_qtmhxtVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_QTMHXT_QTMHXT(uuid,xfssid,qbwz,zyfw,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{qbwz,jdbcType=VARCHAR},#{zyfw,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--其他灭火系统-气体灭火系统按复合条件逻辑更新-->
+	<update  id="doUpdateQtmhxtByVO"  parameterType="Firefacilities_qtmhxt_qtmhxtVO">
+		UPDATE   YAGL_XFSS_QTMHXT_QTMHXT
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="qbwz != null">qbwz=#{qbwz},</if>
+			<if test="zyfw != null">zyfw=#{zyfw},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--其他灭火系统-干粉灭火系统VO插入-->
+	<insert  id="doInsertGfmhxtByVO"  parameterType="Firefacilities_qtmhxt_gfmhxtVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_QTMHXT_GFMHXT(uuid,xfssid,qbwz,zyfw,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{qbwz,jdbcType=VARCHAR},#{zyfw,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--其他灭火系统-干粉灭火系统按复合条件逻辑更新-->
+	<update  id="doUpdateGfmhxtByVO"  parameterType="Firefacilities_qtmhxt_gfmhxtVO">
+		UPDATE   YAGL_XFSS_QTMHXT_GFMHXT
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="qbwz != null">qbwz=#{qbwz},</if>
+			<if test="zyfw != null">zyfw=#{zyfw},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
+	<!--其他消防设施VO插入-->
+	<insert  id="doInsertQtxfssByVO"  parameterType="Firefacilities_qtxfssVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSS_QTXFSS(uuid,xfssid,wz,ms,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{xfssid,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{ms,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+	<!--其他消防设施按复合条件逻辑更新-->
+	<update  id="doUpdateQtxfssByVO"  parameterType="Firefacilities_qtxfssVO">
+		UPDATE   YAGL_XFSS_QTXFSS
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfssid != null">xfssid=#{xfssid},</if>
+			<if test="wz != null">wz=#{wz},</if>
+			<if test="ms != null">ms=#{ms},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  xfssid = #{xfssid}
+	</update>
+
 </mapper>

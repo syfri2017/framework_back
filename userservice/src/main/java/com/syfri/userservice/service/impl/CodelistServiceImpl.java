@@ -68,9 +68,15 @@ public class CodelistServiceImpl extends BaseServiceImpl<CodelistVO> implements 
 
 	/*--删除：代码集.--*/
 	@Override
-	public void doDeleteCodelist(String codeid){
-		codelistDAO.doDeleteById(codeid);
-		codelistDAO.doDeleteCodelistDetailBatch(codeid);
+	public int doDeleteCodelist(List<CodelistVO> list){
+		int num = 0;
+		for(CodelistVO vo : list){
+			String codeid = vo.getCodeid();
+			codelistDAO.doDeleteById(codeid);
+			codelistDAO.doDeleteCodelistDetailBatch(codeid);
+			num++;
+		}
+		return num;
 	}
 
 	/*--查询：根据代码集详情对象查询.--*/
@@ -102,8 +108,13 @@ public class CodelistServiceImpl extends BaseServiceImpl<CodelistVO> implements 
 
 	/*--删除从表：根据主键山粗.--*/
 	@Override
-	public void doDeleteCodelistDetail(String pkid){
-		codelistDAO.doDeleteCodelistDetail(pkid);
+	public int doDeleteCodelistDetail(List<CodelistDetailVO> list){
+		int num = 0;
+		for(CodelistDetailVO vo: list){
+			codelistDAO.doDeleteCodelistDetail(vo.getPkid());
+			num++;
+		}
+		return num;
 	}
 
 	/*--根据代码类型查询代码集.--*/
@@ -434,5 +445,39 @@ public class CodelistServiceImpl extends BaseServiceImpl<CodelistVO> implements 
 			provinceTrees.add(provinceTree);
 		}
 		return provinceTrees;
+	}
+
+	/*--查询泡沫液类型树状资源
+	* -- by liurui -- */
+	@Override
+	public List<CodelistTree> doFindPmylxlisttree(String codetype) {
+		// 目的树
+		List<CodelistTree> codelistTrees = new ArrayList<>();
+		// 源数据
+		List<CodelistDetailVO> codelistDetailVOs = codelistDAO.doFindCodelistByType(codetype);
+		if (codelistDetailVOs != null && codelistDetailVOs.size() > 0) {
+			for (CodelistDetailVO codelistDetailVO : codelistDetailVOs) {
+				// 选出第一级类别
+				if (codelistDetailVO.getCodeValue().endsWith("0000")) {
+					CodelistTree tree = new CodelistTree();
+					tree.setCodeName(codelistDetailVO.getCodeName());
+					tree.setCodeValue(codelistDetailVO.getCodeValue());
+					List<CodelistTree> children = new ArrayList();
+					//第二级别
+					for (CodelistDetailVO codelistDetailVO2 : codelistDetailVOs) {
+						if (codelistDetailVO2.getCodeValue().startsWith(codelistDetailVO.getCodeValue().substring(0,4))&&!codelistDetailVO2.equals(codelistDetailVO)){
+							CodelistTree tree2 = new CodelistTree();
+							tree2.setCodeName(codelistDetailVO2.getCodeName());
+							tree2.setCodeValue(codelistDetailVO2.getCodeValue());
+							children.add(tree2);
+						}
+					}
+					if(!children.isEmpty() )
+						tree.setChildren(children);
+					codelistTrees.add(tree);
+				}
+			}
+		}
+		return codelistTrees;
 	}
 }

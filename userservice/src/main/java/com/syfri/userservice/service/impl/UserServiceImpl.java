@@ -2,6 +2,7 @@ package com.syfri.userservice.service.impl;
 
 import com.syfri.userservice.model.AccountVO;
 import com.syfri.userservice.service.AccountService;
+import com.syfri.userservice.service.OrganizationService;
 import com.syfri.userservice.utils.CurrentUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserVO> implements UserServ
 
 	@Autowired
 	private UserDAO userDAO;
+
+	@Autowired
+	private OrganizationService organizationService;
 
 	@Autowired
 	private AccountService accountService;
@@ -52,6 +56,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserVO> implements UserServ
 		userVO.setCreateName(CurrentUserUtil.getCurrentUserName());
 		userVO.setUserid(accountVO.getUserid());
 		userDAO.doInsertByVO(userVO);
+		if(!userVO.getOrganizationId().isEmpty()){
+			userVO.setOrganizationName(organizationService.doFindById(userVO.getOrganizationId()).getJgjc());
+		}
 
 		//向中间表中插入账户角色情况
 		accountService.doInsertAccountRolesBatch(accountVO.getUserid(), userVO.getRoles());
@@ -67,6 +74,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserVO> implements UserServ
 
 		//修改用户表基本信息
 		userDAO.doUpdateByVO(userVO);
+		if(!userVO.getOrganizationId().isEmpty()){
+			userVO.setOrganizationName(organizationService.doFindById(userVO.getOrganizationId()).getJgjc());
+		}
 
 		//修改角色中间表信息
 		accountService.doDeleteAccountRoles(userVO.getUserid());
@@ -76,14 +86,20 @@ public class UserServiceImpl extends BaseServiceImpl<UserVO> implements UserServ
 
 	/*--删除：删除用户同时删除其角色.--*/
 	@Override
-	public void doDeleteUserRoles(String pkid){
-		String userid = userDAO.doFindById(pkid).getUserid();
-		//删除用户表
-		userDAO.doDeleteById(pkid);
-		//删除账户表
-		accountService.doDeleteById(userid);
-		//删除账户角色中间表
-		accountService.doDeleteAccountRoles(userid);
+	public int doDeleteUserRoles(List<UserVO> list){
+		int num = 0;
+		for(UserVO vo : list){
+			String pkid = vo.getPkid();
+			String userid = userDAO.doFindById(pkid).getUserid();
+			//删除用户表
+			userDAO.doDeleteById(pkid);
+			//删除账户表
+			accountService.doDeleteById(userid);
+			//删除账户角色中间表
+			accountService.doDeleteAccountRoles(userid);
+			num++;
+		}
+		return num;
 	}
 
 }
