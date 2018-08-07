@@ -66,56 +66,66 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
 				vo.setDeleteFlag("Y");
 				count = count + buildingDAO.doUpdateByVO(vo);
 
+				//删除从表
+				if(!buildingVO.getJzlx().isEmpty()){
+					switch(buildingVO.getJzlx()) {
+						case "10":
+						case "20":
+							vo.setJzid(buildingVO.getJzid());
+							vo.setXgrid(buildingVO.getXgrid());
+							vo.setXgrmc(buildingVO.getXgrmc());
+							vo.setXgsj("1");
+							vo.setDeleteFlag("Y");
+							buildingDAO.doDeleteJzlById(buildingVO);
+							break;
+						case "30":
+							vo.setJzid(buildingVO.getJzid());
+							vo.setXgrid(buildingVO.getXgrid());
+							vo.setXgrmc(buildingVO.getXgrmc());
+							vo.setXgsj("1");
+							vo.setDeleteFlag("Y");
+							buildingDAO.doDeleteZzlById(buildingVO);
+							break;
+						case "40":
+							vo.setJzid(buildingVO.getJzid());
+							vo.setXgrid(buildingVO.getXgrid());
+							vo.setXgrmc(buildingVO.getXgrmc());
+							vo.setXgsj("1");
+							vo.setDeleteFlag("Y");
+							buildingDAO.doDeleteCglById(buildingVO);
+							break;
+					}
+				}
+
 			}
 		}
 		return count;
-
-		//删除从表
-//		if(!buildingVO.getJzlx().isEmpty()){
-//			switch(buildingVO.getJzlx()) {
-//				case "10":
-//				case "20":
-//					buildingDAO.doDeleteJzlById(buildingVO);
-//					break;
-//				case "30":
-//					buildingDAO.doDeleteZzlById(buildingVO);
-//					break;
-//				case "40":
-//					buildingDAO.doDeleteCglById(buildingVO);
-//					break;
-//			}
-//		}
 
 	}
 
 	public int doUpdateBuildingzoning(BuildingVO buildingVO) {
 		buildingVO.setXgsj("1");
 		int count = buildingDAO.doUpdateByVO(buildingVO);
+		if(!buildingVO.getJzlx().isEmpty()) {
+			switch (buildingVO.getJzlx()) {
+				case "10":
+				case "20":
+					//分区类型为10和20 查找建筑分区详情关联建筑分区-建筑类
+					buildingDAO.doUpdateJzlByVO(buildingVO);
+					break;
+				case "30":
+					//查找建筑分区详情关联建筑分区-装置类
+					buildingDAO.doUpdateZzlByVO(buildingVO);
+					break;
+				case "40":
+					//查找建筑分区详情关联建筑分区-储罐类
+					buildingDAO.doUpdateCglByVO(buildingVO);
+					break;
+			}
+
+		}
+
 		return count;
-//		if(!buildingVO.getJzlx().isEmpty()) {
-//
-//			switch (buildingVO.getJzlx()) {
-//				case "10":
-//				case "20":
-//					//分区类型为10和20 查找建筑分区详情关联建筑分区-建筑类
-//					buildingDAO.doUpdateJzlByVO(buildingVO);
-//					break;
-//				case "30":
-//					//查找建筑分区详情关联建筑分区-装置类
-//					buildingDAO.doUpdateZzlByVO(buildingVO);
-//					break;
-//				case "40":
-//					//查找建筑分区详情关联建筑分区-储罐类
-//					buildingDAO.doUpdateCglByVO(buildingVO);
-//					break;
-//				default:
-//					break;
-//			}
-//			return count;
-//		}
-
-
-
 
 	}
 
