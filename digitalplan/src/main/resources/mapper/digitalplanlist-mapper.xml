@@ -104,6 +104,9 @@
 		<if test="endtime != null and endtime != '' ">
 			and TO_CHAR(t.shsj,'yyyy/MM/dd') &lt;= #{endtime}
 		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
 	</sql>
 
 	<!--2.查询内容-->
