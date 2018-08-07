@@ -53,6 +53,9 @@
 		<if test="endtime != null and endtime != '' ">
 			and TO_CHAR(t.zzsj,'yyyy/MM/dd') &lt;= #{endtime}
 		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
 	</sql>
 
 	<!--高级搜索单位建筑 初始化列表-->
@@ -68,6 +71,9 @@
 		<if test="jzmc != null and jzmc != '' ">
 			AND
             (t.jzmc LIKE concat(concat('%',#{jzmc}),'%') OR t.jzwz LIKE concat(concat('%',#{jzmc}),'%'))
+		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
 		</if>
 	</select>
     <!--高级搜索 建筑类-->
@@ -100,6 +106,9 @@
         <if test="jzl_dsgd_min != null and jzl_dsgd_min != '' ">
             AND t_jzl.dsgd > #{jzl_dsgd_min}
         </if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
 	</select>
     <!--高级搜索 装置类-->
     <select id="doSearchGjssZzlListByVO" parameterType="BuildingVO"  resultType="BuildingVO">
@@ -122,6 +131,9 @@
         <if test="zzl_jzjg != null and zzl_jzjg != '' ">
             AND t_zzl.jzjg = #{zzl_jzjg}
         </if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
     </select>
     <!--高级搜索 储罐类-->
     <select id="doSearchGjssCglListByVO" parameterType="BuildingVO"  resultType="BuildingVO">
@@ -141,6 +153,9 @@
         <if test="jzlx != null and jzlx != '' ">
             AND t.jzlx = #{jzlx}
         </if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
     </select>
 
 	<!--高级搜索 预案信息 全部对象-->
@@ -261,7 +276,10 @@
 		<if test="xfgx != null and xfgx != '' ">
 			and c9.dzbm like concat(#{xfgx},'%')
 		</if>
-		and rownum &lt;= 100
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
+-- 		and rownum &lt;= 100
 		ORDER BY t.XZQH,t.DWXZ,t.DWMC ASC)
 		UNION ALL
 		SELECT
@@ -280,6 +298,9 @@
 		<if test="xfgx != null and xfgx != '' ">
 			and t.xfgx like concat(#{xfgx},'%')
 		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
 		UNION ALL
 		SELECT
 		t.uuid uuid,
@@ -296,6 +317,9 @@
 		</if>
 		<if test="xfgx != null and xfgx != '' ">
 			and t.xfgx like concat(#{xfgx},'%')
+		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
 		</if>
 	</select>
 	<!--高级搜索 预案对象信息 重点单位-->
@@ -333,7 +357,10 @@
 		<if test="jzfl != null and jzfl != '' ">
 			and t.jzfl = #{jzfl}
 		</if>
-		AND rownum &lt;= 100
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
+-- 		AND rownum &lt;= 100
 		ORDER BY t.XZQH,t.DWXZ,t.DWMC ASC
 	</select>
 	<!--高级搜索 预案对象信息 消防保卫警卫-->
@@ -354,6 +381,9 @@
 		<if test="xfgx != null and xfgx != '' ">
 			and t.xfgx like concat(#{xfgx},'%')
 		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
 	</select>
 	<!--高级搜索 预案对象信息 其他对象-->
 	<select id="doSearchGjssYadxQtdxByVO" parameterType="ImportantunitsVO"  resultType="ImportantunitsVO">
@@ -372,6 +402,9 @@
 		</if>
 		<if test="xfgx != null and xfgx != '' ">
 			and t.xfgx like concat(#{xfgx},'%')
+		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
 		</if>
 	</select>
 </mapper>
