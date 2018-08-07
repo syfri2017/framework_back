@@ -50,22 +50,27 @@ public class Firefacilities_pmxt_pmfsqVO extends FirefacilitiesVO implements Ser
 	public void setWz(String wz){
 		this.wz = wz;
 	}
-	public String getXh(){
+
+	public String getXh() {
 		return xh;
 	}
-	public void setXh(String xh){
+
+	public void setXh(String xh) {
 		this.xh = xh;
 	}
+
 	public String getSl(){
 		return sl;
 	}
 	public void setSl(String sl){
 		this.sl = sl;
 	}
-	public String getLl(){
+
+	public String getLl() {
 		return ll;
 	}
-	public void setLl(String ll){
+
+	public void setLl(String ll) {
 		this.ll = ll;
 	}
 
