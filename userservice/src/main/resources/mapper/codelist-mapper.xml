@@ -200,6 +200,9 @@
 		<if test="codeName != null and codeName != '' ">
 			and t.code_name LIKE concat(concat('%',#{codeName}),'%')
 		</if>
+		<if test="codetype != null and codetype !='' ">
+			and t.codetype = #{codetype}
+		</if>
 		ORDER BY code_value
 	</select>
 
