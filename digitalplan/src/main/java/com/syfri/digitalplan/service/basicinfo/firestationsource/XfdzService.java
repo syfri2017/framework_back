@@ -30,4 +30,7 @@ public interface XfdzService  extends BaseService<XfdzVO>{
 
     /*--批量删除队站 by li.xue 2018/7/25*/
     int doDeleteBatch(List<XfdzVO> list);
+
+    /*--删除从表队站 by li.xue 2018/8/7.--*/
+    void doDeleteDetail(XfdzVO xfdzVO);
 }

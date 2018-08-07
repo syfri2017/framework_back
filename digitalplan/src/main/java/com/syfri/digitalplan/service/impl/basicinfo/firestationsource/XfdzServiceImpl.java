@@ -139,8 +139,14 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
     /*--修改消防队站 by li.xue 2018/7/25.--*/
     @Override
     public XfdzVO doUpdateByXfdzVO(XfdzVO xfdzVO){
+        XfdzVO vo = xfdzDAO.doFindById(xfdzVO.getDzid());
         //修改主表
         xfdzDAO.doUpdateByVO(xfdzVO);
+        //判断队站类型是否修改
+        if(!xfdzVO.getDzlx().isEmpty() && !(xfdzVO.getDzlx().equals(vo.getDzlx()))){
+            //先删除原来从表
+            ((XfdzService) AopContext.currentProxy()).doDeleteDetail(vo);
+        }
         //修改或插入从表
         ((XfdzService) AopContext.currentProxy()).doExeInsertOrUpdate(xfdzVO);
         return xfdzVO;
@@ -215,42 +221,47 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
             vo.setDeleteFlag("Y");
             xfdzDAO.doUpdateByVO(vo);
             //删除从表
-            if(!vo.getDzlx().isEmpty()){
-                switch(vo.getDzlx().substring(0,2)){
-                    case "02":
-                        ZongdVO zongdVO = new ZongdVO();
-                        zongdVO.setDzid(vo.getDzid());
-                        zongdVO.setDeleteFlag("Y");
-                        xfdzDAO.doDeleteZongdByDzid(zongdVO);
-                        break;
-                    case "03":
-                        ZhidVO zhidVO = new ZhidVO();
-                        zhidVO.setDzid(vo.getDzid());
-                        zhidVO.setDeleteFlag("Y");
-                        xfdzDAO.doDeleteZhidByDzid(zhidVO);
-                        break;
-                    case "05":
-                        DadVO dadVO = new DadVO();
-                        dadVO.setDzid(vo.getDzid());
-                        dadVO.setDeleteFlag("Y");
-                        xfdzDAO.doDeleteDadByDzid(dadVO);
-                        break;
-                    case "09":
-                        ZhongdVO zhongdVO = new ZhongdVO();
-                        zhongdVO.setDzid(vo.getDzid());
-                        zhongdVO.setDeleteFlag("Y");
-                        xfdzDAO.doDeleteZhongdByDzid(zhongdVO);
-                        break;
-                    case "0A":
-                        QtxfdwVO qtxfdwVO = new QtxfdwVO();
-                        qtxfdwVO.setDzid(vo.getDzid());
-                        qtxfdwVO.setDeleteFlag("Y");
-                        xfdzDAO.doDeleteQtxfdwByDzid(qtxfdwVO);
-                        break;
-                }
-            }
+            ((XfdzService) AopContext.currentProxy()).doDeleteDetail(vo);
             deleteNums++;
         }
         return deleteNums;
+    }
+
+    /*--删除从表队站 by li.xue 2018/8/7.--*/
+    public void doDeleteDetail(XfdzVO xfdzVO){
+        if(!xfdzVO.getDzlx().isEmpty()) {
+            switch (xfdzVO.getDzlx().substring(0, 2)) {
+                case "02":
+                    ZongdVO zongdVO = new ZongdVO();
+                    zongdVO.setDzid(xfdzVO.getDzid());
+                    zongdVO.setDeleteFlag("Y");
+                    xfdzDAO.doDeleteZongdByDzid(zongdVO);
+                    break;
+                case "03":
+                    ZhidVO zhidVO = new ZhidVO();
+                    zhidVO.setDzid(xfdzVO.getDzid());
+                    zhidVO.setDeleteFlag("Y");
+                    xfdzDAO.doDeleteZhidByDzid(zhidVO);
+                    break;
+                case "05":
+                    DadVO dadVO = new DadVO();
+                    dadVO.setDzid(xfdzVO.getDzid());
+                    dadVO.setDeleteFlag("Y");
+                    xfdzDAO.doDeleteDadByDzid(dadVO);
+                    break;
+                case "09":
+                    ZhongdVO zhongdVO = new ZhongdVO();
+                    zhongdVO.setDzid(xfdzVO.getDzid());
+                    zhongdVO.setDeleteFlag("Y");
+                    xfdzDAO.doDeleteZhongdByDzid(zhongdVO);
+                    break;
+                case "0A":
+                    QtxfdwVO qtxfdwVO = new QtxfdwVO();
+                    qtxfdwVO.setDzid(xfdzVO.getDzid());
+                    qtxfdwVO.setDeleteFlag("Y");
+                    xfdzDAO.doDeleteQtxfdwByDzid(qtxfdwVO);
+                    break;
+            }
+        }
     }
 }
