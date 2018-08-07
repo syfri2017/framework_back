@@ -17,7 +17,7 @@ import com.syfri.baseapi.controller.BaseController;
 import java.util.List;
 
 @RestController
-@RequestMapping("x")
+@RequestMapping("building")
 public class BuildingController extends BaseController<BuildingVO> {
 
     @Autowired
