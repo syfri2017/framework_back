@@ -9,8 +9,11 @@
 		<if test="sjdzid != null and sjdzid != '' ">
 			and t.sjdzid = #{sjdzid}
 		</if>
-		<if test="dzlx != null and dzlx != '' ">
+		<if test="dzlx != null and dzlx != '' and dzlx != '0A00'">
 			and t.dzlx = #{dzlx}
+		</if>
+		<if test="dzlx == '0A00'">
+			and substr(t.dzlx,0,2) = '0A'
 		</if>
 		<if test="dzbm != null and dzbm != '' ">
 			and t.dzbm = #{dzbm}
