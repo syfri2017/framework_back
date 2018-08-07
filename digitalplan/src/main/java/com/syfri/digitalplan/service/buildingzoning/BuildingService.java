@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface BuildingService  extends BaseService<BuildingVO>{
     //通过id获取建筑分区信息及分类信息
-     public BuildingVO doFindFqDetailByVo(BuildingVO buildingVO);
-
+    BuildingVO doFindFqDetailByVo(BuildingVO buildingVO);
+    int doDeleteBuildingzoning(BuildingVO buildingVO) ;
+    BuildingVO doUpdateBuildingzoning(BuildingVO buildingVO);
+    BuildingVO doInsertDetailByVO(BuildingVO buildingVO);//从表新增
 }

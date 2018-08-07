@@ -23,7 +23,28 @@ public interface BuildingDAO extends BaseDAO<BuildingVO>{
     //通过重点单位id 查询包含建筑id，建筑类型
     List<BuildingVO> doFindJzidJzlxListByZddwid(String zddwid);
 
+    //通过重点单位
+    int doUpdateJzlByVO(BuildingVO buildingVO);
+    //通过重点单位
+    int doUpdateZzlByVO(BuildingVO buildingVO);
+    //通过重点单位
+    int doUpdateCglByVO(BuildingVO buildingVO);
+
+    //通过重点单位
+    int doDeleteJzlById(String jzid);
+    //通过重点单位
+    int doDeleteZzlById(String jzid);
+    //通过重点单位
+    int doDeleteCglById(String jzid);
+
+    //通过重点单位
+    BuildingVO doInsertJzlByVO(BuildingVO buildingVO);
+    //通过重点单位
+    BuildingVO doInsertZzlByVO(BuildingVO buildingVO);
+    //通过重点单位
+    BuildingVO doInsertCglByVO(BuildingVO buildingVO);
+
+
     //通过重点单位id 查询建筑分区list
     List<BuildingVO> doSearchJzListByZddwId(BuildingVO buildingVO);
-
 }
