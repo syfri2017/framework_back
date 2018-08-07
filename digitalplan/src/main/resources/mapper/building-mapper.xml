@@ -207,6 +207,15 @@
 		INSERT INTO YAGL_DWJZXX(jzid,jzmc,jzlx,jzwz,lon,lat,xqxclx,yjddsc,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj)
 		VALUES(#{jzid,jdbcType=VARCHAR},#{jzmc,jdbcType=VARCHAR},#{jzlx,jdbcType=VARCHAR},#{jzwz,jdbcType=VARCHAR},#{lon,jdbcType=DOUBLE},#{lat,jdbcType=DOUBLE},#{xqxclx,jdbcType=VARCHAR},#{yjddsc,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE})
 	 </insert>
+	<!--.10,20-->
+
+
+	<!--.30-->
+
+
+	<!--.40-->
+
+
 
 	<!--7.批量插入-->
 	<insert  id="doBatchInsertByList"  parameterType="java.util.List"> 
