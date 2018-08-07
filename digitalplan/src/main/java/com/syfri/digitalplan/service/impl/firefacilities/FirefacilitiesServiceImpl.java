@@ -688,8 +688,8 @@ public class FirefacilitiesServiceImpl extends BaseServiceImpl<FirefacilitiesVO>
                 pmfsqVO.setXfssid(xfssid);
                 pmfsqVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
                 pmfsqVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
-                pmfsqVO.setSl(detailMap.get("xh") != null ? detailMap.get("xh").toString() : "");
-                pmfsqVO.setSl(detailMap.get("ll") != null ? detailMap.get("ll").toString() : "");
+                pmfsqVO.setXh(detailMap.get("xh") != null ? detailMap.get("xh").toString() : "");
+                pmfsqVO.setLl(detailMap.get("ll") != null ? detailMap.get("ll").toString() : "");
                 firefacilitiesDAO.doInsertPmfsqByVO(pmfsqVO);
                 break;
             case "3005":
@@ -949,8 +949,8 @@ public class FirefacilitiesServiceImpl extends BaseServiceImpl<FirefacilitiesVO>
                     pmfsqVO.setXfssid(xfssid);
                     pmfsqVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
                     pmfsqVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
-                    pmfsqVO.setSl(detailMap.get("xh") != null ? detailMap.get("xh").toString() : "");
-                    pmfsqVO.setSl(detailMap.get("ll") != null ? detailMap.get("ll").toString() : "");
+                    pmfsqVO.setXh(detailMap.get("xh") != null ? detailMap.get("xh").toString() : "");
+                    pmfsqVO.setLl(detailMap.get("ll") != null ? detailMap.get("ll").toString() : "");
                     firefacilitiesDAO.doInsertPmfsqByVO(pmfsqVO);
                     break;
                 case "3005":
