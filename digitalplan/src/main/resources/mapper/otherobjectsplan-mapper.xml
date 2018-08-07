@@ -110,6 +110,9 @@
 		<if test="reserve4 != null and reserve4 != '' ">
 			and t.reserve4 = #{reserve4}
 		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
 	</sql>
 
 	<!--2.查询内容-->

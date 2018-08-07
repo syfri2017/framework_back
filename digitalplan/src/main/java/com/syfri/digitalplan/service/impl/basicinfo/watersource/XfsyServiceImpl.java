@@ -82,6 +82,8 @@ public class XfsyServiceImpl extends BaseServiceImpl<XfsyVO> implements XfsyServ
 		if(!xfsyVO.getSylx().isEmpty()){
 			switch (xfsyVO.getSylx()){
 				case "01":
+					String temp_id = getUUID();
+					xfsyVO.setXhs_uuid(temp_id);
 					xfsyDAO.doInsertXhsByVo(xfsyVO);
 					xfsyVO.setSysxxxid(xfsyVO.getXhs_uuid());
 					break;

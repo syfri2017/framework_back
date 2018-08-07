@@ -13,7 +13,7 @@
 		 and t.xfssmc LIKE concat(concat('%',#{jbxx_xfssmc}),'%')
 		</if>
 		<if test="jbxx_xfsslx != null and jbxx_xfsslx != '' ">
-		 and t.xfsslx = #{jbxx_xfsslx}
+		 and t.xfsslx LIKE concat(rtrim(#{jbxx_xfsslx},'0'),'%')
 		</if>
 		<if test="jbxx_iszddw != null and jbxx_iszddw != '' ">
 		 and t.iszddw = #{jbxx_iszddw}
@@ -57,6 +57,15 @@
 		<if test="xgsj != null and xgsj != '' ">
 			and t.xgsj = #{xgsj}
 		</if>
+		<if test="cjrid != null and cjrid != '' ">
+			and t.cjrid = #{cjrid}
+		</if>
+		<if test="cjrmc != null and cjrmc != '' ">
+			and t.cjrmc = #{cjrmc}
+		</if>
+		<if test="cjsj != null and cjsj != '' ">
+			and t.cjsj = #{cjsj}
+		</if>
 	</sql>
 
 	<!--2.查询内容-->
@@ -75,7 +84,13 @@
 		t.reserve1 jbxx_reserve1,
 		t.reserve2 jbxx_reserve2,
 		t.reserve3 jbxx_reserve3,
-		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') jbxx_reserve4
+		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') jbxx_reserve4,
+		t.cjrid cjrid,
+		t.cjrmc cjrmc,
+		TO_CHAR(t.cjsj,'yyyy-MM-dd HH24:mi:ss') cjsj,
+		t.xgrid xgrid,
+		t.xgrmc xgrmc,
+		TO_CHAR(t.xgsj,'yyyy-MM-dd HH24:mi:ss') xgsj
 	</sql>
 
 	<!--3.查询记录数-->
@@ -104,6 +119,7 @@
 			and jz.jzmc LIKE concat(concat('%',#{jbxx_jzmc}),'%')
 		</if>
 			<include refid="SQL_CONDITION"/>
+		ORDER BY NVL(xgsj,cjsj) DESC
 	</select>
 
 	<!--5.根据ID查询记录-->

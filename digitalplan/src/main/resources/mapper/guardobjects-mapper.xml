@@ -345,6 +345,9 @@
 		<if test="uuid != null and uuid != '' ">
 			and t.uuid = #{uuid}
 		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
 		<!--add end-->
 	</select>
 

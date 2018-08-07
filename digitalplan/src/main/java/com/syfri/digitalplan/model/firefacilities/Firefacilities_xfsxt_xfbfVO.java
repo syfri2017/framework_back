@@ -61,12 +61,15 @@ public class Firefacilities_xfsxt_xfbfVO extends ValueObject implements Serializ
 	public void setXhszdll(String xhszdll){
 		this.xhszdll = xhszdll;
 	}
-	public String getPlbsl(){
+
+	public String getPlbsl() {
 		return plbsl;
 	}
-	public void setPlbsl(String blbsl){
+
+	public void setPlbsl(String plbsl) {
 		this.plbsl = plbsl;
 	}
+
 	public String getPlbzdll() {
 		return plbzdll;
 	}
