@@ -207,15 +207,33 @@
 		INSERT INTO YAGL_DWJZXX(jzid,jzmc,jzlx,jzwz,lon,lat,xqxclx,yjddsc,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj)
 		VALUES(#{jzid,jdbcType=VARCHAR},#{jzmc,jdbcType=VARCHAR},#{jzlx,jdbcType=VARCHAR},#{jzwz,jdbcType=VARCHAR},#{lon,jdbcType=DOUBLE},#{lat,jdbcType=DOUBLE},#{xqxclx,jdbcType=VARCHAR},#{yjddsc,jdbcType=DOUBLE},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE})
 	 </insert>
-	<!--.10,20-->
 
+	<!--."10,20"-->
+	<insert  id="doInsertJzlByVO"  parameterType="BuildingVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="jzl_uuid">
+			SELECT SYS_GUID() AS jzl_uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_DWJZXX_JZL(uuid,jzid,jzqk,jzsyxz,jzjg,gnms,zdmj,jzmj,dsgd,dxgd,dscs,dxcs,deleteFlag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{jzl_uuid,jdbcType=VARCHAR},#{jzl_jzid,jdbcType=VARCHAR},#{jzl_jzqk,jdbcType=VARCHAR},#{jzl_jzsyxz,jdbcType=VARCHAR},#{jzl_jzjg,jdbcType=VARCHAR},#{jzl_gnms,jdbcType=VARCHAR},#{jzl_zdmj,jdbcType=DOUBLE},#{jzl_jzmj,jdbcType=DOUBLE},#{jzl_dsgd,jdbcType=DOUBLE},#{jzl_dxgd,jdbcType=DOUBLE},#{jzl_dscs,jdbcType=DOUBLE},#{jzl_dxcs,jdbcType=DOUBLE},'N',#{jzl_datasource,jdbcType=VARCHAR},#{jzl_jdh,jdbcType=VARCHAR},#{jzl_sjc,jdbcType=DATE},#{jzl_reserve1,jdbcType=VARCHAR},#{jzl_reserve2,jdbcType=VARCHAR},#{jzl_reserve3,jdbcType=VARCHAR},#{jzl_reserve4,jdbcType=DATE})
+	</insert>
 
-	<!--.30-->
+	<!--."30"-->
+	<insert  id="doInsertZzlByVO"  parameterType="BuildingVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="zzl_uuid">
+			SELECT SYS_GUID() AS zzl_uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_DWJZXX_ZZL(uuid,jzid,jzjg,zdmj,zzgd,zzzc,jsfzr,jsfzrdh,ylxx,cwxx,gylc,jdh,sjc,deleteFlag,datasource,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{zzl_uuid,jdbcType=VARCHAR},#{zzl_jzid,jdbcType=VARCHAR},#{zzl_jzjg,jdbcType=VARCHAR},#{zzl_zdmj,jdbcType=DOUBLE},#{zzl_zzgd,jdbcType=DOUBLE},#{zzl_zzzc,jdbcType=VARCHAR},#{zzl_jsfzr,jdbcType=VARCHAR},#{zzl_jsfzrdh,jdbcType=VARCHAR},#{zzl_ylxx,jdbcType=VARCHAR},#{zzl_cwxx,jdbcType=VARCHAR},#{zzl_gylc,jdbcType=VARCHAR},'N',#{zzl_datasource,jdbcType=VARCHAR},#{zzl_jdh,jdbcType=VARCHAR},#{zzl_sjc,jdbcType=DATE},#{zzl_reserve1,jdbcType=VARCHAR},#{zzl_reserve2,jdbcType=VARCHAR},#{zzl_reserve3,jdbcType=VARCHAR},#{zzl_reserve4,jdbcType=DATE})
+	</insert>
 
-
-	<!--.40-->
-
-
+	<!--."40"-->
+	<insert  id="doInsertCglByVO"  parameterType="BuildingVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="cgl_uuid">
+			SELECT SYS_GUID() AS cgl_uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_DWJZXX_CGL(uuid,jzid,zrj,cgsl,cgjg,ccjzms,jsfzr,jsfzrdh,plqkd,plqkn,plqkx,plqkb,jdh,sjc,deleteFlag,datasource,jdh,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{cgl_uuid,jdbcType=VARCHAR},#{cgl_jzid,jdbcType=VARCHAR},#{cgl_zrj,jdbcType=DOUBLE},#{cgl_cgsl,jdbcType=DOUBLE},#{cgl_cgjg,jdbcType=DOUBLE},#{cgl_ccjzms,jdbcType=VARCHAR},#{cgl_jsfzr,jdbcType=VARCHAR},#{cgl_jsfzrdh,jdbcType=VARCHAR},#{cgl_plqkd,jdbcType=VARCHAR},#{cgl_plqkn,jdbcType=VARCHAR},#{cgl_plqkx,jdbcType=VARCHAR},#{cgl_plqkb,jdbcType=VARCHAR},'N',#{cgl_datasource,jdbcType=VARCHAR},#{cgl_jdh,jdbcType=VARCHAR},#{cgl_sjc,jdbcType=DATE},#{cgl_reserve1,jdbcType=VARCHAR},#{cgl_reserve2,jdbcType=VARCHAR},#{cgl_reserve3,jdbcType=VARCHAR},#{cgl_reserve4,jdbcType=DATE})
+	</insert>
 
 	<!--7.批量插入-->
 	<insert  id="doBatchInsertByList"  parameterType="java.util.List"> 
@@ -273,7 +291,7 @@
 			<!--<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>-->
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=sysdate</if>
+			xgsj=sysdate
 		</set>
 		WHERE  JZID = #{jzid}
 	</update>
@@ -282,28 +300,23 @@
 	<update  id="doUpdateJzlByVO"  parameterType="BuildingVO">
 		UPDATE   YAGL_DWJZXX_JZL
 		<set>
-			<if test="jzl_jzid != null">jzl_jzid=#{jzl_jzid},</if>
-			<if test="jzl_jzqk != null">jzl_jzqk=#{jzl_jzqk},</if>
-			<if test="jzl_jzsyxz != null">jzl_jzsyxz=#{jzl_jzsyxz},</if>
-			<if test="jzl_jzjg != null">jzl_jzjg=#{jzl_jzjg},</if>
-			<if test="jzl_gnms != null">jzl_gnms=#{jzl_gnms},</if>
-			<if test="jzl_zdmj != null">jzl_zdmj=#{jzl_zdmj},</if>
-			<if test="jzl_dsgd != null">jzl_dsgd=#{jzl_dsgd},</if>
-			<if test="jzl_dxgd != null">jzl_dxgd=#{jzl_dxgd},</if>
-			<if test="jzl_dscs != null">jzl_dscs=#{jzl_dscs},</if>
+			<if test="jzid != null">jzid=#{jzid},</if>
+			<if test="jzqk != null">jzqk=#{jzqk},</if>
+			<if test="jzsyxz != null">jzsyxz=#{jzsyxz},</if>
+			<if test="jzjg != null">jzjg=#{jzjg},</if>
+			<if test="gnms != null">gnms=#{gnms},</if>
+			<if test="zdmj != null">zdmj=#{zdmj},</if>
+			<if test="dsgd != null">dsgd=#{dsgd},</if>
+			<if test="dxgd != null">dxgd=#{dxgd},</if>
+			<if test="dscs != null">dscs=#{dscs},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
 			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="reserve1 != null">reserve1=#{reserve1},</if>
 			<if test="reserve2 != null">reserve2=#{reserve2},</if>
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
-			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<!--<if test="cjrid != null">cjrid=#{cjrid},</if>-->
-			<!--<if test="cjrmc != null">cjrmc=#{cjrmc},</if>-->
-			<!--<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>-->
-			<if test="xgrid != null">xgrid=#{xgrid},</if>
-			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=sysdate</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
 		WHERE  JZID = #{jzid}
 	</update>
@@ -311,29 +324,24 @@
 	<update  id="doUpdateZzlByVO"  parameterType="BuildingVO">
 		UPDATE   YAGL_DWJX_ZZL
 		<set>
-			<if test="zzl_jzid != null">zzl_jzid=#{zzl_jzid},</if>
-			<if test="zzl_jzjg != null">zzl_jzjg=#{zzl_jzjg},</if>
-			<if test="zzl_zdmj != null">zzl_zdmj=#{zzl_zdmj},</if>
-			<if test="zzl_zzgd != null">zzl_zzgd=#{zzl_zzgd},</if>
-			<if test="zzl_jsfzr != null">zzl_jsfzr=#{zzl_jsfzr},</if>
-			<if test="zzl_jsfzrdh != null">zzl_jsfzrdh=#{zzl_jsfzrdh},</if>
-			<if test="zzl_zzzc != null">zzl_zzzc=#{zzl_zzzc},</if>
-			<if test="zzl_ylxx != null">zzl_ylxx=#{zzl_ylxx},</if>
-			<if test="zzl_cwxx != null">zzl_cwxx=#{zzl_cwxx},</if>
-			<if test="zzl_gylc != null">zzl_gylc=#{zzl_gylc},</if>
+			<if test="jzid != null">jzid=#{jzid},</if>
+			<if test="jzjg != null">jzjg=#{zzl_jzjg},</if>
+			<if test="zdmj != null">zdmj=#{zzl_zdmj},</if>
+			<if test="zzgd != null">zzgd=#{zzl_zzgd},</if>
+			<if test="jsfzr != null">jsfzr=#{zzl_jsfzr},</if>
+			<if test="jsfzrdh != null">jsfzrdh=#{zzl_jsfzrdh},</if>
+			<if test="zzzc != null">zzzc=#{zzl_zzzc},</if>
+			<if test="ylxx != null">ylxx=#{zzl_ylxx},</if>
+			<if test="cwxx != null">cwxx=#{zzl_cwxx},</if>
+			<if test="gylc != null">gylc=#{zzl_gylc},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
 			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="reserve1 != null">reserve1=#{reserve1},</if>
 			<if test="reserve2 != null">reserve2=#{reserve2},</if>
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
-			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<!--<if test="cjrid != null">cjrid=#{cjrid},</if>-->
-			<!--<if test="cjrmc != null">cjrmc=#{cjrmc},</if>-->
-			<!--<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>-->
-			<if test="xgrid != null">xgrid=#{xgrid},</if>
-			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=sysdate</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
 		WHERE  JZID = #{jzid}
 	</update>
@@ -341,30 +349,25 @@
 	<update  id="doUpdateCglByVO"  parameterType="BuildingVO">
 		UPDATE   YAGL_DWJZXX_CGL
 		<set>
-			<if test="cgl_jzid != null">cgl_jzid=#{cgl_jzid},</if>
-			<if test="cgl_zrj != null">cgl_zrj=#{cgl_zrj},</if>
-			<if test="cgl_cgsl != null">cgl_cgsl=#{cgl_cgsl},</if>
-			<if test="cgl_cgjg != null">cgl_cgjg=#{cgl_cgjg},</if>
-			<if test="cgl_ccjzms != null">cgl_ccjzms=#{cgl_ccjzms},</if>
-			<if test="cgl_jsfzr != null">cgl_jsfzr=#{cgl_jsfzr},</if>
-			<if test="cgl_jsfzrdh != null">cgl_jsfzrdh=#{cgl_jsfzrdh},</if>
-			<if test="cgl_plqkd != null">cgl_plqkd=#{cgl_plqkd},</if>
-			<if test="cgl_plqkx != null">cgl_plqkx=#{cgl_plqkx},</if>
-			<if test="cgl_plqkn != null">cgl_plqkn=#{cgl_plqkn},</if>
-			<if test="cgl_plqkb != null">cgl_plqkb=#{cgl_plqkb},</if>
+			<if test="jzid != null">jzid=#{jzid},</if>
+			<if test="zrj != null">zrj=#{zrj},</if>
+			<if test="cgsl != null">cgsl=#{cgsl},</if>
+			<if test="cgjg != null">cgjg=#{cgjg},</if>
+			<if test="ccjzms != null">ccjzms=#{ccjzms},</if>
+			<if test="jsfzr != null">jsfzr=#{jsfzr},</if>
+			<if test="jsfzrdh != null">jsfzrdh=#{jsfzrdh},</if>
+			<if test="plqkd != null">plqkd=#{plqkd},</if>
+			<if test="plqkx != null">plqkx=#{plqkx},</if>
+			<if test="plqkn != null">plqkn=#{plqkn},</if>
+			<if test="plqkb != null">plqkb=#{plqkb},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
 			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="reserve1 != null">reserve1=#{reserve1},</if>
 			<if test="reserve2 != null">reserve2=#{reserve2},</if>
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
-			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<!--<if test="cjrid != null">cjrid=#{cjrid},</if>-->
-			<!--<if test="cjrmc != null">cjrmc=#{cjrmc},</if>-->
-			<!--<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>-->
-			<if test="xgrid != null">xgrid=#{xgrid},</if>
-			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=sysdate</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
 		WHERE  JZID = #{jzid}
 	</update>
