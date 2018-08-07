@@ -972,7 +972,7 @@ public class FirefacilitiesServiceImpl extends BaseServiceImpl<FirefacilitiesVO>
                     gdpmpVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
                     gdpmpVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
                     gdpmpVO.setSfky(detailMap.get("sfky") != null ? detailMap.get("sfky").toString() : "");
-                    firefacilitiesDAO.doInsertGdpmpByVO(gdpmpVO);
+                    firefacilitiesDAO.doUpdateGdpmpByVO(gdpmpVO);
                     break;
                 case "3004":
                     Firefacilities_pmxt_pmfsqVO pmfsqVO = new Firefacilities_pmxt_pmfsqVO();
@@ -981,14 +981,14 @@ public class FirefacilitiesServiceImpl extends BaseServiceImpl<FirefacilitiesVO>
                     pmfsqVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
                     pmfsqVO.setXh(detailMap.get("xh") != null ? detailMap.get("xh").toString() : "");
                     pmfsqVO.setLl(detailMap.get("ll") != null ? detailMap.get("ll").toString() : "");
-                    firefacilitiesDAO.doInsertPmfsqByVO(pmfsqVO);
+                    firefacilitiesDAO.doUpdatePmfsqByVO(pmfsqVO);
                     break;
                 case "3005":
                     Firefacilities_pmxt_bgdssVO PmBgdssVO = new Firefacilities_pmxt_bgdssVO();
                     PmBgdssVO.setXfssid(xfssid);
                     PmBgdssVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
                     PmBgdssVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
-                    firefacilitiesDAO.doInsertPmBgdssByVO(PmBgdssVO);
+                    firefacilitiesDAO.doUpdatePmBgdssByVO(PmBgdssVO);
                     break;
                 //蒸汽灭火系统
                 case "4000":
@@ -999,7 +999,7 @@ public class FirefacilitiesServiceImpl extends BaseServiceImpl<FirefacilitiesVO>
                     gdsVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
                     gdsVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
                     gdsVO.setEdyl(detailMap.get("edyl") != null ? detailMap.get("edyl").toString() : "");
-                    firefacilitiesDAO.doInsertGdsByVO(gdsVO);
+                    firefacilitiesDAO.doUpdateGdsByVO(gdsVO);
                     break;
                 case "4002":
                     Firefacilities_zqmhxt_bgdsVO bgdsVO = new Firefacilities_zqmhxt_bgdsVO();
@@ -1007,7 +1007,7 @@ public class FirefacilitiesServiceImpl extends BaseServiceImpl<FirefacilitiesVO>
                     bgdsVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
                     bgdsVO.setSl(detailMap.get("sl") != null ? detailMap.get("sl").toString() : "");
                     bgdsVO.setEdyl(detailMap.get("edyl") != null ? detailMap.get("edyl").toString() : "");
-                    firefacilitiesDAO.doInsertBgdsByVO(bgdsVO);
+                    firefacilitiesDAO.doUpdateBgdsByVO(bgdsVO);
                     break;
                 //消防控制室
                 case "5000":
@@ -1016,7 +1016,7 @@ public class FirefacilitiesServiceImpl extends BaseServiceImpl<FirefacilitiesVO>
                     xfkzsVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
                     xfkzsVO.setIsldkz(detailMap.get("isldkz") != null ? detailMap.get("isldkz").toString() : "");
                     xfkzsVO.setIszdbj(detailMap.get("iszdbj") != null ? detailMap.get("iszdbj").toString() : "");
-                    firefacilitiesDAO.doInsertXfkzsByVO(xfkzsVO);
+                    firefacilitiesDAO.doUpdateXfkzsByVO(xfkzsVO);
                     break;
                 //防排烟设施
                 case "6000":
@@ -1025,14 +1025,14 @@ public class FirefacilitiesServiceImpl extends BaseServiceImpl<FirefacilitiesVO>
                     Firefacilities_fpycs_pycykVO pycykVO = new Firefacilities_fpycs_pycykVO();
                     pycykVO.setXfssid(xfssid);
                     pycykVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
-                    firefacilitiesDAO.doInsertPycykByVO(pycykVO);
+                    firefacilitiesDAO.doUpdatePycykByVO(pycykVO);
                     break;
                 case "6002":
                     Firefacilities_fpycs_fpyxtVO fpyxtVO = new Firefacilities_fpycs_fpyxtVO();
                     fpyxtVO.setXfssid(xfssid);
                     fpyxtVO.setIsky(detailMap.get("isky") != null ? detailMap.get("isky").toString() : "");
                     fpyxtVO.setQbwz(detailMap.get("qbwz") != null ? detailMap.get("qbwz").toString() : "");
-                    firefacilitiesDAO.doInsertFpyxtByVO(fpyxtVO);
+                    firefacilitiesDAO.doUpdateFpyxtByVO(fpyxtVO);
                     break;
                 //防火分区
                 case "7000":
@@ -1042,7 +1042,7 @@ public class FirefacilitiesServiceImpl extends BaseServiceImpl<FirefacilitiesVO>
                     fhfqVO.setQywz(detailMap.get("qywz") != null ? detailMap.get("qywz").toString() : "");
                     fhfqVO.setFgss(detailMap.get("fgss") != null ? detailMap.get("fgss").toString() : "");
                     fhfqVO.setFgwz(detailMap.get("fgwz") != null ? detailMap.get("fgwz").toString() : "");
-                    firefacilitiesDAO.doInsertFhfqByVO(fhfqVO);
+                    firefacilitiesDAO.doUpdateFhfqByVO(fhfqVO);
                     break;
                 //其他灭火系统
                 case "8000":
@@ -1052,14 +1052,14 @@ public class FirefacilitiesServiceImpl extends BaseServiceImpl<FirefacilitiesVO>
                     qtmhxtVO.setXfssid(xfssid);
                     qtmhxtVO.setQbwz(detailMap.get("qbwz") != null ? detailMap.get("qbwz").toString() : "");
                     qtmhxtVO.setZyfw(detailMap.get("zyfw") != null ? detailMap.get("zyfw").toString() : "");
-                    firefacilitiesDAO.doInsertQtmhxtByVO(qtmhxtVO);
+                    firefacilitiesDAO.doUpdateQtmhxtByVO(qtmhxtVO);
                     break;
                 case "8002":
                     Firefacilities_qtmhxt_gfmhxtVO gfmhxtVO = new Firefacilities_qtmhxt_gfmhxtVO();
                     gfmhxtVO.setXfssid(xfssid);
                     gfmhxtVO.setQbwz(detailMap.get("qbwz") != null ? detailMap.get("qbwz").toString() : "");
                     gfmhxtVO.setZyfw(detailMap.get("zyfw") != null ? detailMap.get("zyfw").toString() : "");
-                    firefacilitiesDAO.doInsertGfmhxtByVO(gfmhxtVO);
+                    firefacilitiesDAO.doUpdateGfmhxtByVO(gfmhxtVO);
                     break;
                 //其他消防设施
                 case "9000":
@@ -1067,7 +1067,7 @@ public class FirefacilitiesServiceImpl extends BaseServiceImpl<FirefacilitiesVO>
                     qtxfssVO.setXfssid(xfssid);
                     qtxfssVO.setMs(detailMap.get("ms") != null ? detailMap.get("ms").toString() : "");
                     qtxfssVO.setWz(detailMap.get("wz") != null ? detailMap.get("wz").toString() : "");
-                    firefacilitiesDAO.doInsertQtxfssByVO(qtxfssVO);
+                    firefacilitiesDAO.doUpdateQtxfssByVO(qtxfssVO);
                     break;
             }
         }

@@ -13,7 +13,7 @@ public class Firefacilities_xfkzsVO extends FirefacilitiesVO implements Serializ
 	private String wz;	//位置
 	private String iszdbj;	//自动报警是否可用[0]不可用[1]可用
 	private String isldkz;	//联动控制是否可用[0]不可用[1]可用
-
+	private String bz;//备注
 	private String deleteFlag;	//删除标志
 	private String datasource;	//数据来源[100000一体化]
 
@@ -53,6 +53,14 @@ public class Firefacilities_xfkzsVO extends FirefacilitiesVO implements Serializ
 	}
 	public void setIsldkz(String isldkz){
 		this.isldkz = isldkz;
+	}
+
+	public String getBz() {
+		return bz;
+	}
+
+	public void setBz(String bz) {
+		this.bz = bz;
 	}
 
 	public String getDeleteFlag(){
