@@ -13,7 +13,7 @@
 		 and t.xfssmc LIKE concat(concat('%',#{jbxx_xfssmc}),'%')
 		</if>
 		<if test="jbxx_xfsslx != null and jbxx_xfsslx != '' ">
-		 and t.xfsslx = #{jbxx_xfsslx}
+		 and t.xfsslx LIKE concat(rtrim(#{jbxx_xfsslx},'0'),'%')
 		</if>
 		<if test="jbxx_iszddw != null and jbxx_iszddw != '' ">
 		 and t.iszddw = #{jbxx_iszddw}
