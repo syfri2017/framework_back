@@ -145,8 +145,10 @@ public class DigitalplanlistController  extends BaseController<DigitalplanlistVO
 	public @ResponseBody ResultVO doSearchJzListByZddwId(@RequestBody BuildingVO vo) {
 		ResultVO resultVO = ResultVO.build();
 		try{
-			List<BuildingVO> result= digitalplanlistService.doSearchJzListByZddwId(vo);
-			resultVO.setResult(result);
+			PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
+			List<BuildingVO> list = digitalplanlistService.doSearchJzListByZddwId(vo);
+			PageInfo<BuildingVO> pageInfo = new PageInfo<>(list);
+			resultVO.setResult(pageInfo);
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);

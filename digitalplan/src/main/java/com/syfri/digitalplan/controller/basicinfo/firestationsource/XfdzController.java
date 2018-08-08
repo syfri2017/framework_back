@@ -1,5 +1,7 @@
 package com.syfri.digitalplan.controller.basicinfo.firestationsource;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import io.swagger.annotations.ApiImplicitParam;
@@ -59,7 +61,10 @@ public class XfdzController extends BaseController<XfdzVO> {
     ResultVO doSearchProvinceList(@RequestBody XfdzVO xfdzVO) {
         ResultVO resultVO = ResultVO.build();
         try {
-            resultVO.setResult(xfdzService.doSearchProvinceList(xfdzVO));
+            PageHelper.startPage(xfdzVO.getPageNum(),xfdzVO.getPageSize());
+            List<XfdzVO> list = xfdzService.doSearchProvinceList(xfdzVO);
+            PageInfo<XfdzVO> pageInfo = new PageInfo<>(list);
+            resultVO.setResult(pageInfo);
         } catch (Exception e) {
             logger.error("{}", e.getMessage());
             resultVO.setCode(EConstants.CODE.FAILURE);

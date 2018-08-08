@@ -241,16 +241,16 @@
 			<if test="jgid != null">jgid=#{jgid},</if>
 			<if test="jgbm != null">jgbm=#{jgbm},</if>
 			<if test="jgmc != null">jgmc=#{jgmc},</if>
-			<if test="zzrid != null">zzrid=#{zzrid},</if>
-			<if test="zzrmc != null">zzrmc=#{zzrmc},</if>
-			<if test="zzsj != null">zzsj=sysdate,</if>
+			<!--<if test="zzrid != null">zzrid=#{zzrid},</if>-->
+			<!--<if test="zzrmc != null">zzrmc=#{zzrmc},</if>-->
+			<!--<if test="zzsj != null">zzsj=sysdate,</if>-->
 			<if test="shzt != null">shzt=#{shzt},</if>
 			<if test="shrid != null">shrid=#{shrid},</if>
 			<if test="shrmc != null">shrmc=#{shrmc},</if>
 			<if test="shsj != null">shsj=sysdate,</if>
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=sysdate,</if>
+			xgsj=sysdate,
 			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="bz != null">bz=#{bz},</if>

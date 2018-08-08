@@ -157,7 +157,7 @@
 			<if test="cjsj != null">cjsj=sysdate,</if>
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=sysdate,</if>
+			xgsj=sysdate,
 			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="bz != null">bz=#{bz},</if>
