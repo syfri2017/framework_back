@@ -99,6 +99,9 @@
 		<if test="gisY_max != null and gisY_max != '' ">
 			and t.gis_Y &lt; #{gisY_max}
 		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
 	</sql>
 	<!--消火栓查询条件-->
 	<sql id="SQL_XHS_CONDITION">
