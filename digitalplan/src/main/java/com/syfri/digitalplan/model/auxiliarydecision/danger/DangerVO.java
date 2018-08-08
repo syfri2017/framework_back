@@ -61,6 +61,7 @@ public class DangerVO extends ValueObject implements Serializable{
 	private String dmz;	//类型名
 	private byte[] flagFile;	//包装标志
 	private String photo64;	//Base64格式图片
+	private String jdh;  //节点号
 
 	public String getPhoto64() {
 		return photo64;
@@ -343,5 +344,11 @@ public class DangerVO extends ValueObject implements Serializable{
 	}
 	public void setXgsj(String xgsj) {
 		this.xgsj = xgsj;
+	}
+	public String getJdh() {
+		return jdh;
+	}
+	public void setJdh(String jdh) {
+		this.jdh = jdh;
 	}
 }
