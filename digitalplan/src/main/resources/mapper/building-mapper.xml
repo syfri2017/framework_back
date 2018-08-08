@@ -213,7 +213,7 @@
 		<selectKey resultType="String" order="BEFORE" keyProperty="jzl_uuid">
 			SELECT SYS_GUID() AS jzl_uuid FROM DUAL
 		</selectKey>
-		INSERT INTO YAGL_DWJZXX_JZL(uuid,jzid,jzqk,jzsyxz,jzjg,gnms,zdmj,jzmj,dsgd,dxgd,dscs,dxcs,deleteFlag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		INSERT INTO YAGL_DWJZXX_JZL(uuid,jzid,jzqk,jzsyxz,jzjg,gnms,zdmj,jzmj,dsgd,dxgd,dscs,dxcs,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
 		VALUES(#{jzl_uuid,jdbcType=VARCHAR},#{jzl_jzid,jdbcType=VARCHAR},#{jzl_jzqk,jdbcType=VARCHAR},#{jzl_jzsyxz,jdbcType=VARCHAR},#{jzl_jzjg,jdbcType=VARCHAR},#{jzl_gnms,jdbcType=VARCHAR},#{jzl_zdmj,jdbcType=DOUBLE},#{jzl_jzmj,jdbcType=DOUBLE},#{jzl_dsgd,jdbcType=DOUBLE},#{jzl_dxgd,jdbcType=DOUBLE},#{jzl_dscs,jdbcType=DOUBLE},#{jzl_dxcs,jdbcType=DOUBLE},'N',#{jzl_datasource,jdbcType=VARCHAR},#{jzl_jdh,jdbcType=VARCHAR},#{jzl_sjc,jdbcType=DATE},#{jzl_reserve1,jdbcType=VARCHAR},#{jzl_reserve2,jdbcType=VARCHAR},#{jzl_reserve3,jdbcType=VARCHAR},#{jzl_reserve4,jdbcType=DATE})
 	</insert>
 
@@ -222,7 +222,7 @@
 		<selectKey resultType="String" order="BEFORE" keyProperty="zzl_uuid">
 			SELECT SYS_GUID() AS zzl_uuid FROM DUAL
 		</selectKey>
-		INSERT INTO YAGL_DWJZXX_ZZL(uuid,jzid,jzjg,zdmj,zzgd,zzzc,jsfzr,jsfzrdh,ylxx,cwxx,gylc,jdh,sjc,deleteFlag,datasource,reserve1,reserve2,reserve3,reserve4)
+		INSERT INTO YAGL_DWJZXX_ZZL(uuid,jzid,jzjg,zdmj,zzgd,zzzc,jsfzr,jsfzrdh,ylxx,cwxx,gylc,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
 		VALUES(#{zzl_uuid,jdbcType=VARCHAR},#{zzl_jzid,jdbcType=VARCHAR},#{zzl_jzjg,jdbcType=VARCHAR},#{zzl_zdmj,jdbcType=DOUBLE},#{zzl_zzgd,jdbcType=DOUBLE},#{zzl_zzzc,jdbcType=VARCHAR},#{zzl_jsfzr,jdbcType=VARCHAR},#{zzl_jsfzrdh,jdbcType=VARCHAR},#{zzl_ylxx,jdbcType=VARCHAR},#{zzl_cwxx,jdbcType=VARCHAR},#{zzl_gylc,jdbcType=VARCHAR},'N',#{zzl_datasource,jdbcType=VARCHAR},#{zzl_jdh,jdbcType=VARCHAR},#{zzl_sjc,jdbcType=DATE},#{zzl_reserve1,jdbcType=VARCHAR},#{zzl_reserve2,jdbcType=VARCHAR},#{zzl_reserve3,jdbcType=VARCHAR},#{zzl_reserve4,jdbcType=DATE})
 	</insert>
 
@@ -231,7 +231,7 @@
 		<selectKey resultType="String" order="BEFORE" keyProperty="cgl_uuid">
 			SELECT SYS_GUID() AS cgl_uuid FROM DUAL
 		</selectKey>
-		INSERT INTO YAGL_DWJZXX_CGL(uuid,jzid,zrj,cgsl,cgjg,ccjzms,jsfzr,jsfzrdh,plqkd,plqkn,plqkx,plqkb,jdh,sjc,deleteFlag,datasource,jdh,reserve1,reserve2,reserve3,reserve4)
+		INSERT INTO YAGL_DWJZXX_CGL(uuid,jzid,zrj,cgsl,cgjg,ccjzms,jsfzr,jsfzrdh,plqkd,plqkn,plqkx,plqkb,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
 		VALUES(#{cgl_uuid,jdbcType=VARCHAR},#{cgl_jzid,jdbcType=VARCHAR},#{cgl_zrj,jdbcType=DOUBLE},#{cgl_cgsl,jdbcType=DOUBLE},#{cgl_cgjg,jdbcType=DOUBLE},#{cgl_ccjzms,jdbcType=VARCHAR},#{cgl_jsfzr,jdbcType=VARCHAR},#{cgl_jsfzrdh,jdbcType=VARCHAR},#{cgl_plqkd,jdbcType=VARCHAR},#{cgl_plqkn,jdbcType=VARCHAR},#{cgl_plqkx,jdbcType=VARCHAR},#{cgl_plqkb,jdbcType=VARCHAR},'N',#{cgl_datasource,jdbcType=VARCHAR},#{cgl_jdh,jdbcType=VARCHAR},#{cgl_sjc,jdbcType=DATE},#{cgl_reserve1,jdbcType=VARCHAR},#{cgl_reserve2,jdbcType=VARCHAR},#{cgl_reserve3,jdbcType=VARCHAR},#{cgl_reserve4,jdbcType=DATE})
 	</insert>
 

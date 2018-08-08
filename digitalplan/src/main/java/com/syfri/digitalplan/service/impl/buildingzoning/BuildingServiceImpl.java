@@ -76,12 +76,13 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
         }
         return count;
     }
-//add
+
+    //add
     public BuildingVO doInsertDetailByVO(BuildingVO buildingVO) {
         String jzid = buildingVO.getJzid();
         String jzlx = buildingVO.getJzlx();
         BuildingVO detailVO = buildingVO.getBuildingVO();
-        detailVO.setJzid(jzid);
+        detailVO.setJzl_jzid(jzid);
         detailVO.setJdh(buildingVO.getJdh());
         switch (jzlx) {
             case "10":
