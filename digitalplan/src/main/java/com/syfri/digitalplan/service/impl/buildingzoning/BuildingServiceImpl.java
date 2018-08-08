@@ -82,18 +82,22 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
         String jzid = buildingVO.getJzid();
         String jzlx = buildingVO.getJzlx();
         BuildingVO detailVO = buildingVO.getBuildingVO();
-        detailVO.setJzl_jzid(jzid);
-        detailVO.setJdh(buildingVO.getJdh());
+
         switch (jzlx) {
             case "10":
             case "20":
-
+                detailVO.setJzl_jzid(jzid);
+                detailVO.setJzl_jdh(buildingVO.getJdh());
                 buildingDAO.doInsertJzlByVO(detailVO);
                 break;
             case "30":
+                detailVO.setZzl_jzid(jzid);
+                detailVO.setZzl_jdh(buildingVO.getJdh());
                 buildingDAO.doInsertZzlByVO(detailVO);
                 break;
             case "40":
+                detailVO.setCgl_jzid(jzid);
+                detailVO.setCgl_jdh(buildingVO.getJdh());
                 buildingDAO.doInsertCglByVO(detailVO);
                 break;
         }

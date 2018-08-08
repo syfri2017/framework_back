@@ -258,11 +258,11 @@
 	</update>
 	<!--30.按主键逻辑删除-->
 	<update id="doDeleteZzlById"  parameterType="String">
-		UPDATE  YAGL_DWJX_ZZL t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.JZID = #{value}
+		UPDATE  YAGL_DWJZXX_ZZL t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.JZID = #{value}
 	</update>
 	<!--40.按主键逻辑删除-->
 	<update id="doDeleteCglById"  parameterType="String">
-		UPDATE  YAGL_DWJX_CGL t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.JZID = #{value}
+		UPDATE  YAGL_DWJZXX_CGL t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.JZID = #{value}
 	</update>
 
 	<!--9.按复合条件逻辑更新-->
@@ -322,7 +322,7 @@
 	</update>
 	<!-- 30类按复合条件逻辑更新 -->
 	<update  id="doUpdateZzlByVO"  parameterType="BuildingVO">
-		UPDATE   YAGL_DWJX_ZZL
+		UPDATE   YAGL_DWJZXX_ZZL
 		<set>
 			<if test="jzid != null">jzid=#{jzid},</if>
 			<if test="jzjg != null">jzjg=#{zzl_jzjg},</if>
