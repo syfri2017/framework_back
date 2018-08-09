@@ -9,6 +9,7 @@
     <artifactId>digitalplan</artifactId>
     <packaging>war</packaging>
 
+
     <properties>
         <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
         <thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
