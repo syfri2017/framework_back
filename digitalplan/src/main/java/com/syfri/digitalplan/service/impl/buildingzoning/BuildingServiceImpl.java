@@ -70,6 +70,7 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
                     count = count + buildingDAO.doDeleteZzlById(jzid);
                     break;
                 case "40":
+                    buildingDAO.doDeleteChuguanById(jzid);
                     count = count + buildingDAO.doDeleteCglById(jzid);
                     break;
             }
@@ -99,11 +100,16 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
                 detailVO.setCgl_jzid(jzid);
                 detailVO.setCgl_jdh(buildingVO.getJdh());
                 buildingDAO.doInsertCglByVO(detailVO);
+                for(ChuguanVO vo :detailVO.getChuguanList()){
+                    vo.setPkid(detailVO.getCgl_uuid());
+                    vo.setJdh(buildingVO.getJdh());
+                    buildingDAO.doInsertChuguanByVO(vo);
+                }
                 break;
         }
         return detailVO;
     }
-
+//updata
     public BuildingVO doUpdateBuildingzoning(BuildingVO buildingVO) {
         String jzid = buildingVO.getJzid();
         String jzlx = buildingVO.getJzlx();
@@ -127,6 +133,10 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
                 case "40":
                     //查找建筑分区详情关联建筑分区-储罐类
                     buildingDAO.doUpdateCglByVO(detailVO);
+                    for(ChuguanVO vo :detailVO.getChuguanList()){
+
+                        buildingDAO.doUpdateChuguanByVO(vo);
+                    }
                     break;
             }
         }

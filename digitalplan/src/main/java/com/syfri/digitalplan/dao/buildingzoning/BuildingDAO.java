@@ -29,6 +29,8 @@ public interface BuildingDAO extends BaseDAO<BuildingVO>{
     int doUpdateZzlByVO(BuildingVO buildingVO);
     //通过重点单位
     int doUpdateCglByVO(BuildingVO buildingVO);
+    //chuguan
+    List<ChuguanVO> doUpdateChuguanByVO(ChuguanVO vo);
 
     //通过重点单位
     int doDeleteJzlById(String jzid);
@@ -36,6 +38,8 @@ public interface BuildingDAO extends BaseDAO<BuildingVO>{
     int doDeleteZzlById(String jzid);
     //通过重点单位
     int doDeleteCglById(String jzid);
+    //
+    int doDeleteChuguanById(String jzid);
 
     //通过重点单位
     int doInsertJzlByVO(BuildingVO buildingVO);
@@ -43,6 +47,8 @@ public interface BuildingDAO extends BaseDAO<BuildingVO>{
     int doInsertZzlByVO(BuildingVO buildingVO);
     //通过重点单位
     int doInsertCglByVO(BuildingVO buildingVO);
+    //chuguan
+    int doInsertChuguanByVO(ChuguanVO vo);
 
 
     //通过重点单位id 查询建筑分区list
