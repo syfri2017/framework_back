@@ -44,7 +44,6 @@ public class FiredrugServiceImpl extends BaseServiceImpl<FiredrugVO> implements 
 				vo.setUuid(dangerVO.getUuid());
 				vo.setXgrid(dangerVO.getXgrid());
 				vo.setXgrmc(dangerVO.getXgrmc());
-				vo.setXgsj("1");
 				vo.setDeleteFlag("Y");
 				count = count + firedrugDAO.doUpdateByVO(vo);
 			}
@@ -53,7 +52,6 @@ public class FiredrugServiceImpl extends BaseServiceImpl<FiredrugVO> implements 
 	}
 
 	public int doUpdateDrug(FiredrugVO firedrugVO) {
-		firedrugVO.setXgsj("1");
 		int count = firedrugDAO.doUpdateByVO(firedrugVO);
 		return count;
 	}
