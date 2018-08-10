@@ -82,7 +82,7 @@ public class XfdzController extends BaseController<XfdzVO> {
     public @ResponseBody ResultVO findSjdzByUser(@RequestBody XfdzVO xfdzVO) {
         ResultVO resultVO = ResultVO.build();
         try {
-            resultVO.setResult(xfdzService.doFindDzTreeByUserAll(xfdzVO));
+            resultVO.setResult(xfdzService.doFindDzTreeByUser(xfdzVO));
         } catch (Exception e) {
             logger.error("{}", e.getMessage());
             resultVO.setCode(EConstants.CODE.FAILURE);
