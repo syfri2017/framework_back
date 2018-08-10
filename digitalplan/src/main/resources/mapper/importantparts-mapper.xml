@@ -74,65 +74,65 @@
 	</sql>
 	<!--21.建筑类查询内容-->
 	<sql id="SQL_JZL_CONTENT">
-		t2.uuid jzl_uuid,
-		t2.zdbwid jzl_zdbwid,
-		t2.syxz jzl_syxz,
-		t2.jzjg jzl_jzjg,
-		t2.qymj jzl_qymj,
-		t2.gnms jzl_gnms,
-		t2.delete_flag jzl_deleteFlag,
-		t2.datasource jzl_datasource,
-		t2.jdh jzl_jdh,
-		TO_CHAR(t2.sjc,'yyyy-MM-dd HH24:mi:ss') jzl_sjc,
-		t2.reserve1 jzl_reserve1,
-		t2.reserve2 jzl_reserve2,
-		t2.reserve3 jzl_reserve3,
-		TO_CHAR(t2.reserve4,'yyyy-MM-dd HH24:mi:ss') jzl_reserve4
+		t2.uuid uuid,
+		t2.zdbwid zdbwid,
+		t2.syxz syxz,
+		t2.jzjg jzjg,
+		t2.qymj qymj,
+		t2.gnms gnms,
+		t2.delete_flag deleteFlag,
+		t2.datasource datasource,
+		t2.jdh jdh,
+		TO_CHAR(t2.sjc,'yyyy-MM-dd HH24:mi:ss') sjc,
+		t2.reserve1 reserve1,
+		t2.reserve2 reserve2,
+		t2.reserve3 reserve3,
+		TO_CHAR(t2.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
 	</sql>
 	<!--22.装置类查询内容-->
 	<sql id="SQL_ZZL_CONTENT">
-		t2.uuid zzl_uuid,
-		t2.zdbwid zzl_zdbwid,
-		t2.jzjg zzl_jzjg,
-		t2.zdmj zzl_zdmj,
-		t2.zzgd zzl_zzgd,
-		t2.zzzc zzl_zzzc,
-		t2.jsfzr zzl_jsfzr,
-		t2.jsfzrdh zzl_jsfzrdh,
-		t2.ylxx zzl_ylxx,
-		t2.cwxx zzl_cwxx,
-		t2.gylc zzl_gylc,
-		t2.delete_flag zzl_deleteFlag,
-		t2.datasource zzl_datasource,
-		t2.jdh zzl_jdh,
-		TO_CHAR(t2.sjc,'yyyy-MM-dd HH24:mi:ss') zzl_sjc,
-		t2.reserve1 zzl_reserve1,
-		t2.reserve2 zzl_reserve2,
-		t2.reserve3 zzl_reserve3,
-		TO_CHAR(t2.reserve4,'yyyy-MM-dd HH24:mi:ss') zzl_reserve4
+		t2.uuid uuid,
+		t2.zdbwid zdbwid,
+		t2.jzjg jzjg,
+		t2.zdmj zdmj,
+		t2.zzgd zzgd,
+		t2.zzzc zzzc,
+		t2.jsfzr jsfzr,
+		t2.jsfzrdh jsfzrdh,
+		t2.ylxx ylxx,
+		t2.cwxx cwxx,
+		t2.gylc gylc,
+		t2.delete_flag deleteFlag,
+		t2.datasource datasource,
+		t2.jdh jdh,
+		TO_CHAR(t2.sjc,'yyyy-MM-dd HH24:mi:ss') sjc,
+		t2.reserve1 reserve1,
+		t2.reserve2 reserve2,
+		t2.reserve3 reserve3,
+		TO_CHAR(t2.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
 	</sql>
 	<!--23.储罐类查询内容-->
 	<sql id="SQL_CGL_CONTENT">
-		t2.uuid cgl_uuid,
-		t2.zdbwid cgl_zdbwid,
-		to_char(t2.zrj,'fm9999999990.00') cgl_zrj,
-		t2.cgsl cgl_cgsl,
-		to_char(t2.cgjg,'fm9999999990.00') cgl_cgjg,
-		t2.ccjzms cgl_ccjzms,
-		t2.jsfzr cgl_jsfzr,
-		t2.jsfzrdh cgl_jsfzrdh,
-		t2.plqkd cgl_plqkd,
-		t2.plqkn cgl_plqkn,
-		t2.plqkx cgl_plqkx,
-		t2.plqkb cgl_plqkb,
-		t2.delete_flag cgl_deleteFlag,
-		t2.datasource cgl_datasource,
-		t2.jdh cgl_jdh,
-		TO_CHAR(t2.sjc,'yyyy-MM-dd HH24:mi:ss') cgl_sjc,
-		t2.reserve1 cgl_reserve1,
-		t2.reserve2 cgl_reserve2,
-		t2.reserve3 cgl_reserve3,
-		TO_CHAR(t2.reserve4,'yyyy-MM-dd HH24:mi:ss') cgl_reserve4
+		t2.uuid uuid,
+		t2.zdbwid zdbwid,
+		to_char(t2.zrj,'fm9999999990.00') zrj,
+		t2.cgsl cgsl,
+		to_char(t2.cgjg,'fm9999999990.00') cgjg,
+		t2.ccjzms ccjzms,
+		t2.jsfzr jsfzr,
+		t2.jsfzrdh jsfzrdh,
+		t2.plqkd plqkd,
+		t2.plqkn plqkn,
+		t2.plqkx plqkx,
+		t2.plqkb plqkb,
+		t2.delete_flag deleteFlag,
+		t2.datasource datasource,
+		t2.jdh jdh,
+		TO_CHAR(t2.sjc,'yyyy-MM-dd HH24:mi:ss') sjc,
+		t2.reserve1 reserve1,
+		t2.reserve2 reserve2,
+		t2.reserve3 reserve3,
+		TO_CHAR(t2.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
 	</sql>
 
 	<!--3.查询记录数-->
@@ -268,13 +268,44 @@
 		<include refid="SQL_CONDITION"/>
 	</select>
 
+
 	<!--12.根据重点单位id获取建筑类重点部位详情集合-->
-	<select id="doFindJzlListByZddwId" parameterType="ImportantpartsVO"  resultType="ImportantpartsVO">
+	<resultMap id="ZdbwJzlMap" type="com.syfri.digitalplan.model.importantparts.ImportantpartsVO">
+		<id property="zdbwid" column="zdbwid"/>
+		<result property="zddwid" column="zddwid"/>
+		<result property="zdbwlx" column="zdbwlx"/>
+		<result property="zdbwlxmc" column="zdbwlxmc"/>
+		<result property="zdbwmc" column="zdbwmc"/>
+		<result property="zdbwwz" column="zdbwwz"/>
+		<result property="wxxfx" column="wxxfx"/>
+		<result property="zysx" column="zysx"/>
+		<result property="bz" column="bz"/>
+		<result property="jdh" column="jdh"/>
+		<result property="cjrid" column="cjrid"/>
+		<result property="cjrmc" column="cjrmc"/>
+		<result property="cjsj" column="cjsj"/>
+		<result property="xgrid" column="xgrid"/>
+		<result property="xgrmc" column="xgrmc"/>
+		<result property="xgsj" column="xgsj"/>
+		<collection property="jzl" ofType="com.syfri.digitalplan.model.importantparts.ImportantpartsJzlVO">
+			<id property="uuid" column="uuid"></id>
+			<result property="zdbwid" column="zdbwid"/>
+			<result property="syxz" column="syxz"/>
+			<result property="syxzmc" column="syxzmc"/>
+			<result property="jzjg" column="jzjg"/>
+			<result property="jzjgmc" column="jzjgmc"/>
+			<result property="qymj" column="qymj"/>
+			<result property="gnms" column="gnms"/>
+			<result property="jdh" column="jdh"/>
+		</collection>
+	</resultMap>
+	<select id="doFindJzlListByZddwId" parameterType="ImportantpartsVO"  resultMap="ZdbwJzlMap">
 		SELECT
 		<include refid="SQL_CONTENT"/>,
 		c2.code_name zdbwlxmc,
 		<include refid="SQL_JZL_CONTENT"/>,
-		c4.code_name jzl_jzjgmc
+		c4.code_name jzjgmc,
+		c6.code_name syxzmc
 		FROM YAGL_ZDBW t
 		LEFT JOIN YAGL_ZDBW_JZL t2 ON(t.ZDBWID=t2.ZDBWID AND t2.DELETE_FLAG='N')
 		<!--重点部位类型-->
@@ -283,16 +314,52 @@
 		<!--建筑结构-->
 		Left Join SYS_CODELIST c3 on c3.CODETYPE = 'JZJG' And c3.DELETE_FLAG = 'N'
 		Left Join SYS_CODELIST_DETAIL c4 On c4.CODEID = c3.CODEID And c4.DELETE_FLAG = 'N' and t2.jzjg = c4.CODE_VALUE
+		<!--建筑使用性质-->
+		Left Join SYS_CODELIST c5 on c5.CODETYPE = 'JZSYXZ' And c5.DELETE_FLAG = 'N'
+		Left Join SYS_CODELIST_DETAIL c6 On c6.CODEID = c5.CODEID And c6.DELETE_FLAG = 'N' and t2.syxz = c6.CODE_VALUE
 		WHERE t.DELETE_FLAG = 'N' AND t.ZDBWLX = '10' AND t.ZDDWID = #{value}
 	</select>
 
 	<!--13.根据重点单位id获取装置类重点部位详情集合-->
-	<select id="doFindZzlListByZddwId" parameterType="ImportantpartsVO"  resultType="ImportantpartsVO">
+	<resultMap id="ZdbwZzlMap" type="com.syfri.digitalplan.model.importantparts.ImportantpartsVO">
+		<id property="zdbwid" column="zdbwid"/>
+		<result property="zddwid" column="zddwid"/>
+		<result property="zdbwlx" column="zdbwlx"/>
+		<result property="zdbwlxmc" column="zdbwlxmc"/>
+		<result property="zdbwmc" column="zdbwmc"/>
+		<result property="zdbwwz" column="zdbwwz"/>
+		<result property="wxxfx" column="wxxfx"/>
+		<result property="zysx" column="zysx"/>
+		<result property="bz" column="bz"/>
+		<result property="jdh" column="jdh"/>
+		<result property="cjrid" column="cjrid"/>
+		<result property="cjrmc" column="cjrmc"/>
+		<result property="cjsj" column="cjsj"/>
+		<result property="xgrid" column="xgrid"/>
+		<result property="xgrmc" column="xgrmc"/>
+		<result property="xgsj" column="xgsj"/>
+		<collection property="zzl" ofType="com.syfri.digitalplan.model.importantparts.ImportantpartsZzlVO">
+			<id property="uuid" column="uuid"></id>
+			<result property="zdbwid" column="zdbwid"/>
+			<result property="jzjg" column="jzjg"/>
+			<result property="jzjgmc" column="jzjgmc"/>
+			<result property="zdmj" column="zdmj"/>
+			<result property="zzgd" column="zzgd"/>
+			<result property="zzzc" column="zzzc"/>
+			<result property="jsfzr" column="jsfzr"/>
+			<result property="jsfzrdh" column="jsfzrdh"/>
+			<result property="ylxx" column="ylxx"/>
+			<result property="cwxx" column="cwxx"/>
+			<result property="gylc" column="gylc"/>
+			<result property="jdh" column="jdh"/>
+		</collection>
+	</resultMap>
+	<select id="doFindZzlListByZddwId" parameterType="ImportantpartsVO"  resultMap="ZdbwZzlMap">
 		SELECT
 		<include refid="SQL_CONTENT"/>,
 		c2.code_name zdbwlxmc,
-		<include refid="SQL_ZZL_CONTENT"/>,
-		c4.code_name zzl_jzjgmc
+		t2.uuid,t2.zdbwid,t2.jzjg,t2.zdmj,t2.zzgd,t2.zzzc,t2.jsfzr,t2.jsfzrdh,t2.ylxx,t2.cwxx,t2.gylc,t2.jdh,
+		c4.code_name jzjgmc
 		FROM YAGL_ZDBW t
 		LEFT JOIN YAGL_ZDBW_ZZL t2 ON(t.ZDBWID=t2.ZDBWID AND t2.DELETE_FLAG='N')
 		<!--重点部位类型-->
@@ -305,7 +372,40 @@
 	</select>
 
 	<!--14.根据重点单位id获取储罐类重点部位详情集合-->
-	<select id="doFindCglListByZddwId" parameterType="ImportantpartsVO"  resultType="ImportantpartsVO">
+	<resultMap id="ZdbwCglMap" type="com.syfri.digitalplan.model.importantparts.ImportantpartsVO">
+		<id property="zdbwid" column="zdbwid"/>
+		<result property="zddwid" column="zddwid"/>
+		<result property="zdbwlx" column="zdbwlx"/>
+		<result property="zdbwlxmc" column="zdbwlxmc"/>
+		<result property="zdbwmc" column="zdbwmc"/>
+		<result property="zdbwwz" column="zdbwwz"/>
+		<result property="wxxfx" column="wxxfx"/>
+		<result property="zysx" column="zysx"/>
+		<result property="bz" column="bz"/>
+		<result property="jdh" column="jdh"/>
+		<result property="cjrid" column="cjrid"/>
+		<result property="cjrmc" column="cjrmc"/>
+		<result property="cjsj" column="cjsj"/>
+		<result property="xgrid" column="xgrid"/>
+		<result property="xgrmc" column="xgrmc"/>
+		<result property="xgsj" column="xgsj"/>
+		<collection property="cgl" ofType="com.syfri.digitalplan.model.importantparts.ImportantpartsCglVO">
+			<id property="uuid" column="uuid"></id>
+			<result property="zdbwid" column="zdbwid"/>
+			<result property="zrj" column="zrj"/>
+			<result property="cgsl" column="cgsl"/>
+			<result property="cgjg" column="cgjg"/>
+			<result property="ccjzms" column="ccjzms"/>
+			<result property="jsfzr" column="jsfzr"/>
+			<result property="jsfzrdh" column="jsfzrdh"/>
+			<result property="plqkd" column="plqkd"/>
+			<result property="plqkn" column="plqkn"/>
+			<result property="plqkx" column="plqkx"/>
+			<result property="plqkb" column="plqkb"/>
+			<result property="jdh" column="jdh"/>
+		</collection>
+	</resultMap>
+	<select id="doFindCglListByZddwId" parameterType="ImportantpartsVO"  resultMap="ZdbwCglMap">
 		SELECT
 		<include refid="SQL_CONTENT"/>,
 		c2.code_name zdbwlxmc,

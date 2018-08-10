@@ -8,7 +8,7 @@ import com.syfri.digitalplan.model.planobject.XiaofangliliangVO;
 
 public class ImportantunitsVO extends ValueObject implements Serializable{
 
-	private static final long serialVersionUID = 1L;//sssss
+	private static final long serialVersionUID = 1L;
 
 	private String uuid;	//主键（单位ID）
 	private String dwmc;	//单位名称
@@ -68,6 +68,18 @@ public class ImportantunitsVO extends ValueObject implements Serializable{
 	private String dxmc;     //高级搜索中对象名称（对应重点单位中dwmc字段）
 	private String dxdz;		//高级搜索中对象地址（对应重点单位中 dwdz 字段）
 	private String 	xfgx;		//高级搜索中消防管辖（对应重点单位中 mhdzid 字段）
+
+	private List<XiaofangliliangVO> xfllList; //单位消防力量列表
+	private List<ImportantunitsBuildingVO> jzxxList; //建筑信息列表
+	private List<ImportantunitsVO> zdbwList;  //重点部位列表
+
+	private String cjrid;	//创建人ID
+	private String cjrmc;	//创建人名称
+	private String cjsj;	//创建时间
+	private String xgrid;	//修改人ID
+	private String xgrmc;	//修改人姓名
+	private String xgsj;	//修改时间
+
 
 	public String getUuid(){
 		return uuid;
@@ -271,5 +283,60 @@ public class ImportantunitsVO extends ValueObject implements Serializable{
 	}
 	public void setXfgx(String xfgx) {
 		this.xfgx = xfgx;
+	}
+
+	public List<XiaofangliliangVO> getXfllList() {
+		return xfllList;
+	}
+	public void setXfllList(List<XiaofangliliangVO> xfllList) {
+		this.xfllList = xfllList;
+	}
+	public List<ImportantunitsBuildingVO> getJzxxList() {
+		return jzxxList;
+	}
+	public void setJzxxList(List<ImportantunitsBuildingVO> jzxxList) {
+		this.jzxxList = jzxxList;
+	}
+	public List<ImportantunitsVO> getZdbwList() {
+		return zdbwList;
+	}
+	public void setZdbwList(List<ImportantunitsVO> zdbwList) {
+		this.zdbwList = zdbwList;
+	}
+	public String getCjrid() {
+		return cjrid;
+	}
+	public void setCjrid(String cjrid) {
+		this.cjrid = cjrid;
+	}
+	public String getCjrmc() {
+		return cjrmc;
+	}
+	public void setCjrmc(String cjrmc) {
+		this.cjrmc = cjrmc;
+	}
+	public String getCjsj() {
+		return cjsj;
+	}
+	public void setCjsj(String cjsj) {
+		this.cjsj = cjsj;
+	}
+	public String getXgrid() {
+		return xgrid;
+	}
+	public void setXgrid(String xgrid) {
+		this.xgrid = xgrid;
+	}
+	public String getXgrmc() {
+		return xgrmc;
+	}
+	public void setXgrmc(String xgrmc) {
+		this.xgrmc = xgrmc;
+	}
+	public String getXgsj() {
+		return xgsj;
+	}
+	public void setXgsj(String xgsj) {
+		this.xgsj = xgsj;
 	}
 }

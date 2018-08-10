@@ -1,6 +1,7 @@
 package com.syfri.digitalplan.service.impl.importantparts;
 
 import com.syfri.digitalplan.model.buildingzoning.*;
+import com.syfri.digitalplan.model.importantparts.ImportantpartsCglVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,10 +33,12 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 	public List<ImportantpartsVO> doFindJzlListByZddwId(String zddwId) {
 		List<ImportantpartsVO> resultList = this.importantpartsDAO.doFindJzlListByZddwId(zddwId);
 		for (ImportantpartsVO vo : resultList){
-			WeixianjiezhiVO weixianjiezhiVO = new WeixianjiezhiVO();
-			weixianjiezhiVO.setBwid(vo.getZdbwid());
-			List<WeixianjiezhiVO> weixianjiezhiList = this.buildingDAO.doFindWeiXianJieZhiList(weixianjiezhiVO);
-			vo.setWeixianjiezhiList(weixianjiezhiList);
+			if(vo.getJzl() != null){
+				WeixianjiezhiVO weixianjiezhiVO = new WeixianjiezhiVO();
+				weixianjiezhiVO.setBwid(vo.getJzl().getUuid());
+				List<WeixianjiezhiVO> wxjzList = this.buildingDAO.doFindWeiXianJieZhiList(weixianjiezhiVO);
+				vo.getJzl().setWxjzList(wxjzList);
+			}
 		}
 		return resultList;
 	}
@@ -50,10 +53,12 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 	public List<ImportantpartsVO> doFindCglListByZddwId(String zddwId) {
 		List<ImportantpartsVO> resultList = this.importantpartsDAO.doFindCglListByZddwId(zddwId);
 		for (ImportantpartsVO vo : resultList){
-			ChuguanVO chuguanVO = new ChuguanVO();
-			chuguanVO.setPkid(vo.getZdbwid());
-			List<ChuguanVO> chuguanList = this.buildingDAO.doFindChuGuanList(chuguanVO);
-			vo.setChuguanList(chuguanList);
+			if(vo.getCgl() != null){
+				ChuguanVO chuguanVO = new ChuguanVO();
+				chuguanVO.setPkid(vo.getCgl().getUuid());
+				List<ChuguanVO> cgList = this.buildingDAO.doFindChuGuanList(chuguanVO);
+				vo.getCgl().setCgList(cgList);
+			}
 		}
 		return resultList;
 	}
