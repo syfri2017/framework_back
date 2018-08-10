@@ -12,9 +12,14 @@
 		<if test="clmc != null and clmc != '' ">
 			and t.clmc LIKE concat(concat('%',#{clmc}),'%')
 		</if>
-		<!--<if test="ssdz != null and ssdz != '' ">-->
-			<!--and t.ssdz = #{ssdz}-->
-		<!--</if>-->
+		<if test="ssdz != null and ssdz != '' ">
+			and t.ssdz IN (
+			SELECT DZID
+			FROM YAGL_XFDZ t
+			START WITH t.DZID = #{ssdz}
+			CONNECT BY PRIOR t.DZID = SJDZID
+			)
+		</if>
 		<if test="ssdzmc != null and ssdzmc != '' ">
 			and t.ssdzmc = #{ssdzmc}
 		</if>
@@ -218,11 +223,6 @@
 		and t.czmhjlb = c8.CODE_VALUE
 		<!-- 所属队站 -->
 		LEFT JOIN YAGL_XFDZ c9 ON (t.SSDZ=c9.DZID AND c9.DELETE_FLAG = 'N')
-		<!-- 所属队站条件 -->
-		<if test="ssdz != null and ssdz != '' ">
-			INNER JOIN YAGL_XFDZ c10
-			ON (t.SSDZ=c10.DZID AND c10.DELETE_FLAG = 'N' AND c10.dzbm LIKE concat(RTRIM(#{ssdz},0),'%'))
-		</if>
 		WHERE t.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
 		ORDER BY CLBM ASC
