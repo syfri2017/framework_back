@@ -22,7 +22,12 @@
 			and t.sysxxxid = #{sysxxxid}
 		</if>
 		<if test="gxdz != null and gxdz != '' ">
-			and t.gxdz = #{gxdz}
+			and t.gxdz IN (
+			SELECT DZID
+			FROM YAGL_XFDZ t
+			START WITH t.DZID = #{gxdz}
+			CONNECT BY PRIOR t.DZID = SJDZID
+			)
 		</if>
 		<if test="gxdzmc != null and gxdzmc != '' ">
 			and t.gxdzmc = #{gxdzmc}
@@ -549,32 +554,50 @@
 		Left Join SYS_CODELIST_DETAIL c14 On c14.CODETYPE = 'QSXS' And c14.DELETE_FLAG = 'N' and t4.trsyqsd_qsxs = c14.CODE_VALUE
 	</select>
 
-
+	<!--<select id="doFindListByVO" parameterType="XfsyVO"  resultType="XfsyVO">-->
+		<!--SELECT tt.*,-->
+		<!--c2.code_name sylxmc,-->
+		<!--c4.code_name kyztmc,-->
+		<!--c6.code_name sygsmc-->
+		<!--FROM-->
+		<!--(	SELECT-->
+		<!--<include refid="SQL_CONTENT"/>,-->
+		<!--txfdz.dzjc dzjc-->
+		<!--FROM YAGL_XFSY t-->
+		<!--LEFT JOIN YAGL_XFDZ txfdz ON t.gxdz = txfdz.dzid AND txfdz.DELETE_FLAG = 'N'-->
+		<!--WHERE t.DELETE_FLAG = 'N'-->
+		<!--<if test="dzbm != null and dzbm != '' ">-->
+			<!--and txfdz.dzbm like concat(#{dzbm},'%')-->
+		<!--</if>-->
+		<!--<include refid="SQL_CONDITION"/>-->
+		<!--AND rownum &lt;= 100-->
+        <!--ORDER BY t.SYBM-->
+        <!--)tt-->
+		<!--&lt;!&ndash;水源类型&ndash;&gt;-->
+		<!--LEFT JOIN SYS_CODELIST_DETAIL c2 ON (tt.sylx = c2.code_value AND c2.codeid='9C617DE8210445AB9AE776686ABAC3B5' AND c2.DELETE_FLAG = 'N')-->
+		<!--&lt;!&ndash;水源可用状态&ndash;&gt;-->
+		<!--LEFT JOIN SYS_CODELIST_DETAIL c4 ON (tt.kyzt = c4.code_value AND c4.codeid='B9B2B370D9D54F6499C31523A1369C4F' AND c4.DELETE_FLAG = 'N')-->
+		<!--&lt;!&ndash;水源归属&ndash;&gt;-->
+		<!--LEFT JOIN SYS_CODELIST_DETAIL c6 ON (tt.sygs = c6.code_value AND c6.codeid='6B2210F144AF2372E053B077770A360E' And c6.DELETE_FLAG = 'N')-->
+	<!--</select>-->
 	<select id="doFindListByVO" parameterType="XfsyVO"  resultType="XfsyVO">
-		SELECT tt.*,
+		SELECT t.*,
 		c2.code_name sylxmc,
 		c4.code_name kyztmc,
-		c6.code_name sygsmc
-		FROM
-		(	SELECT
-		<include refid="SQL_CONTENT"/>,
-		txfdz.dzjc dzjc
+		c6.code_name sygsmc,
+		dz.DZJC dzjc
 		FROM YAGL_XFSY t
-		LEFT JOIN YAGL_XFDZ txfdz ON t.gxdz = txfdz.dzid AND txfdz.DELETE_FLAG = 'N'
-		WHERE t.DELETE_FLAG = 'N'
-		<if test="dzbm != null and dzbm != '' ">
-			and txfdz.dzbm like concat(#{dzbm},'%')
-		</if>
-		<include refid="SQL_CONDITION"/>
-		AND rownum &lt;= 100
-        ORDER BY t.SYBM
-        )tt
+		<!--消防队站-->
+		Left Join YAGL_XFDZ dz On dz.DZID = t.gxdz And dz.DELETE_FLAG = 'N'
 		<!--水源类型-->
-		LEFT JOIN SYS_CODELIST_DETAIL c2 ON (tt.sylx = c2.code_value AND c2.codeid='9C617DE8210445AB9AE776686ABAC3B5' AND c2.DELETE_FLAG = 'N')
+		LEFT JOIN SYS_CODELIST_DETAIL c2 ON (t.sylx = c2.code_value AND c2.codeid='9C617DE8210445AB9AE776686ABAC3B5' AND c2.DELETE_FLAG = 'N')
 		<!--水源可用状态-->
-		LEFT JOIN SYS_CODELIST_DETAIL c4 ON (tt.kyzt = c4.code_value AND c4.codeid='B9B2B370D9D54F6499C31523A1369C4F' AND c4.DELETE_FLAG = 'N')
+		LEFT JOIN SYS_CODELIST_DETAIL c4 ON (t.kyzt = c4.code_value AND c4.codeid='B9B2B370D9D54F6499C31523A1369C4F' AND c4.DELETE_FLAG = 'N')
 		<!--水源归属-->
-		LEFT JOIN SYS_CODELIST_DETAIL c6 ON (tt.sygs = c6.code_value AND c6.codeid='6B2210F144AF2372E053B077770A360E' And c6.DELETE_FLAG = 'N')
+		LEFT JOIN SYS_CODELIST_DETAIL c6 ON (t.sygs = c6.code_value AND c6.codeid='6B2210F144AF2372E053B077770A360E' And c6.DELETE_FLAG = 'N')
+		WHERE t.DELETE_FLAG = 'N'
+		<include refid="SQL_CONDITION"/>
+		ORDER BY t.SYBM
 	</select>
 	<!--查询消火栓-->
 	<select id="doFindXhsListByVO" parameterType="XfsyVO"  resultType="XfsyVO">

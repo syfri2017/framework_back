@@ -58,32 +58,40 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
         return vo;
     }
 
-    /*--通过Dzid查询队站树 by li.xue 2018/7/25.--*/
+    /*--通过Dzid查询队站树，不带公安部消防局 by li.xue 2018/7/25.--*/
     public List<XfdzTree> doFindDzTreeByUser(XfdzVO xfdzVO) {
-        List<XfdzTree> zongTrees = new ArrayList<>();
-        XfdzTree zongTree = new XfdzTree(xfdzVO.getDzid(), xfdzVO.getDzjc(), xfdzVO.getDzbm());
-        List<XfdzTree> zhiTrees = xfdzDAO.doFindXfdzBySjdzid(xfdzVO.getDzid());
-        List<XfdzTree> zhiChildren = new ArrayList<>();
-        for(XfdzTree zhiTree : zhiTrees){
-            List<XfdzTree> daTrees = xfdzDAO.doFindXfdzBySjdzid(zhiTree.getDzid());
-            List<XfdzTree> daChildren = new ArrayList<>();
-            for(XfdzTree daTree : daTrees){
-                List<XfdzTree> zhongTrees = xfdzDAO.doFindXfdzBySjdzid(daTree.getDzid());
-                if(!zhongTrees.isEmpty()){
-                    daTree.setChildren(zhongTrees);
+        List<XfdzTree> tree2s = new ArrayList<>();
+        if (redisService.exists("xfdzTree2" + xfdzVO.getDzid())) {
+            tree2s = (List<XfdzTree>) redisService.get("xfdzTree2" + xfdzVO.getDzid());
+        }else{
+            tree2s = xfdzDAO.doFindXfdzBySjdzid(xfdzVO.getDzid());
+            List<XfdzTree> tree2Children = new ArrayList<>();
+            for (XfdzTree tree2 : tree2s) {
+                List<XfdzTree> tree3s = xfdzDAO.doFindXfdzBySjdzid(tree2.getDzid());
+                List<XfdzTree> tree3Children = new ArrayList<>();
+                for (XfdzTree tree3 : tree3s) {
+                    List<XfdzTree> tree4s = xfdzDAO.doFindXfdzBySjdzid(tree3.getDzid());
+                    List<XfdzTree> tree4Children = new ArrayList<>();
+                    for (XfdzTree tree4 : tree4s) {
+                        List<XfdzTree> tree5s = xfdzDAO.doFindXfdzBySjdzid(tree4.getDzid());
+                        if (!tree5s.isEmpty()) {
+                            tree4.setChildren(tree5s);
+                        }
+                        tree4Children.add(tree4);
+                    }
+                    if (!tree4s.isEmpty()) {
+                        tree3.setChildren(tree4s);
+                    }
+                    tree3Children.add(tree3);
                 }
-                daChildren.add(daTree);
+                if (!tree3Children.isEmpty()) {
+                    tree2.setChildren(tree3Children);
+                }
+                tree2Children.add(tree2);
             }
-            if(!daChildren.isEmpty()){
-                zhiTree.setChildren(daChildren);
-            }
-            zhiChildren.add(zhiTree);
+            redisService.set("xfdzTree2"+xfdzVO.getDzid(), tree2s);
         }
-        if(!zhiChildren.isEmpty()){
-            zongTree.setChildren(zhiChildren);
-        }
-        zongTrees.add(zongTree);
-        return zongTrees;
+        return tree2s;
     }
     /*--通过Dzid查询队站树ALL(包括公安部消防局) by li.xue 2018/7/25.--*/
     public List<XfdzTree> doFindDzTreeByUserAll(XfdzVO xfdzVO) {

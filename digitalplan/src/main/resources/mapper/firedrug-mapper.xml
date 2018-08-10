@@ -83,6 +83,9 @@
 		<if test="hhb != null and hhb != '' ">
 			and f.hhb = #{hhb}
 		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and f.jdh = #{orgJgid}
+		</if>
 	</sql>
 
 	<!--2.查询内容-->
@@ -152,7 +155,7 @@
 			SELECT SYS_GUID() AS uuid FROM DUAL
 		</selectKey>
 		INSERT INTO YAGL_WL_XFYJXX(uuid,yjbm,yjmc,ssdz,ssdzmc,xzqh,yjlx,sccj,pc,zcbl,czl,kcl,scsj,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,hhb,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj)
-		VALUES(#{uuid,jdbcType=VARCHAR},#{yjbm,jdbcType=VARCHAR},#{yjmc,jdbcType=VARCHAR},#{ssdz,jdbcType=VARCHAR},#{ssdzmc,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{yjlx,jdbcType=DOUBLE},#{sccj,jdbcType=VARCHAR},#{pc,jdbcType=VARCHAR},#{zcbl,jdbcType=DOUBLE},#{czl,jdbcType=DOUBLE},#{kcl,jdbcType=DOUBLE},to_date(#{scsj,jdbcType=VARCHAR},'YYYY/MM/DD'),'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{hhb,jdbcType=VARCHAR},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE})
+		VALUES(#{uuid,jdbcType=VARCHAR},#{yjbm,jdbcType=VARCHAR},#{yjmc,jdbcType=VARCHAR},#{ssdz,jdbcType=VARCHAR},#{ssdzmc,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{yjlx,jdbcType=DOUBLE},#{sccj,jdbcType=VARCHAR},#{pc,jdbcType=VARCHAR},#{zcbl,jdbcType=DOUBLE},#{czl,jdbcType=DOUBLE},#{kcl,jdbcType=DOUBLE},to_date(#{scsj,jdbcType=VARCHAR},'yyyy-MM-dd'),'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{hhb,jdbcType=VARCHAR},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE})
 	 </insert>
 
 	<!--7.批量插入-->
@@ -193,7 +196,7 @@
 			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="bz != null">bz=#{bz},</if>
-			<if test="jdh != null">jdh=#{jdh},</if>
+			<!--<if test="jdh != null">jdh=#{jdh},</if>-->
 			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy/MM/dd HH24:mi:ss'),</if>
 			<if test="reserve1 != null">reserve1=#{reserve1},</if>
 			<if test="reserve2 != null">reserve2=#{reserve2},</if>
@@ -205,7 +208,7 @@
 			<!--<if test="cjsj != null">cjsj=sysdate,</if>-->
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=sysdate</if>
+			xgsj=sysdate
 		</set>
 		WHERE  UUID = #{uuid}
 	</update>

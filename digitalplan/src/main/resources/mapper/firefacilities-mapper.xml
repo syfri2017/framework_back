@@ -179,7 +179,7 @@
 			<if test="jbxx_deleteFlag != null">delete_flag=#{jbxx_deleteFlag},</if>
 			<if test="jbxx_datasource != null">datasource=#{jbxx_datasource},</if>
 			<if test="jbxx_bz != null">bz=#{jbxx_bz},</if>
-			<if test="jbxx_jdh != null">jdh=#{jbxx_jdh},</if>
+			<!--<if test="jbxx_jdh != null">jdh=#{jbxx_jdh},</if>-->
 			<if test="jbxx_sjc != null">sjc=TO_DATE(#{jbxx_sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="jbxx_reserve1 != null">reserve1=#{jbxx_reserve1},</if>
 			<if test="jbxx_reserve2 != null">reserve2=#{jbxx_reserve2},</if>

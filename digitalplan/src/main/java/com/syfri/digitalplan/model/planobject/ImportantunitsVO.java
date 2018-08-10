@@ -8,7 +8,7 @@ import com.syfri.digitalplan.model.planobject.XiaofangliliangVO;
 
 public class ImportantunitsVO extends ValueObject implements Serializable{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;//sssss
 
 	private String uuid;	//主键（单位ID）
 	private String dwmc;	//单位名称
