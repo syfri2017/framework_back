@@ -44,7 +44,7 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
                 //查找建筑分区详情关联建筑分区-储罐类
                 vo = buildingDAO.doFindFqAndCgDetailByVo(buildingVO);
                 ChuguanVO chuguanVO = new ChuguanVO();
-                chuguanVO.setPkid(vo.getJzid());
+                chuguanVO.setPkid(vo.getCgl_uuid());
                 List<ChuguanVO> chuguanList = this.buildingDAO.doFindChuGuanList(chuguanVO);
                 vo.setChuguanList(chuguanList);
                 break;
@@ -82,40 +82,41 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
     public BuildingVO doInsertDetailByVO(BuildingVO buildingVO) {
         String jzid = buildingVO.getJzid();
         String jzlx = buildingVO.getJzlx();
-        BuildingVO detailVO = buildingVO.getBuildingVO();
 
         switch (jzlx) {
             case "10":
             case "20":
-                detailVO.setJzl_jzid(jzid);
-                detailVO.setJzl_jdh(buildingVO.getJdh());
-                buildingDAO.doInsertJzlByVO(detailVO);
+                buildingVO.setJzl_jzid(jzid);
+                buildingVO.setJzl_jdh(buildingVO.getJdh());
+                buildingDAO.doInsertJzlByVO(buildingVO);
                 break;
             case "30":
-                detailVO.setZzl_jzid(jzid);
-                detailVO.setZzl_jdh(buildingVO.getJdh());
-                buildingDAO.doInsertZzlByVO(detailVO);
+                buildingVO.setZzl_jzid(jzid);
+                buildingVO.setZzl_jdh(buildingVO.getJdh());
+                buildingDAO.doInsertZzlByVO(buildingVO);
                 break;
             case "40":
-                detailVO.setCgl_jzid(jzid);
-                detailVO.setCgl_jdh(buildingVO.getJdh());
-                buildingDAO.doInsertCglByVO(detailVO);
-                for(ChuguanVO vo :detailVO.getChuguanList()){
-                    vo.setPkid(detailVO.getCgl_uuid());
+                buildingVO.setCgl_jzid(jzid);
+                buildingVO.setCgl_jdh(buildingVO.getJdh());
+                buildingDAO.doInsertCglByVO(buildingVO);
+                for (ChuguanVO vo : buildingVO.getChuguanList()) {
+                    vo.setPkid(buildingVO.getCgl_uuid());
                     vo.setJdh(buildingVO.getJdh());
                     buildingDAO.doInsertChuguanByVO(vo);
                 }
                 break;
         }
-        return detailVO;
+        return buildingVO;
     }
-//updata
+
+    //update
     public BuildingVO doUpdateBuildingzoning(BuildingVO buildingVO) {
         String jzid = buildingVO.getJzid();
         String jzlx = buildingVO.getJzlx();
         BuildingVO oldVO = buildingDAO.doFindById(jzid);
-        BuildingVO detailVO = buildingVO.getBuildingVO();
-        detailVO.setJzid(jzid);
+        buildingDAO.doUpdateByVO(buildingVO);
+//        BuildingVO detailVO = buildingVO.getBuildingVO();
+//        detailVO.setJzid(jzid);
         if (!oldVO.getJzlx().equals(jzlx)) {
             this.doDeleteBuildingzoning(oldVO);
             this.doInsertDetailByVO(buildingVO);
@@ -124,19 +125,47 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
                 case "10":
                 case "20":
                     //分区类型为10和20 查找建筑分区详情关联建筑分区-建筑类
-                    buildingDAO.doUpdateJzlByVO(detailVO);
+                    buildingVO.setJzl_jzid(jzid);
+                    buildingDAO.doUpdateJzlByVO(buildingVO);
                     break;
                 case "30":
                     //查找建筑分区详情关联建筑分区-装置类
-                    buildingDAO.doUpdateZzlByVO(detailVO);
+                    buildingVO.setZzl_jzid(jzid);
+                    buildingDAO.doUpdateZzlByVO(buildingVO);
                     break;
                 case "40":
                     //查找建筑分区详情关联建筑分区-储罐类
-                    buildingDAO.doUpdateCglByVO(detailVO);
-                    for(ChuguanVO vo :detailVO.getChuguanList()){
-
-                        buildingDAO.doUpdateChuguanByVO(vo);
+                    buildingVO.setCgl_jzid(jzid);
+                    buildingDAO.doUpdateCglByVO(buildingVO);
+                    ChuguanVO vo = new ChuguanVO();
+                    vo.setPkid(buildingVO.getCgl_uuid());
+                    List<ChuguanVO> oldCgList = buildingDAO.doFindChuGuanList(vo);//旧储罐List
+                    List<ChuguanVO> newCgList = buildingVO.getChuguanList();//新的储罐List
+                    //删除
+                    Boolean isDelete = true;
+                    for (ChuguanVO vo1 : oldCgList) {
+                        for (ChuguanVO vo2 : newCgList) {
+                            if (vo1.getPkid().equals(vo2.getPkid()) && vo2.getPkid() != null) {
+                                isDelete = false;
+                            }
+                        }
+                        if (isDelete) {
+                            buildingDAO.doDeleteCgById(vo1.getUuid());
+                        }
                     }
+                    //新增和修改
+                    for (ChuguanVO newVO : newCgList) {
+                        if (newVO.getPkid() != null && newVO.getPkid() != "") {
+                            //修改
+                            buildingDAO.doUpdateChuguanByVO(newVO);
+                        }else{
+                            //新增
+                            newVO.setPkid(buildingVO.getCgl_uuid());
+                            newVO.setJdh(buildingVO.getJdh());
+                            buildingDAO.doInsertChuguanByVO(newVO);
+                        }
+                    }
+
                     break;
             }
         }

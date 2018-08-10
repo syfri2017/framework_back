@@ -272,16 +272,20 @@
 	<update id="doDeleteCglById"  parameterType="String">
 		UPDATE  YAGL_DWJZXX_CGL t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.JZID = #{value}
 	</update>
-	<!--40.chuguan-->
+	<!--.chuguan-->
 	<update id="doDeleteChuguanById"  parameterType="String">
 	UPDATE YAGL_JZBW_CGL_CG t SET t.DELETE_FLAG = 'Y' WHERE 1 = 1 and t.pkid in (select uuid from YAGL_DWJZXX_CGL where jzid = #{value})
+	</update>
+	<!-- cg-->
+	<update id="doDeleteCgById"  parameterType="String">
+		UPDATE YAGL_JZBW_CGL_CG t SET t.DELETE_FLAG = 'Y' WHERE 1 = 1 AND t.UUID = #{value}
 	</update>
 
 	<!--9.按复合条件逻辑更新-->
 	<update  id="doUpdateByVO"  parameterType="BuildingVO"> 
 		UPDATE   YAGL_DWJZXX
 		<set>
-			<if test="jzid != null">jzid=#{jzid},</if>
+			<!--<if test="jzid != null">jzid=#{jzid},</if>-->
 			<if test="jzmc != null">jzmc=#{jzmc},</if>
 			<if test="jzlx != null">jzlx=#{jzlx},</if>
 			<if test="jzwz != null">jzwz=#{jzwz},</if>
@@ -292,7 +296,7 @@
 			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="bz != null">bz=#{bz},</if>
-			<if test="jdh != null">jdh=#{jdh},</if>
+			<!--<if test="jdh != null">jdh=#{jdh},</if>-->
 			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="reserve1 != null">reserve1=#{reserve1},</if>
 			<if test="reserve2 != null">reserve2=#{reserve2},</if>
@@ -312,84 +316,84 @@
 	<update  id="doUpdateJzlByVO"  parameterType="BuildingVO">
 		UPDATE   YAGL_DWJZXX_JZL
 		<set>
-			<if test="jzid != null">jzid=#{jzid},</if>
-			<if test="jzqk != null">jzqk=#{jzqk},</if>
-			<if test="jzsyxz != null">jzsyxz=#{jzsyxz},</if>
-			<if test="jzjg != null">jzjg=#{jzjg},</if>
-			<if test="gnms != null">gnms=#{gnms},</if>
-			<if test="zdmj != null">zdmj=#{zdmj},</if>
-			<if test="dsgd != null">dsgd=#{dsgd},</if>
-			<if test="dxgd != null">dxgd=#{dxgd},</if>
-			<if test="dscs != null">dscs=#{dscs},</if>
-			<if test="jdh != null">jdh=#{jdh},</if>
-			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
-			<if test="datasource != null">datasource=#{datasource},</if>
-			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="reserve1 != null">reserve1=#{reserve1},</if>
-			<if test="reserve2 != null">reserve2=#{reserve2},</if>
-			<if test="reserve3 != null">reserve3=#{reserve3},</if>
-			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+			<!--<if test="jzl_jzid != null">jzid=#{jzl_jzid},</if>-->
+			<if test="jzl_jzqk != null">jzqk=#{jzl_jzqk},</if>
+			<if test="jzl_jzsyxz != null">jzsyxz=#{jzl_jzsyxz},</if>
+			<if test="jzl_jzjg != null">jzjg=#{jzl_jzjg},</if>
+			<if test="jzl_gnms != null">gnms=#{jzl_gnms},</if>
+			<if test="jzl_zdmj != null">zdmj=#{jzl_zdmj},</if>
+			<if test="jzl_dsgd != null">dsgd=#{jzl_dsgd},</if>
+			<if test="jzl_dxgd != null">dxgd=#{jzl_dxgd},</if>
+			<if test="jzl_dscs != null">dscs=#{jzl_dscs},</if>
+			<!--<if test="jzl_jdh != null">jdh=#{jzl_jdh},</if>-->
+			<if test="jzl_deleteFlag != null">delete_flag=#{jzl_deleteFlag},</if>
+			<if test="jzl_datasource != null">datasource=#{jzl_datasource},</if>
+			<if test="jzl_sjc != null">sjc=TO_DATE(#{jzl_sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="jzl_reserve1 != null">reserve1=#{jzl_reserve1},</if>
+			<if test="jzl_reserve2 != null">reserve2=#{jzl_reserve2},</if>
+			<if test="jzl_reserve3 != null">reserve3=#{jzl_reserve3},</if>
+			<if test="jzl_reserve4 != null">reserve4=TO_DATE(#{jzl_reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  JZID = #{jzid}
+		WHERE  JZID = #{jzl_jzid}
 	</update>
 	<!-- 30类按复合条件逻辑更新 -->
 	<update  id="doUpdateZzlByVO"  parameterType="BuildingVO">
 		UPDATE   YAGL_DWJZXX_ZZL
 		<set>
-			<if test="jzid != null">jzid=#{jzid},</if>
-			<if test="jzjg != null">jzjg=#{zzl_jzjg},</if>
-			<if test="zdmj != null">zdmj=#{zzl_zdmj},</if>
-			<if test="zzgd != null">zzgd=#{zzl_zzgd},</if>
-			<if test="jsfzr != null">jsfzr=#{zzl_jsfzr},</if>
-			<if test="jsfzrdh != null">jsfzrdh=#{zzl_jsfzrdh},</if>
-			<if test="zzzc != null">zzzc=#{zzl_zzzc},</if>
-			<if test="ylxx != null">ylxx=#{zzl_ylxx},</if>
-			<if test="cwxx != null">cwxx=#{zzl_cwxx},</if>
-			<if test="gylc != null">gylc=#{zzl_gylc},</if>
-			<if test="jdh != null">jdh=#{jdh},</if>
-			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
-			<if test="datasource != null">datasource=#{datasource},</if>
-			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="reserve1 != null">reserve1=#{reserve1},</if>
-			<if test="reserve2 != null">reserve2=#{reserve2},</if>
-			<if test="reserve3 != null">reserve3=#{reserve3},</if>
-			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+			<!--<if test="zzl_jzid != null">jzid=#{zzl_jzid},</if>-->
+			<if test="zzl_jzjg != null">jzjg=#{zzl_jzjg},</if>
+			<if test="zzl_zdmj != null">zdmj=#{zzl_zdmj},</if>
+			<if test="zzl_zzgd != null">zzgd=#{zzl_zzgd},</if>
+			<if test="zzl_jsfzr != null">jsfzr=#{zzl_jsfzr},</if>
+			<if test="zzl_jsfzrdh != null">jsfzrdh=#{zzl_jsfzrdh},</if>
+			<if test="zzl_zzzc != null">zzzc=#{zzl_zzzc},</if>
+			<if test="zzl_ylxx != null">ylxx=#{zzl_ylxx},</if>
+			<if test="zzl_cwxx != null">cwxx=#{zzl_cwxx},</if>
+			<if test="zzl_gylc != null">gylc=#{zzl_gylc},</if>
+			<!--<if test="zzl_jdh != null">jdh=#{zzl_jdh},</if>-->
+			<if test="zzl_deleteFlag != null">delete_flag=#{zzl_deleteFlag},</if>
+			<if test="zzl_datasource != null">datasource=#{zzl_datasource},</if>
+			<if test="zzl_sjc != null">sjc=TO_DATE(#{zzl_sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="zzl_reserve1 != null">reserve1=#{zzl_reserve1},</if>
+			<if test="zzl_reserve2 != null">reserve2=#{zzl_reserve2},</if>
+			<if test="zzl_reserve3 != null">reserve3=#{zzl_reserve3},</if>
+			<if test="zzl_reserve4 != null">reserve4=TO_DATE(#{zzl_reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  JZID = #{jzid}
+		WHERE  JZID = #{zzl_jzid}
 	</update>
 	<!-- 40储罐类按复合条件逻辑更新  -->
 	<update  id="doUpdateCglByVO"  parameterType="BuildingVO">
 		UPDATE   YAGL_DWJZXX_CGL
 		<set>
-			<if test="jzid != null">jzid=#{jzid},</if>
-			<if test="zrj != null">zrj=#{zrj},</if>
-			<if test="cgsl != null">cgsl=#{cgsl},</if>
-			<if test="cgjg != null">cgjg=#{cgjg},</if>
-			<if test="ccjzms != null">ccjzms=#{ccjzms},</if>
-			<if test="jsfzr != null">jsfzr=#{jsfzr},</if>
-			<if test="jsfzrdh != null">jsfzrdh=#{jsfzrdh},</if>
-			<if test="plqkd != null">plqkd=#{plqkd},</if>
-			<if test="plqkx != null">plqkx=#{plqkx},</if>
-			<if test="plqkn != null">plqkn=#{plqkn},</if>
-			<if test="plqkb != null">plqkb=#{plqkb},</if>
-			<if test="jdh != null">jdh=#{jdh},</if>
-			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
-			<if test="datasource != null">datasource=#{datasource},</if>
-			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="reserve1 != null">reserve1=#{reserve1},</if>
-			<if test="reserve2 != null">reserve2=#{reserve2},</if>
-			<if test="reserve3 != null">reserve3=#{reserve3},</if>
-			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+			<!--<if test="cgl_jzid != null">jzid=#{cgl_jzid},</if>-->
+			<if test="cgl_zrj != null">zrj=#{cgl_zrj},</if>
+			<if test="cgl_cgsl != null">cgsl=#{cgl_cgsl},</if>
+			<if test="cgl_cgjg != null">cgjg=#{cgl_cgjg},</if>
+			<if test="cgl_ccjzms != null">ccjzms=#{cgl_ccjzms},</if>
+			<if test="cgl_jsfzr != null">jsfzr=#{cgl_jsfzr},</if>
+			<if test="cgl_jsfzrdh != null">jsfzrdh=#{cgl_jsfzrdh},</if>
+			<if test="cgl_plqkd != null">plqkd=#{cgl_plqkd},</if>
+			<if test="cgl_plqkx != null">plqkx=#{cgl_plqkx},</if>
+			<if test="cgl_plqkn != null">plqkn=#{cgl_plqkn},</if>
+			<if test="cgl_plqkb != null">plqkb=#{cgl_plqkb},</if>
+			<!--<if test="cgl_jdh != null">jdh=#{cgl_jdh},</if>-->
+			<if test="cgl_deleteFlag != null">delete_flag=#{cgl_deleteFlag},</if>
+			<if test="cgl_datasource != null">datasource=#{cgl_datasource},</if>
+			<if test="cgl_sjc != null">sjc=TO_DATE(#{cgl_sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="cgl_reserve1 != null">reserve1=#{cgl_reserve1},</if>
+			<if test="cgl_reserve2 != null">reserve2=#{cgl_reserve2},</if>
+			<if test="cgl_reserve3 != null">reserve3=#{cgl_reserve3},</if>
+			<if test="cgl_reserve4 != null">reserve4=TO_DATE(#{cgl_reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  JZID = #{jzid}
+		WHERE  JZID = #{cgl_jzid}
 	</update>
 	<!-- chuguan按复合条件逻辑更新  -->
 	<update  id="doUpdateChuguanByVO"  parameterType="ChuguanVO">
 		UPDATE   YAGL_JZBW_CGL_CG
 		<set>
-			<if test="uuid != null">uuid=#{uuid},</if>
-			<if test="sjlx != null">sjlx=#{sjlx},</if>
-			<if test="pkid != null">pkid=#{pkid},</if>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<!--<if test="sjlx != null">sjlx=#{sjlx},</if>-->
+			<!--<if test="pkid != null">pkid=#{pkid},</if>-->
 			<if test="cgmc != null">cgmc=#{cgmc},</if>
 			<if test="cglx != null">cglx=#{cglx},</if>
 			<if test="cgrl != null">cgrl=#{cgrl},</if>
@@ -404,7 +408,7 @@
 			<if test="ccjzsjcl != null">ccjzsjcl=#{ccjzsjcl},</if>
 			<if test="ccjzywgd != null">ccjzywgd=#{ccjzywgd},</if>
 			<if test="bz != null">bz=#{bz},</if>
-			<if test="jdh != null">jdh=#{jdh},</if>
+			<!--<if test="jdh != null">jdh=#{jdh},</if>-->
 			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
@@ -413,7 +417,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  JZID = #{jzid}
+		WHERE  PKID = #{pkid}
 	</update>
 
 

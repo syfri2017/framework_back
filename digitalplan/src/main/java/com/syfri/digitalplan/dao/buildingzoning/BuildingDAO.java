@@ -38,8 +38,12 @@ public interface BuildingDAO extends BaseDAO<BuildingVO>{
     int doDeleteZzlById(String jzid);
     //通过重点单位
     int doDeleteCglById(String jzid);
-    //
+    //chuguan
     int doDeleteChuguanById(String jzid);
+    //cg
+    int doDeleteCgById(String jzid);
+
+
 
     //通过重点单位
     int doInsertJzlByVO(BuildingVO buildingVO);

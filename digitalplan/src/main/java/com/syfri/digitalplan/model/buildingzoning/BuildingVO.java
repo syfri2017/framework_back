@@ -35,16 +35,6 @@ public class BuildingVO extends ValueObject implements Serializable{
 	private String xgrmc;	//修改人姓名
 	private String xgsj;	//修改时间
 
-	private BuildingVO buildingVO;
-
-	public BuildingVO getBuildingVO() {
-		return buildingVO;
-	}
-
-	public void setBuildingVO(BuildingVO buildingVO) {
-		this.buildingVO = buildingVO;
-	}
-
 	private String jzlxmc;	//建筑分区类型名称
 
 	private String jzl_uuid;	//主键
@@ -124,7 +114,7 @@ public class BuildingVO extends ValueObject implements Serializable{
 	private String cgl_reserve2;	//备用字段2
 	private String cgl_reserve3;	//备用字段3
 	private String cgl_reserve4;	//备用字段4
-	private List<ChuguanVO> ChuguanList;	//储罐list
+	private List<ChuguanVO> chuguanList;	//储罐list
 	private String zddwid;	//重点单位id
 	private Map<String, List> firefacilites;//消防设施
 	private Map<String, Object> aqssss;//word安全疏散设施
@@ -700,8 +690,14 @@ public class BuildingVO extends ValueObject implements Serializable{
 	public void setCgl_reserve4(String cgl_reserve4) {
 		this.cgl_reserve4 = cgl_reserve4;
 	}
-	public List<ChuguanVO> getChuguanList() {return ChuguanList; }
-	public void setChuguanList(List<ChuguanVO> chuguanList) { ChuguanList = chuguanList; }
+
+	public List<ChuguanVO> getChuguanList() {
+		return chuguanList;
+	}
+
+	public void setChuguanList(List<ChuguanVO> chuguanList) {
+		this.chuguanList = chuguanList;
+	}
 
 	public String getZddwid() {
 		return zddwid;
