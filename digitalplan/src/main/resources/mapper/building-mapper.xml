@@ -185,6 +185,7 @@
 		Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and t.jzlx = c2.CODE_VALUE
 		WHERE t.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
+		ORDER BY NVL(xgsj,cjsj) DESC
 	</select>
 
 	<!--5.根据ID查询记录-->
@@ -278,7 +279,7 @@
 	</update>
 	<!-- cg-->
 	<update id="doDeleteCgById"  parameterType="String">
-		UPDATE YAGL_JZBW_CGL_CG t SET t.DELETE_FLAG = 'Y' WHERE 1 = 1 AND t.UUID = #{value}
+		UPDATE YAGL_JZBW_CGL_CG t SET t.DELETE_FLAG = 'Y' WHERE 1 = 1 AND t.UUID = #{uuid}
 	</update>
 
 	<!--9.按复合条件逻辑更新-->
@@ -417,7 +418,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  PKID = #{pkid}
+		WHERE  UUID = #{uuid}
 	</update>
 
 

@@ -30,7 +30,7 @@ public interface BuildingDAO extends BaseDAO<BuildingVO>{
     //通过重点单位
     int doUpdateCglByVO(BuildingVO buildingVO);
     //chuguan
-    List<ChuguanVO> doUpdateChuguanByVO(ChuguanVO vo);
+    int doUpdateChuguanByVO(ChuguanVO vo);
 
     //通过重点单位
     int doDeleteJzlById(String jzid);

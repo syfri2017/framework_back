@@ -145,7 +145,7 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
                     Boolean isDelete = true;
                     for (ChuguanVO vo1 : oldCgList) {
                         for (ChuguanVO vo2 : newCgList) {
-                            if (vo1.getPkid().equals(vo2.getPkid()) && vo2.getPkid() != null) {
+                            if (vo1.getUuid().equals(vo2.getUuid()) && vo2.getUuid() != null) {
                                 isDelete = false;
                             }
                         }
@@ -155,7 +155,7 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
                     }
                     //新增和修改
                     for (ChuguanVO newVO : newCgList) {
-                        if (newVO.getPkid() != null && newVO.getPkid() != "") {
+                        if (newVO.getUuid() != null && newVO.getUuid() != "") {
                             //修改
                             buildingDAO.doUpdateChuguanByVO(newVO);
                         }else{
