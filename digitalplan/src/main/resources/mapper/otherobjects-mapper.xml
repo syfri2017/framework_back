@@ -16,7 +16,7 @@
 		 and t.lxdh = #{lxdh}
 		</if>
 		<if test="xfgx != null and xfgx != '' ">
-		 and t.xfgx LIKE concat(RTRIM(#{xfgx},0),'%')
+		 and t.xfgx IN (SELECT DZID FROM YAGL_XFDZ t START WITH t.DZID = #{xfgx} CONNECT BY PRIOR t.DZID = SJDZID)
 		</if>
 		<if test="jbqk != null and jbqk != '' ">
 		 and t.jbqk = #{jbqk}
@@ -128,8 +128,8 @@
 			<include refid="SQL_CONTENT"/>
 			,xfgxmc
 		FROM YAGL_DX_QTDX t
-		LEFT JOIN (select dzbm,dzjc xfgxmc FROM YAGL_XFDZ WHERE DELETE_FLAG = 'N') t1
-		ON t.xfgx = t1.dzbm
+		LEFT JOIN (select dzid,dzjc xfgxmc FROM YAGL_XFDZ WHERE DELETE_FLAG = 'N') t1
+		ON t.xfgx = t1.dzid
 		WHERE t.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
 	</select>
