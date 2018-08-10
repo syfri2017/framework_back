@@ -271,9 +271,10 @@
 		AND C9.DELETE_FLAG = 'N'
 		LEFT JOIN TEMP_XFDW C11
 		ON T.UUID = C11.ZDDWID
-		<if test="mhdzbm != null and mhdzbm != '' ">
+		<if test="mhdzid != null and mhdzid != '' ">
 			INNER JOIN YAGL_XFDZ c10
-			ON (t.MHDZID=c10.DZID AND c10.DELETE_FLAG = 'N' AND c10.dzbm LIKE concat(RTRIM(#{mhdzbm},0),'%'))
+			ON (t.MHDZID=c10.DZID AND c10.DELETE_FLAG = 'N')
+			AND t.mhdzid IN (SELECT DZID FROM YAGL_XFDZ t START WITH t.DZID = #{mhdzid} CONNECT BY PRIOR t.DZID = SJDZID)
 		</if>
 		WHERE T.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
