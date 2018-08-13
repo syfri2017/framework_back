@@ -1,7 +1,12 @@
 package com.syfri.digitalplan.service.importantparts;
 
 import com.syfri.baseapi.service.BaseService;
+import com.syfri.digitalplan.model.buildingzoning.ChuguanVO;
+import com.syfri.digitalplan.model.buildingzoning.WeixianjiezhiVO;
+import com.syfri.digitalplan.model.importantparts.ImportantpartsCglVO;
+import com.syfri.digitalplan.model.importantparts.ImportantpartsJzlVO;
 import com.syfri.digitalplan.model.importantparts.ImportantpartsVO;
+import com.syfri.digitalplan.model.importantparts.ImportantpartsZzlVO;
 
 import java.util.List;
 
@@ -13,4 +18,14 @@ public interface ImportantpartsService  extends BaseService<ImportantpartsVO>{
     List<ImportantpartsVO> doFindZzlListByZddwId(String zddwId);
     /*--根据重点单位id获取储罐类重点部位详情集合.--*/
     List<ImportantpartsVO> doFindCglListByZddwId(String zddwId);
+
+    /*--新增重点部位 by li.xue 2018/8/13*/
+    int doInsertZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh);
+
+    /*--修改重点部位 by li.xue 2018/8/13*/
+    int doUpdateZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh);
+
+    /*--通过重点单位ID删除重点部位 by li.xue 2018/8/13*/
+    int doDeleteZdbwByZddwId(String zddwId);
+
 }

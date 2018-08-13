@@ -116,4 +116,76 @@ public class ImportantunitsController  extends BaseController<ImportantunitsVO>{
 		}
 		return resultVO;
 	}
+
+	/**
+	 * 校验重点单位名称是否存在
+	 * by li.xue 2018/8/13
+	 */
+	@ApiOperation(value="校验重点单位名称是否存在",notes="列表信息")
+	@ApiImplicitParam(name="dwmc",value="单位名称")
+	@GetMapping("/doCheckName/{dwmc}")
+	public @ResponseBody ResultVO doCheckName(@PathVariable String dwmc) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(importantunitsService.doCheckName(dwmc));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	/**
+	 * 新增重点单位
+	 * by li.xue 2018/8/13
+	 */
+	@ApiOperation(value="新增重点单位",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="重点单位对象")
+	@PostMapping("/doInsertByVO")
+	public @ResponseBody ResultVO doInsertByVO(@RequestBody ImportantunitsVO vo) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(importantunitsService.doInsertByVOAll(vo));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	/**
+	 * 修改重点单位
+	 * by li.xue 2018/8/13
+	 */
+	@ApiOperation(value="新增重点单位",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="重点单位对象")
+	@PostMapping("/doUpdateByVO")
+	public @ResponseBody ResultVO doUpdateByVO(@RequestBody ImportantunitsVO vo) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(importantunitsService.doInsertByVOAll(vo));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	/**
+	 * 删除重点单位
+	 * by li.xue 2018/8/13
+	 */
+	@ApiOperation(value="删除重点单位",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="重点单位对象")
+	@PostMapping("/doDeleteBatch")
+	public @ResponseBody ResultVO doDeleteBatch(@RequestBody List<ImportantunitsVO> list) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(importantunitsService.doDeleteBatch(list));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }

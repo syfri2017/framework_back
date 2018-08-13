@@ -2,6 +2,9 @@ package com.syfri.digitalplan.service.impl.importantparts;
 
 import com.syfri.digitalplan.model.buildingzoning.*;
 import com.syfri.digitalplan.model.importantparts.ImportantpartsCglVO;
+import com.syfri.digitalplan.model.importantparts.ImportantpartsJzlVO;
+import com.syfri.digitalplan.model.importantparts.ImportantpartsZzlVO;
+import com.syfri.digitalplan.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,5 +64,68 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 			}
 		}
 		return resultList;
+	}
+
+	/*--新增重点部位 by li.xue 2018/8/13*/
+	public int doInsertZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh){
+		int num = 0;
+		for(ImportantpartsVO zdbwVO : list){
+			zdbwVO.setZddwid(zddwId);
+			zdbwVO.setJdh(jdh);
+			importantpartsDAO.doInsertByVO(zdbwVO);
+			String zdbwid = zdbwVO.getZdbwid();
+			if(!StringUtils.isEmpty(zdbwVO.getZdbwlx())){
+				switch(zdbwVO.getZdbwlx()){
+					case "10":
+						ImportantpartsJzlVO jzl = zdbwVO.getJzl();
+						jzl.setZdbwid(zdbwid);
+						jzl.setJdh(jdh);
+						//使用性质
+						if(jzl.getSyxzList().size()>0){
+							jzl.setSyxz(jzl.getSyxzList().get(jzl.getSyxzList().size()-1));
+						}
+						importantpartsDAO.doInsertByVOJzl(jzl);
+						String jzlId = jzl.getUuid();
+						for(WeixianjiezhiVO wxjzVO : jzl.getWxjzList()){
+							wxjzVO.setBwid(jzlId);
+							wxjzVO.setJdh(jdh);
+							importantpartsDAO.doInsertByVOJzlWxjz(wxjzVO);
+						}
+						break;
+					case "20":
+						ImportantpartsZzlVO zzl = zdbwVO.getZzl();
+						zzl.setZdbwid(zdbwid);
+						zzl.setJdh(jdh);
+						importantpartsDAO.doInsertByVOZzl(zzl);
+						break;
+					case "30":
+						ImportantpartsCglVO cgl = zdbwVO.getCgl();
+						cgl.setZdbwid(zdbwid);
+						cgl.setJdh(jdh);
+						importantpartsDAO.doInsertByVOCgl(cgl);
+						String cglId = cgl.getUuid();
+						for(ChuguanVO cgVO : cgl.getCgList()){
+							cgVO.setPkid(cglId);
+							cgVO.setJdh(jdh);
+							importantpartsDAO.doInsertByVOCglCg(cgVO);
+						}
+						break;
+				}
+			}
+			num++;
+		}
+		return num;
+	}
+
+	/*--修改重点部位 by li.xue 2018/8/13*/
+	public int doUpdateZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh){
+		int num = 0;
+		return num;
+	}
+
+	/*--通过重点单位ID删除重点部位 by li.xue 2018/8/13*/
+	public int doDeleteZdbwByZddwId(String zddwId){
+		int num = 0;
+		return num;
 	}
 }

@@ -1,9 +1,13 @@
 package com.syfri.digitalplan.service.impl.planobject;
 
 import com.syfri.digitalplan.model.firefacilities.FirefacilitiesVO;
+import com.syfri.digitalplan.model.importantparts.ImportantpartsJzlVO;
 import com.syfri.digitalplan.model.importantparts.ImportantpartsVO;
+import com.syfri.digitalplan.model.planobject.ImportantunitsBuildingVO;
 import com.syfri.digitalplan.model.planobject.XiaofangliliangVO;
 import com.syfri.digitalplan.service.buildingzoning.BuildingService;
+import com.syfri.digitalplan.service.importantparts.ImportantpartsService;
+import com.syfri.digitalplan.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +18,6 @@ import com.syfri.digitalplan.dao.buildingzoning.BuildingDAO;
 import com.syfri.digitalplan.model.planobject.ImportantunitsVO;
 import com.syfri.digitalplan.model.buildingzoning.BuildingVO;
 import com.syfri.digitalplan.service.planobject.ImportantunitsService;
-import com.syfri.digitalplan.service.buildingzoning.BuildingService;
 import com.syfri.digitalplan.service.firefacilities.FirefacilitiesService;
 
 import java.util.ArrayList;
@@ -34,6 +37,8 @@ public class ImportantunitsServiceImpl extends BaseServiceImpl<ImportantunitsVO>
 	private BuildingService buildingService;
 	@Autowired
 	private FirefacilitiesService firefacilitiesService;
+	@Autowired
+	private ImportantpartsService importantpartsService;
 
 	@Override
 	public ImportantunitsDAO getBaseDAO() {
@@ -109,5 +114,80 @@ public class ImportantunitsServiceImpl extends BaseServiceImpl<ImportantunitsVO>
 	 */
 	public List<ImportantunitsVO> doSearchZddwListByVO(ImportantunitsVO vo){
 		return importantunitsDAO.doSearchZddwListByVO(vo);
-	};
+	}
+
+	/*--校验重点单位名称是否存在 by li.xue 2018/8/13.--*/
+	@Override
+	public int doCheckName(String dwmc){
+		return importantunitsDAO.doCheckName(dwmc);
+	}
+
+	/*--新增重点单位 by li.xue 2018/8/13.--*/
+	@Override
+	public ImportantunitsVO doInsertByVOAll(ImportantunitsVO vo){
+		//重点单位主表
+		importantunitsDAO.doInsertByVO(vo);
+		String zddwid = vo.getUuid();
+		String jdh = vo.getJdh();
+
+		//重点单位消防力量从表
+		for(XiaofangliliangVO xfllVO : vo.getXfllList()){
+			xfllVO.setZddwid(zddwid);
+			xfllVO.setJdh(jdh);
+			importantunitsDAO.doInsertByVOXfll(xfllVO);
+		}
+
+		//重点单位建筑信息关系表从表
+		for(ImportantunitsBuildingVO jzxxVO : vo.getJzxxList()){
+			jzxxVO.setZddwid(zddwid);
+			jzxxVO.setJdh(jdh);
+			importantunitsDAO.doInsertByVOJzxx(jzxxVO);
+		}
+
+		//重点部位
+		importantpartsService.doInsertZdbwByList(vo.getZdbwList(), zddwid, jdh);
+		return vo;
+	}
+
+	/*--修改重点单位 by li.xue 2018/8/13.--*/
+	@Override
+	public ImportantunitsVO doUpdateByVOAll(ImportantunitsVO vo){
+		return vo;
+	}
+
+	/*--批量删除重点单位 by li.xue 2018/8/13.--*/
+	@Override
+	public int doDeleteBatch(List<ImportantunitsVO> list){
+		return 0;
+	}
+
+	/*--判断建筑信息从表执行新增还是修改 by li.xue 2018/8/13.--*/
+	@Override
+	public int doExeInsertOrUpdateJzxx(ImportantunitsVO vo){
+		return 0;
+	}
+
+	/*--判断消防力量从表执行新增还是修改 by li.xue 2018/8/13.--*/
+	@Override
+	public int doExeInsertOrUpdateXfll(ImportantunitsVO vo){
+		return 0;
+	}
+
+	/*--判断重点部位从表执行新增还是修改 by li.xue 2018/8/13.--*/
+	@Override
+	public int doExeInsertOrUpdateZdbw(ImportantunitsVO vo){
+		return 0;
+	}
+
+	/*--判断重点部位-建筑类-危险介质从表执行新增还是修改 by li.xue 2018/8/13.--*/
+	@Override
+	public int doExeInsertOrUpdateZdbwJzlWxjz(ImportantunitsVO vo){
+		return 0;
+	}
+
+	/*--判断重点部位-储罐类-储罐从表执行新增还是修改 by li.xue 2018/8/13.--*/
+	@Override
+	public int doExeInsertOrUpdateZdbwCglCg(ImportantunitsVO vo){
+		return 0;
+	}
 }
