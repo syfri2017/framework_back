@@ -53,17 +53,8 @@ public class ImportantunitsServiceImpl extends BaseServiceImpl<ImportantunitsVO>
 
 	//通过重点单位 查询包含分区详情
 	@Override
-	public List<BuildingVO> doFindBuildingDetailsByVo(ImportantunitsVO vo) {
-		List<BuildingVO> resultList = new ArrayList<>();
-		String zddwid = vo.getUuid();
-		//根据重点单位id查询包含建筑id和建筑类型列表
-		List<BuildingVO> list = this.buildingDAO.doFindJzidJzlxListByZddwid(zddwid);
-		for(BuildingVO buildingVO : list){
-			//根据建筑id和建筑类型查询建筑详情
-			BuildingVO resultVO = this.buildingService.doFindFqDetailByVo(buildingVO);
-			resultList.add(resultVO);
-		}
-		return resultList;
+	public List<ImportantunitsBuildingVO> doFindJzxxListByZddwId(String zddwId) {
+		return importantunitsDAO.doFindJzxxListByZddwId(zddwId);
 	}
 
 	@Override
@@ -75,8 +66,7 @@ public class ImportantunitsServiceImpl extends BaseServiceImpl<ImportantunitsVO>
 			String jzid = buildingVO.getJzid();
 			FirefacilitiesVO firefacilitiesVO = new FirefacilitiesVO();
 			firefacilitiesVO.setJbxx_jzid(jzid);
-			Map<String, List> eachMap = new HashMap<String,List>();
-			eachMap = this.firefacilitiesService.doFindlist(firefacilitiesVO);
+			Map<String, List> eachMap = this.firefacilitiesService.doFindlist(firefacilitiesVO);
 			resultMap.putAll(eachMap);
 		}
 		return resultMap;
@@ -116,13 +106,13 @@ public class ImportantunitsServiceImpl extends BaseServiceImpl<ImportantunitsVO>
 		return importantunitsDAO.doSearchZddwListByVO(vo);
 	}
 
-	/*--校验重点单位名称是否存在 by li.xue 2018/8/13.--*/
+	/**--校验重点单位名称是否存在 by li.xue 2018/8/13.--*/
 	@Override
 	public int doCheckName(String dwmc){
 		return importantunitsDAO.doCheckName(dwmc);
 	}
 
-	/*--新增重点单位 by li.xue 2018/8/13.--*/
+	/**--新增重点单位 by li.xue 2018/8/13.--*/
 	@Override
 	public ImportantunitsVO doInsertByVOAll(ImportantunitsVO vo){
 		//重点单位主表
@@ -149,45 +139,88 @@ public class ImportantunitsServiceImpl extends BaseServiceImpl<ImportantunitsVO>
 		return vo;
 	}
 
-	/*--修改重点单位 by li.xue 2018/8/13.--*/
+	/**--修改重点单位 by li.xue 2018/8/13.--*/
 	@Override
 	public ImportantunitsVO doUpdateByVOAll(ImportantunitsVO vo){
+		/*重点单位主表*/
+		importantunitsDAO.doUpdateByVO(vo);
+		String zddwid = vo.getUuid();
+		String jdh = vo.getJdh();
+
+		/*重点单位消防力量从表*/
+		List<XiaofangliliangVO> xfllListOld = importantunitsDAO.doFindXfllListByZddwId(zddwid);
+		List<XiaofangliliangVO> xfllListNew = vo.getXfllList();
+		//删除旧有,新没有的
+		for(XiaofangliliangVO voOld : xfllListOld){
+			Boolean flag = true;//删除标志
+			for(XiaofangliliangVO voNew : xfllListNew){
+				if(voOld.getUuid().equals(voNew.getUuid()) && voNew.getUuid()!=null){
+					flag = false;
+				}
+			}
+			if(flag){
+				importantunitsDAO.doDeleteXfllById(voOld.getUuid());
+			}
+		}
+		for(XiaofangliliangVO voNew : xfllListNew){
+			if(voNew.getUuid()!=null && !"".equals(voNew.getUuid())){
+				importantunitsDAO.doUpdateByVOXfll(voNew);
+			}else{
+				voNew.setZddwid(zddwid);
+				voNew.setJdh(jdh);
+				importantunitsDAO.doInsertByVOXfll(voNew);
+			}
+		}
+
+		/*重点单位-建筑信息关系表*/
+		List<ImportantunitsBuildingVO> jzxxListOld = importantunitsDAO.doFindJzxxListByZddwId(zddwid);
+		List<ImportantunitsBuildingVO> jzxxListNew = vo.getJzxxList();
+		//删除旧有,新没有的
+		for(ImportantunitsBuildingVO voOld : jzxxListOld){
+			Boolean flag = true;//删除标志
+			for(ImportantunitsBuildingVO voNew :jzxxListNew){
+				if(voOld.getUuid().equals(voNew.getUuid()) && voNew.getUuid()!=null) {
+					flag = false;
+				}
+			}
+			if(flag){
+				importantunitsDAO.doDeleteJzxxById(voOld.getUuid());
+			}
+		}
+		for(ImportantunitsBuildingVO voNew : jzxxListNew){
+			if(voNew.getUuid()!=null && !"".equals(voNew.getUuid())){
+				importantunitsDAO.doUpdateByVOJzxx(voNew);
+			}else{
+				voNew.setZddwid(zddwid);
+				voNew.setJdh(jdh);
+				importantunitsDAO.doInsertByVOJzxx(voNew);
+			}
+		}
+
+		/*重点部位信息*/
+		importantpartsService.doUpdateZdbwByList(vo.getZdbwList(), zddwid, jdh);
+
 		return vo;
 	}
 
-	/*--批量删除重点单位 by li.xue 2018/8/13.--*/
+	/**--批量删除重点单位 by li.xue 2018/8/13.--*/
 	@Override
 	public int doDeleteBatch(List<ImportantunitsVO> list){
-		return 0;
+		int num = 0;
+		for(ImportantunitsVO vo : list){
+			String zddwid = vo.getUuid();
+			//删除重点单位主表
+			vo.setDeleteFlag("Y");
+			importantunitsDAO.doUpdateByVO(vo);
+			//根据重点单位ID删除消防力量从表
+			importantunitsDAO.doDeleteByIdXfll(zddwid);
+			//根据重点单位ID删除重点单位-建筑信息中间表
+			importantunitsDAO.doDeleteByIdJzxx(zddwid);
+			//根据重点单位ID删除重点部位
+			importantpartsService.doDeleteZdbwByZddwId(zddwid, vo.getXgrid(), vo.getXgrmc());
+			num++;
+		}
+		return num;
 	}
 
-	/*--判断建筑信息从表执行新增还是修改 by li.xue 2018/8/13.--*/
-	@Override
-	public int doExeInsertOrUpdateJzxx(ImportantunitsVO vo){
-		return 0;
-	}
-
-	/*--判断消防力量从表执行新增还是修改 by li.xue 2018/8/13.--*/
-	@Override
-	public int doExeInsertOrUpdateXfll(ImportantunitsVO vo){
-		return 0;
-	}
-
-	/*--判断重点部位从表执行新增还是修改 by li.xue 2018/8/13.--*/
-	@Override
-	public int doExeInsertOrUpdateZdbw(ImportantunitsVO vo){
-		return 0;
-	}
-
-	/*--判断重点部位-建筑类-危险介质从表执行新增还是修改 by li.xue 2018/8/13.--*/
-	@Override
-	public int doExeInsertOrUpdateZdbwJzlWxjz(ImportantunitsVO vo){
-		return 0;
-	}
-
-	/*--判断重点部位-储罐类-储罐从表执行新增还是修改 by li.xue 2018/8/13.--*/
-	@Override
-	public int doExeInsertOrUpdateZdbwCglCg(ImportantunitsVO vo){
-		return 0;
-	}
 }

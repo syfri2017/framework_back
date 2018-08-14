@@ -134,6 +134,51 @@
 		t2.reserve3 reserve3,
 		TO_CHAR(t2.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
 	</sql>
+	<!--2-4.建筑类-危险介质查询内容-->
+	<sql id="SQL_JZL_WXJZ_CONTENT">
+		t1.uuid uuid,
+		t1.bwid bwid,
+		t1.jzmc jzmc,
+		t1.jzsjcl jzsjcl,
+		t1.jzlhtx jzlhtx,
+		t1.jzbz jzbz,
+		t1.delete_flag deleteFlag,
+		t1.datasource datasource,
+		t1.jdh jdh,
+		TO_CHAR(t1.sjc,'yyyy-MM-dd HH24:mi:ss') sjc,
+		t1.reserve1 reserve1,
+		t1.reserve2 reserve2,
+		t1.reserve3 reserve3,
+		TO_CHAR(t1.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
+	</sql>
+	<!--2-5.储罐类-储罐查询内容-->
+	<sql id="SQL_CGL_CG_CONTENT">
+		t1.uuid uuid,
+		t1.sjlx sjlx,
+		t1.pkid pkid,
+		t1.cgmc cgmc,
+		t1.cglx cglx,
+		t1.cgrl cgrl,
+		t1.cgzj cgzj,
+		t1.cggd cggd,
+		t1.cgzc cgzc,
+		t1.gdmj gdmj,
+		t1.gzyl gzyl,
+		t1.ccwd ccwd,
+		t1.ccjzmc ccjzmc,
+		t1.ccjzlhxz ccjzlhxz,
+		t1.ccjzsjcl ccjzsjcl,
+		t1.ccjzywgd ccjzywgd,
+		t1.bz bz,
+		t1.delete_flag deleteFlag,
+		t1.datasource datasource,
+		t1.jdh jdh,
+		TO_CHAR(t1.sjc,'yyyy-MM-dd HH24:mi:ss') sjc,
+		t1.reserve1 reserve1,
+		t1.reserve2 reserve2,
+		t1.reserve3 reserve3,
+		TO_CHAR(t1.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
+	</sql>
 
 	<!--3.查询记录数-->
 	<select id="doSearchCount" parameterType="ImportantpartsVO" resultType="java.lang.Integer">
@@ -210,7 +255,7 @@
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
 			xgsj=sysdate,
-			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="bz != null">bz=#{bz},</if>
 			<if test="jdh != null">jdh=#{jdh},</if>
@@ -451,7 +496,7 @@
 
 	<!--17.按重点部位ID删除重点部位-建筑类 by li.xue 2018/8/13 -->
 	<update id="doDeleteByZdbwIdJzl"  parameterType="String">
-		UPDATE  YAGL_ZDBW_JZL t SET t.DELETE_FLAG = 'Y'  WHERE t.ZDB = #{value}
+		UPDATE  YAGL_ZDBW_JZL t SET t.DELETE_FLAG = 'Y'  WHERE t.ZDBWID = #{value}
 	</update>
 
 	<!--18.新增重点部位-建筑类-危险介质 by li.xue 2018/8/13 -->
@@ -619,4 +664,44 @@
 	<update id="doDeleteByZdbwCglIdCglCg"  parameterType="String">
 		UPDATE  YAGL_JZBW_CGL_CG t SET t.DELETE_FLAG = 'Y'  WHERE t.PKID = #{value}
 	</update>
+
+	<!--30.根据重点部位ID查询重点部位-建筑类 by li.xue 2018/8/14-->
+	<select id="doFindJzlByZdbwId" parameterType="String" resultType="com.syfri.digitalplan.model.importantparts.ImportantpartsJzlVO">
+		SELECT
+		<include refid="SQL_JZL_CONTENT"/>
+		FROM YAGL_ZDBW_JZL t2
+		WHERE t2.DELETE_FLAG = 'N' AND t2.ZDBWID = #{value}
+	</select>
+
+	<!--30.根据重点部位ID查询重点部位-装置类 by li.xue 2018/8/14-->
+	<select id="doFindZzlByZdbwId" parameterType="String" resultType="com.syfri.digitalplan.model.importantparts.ImportantpartsZzlVO">
+		SELECT
+		<include refid="SQL_ZZL_CONTENT"/>
+		FROM YAGL_ZDBW_ZZL t2
+		WHERE t2.DELETE_FLAG = 'N' AND t2.ZDBWID = #{value}
+	</select>
+
+	<!--30.根据重点部位ID查询重点部位-储罐类 by li.xue 2018/8/14-->
+	<select id="doFindCglByZdbwId" parameterType="String" resultType="com.syfri.digitalplan.model.importantparts.ImportantpartsCglVO">
+		SELECT
+		<include refid="SQL_CGL_CONTENT"/>
+		FROM YAGL_ZDBW_CGL t2
+		WHERE t2.DELETE_FLAG = 'N' AND t2.ZDBWID = #{value}
+	</select>
+
+	<!--31.根据重点部位-建筑类ID查询其危险介质 by li.xue 2081/8/14-->
+	<select id="doFindWxjzByJzlId" parameterType="String" resultType="com.syfri.digitalplan.model.buildingzoning.WeixianjiezhiVO">
+		SELECT
+		<include refid="SQL_JZL_WXJZ_CONTENT"/>
+		FROM YAGL_ZDBW_JZL_WXJZ t1
+		WHERE t1.DELETE_FLAG = 'N' AND t1.BWID = #{value}
+	</select>
+
+	<!--31.根据重点部位-储罐类ID查询其罐体信息 by li.xue 2081/8/14-->
+	<select id="doFindCgByCglId" parameterType="String" resultType="com.syfri.digitalplan.model.buildingzoning.ChuguanVO">
+		SELECT
+		<include refid="SQL_CGL_CG_CONTENT"/>
+		FROM YAGL_JZBW_CGL_CG t1
+		WHERE t1.DELETE_FLAG = 'N' AND t1.SJLX = 'BW' AND t1.PKID = #{value}
+	</select>
 </mapper>

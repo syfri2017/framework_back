@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.syfri.baseapi.model.ValueObject;
+import com.syfri.digitalplan.model.importantparts.ImportantpartsVO;
 import com.syfri.digitalplan.model.planobject.XiaofangliliangVO;
 
 public class ImportantunitsVO extends ValueObject implements Serializable{
@@ -19,9 +20,9 @@ public class ImportantunitsVO extends ValueObject implements Serializable{
 	private String zbdh;	//值班电话
 	private String fhdj;	//防火等级
 	private String fhdzid;	//防火队站ID
-	private String fhdzmc;	//防火队站名称
+	private String fhdzmc;  //防火队站名称
 	private String mhdzid;	//灭火队站ID
-	private String mhdzmc;	//灭火队站名称
+	private String mhdzmc;  //灭火队站名称
 	private String xfzrr;	//消防责任人
 	private String xfzrrdh;	//消防责任人电话
 	private String xfglr;	//消防管理人
@@ -49,15 +50,15 @@ public class ImportantunitsVO extends ValueObject implements Serializable{
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
 
-	private String dwxzmc;
-	private String xzqhmc;
-	private String fhdjmc;
+	private String dwxzmc;  //单位性质名称
+	private String xzqhmc;  //行政区划名称
+	private String fhdjmc;  //防火等级名称
 	private String fhdzbm;
-	private String fhdzidmc;
+	private String fhdzidmc;	//防火队站名称
 	private String mhdzbm;
-	private String mhdzidmc;
-	private String jzflmc;
-	private String xfdwlxmc;
+	private String mhdzidmc;	//灭火队站名称
+	private String jzflmc;  //建筑分类名称
+	private String xfdwlxmc;   //消防队伍类型名称
 
 	private String gisX_min;	//GIS_X
 	private String gisX_max;	//GIS_X
@@ -67,11 +68,11 @@ public class ImportantunitsVO extends ValueObject implements Serializable{
 	private String yadxType;  //高级搜索预案对象类别（1为重点单位，2为消防保卫警卫，3为其他对象）
 	private String dxmc;     //高级搜索中对象名称（对应重点单位中dwmc字段）
 	private String dxdz;		//高级搜索中对象地址（对应重点单位中 dwdz 字段）
-	private String 	xfgx;		//高级搜索中消防管辖（对应重点单位中 mhdzid 字段）
+	private String xfgx;		//高级搜索中消防管辖（对应重点单位中 mhdzid 字段）
 
 	private List<XiaofangliliangVO> xfllList; //单位消防力量列表
 	private List<ImportantunitsBuildingVO> jzxxList; //建筑信息列表
-	private List<ImportantunitsVO> zdbwList;  //重点部位列表
+	private List<ImportantpartsVO> zdbwList;  //重点部位列表
 
 	private String cjrid;	//创建人ID
 	private String cjrmc;	//创建人名称
@@ -81,135 +82,260 @@ public class ImportantunitsVO extends ValueObject implements Serializable{
 	private String xgsj;	//修改时间
 
 
-	public String getUuid(){
+	public String getUuid() {
 		return uuid;
 	}
-	public void setUuid(String uuid){
+	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
-	public String getDwmc(){
+	public String getDwmc() {
 		return dwmc;
 	}
-	public void setDwmc(String dwmc){
+	public void setDwmc(String dwmc) {
 		this.dwmc = dwmc;
 	}
-	public String getDwxz(){ return dwxz; }
-	public void setDwxz(String dwxz){ this.dwxz = dwxz; }
-	public String getDwdz(){ return dwdz; }
-	public void setDwdz(String dwdz){ this.dwdz = dwdz; }
-	public String getDwgk(){ return dwgk; }
-	public void setDwgk(String dwgk){ this.dwgk = dwgk; }
-	public String getXzqh(){ return xzqh; }
-	public void setXzqh(String xzqh){ this.xzqh = xzqh; }
-	public String getZbdh(){ return zbdh; }
-	public void setZbdh(String zbdh){ this.zbdh = zbdh; }
-	public String getFhdj(){ return fhdj; }
-	public void setFhdj(String fhdj){ this.fhdj = fhdj; }
-	public String getFhdzid(){ return fhdzid; }
-	public void setFhdzid(String fhdzid){ this.fhdzid = fhdzid; }
-	public String getFhdzmc(){ return fhdzmc; }
-	public void setFhdzmc(String fhdzmc){ this.fhdzmc = fhdzmc; }
-	public String getMhdzid(){ return mhdzid; }
-	public void setMhdzid(String mhdzid){ this.mhdzid = mhdzid; }
-	public String getMhdzmc(){ return mhdzmc; }
-	public void setMhdzmc(String mhdzmc){ this.mhdzmc = mhdzmc; }
-	public String getXfzrr(){ return xfzrr; }
-	public void setXfzrr(String xfzrr){ this.xfzrr = xfzrr; }
-	public String getXfzrrdh(){ return xfzrrdh; }
-	public void setXfzrrdh(String xfzrrdh){ this.xfzrrdh = xfzrrdh; }
-	public String getXfglr(){ return xfglr; }
-	public void setXfglr(String xfglr){ this.xfglr = xfglr; }
-	public String getXfglrdh(){ return xfglrdh; }
-	public void setXfglrdh(String xfglrdh){ this.xfglrdh = xfglrdh; }
-	public String getXfsssl(){ return xfsssl; }
-	public void setXfsssl(String xfsssl){ this.xfsssl = xfsssl; }
-	public String getJzfl(){ return jzfl; }
-	public void setJzfl(String jzfl){ this.jzfl = jzfl; }
-	public String getJzsl(){ return jzsl; }
-	public void setJzsl(String jzsl){ this.jzsl = jzsl; }
-	public String getZdmj(){ return zdmj; }
-	public void setZdmj(String zdmj){ this.zdmj = zdmj; }
-	public String getJzmj(){ return jzmj; }
-	public void setJzmj(String jzmj){ this.jzmj = jzmj; }
-	public String getGisX(){ return gisX; }
-	public void setGisX(String gisX){ this.gisX = gisX; }
-	public String getGisY(){ return gisY; }
-	public void setGisY(String gisY){ this.gisY = gisY; }
-	public String getLon(){ return lon; }
-	public void setLon(String lon){ this.lon = lon; }
-	public String getLat(){ return lat; }
-	public void setLat(String lat){ this.lat = lat; }
-	public String getPlqkd(){ return plqkd; }
-	public void setPlqkd(String plqkd){ this.plqkd = plqkd; }
-	public String getPlqkn(){ return plqkn; }
-	public void setPlqkn(String plqkn){ this.plqkn = plqkn; }
-	public String getPlqkx(){ return plqkx; }
-	public void setPlqkx(String plqkx){ this.plqkx = plqkx; }
-	public String getPlqkb(){ return plqkb; }
-	public void setPlqkb(String plqkb){ this.plqkb = plqkb; }
-	public String getBz(){ return bz; }
-	public void setBz(String bz){ this.bz = bz; }
-	public String getDeleteFlag(){ return deleteFlag; }
-	public void setDeleteFlag(String deleteFlag){ this.deleteFlag = deleteFlag; }
-	public String getDatasource(){ return datasource; }
-	public void setDatasource(String datasource){ this.datasource = datasource; }
-	public String getJdh(){ return jdh; }
-	public void setJdh(String jdh){
+	public String getDwxz() {
+		return dwxz;
+	}
+	public void setDwxz(String dwxz) {
+		this.dwxz = dwxz;
+	}
+	public String getDwdz() {
+		return dwdz;
+	}
+	public void setDwdz(String dwdz) {
+		this.dwdz = dwdz;
+	}
+	public String getDwgk() {
+		return dwgk;
+	}
+	public void setDwgk(String dwgk) {
+		this.dwgk = dwgk;
+	}
+	public String getXzqh() {
+		return xzqh;
+	}
+	public void setXzqh(String xzqh) {
+		this.xzqh = xzqh;
+	}
+	public String getZbdh() {
+		return zbdh;
+	}
+	public void setZbdh(String zbdh) {
+		this.zbdh = zbdh;
+	}
+	public String getFhdj() {
+		return fhdj;
+	}
+	public void setFhdj(String fhdj) {
+		this.fhdj = fhdj;
+	}
+	public String getFhdzid() {
+		return fhdzid;
+	}
+	public void setFhdzid(String fhdzid) {
+		this.fhdzid = fhdzid;
+	}
+	public String getFhdzmc() {
+		return fhdzmc;
+	}
+	public void setFhdzmc(String fhdzmc) {
+		this.fhdzmc = fhdzmc;
+	}
+	public String getMhdzid() {
+		return mhdzid;
+	}
+	public void setMhdzid(String mhdzid) {
+		this.mhdzid = mhdzid;
+	}
+	public String getMhdzmc() {
+		return mhdzmc;
+	}
+	public void setMhdzmc(String mhdzmc) {
+		this.mhdzmc = mhdzmc;
+	}
+	public String getXfzrr() {
+		return xfzrr;
+	}
+	public void setXfzrr(String xfzrr) {
+		this.xfzrr = xfzrr;
+	}
+	public String getXfzrrdh() {
+		return xfzrrdh;
+	}
+	public void setXfzrrdh(String xfzrrdh) {
+		this.xfzrrdh = xfzrrdh;
+	}
+	public String getXfglr() {
+		return xfglr;
+	}
+	public void setXfglr(String xfglr) {
+		this.xfglr = xfglr;
+	}
+	public String getXfglrdh() {
+		return xfglrdh;
+	}
+	public void setXfglrdh(String xfglrdh) {
+		this.xfglrdh = xfglrdh;
+	}
+	public String getXfsssl() {
+		return xfsssl;
+	}
+	public void setXfsssl(String xfsssl) {
+		this.xfsssl = xfsssl;
+	}
+	public String getJzfl() {
+		return jzfl;
+	}
+	public void setJzfl(String jzfl) {
+		this.jzfl = jzfl;
+	}
+	public String getJzsl() {
+		return jzsl;
+	}
+	public void setJzsl(String jzsl) {
+		this.jzsl = jzsl;
+	}
+	public String getZdmj() {
+		return zdmj;
+	}
+	public void setZdmj(String zdmj) {
+		this.zdmj = zdmj;
+	}
+	public String getJzmj() {
+		return jzmj;
+	}
+	public void setJzmj(String jzmj) {
+		this.jzmj = jzmj;
+	}
+	public String getGisX() {
+		return gisX;
+	}
+	public void setGisX(String gisX) {
+		this.gisX = gisX;
+	}
+	public String getGisY() {
+		return gisY;
+	}
+	public void setGisY(String gisY) {
+		this.gisY = gisY;
+	}
+	public String getLon() {
+		return lon;
+	}
+	public void setLon(String lon) {
+		this.lon = lon;
+	}
+	public String getLat() {
+		return lat;
+	}
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+	public String getPlqkd() {
+		return plqkd;
+	}
+	public void setPlqkd(String plqkd) {
+		this.plqkd = plqkd;
+	}
+	public String getPlqkn() {
+		return plqkn;
+	}
+	public void setPlqkn(String plqkn) {
+		this.plqkn = plqkn;
+	}
+	public String getPlqkx() {
+		return plqkx;
+	}
+	public void setPlqkx(String plqkx) {
+		this.plqkx = plqkx;
+	}
+	public String getPlqkb() {
+		return plqkb;
+	}
+	public void setPlqkb(String plqkb) {
+		this.plqkb = plqkb;
+	}
+	public String getBz() {
+		return bz;
+	}
+	public void setBz(String bz) {
+		this.bz = bz;
+	}
+	public String getDeleteFlag() {
+		return deleteFlag;
+	}
+	public void setDeleteFlag(String deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
+	public String getDatasource() {
+		return datasource;
+	}
+	public void setDatasource(String datasource) {
+		this.datasource = datasource;
+	}
+	public String getJdh() {
+		return jdh;
+	}
+	public void setJdh(String jdh) {
 		this.jdh = jdh;
 	}
-	public String getSjc(){
+	public String getSjc() {
 		return sjc;
 	}
-	public void setSjc(String sjc){
+	public void setSjc(String sjc) {
 		this.sjc = sjc;
 	}
-	public String getReserve1(){
+	public String getReserve1() {
 		return reserve1;
 	}
-	public void setReserve1(String reserve1){
+	public void setReserve1(String reserve1) {
 		this.reserve1 = reserve1;
 	}
-	public String getReserve2(){
+	public String getReserve2() {
 		return reserve2;
 	}
-	public void setReserve2(String reserve2){
+	public void setReserve2(String reserve2) {
 		this.reserve2 = reserve2;
 	}
-	public String getReserve3(){
+	public String getReserve3() {
 		return reserve3;
 	}
-	public void setReserve3(String reserve3){
+	public void setReserve3(String reserve3) {
 		this.reserve3 = reserve3;
 	}
-	public String getReserve4(){
+	public String getReserve4() {
 		return reserve4;
 	}
-	public void setReserve4(String reserve4){
+	public void setReserve4(String reserve4) {
 		this.reserve4 = reserve4;
 	}
-
-	public String getDwxzmc() { return dwxzmc; }
-	public void setDwxzmc(String dwxzmc) { this.dwxzmc = dwxzmc; }
+	public String getDwxzmc() {
+		return dwxzmc;
+	}
+	public void setDwxzmc(String dwxzmc) {
+		this.dwxzmc = dwxzmc;
+	}
 	public String getXzqhmc() {
 		return xzqhmc;
 	}
 	public void setXzqhmc(String xzqhmc) {
 		this.xzqhmc = xzqhmc;
 	}
-	public String getFhdzbm() {
-		return fhdzbm;
+	public String getFhdjmc() {
+		return fhdjmc;
 	}
 	public void setFhdjmc(String fhdjmc) {
 		this.fhdjmc = fhdjmc;
 	}
-	public String getFhdzidmc() {
-		return fhdzidmc;
+	public String getFhdzbm() {
+		return fhdzbm;
 	}
 	public void setFhdzbm(String fhdzbm) {
 		this.fhdzbm = fhdzbm;
 	}
-	public String getFhdjmc() {
-		return fhdjmc;
+	public String getFhdzidmc() {
+		return fhdzidmc;
 	}
 	public void setFhdzidmc(String fhdzidmc) {
 		this.fhdzidmc = fhdzidmc;
@@ -232,9 +358,12 @@ public class ImportantunitsVO extends ValueObject implements Serializable{
 	public void setJzflmc(String jzflmc) {
 		this.jzflmc = jzflmc;
 	}
-	public String getXfdwlxmc() { return xfdwlxmc; }
-	public void setXfdwlxmc(String xfdwlxmc) { this.xfdwlxmc = xfdwlxmc; }
-
+	public String getXfdwlxmc() {
+		return xfdwlxmc;
+	}
+	public void setXfdwlxmc(String xfdwlxmc) {
+		this.xfdwlxmc = xfdwlxmc;
+	}
 	public String getGisX_min() {
 		return gisX_min;
 	}
@@ -259,7 +388,6 @@ public class ImportantunitsVO extends ValueObject implements Serializable{
 	public void setGisY_max(String gisY_max) {
 		this.gisY_max = gisY_max;
 	}
-
 	public String getYadxType() {
 		return yadxType;
 	}
@@ -284,7 +412,6 @@ public class ImportantunitsVO extends ValueObject implements Serializable{
 	public void setXfgx(String xfgx) {
 		this.xfgx = xfgx;
 	}
-
 	public List<XiaofangliliangVO> getXfllList() {
 		return xfllList;
 	}
@@ -297,10 +424,10 @@ public class ImportantunitsVO extends ValueObject implements Serializable{
 	public void setJzxxList(List<ImportantunitsBuildingVO> jzxxList) {
 		this.jzxxList = jzxxList;
 	}
-	public List<ImportantunitsVO> getZdbwList() {
+	public List<ImportantpartsVO> getZdbwList() {
 		return zdbwList;
 	}
-	public void setZdbwList(List<ImportantunitsVO> zdbwList) {
+	public void setZdbwList(List<ImportantpartsVO> zdbwList) {
 		this.zdbwList = zdbwList;
 	}
 	public String getCjrid() {

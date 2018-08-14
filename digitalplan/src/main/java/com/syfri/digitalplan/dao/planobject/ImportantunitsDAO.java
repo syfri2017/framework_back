@@ -1,7 +1,6 @@
 package com.syfri.digitalplan.dao.planobject;
 
 import com.syfri.baseapi.dao.BaseDAO;
-import com.syfri.digitalplan.model.importantparts.ImportantpartsVO;
 import com.syfri.digitalplan.model.planobject.ImportantunitsBuildingVO;
 import com.syfri.digitalplan.model.planobject.XiaofangliliangVO;
 import com.syfri.digitalplan.model.planobject.ImportantunitsVO;
@@ -40,4 +39,19 @@ public interface ImportantunitsDAO extends BaseDAO<ImportantunitsVO>{
 
     /*--按重点单位ID删除单位建筑信息 by li.xue 2018/8/13.--*/
     void doDeleteByIdJzxx(String zddwid);
+
+    /*--通过重点单位id 查询包含重点单位-建筑信息关系表 by li.xue 2018/8/14.--*/
+    List<ImportantunitsBuildingVO> doFindJzxxListByZddwId(String zddwid);
+
+    /*--通过消防队伍ID删除消防队伍 by li.xue 2018/8/14.--*/
+    void doDeleteXfllById(String uuid);
+
+    /*--通过重点单位-建筑ID删除重点单位-建筑 by li.xue 2018/8/14.--*/
+    void doDeleteJzxxById(String uuid);
+
+    /*--通过危险介质ID删除危险介质 by li.xue 2018/8/14.--*/
+    void doDeleteWxjzById(String uuid);
+
+    /*--通过储罐ID删除储罐 by li.xue 2018/8/14.--*/
+    void doDeleteCgById(String uuid);
 }

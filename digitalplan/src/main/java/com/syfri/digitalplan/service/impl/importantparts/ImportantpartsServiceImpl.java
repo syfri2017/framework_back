@@ -15,6 +15,7 @@ import com.syfri.digitalplan.dao.buildingzoning.BuildingDAO;
 import com.syfri.digitalplan.model.importantparts.ImportantpartsVO;
 import com.syfri.digitalplan.service.importantparts.ImportantpartsService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
@@ -64,6 +65,42 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 			}
 		}
 		return resultList;
+	}
+	/*--根据重点单位ID查询其重点部位信息 by li.xue 2018/8/14--*/
+	@Override
+	public List<ImportantpartsVO> doFindZdbwListByZddwId(String zddwId){
+		List<ImportantpartsVO> list = importantpartsDAO.doSearchListByVO(new ImportantpartsVO(zddwId));
+		for(ImportantpartsVO vo : list){
+			if(vo.getZdbwlx()!=null && !"".equals(vo.getZdbwlx())){
+				switch(vo.getZdbwlx()){
+					case "10":
+						ImportantpartsJzlVO jzlVO = importantpartsDAO.doFindJzlByZdbwId(vo.getZdbwid()).get(0);
+						//建筑使用性质
+						if(jzlVO.getSyxz() != null && !"".equals(jzlVO.getSyxz())){
+							List<String> syxzList = new ArrayList<>();
+							syxzList.add(jzlVO.getSyxz().substring(0,1) + "0000");
+							syxzList.add(jzlVO.getSyxz());
+						}
+						//危险介质
+						List<WeixianjiezhiVO> wxjzList = importantpartsDAO.doFindWxjzByJzlId(jzlVO.getUuid());
+						jzlVO.setWxjzList(wxjzList);
+						vo.setJzl(jzlVO);
+						break;
+					case "20":
+						ImportantpartsZzlVO zzlVO = importantpartsDAO.doFindZzlByZdbwId(vo.getZdbwid()).get(0);
+						vo.setZzl(zzlVO);
+						break;
+					case "30":
+						ImportantpartsCglVO cglVO = importantpartsDAO.doFindCglByZdbwId(vo.getZdbwid()).get(0);
+						//储罐
+						List<ChuguanVO> cgList = importantpartsDAO.doFindCgByCglId(cglVO.getUuid());
+						cglVO.setCgList(cgList);
+						vo.setCgl(cglVO);
+						break;
+				}
+			}
+		}
+		return list;
 	}
 
 	/*--新增重点部位 by li.xue 2018/8/13*/
@@ -120,12 +157,47 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 	/*--修改重点部位 by li.xue 2018/8/13*/
 	public int doUpdateZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh){
 		int num = 0;
+
 		return num;
 	}
 
 	/*--通过重点单位ID删除重点部位 by li.xue 2018/8/13*/
-	public int doDeleteZdbwByZddwId(String zddwId){
+	@Override
+	public int doDeleteZdbwByZddwId(String zddwId, String xgrid, String xgrmc){
 		int num = 0;
+		//根据重点单位ID查询重点部位
+		ImportantpartsVO importantpartsVO = new ImportantpartsVO(zddwId);
+		List<ImportantpartsVO> list = importantpartsDAO.doSearchListByVO(importantpartsVO);
+		for(ImportantpartsVO vo : list){
+			//删除重点部位主表数据
+			vo.setDeleteFlag("Y");
+			vo.setXgrid(xgrid);
+			vo.setXgrmc(xgrmc);
+			importantpartsDAO.doUpdateByVO(vo);
+			//删除重点部位从表
+			if(vo.getZdbwlx() != null && !"".equals(vo.getZdbwlx())){
+				switch(vo.getZdbwlx()){
+					case "10":
+						List<ImportantpartsJzlVO> jzlList = importantpartsDAO.doFindJzlByZdbwId(vo.getZdbwid());
+						for(ImportantpartsJzlVO jzlVO : jzlList){
+							importantpartsDAO.doDeleteByZdbwJzlIdJzlWxjz(jzlVO.getUuid());
+						}
+						importantpartsDAO.doDeleteByZdbwIdJzl(vo.getZdbwid());
+						break;
+					case "20":
+						importantpartsDAO.doDeleteByZdbwIdZzl(vo.getZdbwid());
+						break;
+					case "30":
+						List<ImportantpartsCglVO> cglList = importantpartsDAO.doFindCglByZdbwId(vo.getZdbwid());
+						for(ImportantpartsCglVO cglVO : cglList){
+							importantpartsDAO.doDeleteByZdbwCglIdCglCg(cglVO.getUuid());
+						}
+						importantpartsDAO.doDeleteByZdbwIdCgl(vo.getZdbwid());
+						break;
+				}
+			}
+			num++;
+		}
 		return num;
 	}
 }

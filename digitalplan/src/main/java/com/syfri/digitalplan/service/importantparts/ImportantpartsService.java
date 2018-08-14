@@ -19,6 +19,9 @@ public interface ImportantpartsService  extends BaseService<ImportantpartsVO>{
     /*--根据重点单位id获取储罐类重点部位详情集合.--*/
     List<ImportantpartsVO> doFindCglListByZddwId(String zddwId);
 
+    /*--根据重点单位ID查询其重点部位信息 by li.xue 2018/8/14--*/
+    List<ImportantpartsVO> doFindZdbwListByZddwId(String zddwId);
+
     /*--新增重点部位 by li.xue 2018/8/13*/
     int doInsertZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh);
 
@@ -26,6 +29,7 @@ public interface ImportantpartsService  extends BaseService<ImportantpartsVO>{
     int doUpdateZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh);
 
     /*--通过重点单位ID删除重点部位 by li.xue 2018/8/13*/
-    int doDeleteZdbwByZddwId(String zddwId);
+    int doDeleteZdbwByZddwId(String zddwId, String xgrid, String xgrmc);
+
 
 }

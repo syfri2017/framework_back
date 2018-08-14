@@ -314,44 +314,29 @@
 
 	<!--9.按主键逻辑删除-->
 	<update id="doDeleteById"  parameterType="String"> 
-		UPDATE  YAGL_DX_ZDDW t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.UUID = #{value}
+		UPDATE  YAGL_DX_ZDDW t SET t.DELETE_FLAG = 'Y'  WHERE t.UUID = #{value}
 	</update>
 
 	<!--10.按复合条件逻辑更新-->
 	<update  id="doUpdateByVO"  parameterType="ImportantunitsVO"> 
-		UPDATE   YAGL_DX_ZDDW  
+		UPDATE   YAGL_DX_ZDDW
 		<set>
 			<if test="uuid != null">uuid=#{uuid},</if>
 			<if test="dwmc != null">dwmc=#{dwmc},</if>
-			<if test="dwlb != null">dwlb=#{dwlb},</if>
-			<if test="dwclsj != null">dwclsj=TO_DATE(#{dwclsj},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="dwxz != null">dwxz=#{dwxz},</if>
 			<if test="dwdz != null">dwdz=#{dwdz},</if>
-			<if test="dzlj != null">dzlj=#{dzlj},</if>
-			<if test="dzh != null">dzh=#{dzh},</if>
 			<if test="dwgk != null">dwgk=#{dwgk},</if>
 			<if test="xzqh != null">xzqh=#{xzqh},</if>
 			<if test="zbdh != null">zbdh=#{zbdh},</if>
-			<if test="yzbm != null">yzbm=#{yzbm},</if>
-			<if test="dzyx != null">dzyx=#{dzyx},</if>
-			<if test="gdzc != null">gdzc=#{gdzc},</if>
-			<if test="zgrs != null">zgrs=#{zgrs},</if>
 			<if test="fhdj != null">fhdj=#{fhdj},</if>
 			<if test="fhdzid != null">fhdzid=#{fhdzid},</if>
 			<if test="fhdzmc != null">fhdzmc=#{fhdzmc},</if>
 			<if test="mhdzid != null">mhdzid=#{mhdzid},</if>
 			<if test="mhdzmc != null">mhdzmc=#{mhdzmc},</if>
 			<if test="xfzrr != null">xfzrr=#{xfzrr},</if>
-			<if test="xfzrrsfz != null">xfzrrsfz=#{xfzrrsfz},</if>
 			<if test="xfzrrdh != null">xfzrrdh=#{xfzrrdh},</if>
 			<if test="xfglr != null">xfglr=#{xfglr},</if>
-			<if test="xfglrsfz != null">xfglrsfz=#{xfglrsfz},</if>
 			<if test="xfglrdh != null">xfglrdh=#{xfglrdh},</if>
-			<if test="xfdwlx != null">xfdwlx=#{xfdwlx},</if>
-			<if test="xfdwrs != null">xfdwrs=#{xfdwrs},</if>
-			<if test="xfdwcls != null">xfdwcls=#{xfdwcls},</if>
-			<if test="xfdwlxr != null">xfdwlxr=#{xfdwlxr},</if>
-			<if test="xfdwdh != null">xfdwdh=#{xfdwdh},</if>
-			<if test="xfdwbz != null">xfdwbz=#{xfdwbz},</if>
 			<if test="xfsssl != null">xfsssl=#{xfsssl},</if>
 			<if test="jzfl != null">jzfl=#{jzfl},</if>
 			<if test="jzsl != null">jzsl=#{jzsl},</if>
@@ -361,25 +346,25 @@
 			<if test="gisY != null">gis_y=#{gisY},</if>
 			<if test="lon != null">lon=#{lon},</if>
 			<if test="lat != null">lat=#{lat},</if>
-			<if test="blgxd != null">blgxd=#{blgxd},</if>
-			<if test="blgxn != null">blgxn=#{blgxn},</if>
-			<if test="blgxx != null">blgxx=#{blgxx},</if>
-			<if test="blgxb != null">blgxb=#{blgxb},</if>
-			<if test="cjrid != null">cjrid=#{cjrid},</if>
-			<if test="cjrmc != null">cjrmc=#{cjrmc},</if>
-			<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="xgrid != null">xgrid=#{xgrid},</if>
-			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=TO_DATE(#{xgsj},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="deleteFlag != null">delete_flag='N',</if>
-			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="plqkd != null">plqkd=#{plqkd},</if>
+			<if test="plqkn != null">plqkn=#{plqkn},</if>
+			<if test="plqkx != null">plqkx=#{plqkx},</if>
+			<if test="plqkb != null">plqkb=#{plqkb},</if>
 			<if test="bz != null">bz=#{bz},</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="jdh != null">jdh=#{jdh},</if>
 			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="reserve1 != null">reserve1=#{reserve1},</if>
 			<if test="reserve2 != null">reserve2=#{reserve2},</if>
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
-			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="cjrid != null">cjrid=#{cjrid},</if>
+			<if test="cjrmc != null">cjrmc=#{cjrmc},</if>
+			<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="xgrid != null">xgrid=#{xgrid},</if>
+			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
+			xgsj=sysdate
 		</set>
 		WHERE  UUID = #{uuid}
 	</update>
@@ -563,7 +548,7 @@
 
 	<!--17.根据重点单位ID删除消防力量 by li.xue 2018/8/13-->
 	<update id="doDeleteByIdXfll"  parameterType="String">
-		UPDATE  YAGL_DX_ZDDW_XFLL t SET t.DELETE_FLAG = 'Y' WHERE t. = #{value}
+		UPDATE  YAGL_DX_ZDDW_XFLL t SET t.DELETE_FLAG = 'Y' WHERE t.ZDDWID = #{value}
 	</update>
 
 	<!--18.新增重点单位、建筑关系表 by li.xue 2018/8/13-->
@@ -596,6 +581,34 @@
 
 	<!--20.按重点单位ID删除重点单位、建筑关系表 by li.xue 2018/8/13-->
 	<update id="doDeleteByIdJzxx"  parameterType="String">
-		UPDATE  YAGL_DX_ZDDW_JZFQ t SET t.DELETE_FLAG = 'Y'  WHERE ZDDWID = #{value}
+		UPDATE  YAGL_DX_ZDDW_JZFQ t SET t.DELETE_FLAG = 'Y' WHERE ZDDWID = #{value}
 	</update>
+
+	<!--21.通过重点单位ID查询重点单位-建筑信息 by li.xue 2018/8/13-->
+	<select id="doFindJzxxListByZddwId" parameterType="String"  resultType="com.syfri.digitalplan.model.planobject.ImportantunitsBuildingVO">
+		SELECT t.UUId,t.ZDDWID,t.JZID,t2.JZMC
+		FROM YAGL_DX_ZDDW_JZFQ t
+		LEFT JOIN YAGL_DWJZXX t2 ON t.JZID=t2.JZID AND t2.DELETE_FLAG='N'
+		WHERE t.DELETE_FLAG='N' AND t.ZDDWID = #{value}
+	</select>
+
+    <!--22.通过消防队伍ID删除消防队伍 by li.xue 2018/8/14.-->
+    <update id="doDeleteXfllById"  parameterType="String">
+        UPDATE  YAGL_DX_ZDDW_XFLL t SET t.DELETE_FLAG = 'Y' WHERE  t.UUID = #{value}
+    </update>
+
+    <!--23.通过重点单位-建筑ID删除重点单位-建筑 by li.xue 2018/8/14-->
+    <update id="doDeleteJzxxById"  parameterType="String">
+        UPDATE  YAGL_DX_ZDDW_JZFQ t SET t.DELETE_FLAG = 'Y'  WHERE t.UUID = #{value}
+    </update>
+
+    <!--24.通过危险介质ID删除危险介质 by li.xue 2018/8/14-->
+    <update id="doDeleteWxjzById"  parameterType="String">
+        UPDATE  YAGL_ZDBW_JZL_WXJZ t SET t.DELETE_FLAG = 'Y'  WHERE t.UUID = #{value}
+    </update>
+
+    <!--25.通过储罐ID删除储罐 by li.xue 2018/8/14-->
+    <update id="doDeleteCgById"  parameterType="String">
+        UPDATE  YAGL_JZBW_CGL_CG t SET t.DELETE_FLAG = 'Y'  WHERE t.UUID = #{value}
+    </update>
 </mapper>

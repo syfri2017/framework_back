@@ -56,8 +56,7 @@ public class ImportantunitsController  extends BaseController<ImportantunitsVO>{
 	public @ResponseBody ResultVO doFindXfllListByZddwId(@PathVariable String zddwId){
 		ResultVO resultVO = ResultVO.build();
 		try{
-			List<XiaofangliliangVO> result= importantunitsService.doFindXfllListByZddwId(zddwId);
-			resultVO.setResult(result);
+			resultVO.setResult(importantunitsService.doFindXfllListByZddwId(zddwId));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
@@ -70,12 +69,11 @@ public class ImportantunitsController  extends BaseController<ImportantunitsVO>{
 	 */
 	@ApiOperation(value="通过重点单位 查询包含分区详情",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="重点单位对象")
-	@PostMapping("/doFindBuildingDetailsByVo")
-	public @ResponseBody ResultVO doFindBuildingDetailsByVo(@RequestBody ImportantunitsVO vo) {
+	@GetMapping("/doFindJzxxListByZddwId/{zddwId}")
+	public @ResponseBody ResultVO getJzxxListByZddwId(@PathVariable String zddwId) {
 		ResultVO resultVO = ResultVO.build();
 		try{
-			List<BuildingVO> result= importantunitsService.doFindBuildingDetailsByVo(vo);
-			resultVO.setResult(result);
+			resultVO.setResult(importantunitsService.doFindJzxxListByZddwId(zddwId));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
@@ -163,7 +161,7 @@ public class ImportantunitsController  extends BaseController<ImportantunitsVO>{
 	public @ResponseBody ResultVO doUpdateByVO(@RequestBody ImportantunitsVO vo) {
 		ResultVO resultVO = ResultVO.build();
 		try{
-			resultVO.setResult(importantunitsService.doInsertByVOAll(vo));
+			resultVO.setResult(importantunitsService.doUpdateByVOAll(vo));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
