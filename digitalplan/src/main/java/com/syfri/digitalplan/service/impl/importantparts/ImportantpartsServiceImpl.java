@@ -177,6 +177,10 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 		//新增或修改新重点部位
 		for(ImportantpartsVO voNew : list){
 			if(voNew.getZdbwid()!=null && !"".equals(voNew.getZdbwid())){
+				ImportantpartsVO zdbwOld = importantpartsDAO.doFindById(voNew.getZdbwid());
+				//修改主表
+				importantpartsDAO.doUpdateByVO(voNew);
+				//修改从表
 
 			}else{
 
