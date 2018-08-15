@@ -48,10 +48,4 @@ public interface ImportantunitsDAO extends BaseDAO<ImportantunitsVO>{
 
     /*--通过重点单位-建筑ID删除重点单位-建筑 by li.xue 2018/8/14.--*/
     void doDeleteJzxxById(String uuid);
-
-    /*--通过危险介质ID删除危险介质 by li.xue 2018/8/14.--*/
-    void doDeleteWxjzById(String uuid);
-
-    /*--通过储罐ID删除储罐 by li.xue 2018/8/14.--*/
-    void doDeleteCgById(String uuid);
 }

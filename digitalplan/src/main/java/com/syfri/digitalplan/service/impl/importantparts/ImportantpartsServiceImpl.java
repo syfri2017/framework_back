@@ -4,7 +4,6 @@ import com.syfri.digitalplan.model.buildingzoning.*;
 import com.syfri.digitalplan.model.importantparts.ImportantpartsCglVO;
 import com.syfri.digitalplan.model.importantparts.ImportantpartsJzlVO;
 import com.syfri.digitalplan.model.importantparts.ImportantpartsZzlVO;
-import com.syfri.digitalplan.utils.StringUtils;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,7 @@ import com.syfri.digitalplan.dao.importantparts.ImportantpartsDAO;
 import com.syfri.digitalplan.dao.buildingzoning.BuildingDAO;
 import com.syfri.digitalplan.model.importantparts.ImportantpartsVO;
 import com.syfri.digitalplan.service.importantparts.ImportantpartsService;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,15 +72,16 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 	public List<ImportantpartsVO> doFindZdbwListByZddwId(String zddwId){
 		List<ImportantpartsVO> list = importantpartsDAO.doSearchListByVO(new ImportantpartsVO(zddwId));
 		for(ImportantpartsVO vo : list){
-			if(vo.getZdbwlx()!=null && !"".equals(vo.getZdbwlx())){
+			if(!StringUtils.isEmpty(vo.getZdbwlx())){
 				switch(vo.getZdbwlx()){
 					case "10":
 						ImportantpartsJzlVO jzlVO = importantpartsDAO.doFindJzlByZdbwId(vo.getZdbwid()).get(0);
 						//建筑使用性质
-						if(jzlVO.getSyxz() != null && !"".equals(jzlVO.getSyxz())){
+						if(!StringUtils.isEmpty(jzlVO.getSyxz())){
 							List<String> syxzList = new ArrayList<>();
-							syxzList.add(jzlVO.getSyxz().substring(0,1) + "0000");
+							syxzList.add(jzlVO.getSyxz().substring(0,1) + "000");
 							syxzList.add(jzlVO.getSyxz());
+							jzlVO.setSyxzList(syxzList);
 						}
 						//危险介质
 						List<WeixianjiezhiVO> wxjzList = importantpartsDAO.doFindWxjzByJzlId(jzlVO.getUuid());
@@ -112,44 +113,7 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 			zdbwVO.setJdh(jdh);
 			importantpartsDAO.doInsertByVO(zdbwVO);
 			String zdbwid = zdbwVO.getZdbwid();
-			if(!StringUtils.isEmpty(zdbwVO.getZdbwlx())){
-				switch(zdbwVO.getZdbwlx()){
-					case "10":
-						ImportantpartsJzlVO jzl = zdbwVO.getJzl();
-						jzl.setZdbwid(zdbwid);
-						jzl.setJdh(jdh);
-						//使用性质
-						if(jzl.getSyxzList().size()>0){
-							jzl.setSyxz(jzl.getSyxzList().get(jzl.getSyxzList().size()-1));
-						}
-						importantpartsDAO.doInsertByVOJzl(jzl);
-						String jzlId = jzl.getUuid();
-						for(WeixianjiezhiVO wxjzVO : jzl.getWxjzList()){
-							wxjzVO.setBwid(jzlId);
-							wxjzVO.setJdh(jdh);
-							importantpartsDAO.doInsertByVOJzlWxjz(wxjzVO);
-						}
-						break;
-					case "20":
-						ImportantpartsZzlVO zzl = zdbwVO.getZzl();
-						zzl.setZdbwid(zdbwid);
-						zzl.setJdh(jdh);
-						importantpartsDAO.doInsertByVOZzl(zzl);
-						break;
-					case "30":
-						ImportantpartsCglVO cgl = zdbwVO.getCgl();
-						cgl.setZdbwid(zdbwid);
-						cgl.setJdh(jdh);
-						importantpartsDAO.doInsertByVOCgl(cgl);
-						String cglId = cgl.getUuid();
-						for(ChuguanVO cgVO : cgl.getCgList()){
-							cgVO.setPkid(cglId);
-							cgVO.setJdh(jdh);
-							importantpartsDAO.doInsertByVOCglCg(cgVO);
-						}
-						break;
-				}
-			}
+			((ImportantpartsService) AopContext.currentProxy()).doInsertZdbwCongByVO(zdbwVO, zdbwid, jdh);
 			num++;
 		}
 		return num;
@@ -171,19 +135,94 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 				voOld.setDeleteFlag("Y");
 				importantpartsDAO.doUpdateByVO(voOld);
 				//删除从表
-				((ImportantpartsService) AopContext.currentProxy()).doDeleteZdbwCongByZdbwlx(voOld);
+				((ImportantpartsService) AopContext.currentProxy()).doDeleteZdbwCongByVO(voOld);
 			}
 		}
 		//新增或修改新重点部位
 		for(ImportantpartsVO voNew : list){
-			if(voNew.getZdbwid()!=null && !"".equals(voNew.getZdbwid())){
-				ImportantpartsVO zdbwOld = importantpartsDAO.doFindById(voNew.getZdbwid());
+			if(!StringUtils.isEmpty(voNew.getZdbwid())){
+				ImportantpartsVO voOld = importantpartsDAO.doFindById(voNew.getZdbwid());
 				//修改主表
 				importantpartsDAO.doUpdateByVO(voNew);
 				//修改从表
-
+				if(StringUtils.isEmpty(voNew.getZdbwlx())){
+					((ImportantpartsService) AopContext.currentProxy()).doDeleteZdbwCongByVO(voNew);
+				}else{
+					if(voNew.getZdbwlx().equals(voOld.getZdbwlx())){
+						switch(voNew.getZdbwlx()){
+							case "10":
+								//使用性质
+								if(voNew.getJzl().getSyxzList().size()>0){
+									voNew.getJzl().setSyxz(voNew.getJzl().getSyxzList().get(voNew.getJzl().getSyxzList().size()-1));
+								}
+								importantpartsDAO.doUpdateByVOJzl(voNew.getJzl());
+								//危险介质
+								List<WeixianjiezhiVO> wxjzOld = importantpartsDAO.doFindWxjzByJzlId(voNew.getJzl().getUuid());
+								List<WeixianjiezhiVO> wxjzNew = voNew.getJzl().getWxjzList();
+								//删除危险介质旧有，新没有的
+								for(WeixianjiezhiVO wxjzVOOld : wxjzOld){
+									Boolean wxjzFlag = true;
+									for(WeixianjiezhiVO wxjzVONew : wxjzNew){
+										if(wxjzVOOld.getUuid().equals(wxjzVONew.getUuid()) && !StringUtils.isEmpty(wxjzVONew.getUuid())){
+											wxjzFlag = false;
+										}
+									}
+									if(wxjzFlag){
+										importantpartsDAO.doDeleteWxjzById(wxjzVOOld.getUuid());
+									}
+								}
+								for(WeixianjiezhiVO wxjzVONew : wxjzNew){
+									if(StringUtils.isEmpty(wxjzVONew.getUuid())){
+										wxjzVONew.setBwid(voNew.getJzl().getUuid());
+										wxjzVONew.setJdh(jdh);
+										importantpartsDAO.doInsertByVOJzlWxjz(wxjzVONew);
+									}else{
+										importantpartsDAO.doUpdateByVOJzlWxjz(wxjzVONew);
+									}
+								}
+								break;
+							case "20":
+								importantpartsDAO.doUpdateByVOZzl(voNew.getZzl());
+								break;
+							case "30":
+								importantpartsDAO.doUpdateByVOCgl(voNew.getCgl());
+								//储罐
+								List<ChuguanVO> cgOld = importantpartsDAO.doFindCgByCglId(voNew.getCgl().getUuid());
+								List<ChuguanVO> cgNew = voNew.getCgl().getCgList();
+								for(ChuguanVO cgVOOld : cgOld){
+									Boolean cgFlag = true;
+									for(ChuguanVO cgVONew : cgNew){
+										if(cgVOOld.getUuid().equals(cgVONew.getUuid()) && !StringUtils.isEmpty(cgVONew.getUuid())){
+											cgFlag = false;
+										}
+									}
+									if(cgFlag){
+										importantpartsDAO.doDeleteCgById(cgVOOld.getUuid());
+									}
+								}
+								for(ChuguanVO cgVONew : cgNew){
+									if(StringUtils.isEmpty(cgVONew.getUuid())){
+										cgVONew.setPkid(voNew.getCgl().getUuid());
+										cgVONew.setJdh(jdh);
+										importantpartsDAO.doInsertByVOCglCg(cgVONew);
+									}else{
+										importantpartsDAO.doUpdateByVOCglCg(cgVONew);
+									}
+								}
+								break;
+						}
+					}else{
+						((ImportantpartsService) AopContext.currentProxy()).doDeleteZdbwCongByVO(voNew);
+						//新增重点部位主表
+						List<ImportantpartsVO> listNew = new ArrayList<>();
+						listNew.add(voNew);
+						((ImportantpartsService) AopContext.currentProxy()).doInsertZdbwByList(listNew, zddwId, jdh);
+					}
+				}
 			}else{
-
+				List<ImportantpartsVO> listNew = new ArrayList<>();
+				listNew.add(voNew);
+				((ImportantpartsService) AopContext.currentProxy()).doInsertZdbwByList(listNew, zddwId, jdh);
 			}
 		}
 	}
@@ -202,15 +241,15 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 			vo.setXgrmc(xgrmc);
 			importantpartsDAO.doUpdateByVO(vo);
 			//删除重点部位从表
-			((ImportantpartsService) AopContext.currentProxy()).doDeleteZdbwCongByZdbwlx(vo);
+			((ImportantpartsService) AopContext.currentProxy()).doDeleteZdbwCongByVO(vo);
 			num++;
 		}
 		return num;
 	}
 
-	/*--根据重点部位类型删除从表及从从表  by li.xue 2018/8/14*/
-	public void doDeleteZdbwCongByZdbwlx(ImportantpartsVO vo){
-		if(vo.getZdbwlx() != null && !"".equals(vo.getZdbwlx())){
+	/*--根据不同重点部位类型删除从表及从从表  by li.xue 2018/8/14*/
+	public void doDeleteZdbwCongByVO(ImportantpartsVO vo){
+		if(!StringUtils.isEmpty(vo.getZdbwlx())){
 			switch(vo.getZdbwlx()){
 				case "10":
 					List<ImportantpartsJzlVO> jzlList = importantpartsDAO.doFindJzlByZdbwId(vo.getZdbwid());
@@ -228,6 +267,48 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 						importantpartsDAO.doDeleteByZdbwCglIdCglCg(cglVO.getUuid());
 					}
 					importantpartsDAO.doDeleteByZdbwIdCgl(vo.getZdbwid());
+					break;
+			}
+		}
+	}
+
+	/*--根据重点部位类型新增从表及从从表  by li.xue 2018/8/15*/
+	public void doInsertZdbwCongByVO(ImportantpartsVO zdbwVO, String zdbwid, String jdh){
+		if(!StringUtils.isEmpty(zdbwVO.getZdbwlx())){
+			switch(zdbwVO.getZdbwlx()){
+				case "10":
+					ImportantpartsJzlVO jzl = zdbwVO.getJzl();
+					jzl.setZdbwid(zdbwid);
+					jzl.setJdh(jdh);
+					//使用性质
+					if(jzl.getSyxzList().size()>0){
+						jzl.setSyxz(jzl.getSyxzList().get(jzl.getSyxzList().size()-1));
+					}
+					importantpartsDAO.doInsertByVOJzl(jzl);
+					String jzlId = jzl.getUuid();
+					for(WeixianjiezhiVO wxjzVO : jzl.getWxjzList()){
+						wxjzVO.setBwid(jzlId);
+						wxjzVO.setJdh(jdh);
+						importantpartsDAO.doInsertByVOJzlWxjz(wxjzVO);
+					}
+					break;
+				case "20":
+					ImportantpartsZzlVO zzl = zdbwVO.getZzl();
+					zzl.setZdbwid(zdbwid);
+					zzl.setJdh(jdh);
+					importantpartsDAO.doInsertByVOZzl(zzl);
+					break;
+				case "30":
+					ImportantpartsCglVO cgl = zdbwVO.getCgl();
+					cgl.setZdbwid(zdbwid);
+					cgl.setJdh(jdh);
+					importantpartsDAO.doInsertByVOCgl(cgl);
+					String cglId = cgl.getUuid();
+					for(ChuguanVO cgVO : cgl.getCgList()){
+						cgVO.setPkid(cglId);
+						cgVO.setJdh(jdh);
+						importantpartsDAO.doInsertByVOCglCg(cgVO);
+					}
 					break;
 			}
 		}

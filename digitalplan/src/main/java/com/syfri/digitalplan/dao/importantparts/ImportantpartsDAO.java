@@ -77,4 +77,10 @@ public interface ImportantpartsDAO extends BaseDAO<ImportantpartsVO>{
 
     /*--根据重点部位-储罐类ID查询其罐体信息 by li.xue 2081/8/14.--*/
     List<ChuguanVO> doFindCgByCglId(String cglId);
+
+    /*--通过危险介质ID删除危险介质 by li.xue 2018/8/14.--*/
+    void doDeleteWxjzById(String uuid);
+
+    /*--通过储罐ID删除储罐 by li.xue 2018/8/14.--*/
+    void doDeleteCgById(String uuid);
 }

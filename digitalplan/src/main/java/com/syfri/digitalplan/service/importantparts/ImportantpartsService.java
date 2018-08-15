@@ -31,6 +31,9 @@ public interface ImportantpartsService  extends BaseService<ImportantpartsVO>{
     /*--通过重点单位ID删除重点部位 by li.xue 2018/8/13*/
     int doDeleteZdbwByZddwId(String zddwId, String xgrid, String xgrmc);
 
-    /*--根据重点部位类型删除从表及从从表 by li.xue 2018/8/14*/
-    void doDeleteZdbwCongByZdbwlx(ImportantpartsVO vo);
+    /*--根据不同重点部位类型删除从表及从从表 by li.xue 2018/8/14*/
+    void doDeleteZdbwCongByVO(ImportantpartsVO vo);
+
+    /*--根据不同重点部位类型新增从表及从从表  by li.xue 2018/8/15*/
+    void doInsertZdbwCongByVO(ImportantpartsVO zdbwVO, String zdbwid, String jdh);
 }

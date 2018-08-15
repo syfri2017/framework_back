@@ -601,14 +601,4 @@
     <update id="doDeleteJzxxById"  parameterType="String">
         UPDATE  YAGL_DX_ZDDW_JZFQ t SET t.DELETE_FLAG = 'Y'  WHERE t.UUID = #{value}
     </update>
-
-    <!--24.通过危险介质ID删除危险介质 by li.xue 2018/8/14-->
-    <update id="doDeleteWxjzById"  parameterType="String">
-        UPDATE  YAGL_ZDBW_JZL_WXJZ t SET t.DELETE_FLAG = 'Y'  WHERE t.UUID = #{value}
-    </update>
-
-    <!--25.通过储罐ID删除储罐 by li.xue 2018/8/14-->
-    <update id="doDeleteCgById"  parameterType="String">
-        UPDATE  YAGL_JZBW_CGL_CG t SET t.DELETE_FLAG = 'Y'  WHERE t.UUID = #{value}
-    </update>
 </mapper>
