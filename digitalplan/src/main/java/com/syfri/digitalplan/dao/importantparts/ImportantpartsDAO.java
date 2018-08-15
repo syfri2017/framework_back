@@ -83,4 +83,13 @@ public interface ImportantpartsDAO extends BaseDAO<ImportantpartsVO>{
 
     /*--通过储罐ID删除储罐 by li.xue 2018/8/14.--*/
     void doDeleteCgById(String uuid);
+
+    /*--根据重点部位ID判断JZL从表是否存在 by li.xue 2018/8/15*/
+    int doCountJzlByZdbwId(String zdbwId);
+
+    /*--根据重点部位ID判断ZZL从表是否存在 by li.xue 2018/8/15*/
+    int doCountZzlByZdbwId(String zdbwId);
+
+    /*--根据重点部位ID判断CGL从表是否存在 by li.xue 2018/8/15*/
+    int doCountCglByZdbwId(String zdbwId);
 }

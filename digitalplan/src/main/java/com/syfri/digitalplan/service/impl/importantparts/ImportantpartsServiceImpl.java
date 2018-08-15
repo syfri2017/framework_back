@@ -75,29 +75,37 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 			if(!StringUtils.isEmpty(vo.getZdbwlx())){
 				switch(vo.getZdbwlx()){
 					case "10":
-						ImportantpartsJzlVO jzlVO = importantpartsDAO.doFindJzlByZdbwId(vo.getZdbwid()).get(0);
-						//建筑使用性质
-						if(!StringUtils.isEmpty(jzlVO.getSyxz())){
-							List<String> syxzList = new ArrayList<>();
-							syxzList.add(jzlVO.getSyxz().substring(0,1) + "000");
-							syxzList.add(jzlVO.getSyxz());
-							jzlVO.setSyxzList(syxzList);
+						List<ImportantpartsJzlVO> jzlList = importantpartsDAO.doFindJzlByZdbwId(vo.getZdbwid());
+						if(jzlList.size()>0) {
+							ImportantpartsJzlVO jzlVO = jzlList.get(0);
+							//建筑使用性质
+							if (!StringUtils.isEmpty(jzlVO.getSyxz())) {
+								List<String> syxzList = new ArrayList<>();
+								syxzList.add(jzlVO.getSyxz().substring(0, 1) + "000");
+								syxzList.add(jzlVO.getSyxz());
+								jzlVO.setSyxzList(syxzList);
+							}
+							//危险介质
+							List<WeixianjiezhiVO> wxjzList = importantpartsDAO.doFindWxjzByJzlId(jzlVO.getUuid());
+							jzlVO.setWxjzList(wxjzList);
+							vo.setJzl(jzlVO);
 						}
-						//危险介质
-						List<WeixianjiezhiVO> wxjzList = importantpartsDAO.doFindWxjzByJzlId(jzlVO.getUuid());
-						jzlVO.setWxjzList(wxjzList);
-						vo.setJzl(jzlVO);
 						break;
 					case "20":
-						ImportantpartsZzlVO zzlVO = importantpartsDAO.doFindZzlByZdbwId(vo.getZdbwid()).get(0);
-						vo.setZzl(zzlVO);
+						List<ImportantpartsZzlVO> zzlList = importantpartsDAO.doFindZzlByZdbwId(vo.getZdbwid());
+						if(zzlList.size()>0){
+							vo.setZzl(zzlList.get(0));
+						}
 						break;
 					case "30":
-						ImportantpartsCglVO cglVO = importantpartsDAO.doFindCglByZdbwId(vo.getZdbwid()).get(0);
-						//储罐
-						List<ChuguanVO> cgList = importantpartsDAO.doFindCgByCglId(cglVO.getUuid());
-						cglVO.setCgList(cgList);
-						vo.setCgl(cglVO);
+						List<ImportantpartsCglVO> cglList = importantpartsDAO.doFindCglByZdbwId(vo.getZdbwid());
+						if(cglList.size()>0){
+							ImportantpartsCglVO cglVO = cglList.get(0);
+							//储罐
+							List<ChuguanVO> cgList = importantpartsDAO.doFindCgByCglId(cglVO.getUuid());
+							cglVO.setCgList(cgList);
+							vo.setCgl(cglVO);
+						}
 						break;
 				}
 			}
@@ -155,7 +163,12 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 								if(voNew.getJzl().getSyxzList().size()>0){
 									voNew.getJzl().setSyxz(voNew.getJzl().getSyxzList().get(voNew.getJzl().getSyxzList().size()-1));
 								}
-								importantpartsDAO.doUpdateByVOJzl(voNew.getJzl());
+								if(importantpartsDAO.doCountJzlByZdbwId(voNew.getZdbwid())>0){
+									importantpartsDAO.doUpdateByVOJzl(voNew.getJzl());
+								}else{
+									importantpartsDAO.doInsertByVOJzl(voNew.getJzl());
+								}
+
 								//危险介质
 								List<WeixianjiezhiVO> wxjzOld = importantpartsDAO.doFindWxjzByJzlId(voNew.getJzl().getUuid());
 								List<WeixianjiezhiVO> wxjzNew = voNew.getJzl().getWxjzList();
@@ -182,10 +195,19 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 								}
 								break;
 							case "20":
-								importantpartsDAO.doUpdateByVOZzl(voNew.getZzl());
+								if(importantpartsDAO.doCountZzlByZdbwId(voNew.getZdbwid())>0){
+									importantpartsDAO.doUpdateByVOZzl(voNew.getZzl());
+								}else{
+									importantpartsDAO.doInsertByVOZzl(voNew.getZzl());
+								}
 								break;
 							case "30":
-								importantpartsDAO.doUpdateByVOCgl(voNew.getCgl());
+								if(importantpartsDAO.doCountCglByZdbwId(voNew.getZdbwid())>0){
+									importantpartsDAO.doUpdateByVOCgl(voNew.getCgl());
+								}else{
+									importantpartsDAO.doInsertByVOCgl(voNew.getCgl());
+								}
+
 								//储罐
 								List<ChuguanVO> cgOld = importantpartsDAO.doFindCgByCglId(voNew.getCgl().getUuid());
 								List<ChuguanVO> cgNew = voNew.getCgl().getCgList();
@@ -212,11 +234,10 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 								break;
 						}
 					}else{
-						((ImportantpartsService) AopContext.currentProxy()).doDeleteZdbwCongByVO(voNew);
-						//新增重点部位主表
-						List<ImportantpartsVO> listNew = new ArrayList<>();
-						listNew.add(voNew);
-						((ImportantpartsService) AopContext.currentProxy()).doInsertZdbwByList(listNew, zddwId, jdh);
+						//删除旧类型重点部位从表
+						((ImportantpartsService) AopContext.currentProxy()).doDeleteZdbwCongByVO(voOld);
+						//新增新类型重点部位从表
+						((ImportantpartsService) AopContext.currentProxy()).doInsertZdbwCongByVO(voNew, voNew.getZdbwid(), jdh);
 					}
 				}
 			}else{

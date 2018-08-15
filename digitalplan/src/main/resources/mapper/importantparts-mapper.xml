@@ -714,4 +714,20 @@
 	<update id="doDeleteCgById"  parameterType="String">
 		UPDATE  YAGL_JZBW_CGL_CG t SET t.DELETE_FLAG = 'Y'  WHERE t.UUID = #{value}
 	</update>
+
+	<!--34.根据重点部位ID判断JZL从表是否存在 by li.xue 2018/8/15-->
+	<select id="doCountJzlByZdbwId" parameterType="String" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_ZDBW_JZL t WHERE DELETE_FLAG = 'N' AND t.zdbwid = #{zdbwid}
+	</select>
+
+	<!--35.根据重点部位ID判断ZZL从表是否存在 by li.xue 2018/8/15-->
+	<select id="doCountZzlByZdbwId" parameterType="String" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_ZDBW_ZZL t WHERE DELETE_FLAG = 'N' AND t.zdbwid = #{zdbwid}
+	</select>
+
+	<!--36.根据重点部位ID判断CGL从表是否存在 by li.xue 2018/8/15-->
+	<select id="doCountCglByZdbwId" parameterType="String" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_ZDBW_CGL t WHERE DELETE_FLAG = 'N' AND t.zdbwid = #{zdbwid}
+	</select>
+
 </mapper>
