@@ -135,6 +135,7 @@
 			and t2.tcwz LIKE concat(concat('%',#{xfsc_tcwz}),'%')
 		</if>
 	</sql>
+
 	<!--2.查询内容-->
 	<sql id="SQL_CONTENT">
 		t.uuid uuid,
@@ -164,9 +165,14 @@
 		t.reserve1 reserve1,
 		t.reserve2 reserve2,
 		t.reserve3 reserve3,
-		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
+		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
+		t.cjrid cjrid,
+		t.cjrmc cjrmc,
+		TO_CHAR(t.cjsj,'yyyy-MM-dd HH24:mi:ss') cjsj,
+		t.xgrid xgrid,
+		t.xgrmc xgrmc,
+		TO_CHAR(t.xgsj,'yyyy-MM-dd HH24:mi:ss') xgsj
 	</sql>
-
 	<!--消火栓查询内容-->
 	<sql id="SQL_XHS_CONTENT">
 		t2.uuid xhs_uuid,
@@ -243,6 +249,7 @@
 	<!--天然水源查询内容-->
 	<sql id="SQL_TRSY_CONTENT">
 		t3.uuid trsy_uuid,
+		t3.trsymc trsy_trsymc,
 		t3.trsylx trsy_trsylx,
 		t3.ywksq trsy_ywksq,
 		t3.ksqsj trsy_ksqsj,
@@ -581,7 +588,8 @@
 		<!--LEFT JOIN SYS_CODELIST_DETAIL c6 ON (tt.sygs = c6.code_value AND c6.codeid='6B2210F144AF2372E053B077770A360E' And c6.DELETE_FLAG = 'N')-->
 	<!--</select>-->
 	<select id="doFindListByVO" parameterType="XfsyVO"  resultType="XfsyVO">
-		SELECT t.*,
+		SELECT
+		<include refid="SQL_CONTENT"/>,
 		c2.code_name sylxmc,
 		c4.code_name kyztmc,
 		c6.code_name sygsmc,
@@ -597,7 +605,7 @@
 		LEFT JOIN SYS_CODELIST_DETAIL c6 ON (t.sygs = c6.code_value AND c6.codeid='6B2210F144AF2372E053B077770A360E' And c6.DELETE_FLAG = 'N')
 		WHERE t.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
-		ORDER BY t.SYBM
+		ORDER BY NVL(xgsj,cjsj),sybm DESC
 	</select>
 	<!--查询消火栓-->
 	<select id="doFindXhsListByVO" parameterType="XfsyVO"  resultType="XfsyVO">
@@ -731,20 +739,36 @@
 		AND rownum &lt;= 100
         ORDER BY t.SYBM
 	</select>
+	<!--查询天然水源-->
+	<select id="doFindTrsyListByVO" parameterType="XfsyVO"  resultType="XfsyVO">
+		SELECT
+		<include refid="SQL_TRSY_CONTENT"/>,
+		c2.code_name trsy_trsylxmc
+		FROM YAGL_XFSY_TRSY t
+		<!--天然水源类型-->
+		Left Join SYS_CODELIST c1 on c1.CODETYPE = 'TRSYLX' And c1.DELETE_FLAG = 'N'
+		Left Join SYS_CODELIST_DETAIL c2 On c2.CODEID = c1.CODEID And c2.DELETE_FLAG = 'N' and t.trsylx = c2.CODE_VALUE
+		WHERE t.DELETE_FLAG = 'N'
+	    <if test="trsy_trsymc != null and trsy_trsymc != '' ">
+			and txfdz.trsy_trsymc like concat(#{trsy_trsymc},'%')
+		</if>
+		ORDER BY trsy_trsylx
+	</select>
 
 	<!--向消火栓表中插入vo-->
-	<insert id="doInsertXhsByVo" parameterType="com.syfri.digitalplan.model.basicinfo.watersource.XfsyVO">
+	<insert id="doInsertXhsByVo" parameterType="XfsyVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="xhs_uuid">
+			SELECT SYS_GUID() AS xhs_uuid FROM DUAL
+		</selectKey>
 		INSERT INTO YAGL_XFSY_XHS(uuid,szxs,gwylfw,gwxs,gwzj,gwyllx,jkxs,jkkj,zdll,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
 		VALUES(#{xhs_uuid,jdbcType=VARCHAR},#{xhs_szxs,jdbcType=VARCHAR},#{xhs_gwylfw,jdbcType=VARCHAR},#{xhs_gwxs,jdbcType=VARCHAR},#{xhs_gwzj,jdbcType=DOUBLE},#{xhs_gwyllx,jdbcType=VARCHAR},#{xhs_jkxs,jdbcType=VARCHAR},#{xhs_jkkj,jdbcType=DOUBLE},#{xhs_zdll,jdbcType=DOUBLE},'N',#{xhs_datasource,jdbcType=VARCHAR},#{xhs_jdh,jdbcType=VARCHAR},#{xhs_sjc,jdbcType=DATE},#{xhs_reserve1,jdbcType=VARCHAR},#{xhs_reserve2,jdbcType=VARCHAR},#{xhs_reserve3,jdbcType=VARCHAR},#{xhs_reserve4,jdbcType=DATE})
 	</insert>
-
 	<!--根据水源属性信息id查询消火栓数量-->
 	<select id="doCountXhsBySxid" parameterType="string" resultType="java.lang.Integer">
 		SELECT COUNT(0) AS NUM FROM YAGL_XFSY_XHS t
 		WHERE 1=1 AND DELETE_FLAG = 'N'
 		AND t.uuid = #{value}
 	</select>
-
 	<!--通过vo更新消火栓表-->
 	<update id="doUpdateXhsByVo"  parameterType="XfsyVO">
 		UPDATE YAGL_XFSY_XHS
@@ -769,9 +793,121 @@
 		</set>
 		WHERE UUID = #{sysxxxid}
 	</update>
-
 	<!--逻辑删除消火栓-->
 	<update id="doDeleteXhsByUuid"  parameterType="String">
 		UPDATE  YAGL_XFSY_XHS t SET t.DELETE_FLAG = 'Y'  WHERE 1=1 AND t.uuid = #{value}
 	</update>
+
+	<!--消防水鹤-->
+	<insert  id="doInsertXfshByVO"  parameterType="XfsyVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="xfsh_uuid">
+			SELECT SYS_GUID() AS xfsh_uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSY_XFSH(uuid,gwzj,gwyl,cskgd,zdll,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{xfsh_uuid,jdbcType=VARCHAR},#{xfsh_gwzj,jdbcType=DOUBLE},#{xfsh_gwyl,jdbcType=DOUBLE},#{xfsh_cskgd,jdbcType=DOUBLE},#{xfsh_zdll,jdbcType=DOUBLE},'N',#{xfsh_datasource,jdbcType=VARCHAR},#{xfsh_jdh,jdbcType=VARCHAR},#{xfsh_sjc,jdbcType=DATE},#{xfsh_reserve1,jdbcType=VARCHAR},#{xfsh_reserve2,jdbcType=VARCHAR},#{xfsh_reserve3,jdbcType=VARCHAR},#{xfsh_reserve4,jdbcType=DATE})
+	</insert>
+	<update  id="doUpdateXfshByVO"  parameterType="XfsyVO">
+		UPDATE   YAGL_XFSY_XFSH
+		<set>
+			<!--<if test="uuid != null">uuid=#{uuid},</if>-->
+			<if test="xfsh_gwzj != null">gwzj=#{xfsh_gwzj},</if>
+			<if test="xfsh_gwyl != null">gwyl=#{xfsh_gwyl},</if>
+			<if test="xfsh_cskgd != null">cskgd=#{xfsh_cskgd},</if>
+			<if test="xfsh_zdll != null">zdll=#{xfsh_zdll},</if>
+			<if test="xfsh_deleteFlag != null">delete_flag=#{xfsh_deleteFlag},</if>
+			<if test="xfsh_datasource != null">datasource=#{xfsh_datasource},</if>
+			<if test="xfsh_jdh != null">jdh=#{xfsh_jdh},</if>
+			<if test="xfsh_sjc != null">sjc=TO_DATE(#{xfsh_sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="xfsh_reserve1 != null">reserve1=#{xfsh_reserve1},</if>
+			<if test="xfsh_reserve2 != null">reserve2=#{xfsh_reserve2},</if>
+			<if test="xfsh_reserve3 != null">reserve3=#{xfsh_reserve3},</if>
+			<if test="xfsh_reserve4 != null">reserve4=TO_DATE(#{xfsh_reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  UUID = #{xfsh_uuid}
+	</update>
+	<update id="doDeleteXfshByUuid"  parameterType="String">
+		UPDATE  YAGL_XFSY_XFSH t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.UUID = #{value}
+	</update>
+	<select id="doCountXfshBySxid" parameterType="string" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_XFSY_XFSH t
+		WHERE 1=1 AND DELETE_FLAG = 'N'
+		AND t.uuid = #{value}
+	</select>
+
+	<!--消防水池-->
+	<insert  id="doInsertXfscByVO"  parameterType="XfsyVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="xfsc_uuid">
+			SELECT SYS_GUID() AS xfsc_uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSY_XFSC(uuid,sybgc,csl,jsll,qszdll,gwxs,tcwz,tsqscls,bssj,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{xfsc_uuid,jdbcType=VARCHAR},#{xfsc_sybgc,jdbcType=DOUBLE},#{xfsc_csl,jdbcType=DOUBLE},#{xfsc_jsll,jdbcType=DOUBLE},#{xfsc_qszdll,jdbcType=DOUBLE},#{xfsc_gwxs,jdbcType=VARCHAR},#{xfsc_tcwz,jdbcType=VARCHAR},#{xfsc_tsqscls,jdbcType=DOUBLE},#{xfsc_bssj,jdbcType=DOUBLE},'N',#{xfsc_datasource,jdbcType=VARCHAR},#{xfsc_jdh,jdbcType=VARCHAR},#{xfsc_sjc,jdbcType=DATE},#{xfsc_reserve1,jdbcType=VARCHAR},#{xfsc_reserve2,jdbcType=VARCHAR},#{xfsc_reserve3,jdbcType=VARCHAR},#{xfsc_reserve4,jdbcType=DATE})
+	</insert>
+	<update  id="doUpdateXfscByVO"  parameterType="XfsyVO">
+		UPDATE   YAGL_XFSY_XFSC
+		<set>
+			<!--<if test="xfsc_uuid != null">uuid=#{xfsc_uuid},</if>-->
+			<if test="xfsc_sybgc != null">sybgc=#{xfsc_sybgc},</if>
+			<if test="xfsc_csl != null">csl=#{xfsc_csl},</if>
+			<if test="xfsc_jsll != null">jsll=#{xfsc_jsll},</if>
+			<if test="xfsc_qszdll != null">qszdll=#{xfsc_qszdll},</if>
+			<if test="xfsc_gwxs != null">gwxs=#{xfsc_gwxs},</if>
+			<if test="xfsc_tcwz != null">tcwz=#{xfsc_tcwz},</if>
+			<if test="xfsc_tsqscls != null">tsqscls=#{xfsc_tsqscls},</if>
+			<if test="xfsc_bssj != null">bssj=#{xfsc_bssj},</if>
+			<if test="xfsc_deleteFlag != null">delete_flag=#{xfsc_deleteFlag},</if>
+			<if test="xfsc_datasource != null">datasource=#{xfsc_datasource},</if>
+			<if test="xfsc_jdh != null">jdh=#{xfsc_jdh},</if>
+			<if test="xfsc_sjc != null">sjc=TO_DATE(#{xfsc_sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="xfsc_reserve1 != null">reserve1=#{xfsc_reserve1},</if>
+			<if test="xfsc_reserve2 != null">reserve2=#{xfsc_reserve2},</if>
+			<if test="xfsc_reserve3 != null">reserve3=#{xfsc_reserve3},</if>
+			<if test="xfsc_reserve4 != null">reserve4=TO_DATE(#{xfsc_reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  UUID = #{xfsc_uuid}
+	</update>
+	<update id="doDeleteXfscByUuid"  parameterType="String">
+		UPDATE  YAGL_XFSY_XFSC t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.UUID = #{value}
+	</update>
+	<select id="doCountXfscBySxid" parameterType="string" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_XFSY_XFSC t
+		WHERE 1=1 AND DELETE_FLAG = 'N'
+		AND t.uuid = #{value}
+	</select>
+
+	<!--天然水源取水点-->
+	<insert  id="doInsertTrsyqsdByVO"  parameterType="XfsyVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="trsyqsd_uuid">
+			SELECT SYS_GUID() AS trsyqsd_uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSY_TRSYQSD(uuid,sybgc,tcwz,tsqscls,qsxs,trsyid,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{trsyqsd_uuid,jdbcType=VARCHAR},#{trsyqsd_sybgc,jdbcType=DOUBLE},#{trsyqsd_tcwz,jdbcType=VARCHAR},#{trsyqsd_tsqscls,jdbcType=DOUBLE},#{trsyqsd_qsxs,jdbcType=VARCHAR},#{trsyqsd_trsyid,jdbcType=VARCHAR},'N',#{trsyqsd_datasource,jdbcType=VARCHAR},#{trsyqsd_jdh,jdbcType=VARCHAR},#{trsyqsd_sjc,jdbcType=DATE},#{trsyqsd_reserve1,jdbcType=VARCHAR},#{trsyqsd_reserve2,jdbcType=VARCHAR},#{trsyqsd_reserve3,jdbcType=VARCHAR},#{trsyqsd_reserve4,jdbcType=DATE})
+	</insert>
+	<update  id="doUpdateTrsyqsdByVO"  parameterType="XfsyVO">
+		UPDATE   YAGL_XFSY_TRSYQSD
+		<set>
+			<!--<if test="trsyqsd_uuid != null">uuid=#{trsyqsd_uuid},</if>-->
+			<if test="trsyqsd_sybgc != null">sybgc=#{trsyqsd_sybgc},</if>
+			<if test="trsyqsd_tcwz != null">tcwz=#{trsyqsd_tcwz},</if>
+			<if test="trsyqsd_tsqscls != null">tsqscls=#{trsyqsd_tsqscls},</if>
+			<if test="trsyqsd_qsxs != null">qsxs=#{trsyqsd_qsxs},</if>
+			<if test="trsyqsd_trsyid != null">trsyid=#{trsyqsd_trsyid},</if>
+			<if test="trsyqsd_deleteFlag != null">delete_flag=#{trsyqsd_deleteFlag},</if>
+			<if test="trsyqsd_datasource != null">datasource=#{trsyqsd_datasource},</if>
+			<if test="trsyqsd_jdh != null">jdh=#{trsyqsd_jdh},</if>
+			<if test="trsyqsd_sjc != null">sjc=TO_DATE(#{trsyqsd_sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="trsyqsd_reserve1 != null">reserve1=#{trsyqsd_reserve1},</if>
+			<if test="trsyqsd_reserve2 != null">reserve2=#{trsyqsd_reserve2},</if>
+			<if test="trsyqsd_reserve3 != null">reserve3=#{trsyqsd_reserve3},</if>
+			<if test="trsyqsd_reserve4 != null">reserve4=TO_DATE(#{trsyqsd_reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  UUID = #{trsyqsd_uuid}
+	</update>
+	<update id="doDeleteTrsyqsdByUuid"  parameterType="String">
+		UPDATE  YAGL_XFSY_TRSYQSD t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.UUID = #{value}
+	</update>
+	<select id="doCountTrsyqsdBySxid" parameterType="string" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_XFSY_TRSYQSD t
+		WHERE 1=1 AND DELETE_FLAG = 'N'
+		AND t.uuid = #{value}
+	</select>
 </mapper>

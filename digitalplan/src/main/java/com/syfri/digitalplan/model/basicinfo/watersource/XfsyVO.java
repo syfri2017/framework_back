@@ -135,6 +135,7 @@ public class XfsyVO extends ValueObject implements Serializable{
 
     //天然水源属性信息
     private String trsy_uuid;	//主键
+    private String trsy_trsymc;	//天然水源名称
     private String trsy_trsylx;	//天然水源类型
     private String trsy_sz;	//水质
     private String trsy_szms;	//水质描述
@@ -747,6 +748,12 @@ public class XfsyVO extends ValueObject implements Serializable{
     }
     public void setTrsy_uuid(String trsy_uuid) {
         this.trsy_uuid = trsy_uuid;
+    }
+    public String getTrsy_trsymc() {
+        return trsy_trsymc;
+    }
+    public void setTrsy_trsymc(String trsy_trsymc) {
+        this.trsy_trsymc = trsy_trsymc;
     }
     public String getTrsy_trsylx() {
         return trsy_trsylx;
