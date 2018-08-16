@@ -135,4 +135,24 @@ public class XfsyController  extends BaseController<XfsyVO>{
 		}
 		return resultVO;
 	}
+
+	/**
+	 * 获取天然水源列表
+	 * by liurui 20180816
+	 */
+	@ApiOperation(value="查询列表",notes="列表信息")
+	@ApiImplicitParam(name="vo",value = "水源对象")
+	@PostMapping("doFindTrsyListByVO")
+	public @ResponseBody ResultVO doFindTrsyListByVO(@RequestBody XfsyVO xfsyVO) {
+		ResultVO resultVO = ResultVO.build();
+		try {
+			PageHelper.startPage(xfsyVO.getPageNum(),xfsyVO.getPageSize());
+			List<XfsyVO> list = xfsyService.doFindTrsyListByVO(xfsyVO);
+			PageInfo<XfsyVO> pageInfo = new PageInfo<>(list);
+			resultVO.setResult(pageInfo);
+		} catch (Exception e) {
+			logger.error("{}",e.getMessage());
+		}
+		return resultVO;
+	}
 }

@@ -251,7 +251,7 @@
 		t3.uuid trsy_uuid,
 		t3.trsymc trsy_trsymc,
 		t3.trsylx trsy_trsylx,
-		t3.ywksq trsy_ywksq,
+		CASE t3.ywksq WHEN '1' THEN '有' WHEN '0' THEN '无' END trsy_ywksq,
 		t3.ksqsj trsy_ksqsj,
 		t3.delete_flag trsy_deleteFlag,
 		t3.datasource trsy_datasource,
@@ -744,13 +744,13 @@
 		SELECT
 		<include refid="SQL_TRSY_CONTENT"/>,
 		c2.code_name trsy_trsylxmc
-		FROM YAGL_XFSY_TRSY t
+		FROM YAGL_XFSY_TRSY t3
 		<!--天然水源类型-->
 		Left Join SYS_CODELIST c1 on c1.CODETYPE = 'TRSYLX' And c1.DELETE_FLAG = 'N'
-		Left Join SYS_CODELIST_DETAIL c2 On c2.CODEID = c1.CODEID And c2.DELETE_FLAG = 'N' and t.trsylx = c2.CODE_VALUE
-		WHERE t.DELETE_FLAG = 'N'
+		Left Join SYS_CODELIST_DETAIL c2 On c2.CODEID = c1.CODEID And c2.DELETE_FLAG = 'N' and t3.trsylx = c2.CODE_VALUE
+		WHERE t3.DELETE_FLAG = 'N'
 	    <if test="trsy_trsymc != null and trsy_trsymc != '' ">
-			and txfdz.trsy_trsymc like concat(#{trsy_trsymc},'%')
+			and t3.trsy_trsymc like concat(concat('%',#{trsy_trsymc}),'%')
 		</if>
 		ORDER BY trsy_trsylx
 	</select>
