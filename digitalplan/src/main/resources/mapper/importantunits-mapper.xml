@@ -586,7 +586,7 @@
 
 	<!--21.通过重点单位ID查询重点单位-建筑信息 by li.xue 2018/8/13-->
 	<select id="doFindJzxxListByZddwId" parameterType="String"  resultType="com.syfri.digitalplan.model.planobject.ImportantunitsBuildingVO">
-		SELECT t.UUId,t.ZDDWID,t.JZID,t2.JZMC
+		SELECT t.UUId,t.ZDDWID,t.JZID,t2.JZMC,t2.JZLX
 		FROM YAGL_DX_ZDDW_JZFQ t
 		LEFT JOIN YAGL_DWJZXX t2 ON t.JZID=t2.JZID AND t2.DELETE_FLAG='N'
 		WHERE t.DELETE_FLAG='N' AND t.ZDDWID = #{value}

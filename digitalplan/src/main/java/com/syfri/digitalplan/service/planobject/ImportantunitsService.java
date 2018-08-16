@@ -41,4 +41,7 @@ public interface ImportantunitsService  extends BaseService<ImportantunitsVO>{
 
     /*--批量删除重点单位 by li.xue 2018/8/13.--*/
     int doDeleteBatch(List<ImportantunitsVO> list);
+
+    /*--根据重点单位ID查询单位建筑信息详情 by li.xue 2018/8/16--*/
+    List<BuildingVO> doFindJzxxDetailByZddwId(String zddwid);
 }
