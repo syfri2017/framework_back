@@ -95,7 +95,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 	 */
 	@ApiOperation(value="根据资源修改资源及其权限信息",notes="修改")
 	@ApiImplicitParam(name="vo",value="资源对象")
-	@RequiresPermissions("system/resource:update")
+	@RequiresPermissions("system/resource:edit")
 	@PostMapping("/updateByVO")
 	public @ResponseBody ResultVO updateByVO(@RequestBody ResourceVO resourceVO){
 		ResultVO resultVO = ResultVO.build();

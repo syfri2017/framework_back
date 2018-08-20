@@ -99,7 +99,7 @@ public class PermissionController  extends BaseController<PermissionVO>{
 	 */
 	@ApiOperation(value="根据权限修改权限及其资源信息",notes="修改")
 	@ApiImplicitParam(name="permissionVO",value="权限对象")
-	@RequiresPermissions("system/permission:update")
+	@RequiresPermissions("system/permission:edit")
 	@PostMapping("/updateByVO")
 	public @ResponseBody ResultVO updateByVO(@RequestBody PermissionVO permissionVO){
 		ResultVO resultVO = ResultVO.build();

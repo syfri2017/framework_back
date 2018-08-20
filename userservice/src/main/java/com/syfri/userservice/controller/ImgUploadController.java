@@ -314,7 +314,7 @@ public class ImgUploadController extends BaseController<ImgUploadVO>{
 	 */
 	@ApiOperation(value="修改图片信息",notes="修改")
 	@ApiImplicitParam(name="vo",value="图片对象")
-	@RequiresPermissions("codelist:update")
+	@RequiresPermissions("codelist:edit")
 	@PostMapping("/detail/updateByVO")
 	public @ResponseBody ResultVO updateByVO(@RequestBody ImgUploadVO imgUploadVO){
 		ResultVO resultVO = ResultVO.build();

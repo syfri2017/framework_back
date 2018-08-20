@@ -97,7 +97,7 @@ public class CodelistController  extends BaseController<CodelistVO>{
 	 */
 	@ApiOperation(value="根据代码集修改代码集",notes="修改")
 	@ApiImplicitParam(name="vo",value="代码集对象")
-	@RequiresPermissions("system/codelist:update")
+	@RequiresPermissions("system/codelist:edit")
 	@PostMapping("/updateByVO")
 	public @ResponseBody ResultVO updateByVO(@RequestBody CodelistVO codelistVO){
 		ResultVO resultVO = ResultVO.build();
@@ -226,7 +226,7 @@ public class CodelistController  extends BaseController<CodelistVO>{
 	 */
 	@ApiOperation(value="根据代码集修改代码值",notes="修改")
 	@ApiImplicitParam(name="vo",value="代码值对象")
-	@RequiresPermissions("system/codelist:update")
+	@RequiresPermissions("system/codelist:edit")
 	@PostMapping("/detail/updateByVO")
 	public @ResponseBody ResultVO updateByVO(@RequestBody CodelistDetailVO codelistDetailVO){
 		ResultVO resultVO = ResultVO.build();
