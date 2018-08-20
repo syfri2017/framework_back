@@ -72,6 +72,9 @@
 		<if test="xgsj != null and xgsj != '' ">
 			and t.xgsj = #{xgsj}
 		</if>
+		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+			and t.jdh = #{orgJgid}
+		</if>
 	</sql>
 	<!--2.查询内容-->
 	<sql id="SQL_CONTENT">
