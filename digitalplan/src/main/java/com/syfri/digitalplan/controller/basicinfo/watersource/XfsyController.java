@@ -6,6 +6,7 @@ import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
@@ -91,6 +92,7 @@ public class XfsyController  extends BaseController<XfsyVO>{
 	 */
 	@ApiOperation(value = "通过vo新增水源", notes = "查询一条信息")
 	@ApiImplicitParam(name = "vo", value = "水源对象")
+	@RequiresPermissions("basicinfo/firewater:add")
 	@PostMapping("/insertByXfsyVO")
 	public @ResponseBody ResultVO insertByXfsyVO(@RequestBody XfsyVO xfsyVO) {
 		ResultVO resultVO = ResultVO.build();
@@ -109,6 +111,7 @@ public class XfsyController  extends BaseController<XfsyVO>{
 	 */
 	@ApiOperation(value = "通过vo修改队站", notes = "查询一条信息")
 	@ApiImplicitParam(name = "vo", value = "水源对象")
+	@RequiresPermissions("basicinfo/firewater:edit")
 	@PostMapping("/updateByXfsyVO")
 	public @ResponseBody ResultVO updateByXfsyVO(@RequestBody XfsyVO xfsyVO) {
 		ResultVO resultVO = ResultVO.build();
@@ -124,6 +127,7 @@ public class XfsyController  extends BaseController<XfsyVO>{
 	//批量删除 yushch 20180803
 	@ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
 	@ApiImplicitParam(name = "vo", value = "队站对象")
+	@RequiresPermissions("basicinfo/firewater:delete")
 	@PostMapping("/doDeleteBatch")
 	public @ResponseBody ResultVO doDeleteBatch(@RequestBody List<XfsyVO> list) {
 		ResultVO resultVO = ResultVO.build();
