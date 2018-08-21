@@ -119,6 +119,7 @@ public class FirecalculationlistController  extends BaseController<Firecalculati
 	 */
 	@ApiOperation(value="根据条件更新计算信息",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="计算信息对象")
+	@RequiresPermissions("auxiliarydecision/firecalculation:edit")
 	@PostMapping("/updateByVO")
 	public @ResponseBody
 	ResultVO updateByVO(@RequestBody FirecalculationlistVO firecalculationlistVO){
@@ -155,7 +156,7 @@ public class FirecalculationlistController  extends BaseController<Firecalculati
 	*/
 	@ApiOperation(value="根据公式新增公式及其参数信息",notes="新增")
 	@ApiImplicitParam(name="vo",value="公式对象")
-	@RequiresPermissions("Firecalculationlist:add")
+	@RequiresPermissions("auxiliarydecision/firecalculation:add")
 	@PostMapping("/insertByVO")
 	public @ResponseBody ResultVO insertByVO(@RequestBody FirecalculationlistVO firecalculationlistVO){
 		ResultVO resultVO = ResultVO.build();
@@ -240,7 +241,7 @@ public class FirecalculationlistController  extends BaseController<Firecalculati
 	 */
 	@ApiOperation(value="根据主键删除公式及其参数信息",notes="删除")
 	@ApiImplicitParam(name="id",value="公式主键")
-	@RequiresPermissions("gsmc:delete")
+	@RequiresPermissions("auxiliarydecision/firecalculation:delete")
 	@PostMapping("/deleteByIds")
 	public @ResponseBody ResultVO deleteByIds(@RequestBody String id){
 		JSONObject jsonObject = JSON.parseObject(id);
