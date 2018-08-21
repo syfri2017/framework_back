@@ -7,6 +7,7 @@ import com.syfri.digitalplan.model.buildingzoning.BuildingVO;
 import com.syfri.digitalplan.model.planobject.XiaofangliliangVO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -156,6 +157,7 @@ public class ImportantunitsController  extends BaseController<ImportantunitsVO>{
 	 */
 	@ApiOperation(value="新增重点单位",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="重点单位对象")
+	@RequiresPermissions("planobject/importantunits:add")
 	@PostMapping("/doInsertByVO")
 	public @ResponseBody ResultVO doInsertByVO(@RequestBody ImportantunitsVO vo) {
 		ResultVO resultVO = ResultVO.build();
@@ -172,8 +174,9 @@ public class ImportantunitsController  extends BaseController<ImportantunitsVO>{
 	 * 修改重点单位
 	 * by li.xue 2018/8/13
 	 */
-	@ApiOperation(value="新增重点单位",notes="列表信息")
+	@ApiOperation(value="修改重点单位",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="重点单位对象")
+	@RequiresPermissions("planobject/importantunits:edit")
 	@PostMapping("/doUpdateByVO")
 	public @ResponseBody ResultVO doUpdateByVO(@RequestBody ImportantunitsVO vo) {
 		ResultVO resultVO = ResultVO.build();
@@ -191,6 +194,7 @@ public class ImportantunitsController  extends BaseController<ImportantunitsVO>{
 	 * by li.xue 2018/8/13
 	 */
 	@ApiOperation(value="删除重点单位",notes="列表信息")
+	@RequiresPermissions("planobject/importantunits:delete")
 	@ApiImplicitParam(name="vo",value="重点单位对象")
 	@PostMapping("/doDeleteBatch")
 	public @ResponseBody ResultVO doDeleteBatch(@RequestBody List<ImportantunitsVO> list) {
