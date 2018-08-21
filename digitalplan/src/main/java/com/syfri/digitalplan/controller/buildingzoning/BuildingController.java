@@ -6,6 +6,7 @@ import com.syfri.digitalplan.model.buildingzoning.ChuguanVO;
 import com.syfri.digitalplan.utils.Base64ImageUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +58,7 @@ public class BuildingController extends BaseController<BuildingVO> {
      */
     @ApiOperation(value = "删除单体建筑信息", notes = "列表信息")
     @ApiImplicitParam(name = "vo", value = "单体建筑")
+    @RequiresPermissions("buildingzoning/buildingzoning:delete")
     @PostMapping("/doDeleteBuildingzoning")
     public @ResponseBody
     ResultVO doDeleteBuildingzoning(@RequestBody List<BuildingVO> buildingList) {
@@ -88,6 +90,7 @@ public class BuildingController extends BaseController<BuildingVO> {
      */
     @ApiOperation(value = "单体建筑新增", notes = "新增")
     @ApiImplicitParam(name = "vo", value = "单体建筑")
+    @RequiresPermissions("buildingzoning/buildingzoning:add")
     @PostMapping("/insertByVO")
     public @ResponseBody
     ResultVO insertByVO(@RequestBody BuildingVO buildingVO) {
@@ -113,6 +116,7 @@ public class BuildingController extends BaseController<BuildingVO> {
      */
     @ApiOperation(value = "修改单体建筑", notes = "列表信息")
     @ApiImplicitParam(name = "vo", value = "单体建筑")
+    @RequiresPermissions("buildingzoning/buildingzoning:edit")
     @PostMapping("/doUpdateBuildingzoning")
     public @ResponseBody
     ResultVO doUpdateBuildingzoning(@RequestBody BuildingVO buildingVO) {
