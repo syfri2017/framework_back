@@ -6,6 +6,7 @@ import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -110,6 +111,7 @@ public class XfdzController extends BaseController<XfdzVO> {
      */
     @ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
     @ApiImplicitParam(name = "vo", value = "队站对象")
+    @RequiresPermissions("basicinfo/firestation:add")
     @PostMapping("/insertByXfdzVO")
     public @ResponseBody ResultVO insertByXfdzVO(@RequestBody XfdzVO xfdzVO) {
         ResultVO resultVO = ResultVO.build();
@@ -128,6 +130,7 @@ public class XfdzController extends BaseController<XfdzVO> {
      */
     @ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
     @ApiImplicitParam(name = "vo", value = "队站对象")
+    @RequiresPermissions("basicinfo/firestation:edit")
     @PostMapping("/updateByXfdzVO")
     public @ResponseBody ResultVO updateByXfdzVO(@RequestBody XfdzVO xfdzVO) {
         ResultVO resultVO = ResultVO.build();
@@ -146,6 +149,7 @@ public class XfdzController extends BaseController<XfdzVO> {
      */
     @ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
     @ApiImplicitParam(name = "vo", value = "队站对象")
+    @RequiresPermissions("basicinfo/firestation:delete")
     @PostMapping("/doDeleteBatch")
     public @ResponseBody ResultVO doDeleteBatch(@RequestBody List<XfdzVO> list) {
         ResultVO resultVO = ResultVO.build();
