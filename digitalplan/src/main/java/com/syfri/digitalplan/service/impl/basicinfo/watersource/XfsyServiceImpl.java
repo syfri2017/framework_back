@@ -238,4 +238,27 @@ public class XfsyServiceImpl extends BaseServiceImpl<XfsyVO> implements XfsyServ
         return deleteNums;
     }
 
+    public XfsyVO insertTrsyByXfsyVO(XfsyVO xfsyVO) {
+        xfsyDAO.doInsertTrsyByVO(xfsyVO);
+        return xfsyVO;
+    }
+
+    public XfsyVO doUpdateTrsyByVO(XfsyVO xfsyVO) {
+        xfsyDAO.doUpdateTrsyByVO(xfsyVO);
+        return xfsyVO;
+    }
+
+    public XfsyVO doFindTrsyByUUId(XfsyVO xfsyVO) {
+        String uuid = xfsyVO.getTrsy_uuid();
+        return xfsyDAO.doFindTrsyByUUId(uuid);
+    }
+
+    public int doDeleteTrsyByUUId(List<XfsyVO> list) {
+        int count = 0;
+        for (XfsyVO vo : list) {
+            String uuid = vo.getTrsy_uuid();
+            count = count + xfsyDAO.doDeleteTrsyByUUId(uuid);
+        }
+        return count;
+    }
 }

@@ -17,7 +17,7 @@ public interface XfsyDAO extends BaseDAO<XfsyVO>{
     public List<XfsyVO> doFindXfshListByVO(XfsyVO vo);
     public List<XfsyVO> doFindXfscListByVO(XfsyVO vo);
     public List<XfsyVO> doFindTrsyqsdListByVO(XfsyVO vo);
-    public List<XfsyVO> doFindTrsyListByVO(XfsyVO vo);
+
 
     //消火栓表插入内容
     int doInsertXhsByVo(XfsyVO vo);
@@ -40,10 +40,16 @@ public interface XfsyDAO extends BaseDAO<XfsyVO>{
     int doDeleteXfscByUuid(String uuid);
     int doCountXfscBySxid(String sysxxxid);
 
-
     //天然水源取水点
     int doInsertTrsyqsdByVO(XfsyVO vo);
     int doUpdateTrsyqsdByVO(XfsyVO vo);
     int doDeleteTrsyqsdByUuid(String uuid);
     int doCountTrsyqsdBySxid(String sysxxxid);
+
+    //天然水源
+    List<XfsyVO> doFindTrsyListByVO(XfsyVO vo);
+    XfsyVO doFindTrsyByUUId(String uuid);
+    int doInsertTrsyByVO(XfsyVO vo);
+    int doUpdateTrsyByVO(XfsyVO vo);
+    int doDeleteTrsyByUUId(String uuid);
 }

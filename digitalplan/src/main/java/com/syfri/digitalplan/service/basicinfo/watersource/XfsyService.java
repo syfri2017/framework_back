@@ -16,4 +16,8 @@ public interface XfsyService  extends BaseService<XfsyVO>{
     int doDeleteBatch(List<XfsyVO> list);
 
     List<XfsyVO> doFindTrsyListByVO(XfsyVO xfsyVO);
+    XfsyVO doFindTrsyByUUId(XfsyVO xfsyVO);
+    XfsyVO insertTrsyByXfsyVO(XfsyVO xfsyVO);
+    XfsyVO doUpdateTrsyByVO(XfsyVO xfsyVO);
+    int doDeleteTrsyByUUId(List<XfsyVO> list);
 }

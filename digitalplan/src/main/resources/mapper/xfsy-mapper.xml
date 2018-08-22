@@ -739,21 +739,6 @@
 		AND rownum &lt;= 100
         ORDER BY t.SYBM
 	</select>
-	<!--查询天然水源-->
-	<select id="doFindTrsyListByVO" parameterType="XfsyVO"  resultType="XfsyVO">
-		SELECT
-		<include refid="SQL_TRSY_CONTENT"/>,
-		c2.code_name trsy_trsylxmc
-		FROM YAGL_XFSY_TRSY t3
-		<!--天然水源类型-->
-		Left Join SYS_CODELIST c1 on c1.CODETYPE = 'TRSYLX' And c1.DELETE_FLAG = 'N'
-		Left Join SYS_CODELIST_DETAIL c2 On c2.CODEID = c1.CODEID And c2.DELETE_FLAG = 'N' and t3.trsylx = c2.CODE_VALUE
-		WHERE t3.DELETE_FLAG = 'N'
-	    <if test="trsy_trsymc != null and trsy_trsymc != '' ">
-			and t3.trsymc like concat(concat('%',#{trsy_trsymc}),'%')
-		</if>
-		ORDER BY trsy_trsylx
-	</select>
 
 	<!--向消火栓表中插入vo-->
 	<insert id="doInsertXhsByVo" parameterType="XfsyVO">
@@ -910,4 +895,58 @@
 		WHERE 1=1 AND DELETE_FLAG = 'N'
 		AND t.uuid = #{value}
 	</select>
+
+	<!--天然水源-->
+	<select id="doFindTrsyListByVO" parameterType="XfsyVO"  resultType="XfsyVO">
+		SELECT
+		<include refid="SQL_TRSY_CONTENT"/>,
+		c2.code_name trsy_trsylxmc
+		FROM YAGL_XFSY_TRSY t3
+		<!--天然水源类型-->
+		Left Join SYS_CODELIST c1 on c1.CODETYPE = 'TRSYLX' And c1.DELETE_FLAG = 'N'
+		Left Join SYS_CODELIST_DETAIL c2 On c2.CODEID = c1.CODEID And c2.DELETE_FLAG = 'N' and t3.trsylx = c2.CODE_VALUE
+		WHERE t3.DELETE_FLAG = 'N'
+		<if test="trsy_trsymc != null and trsy_trsymc != '' ">
+			and t3.trsymc like concat(concat('%',#{trsy_trsymc}),'%')
+		</if>
+		ORDER BY trsy_trsylx
+	</select>
+	<select id="doFindTrsyByUUId" parameterType="XfsyVO"  resultType="XfsyVO">
+		SELECT
+		<include refid="SQL_TRSY_CONTENT"/>
+		FROM YAGL_XFSY_TRSY t3
+		WHERE t3.DELETE_FLAG = 'N' AND  t3.UUID = #{value}
+	</select>
+	<insert  id="doInsertTrsyByVO"  parameterType="XfsyVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="trsy_uuid">
+			SELECT SYS_GUID() AS trsy_uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_XFSY_TRSY(uuid,trsylx,ywksq,ksqsj,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4,szms,ywqsd,sz,trsymc)
+		VALUES(#{trsy_uuid,jdbcType=VARCHAR},#{trsy_trsylx,jdbcType=VARCHAR},#{trsy_ywksq,jdbcType=VARCHAR},#{trsy_ksqsj,jdbcType=VARCHAR},'N',#{trsy_datasource,jdbcType=VARCHAR},#{trsy_jdh,jdbcType=VARCHAR},#{trsy_sjc,jdbcType=DATE},#{trsy_reserve1,jdbcType=VARCHAR},#{trsy_reserve2,jdbcType=VARCHAR},#{trsy_reserve3,jdbcType=VARCHAR},#{trsy_reserve4,jdbcType=DATE},#{trsy_szms,jdbcType=VARCHAR},#{trsy_ywqsd,jdbcType=VARCHAR},#{trsy_sz,jdbcType=VARCHAR},#{trsy_trsymc,jdbcType=VARCHAR})
+	</insert>
+	<update  id="doUpdateTrsyByVO"  parameterType="XfsyVO">
+		UPDATE   YAGL_XFSY_TRSY
+		<set>
+			<!--<if test="trsy_uuid != null">uuid=#{trsy_uuid},</if>-->
+			<if test="trsy_trsylx != null">trsylx=#{trsy_trsylx},</if>
+			<if test="trsy_ywksq != null">ywksq=#{trsy_ywksq},</if>
+			<if test="trsy_ksqsj != null">ksqsj=#{trsy_ksqsj},</if>
+			<if test="trsy_deleteFlag != null">delete_flag='N',</if>
+			<if test="trsy_datasource != null">datasource=#{trsy_datasource},</if>
+			<if test="trsy_jdh != null">jdh=#{trsy_jdh},</if>
+			<if test="trsy_sjc != null">sjc=TO_DATE(#{trsy_sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="trsy_reserve1 != null">reserve1=#{trsy_reserve1},</if>
+			<if test="trsy_reserve2 != null">reserve2=#{trsy_reserve2},</if>
+			<if test="trsy_reserve3 != null">reserve3=#{trsy_reserve3},</if>
+			<if test="trsy_reserve4 != null">reserve4=TO_DATE(#{trsy_reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="trsy_szms != null">szms=#{trsy_szms},</if>
+			<if test="trsy_ywqsd != null">ywqsd=#{trsy_ywqsd},</if>
+			<if test="trsy_sz != null">sz=#{trsy_sz},</if>
+			<if test="trsy_trsymc != null">trsymc=#{trsy_trsymc}</if>
+		</set>
+		WHERE  UUID = #{trsy_uuid}
+	</update>
+	<update id="doDeleteTrsyByUUId"  parameterType="String">
+		UPDATE  YAGL_XFSY_TRSY t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.UUID = #{value}
+	</update>
 </mapper>
