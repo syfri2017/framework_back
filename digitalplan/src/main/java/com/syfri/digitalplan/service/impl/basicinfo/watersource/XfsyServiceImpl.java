@@ -256,8 +256,8 @@ public class XfsyServiceImpl extends BaseServiceImpl<XfsyVO> implements XfsyServ
     public int doDeleteTrsyByUUId(List<XfsyVO> list) {
         int count = 0;
         for (XfsyVO vo : list) {
-            String uuid = vo.getTrsy_uuid();
-            count = count + xfsyDAO.doDeleteTrsyByUUId(uuid);
+            vo.setTrsy_deleteFlag("Y");
+            count = count + xfsyDAO.doUpdateTrsyByVO(vo);
         }
         return count;
     }

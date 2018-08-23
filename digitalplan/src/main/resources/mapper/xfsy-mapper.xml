@@ -263,7 +263,13 @@
 		TO_CHAR(t3.reserve4,'yyyy-MM-dd HH24:mi:ss') trsy_reserve4,
 		t3.szms trsy_szms,
 		CASE t3.ywqsd WHEN '1' THEN '有' WHEN '0' THEN '无' END trsy_ywqsd,
-		t3.sz trsy_sz
+		t3.sz trsy_sz,
+		t3.cjrid trsy_cjrid,
+		t3.cjrmc trsy_cjrmc,
+		TO_CHAR(t3.cjsj,'yyyy-MM-dd HH24:mi:ss') trsy_cjsj,
+		t3.xgrid trsy_xgrid,
+		t3.xgrmc trsy_xgrmc,
+		TO_CHAR(t3.xgsj,'yyyy-MM-dd HH24:mi:ss') trsy_xgsj
 	</sql>
 	<!--3.查询记录数-->
 	<select id="doSearchCount" parameterType="XfsyVO" resultType="java.lang.Integer">
@@ -909,7 +915,7 @@
 		<if test="trsy_trsymc != null and trsy_trsymc != '' ">
 			and t3.trsymc like concat(concat('%',#{trsy_trsymc}),'%')
 		</if>
-		ORDER BY trsy_trsylx
+		ORDER BY NVL(t3.xgsj,t3.cjsj) DESC
 	</select>
 	<select id="doFindTrsyByUUId" parameterType="XfsyVO"  resultType="XfsyVO">
 		SELECT
@@ -921,8 +927,8 @@
 		<selectKey resultType="String" order="BEFORE" keyProperty="trsy_uuid">
 			SELECT SYS_GUID() AS trsy_uuid FROM DUAL
 		</selectKey>
-		INSERT INTO YAGL_XFSY_TRSY(uuid,trsylx,ywksq,ksqsj,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4,szms,ywqsd,sz,trsymc)
-		VALUES(#{trsy_uuid,jdbcType=VARCHAR},#{trsy_trsylx,jdbcType=VARCHAR},#{trsy_ywksq,jdbcType=VARCHAR},#{trsy_ksqsj,jdbcType=VARCHAR},'N',#{trsy_datasource,jdbcType=VARCHAR},#{trsy_jdh,jdbcType=VARCHAR},#{trsy_sjc,jdbcType=DATE},#{trsy_reserve1,jdbcType=VARCHAR},#{trsy_reserve2,jdbcType=VARCHAR},#{trsy_reserve3,jdbcType=VARCHAR},#{trsy_reserve4,jdbcType=DATE},#{trsy_szms,jdbcType=VARCHAR},#{trsy_ywqsd,jdbcType=VARCHAR},#{trsy_sz,jdbcType=VARCHAR},#{trsy_trsymc,jdbcType=VARCHAR})
+		INSERT INTO YAGL_XFSY_TRSY(uuid,trsylx,ywksq,ksqsj,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4,szms,ywqsd,sz,trsymc,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj)
+		VALUES(#{trsy_uuid,jdbcType=VARCHAR},#{trsy_trsylx,jdbcType=VARCHAR},#{trsy_ywksq,jdbcType=VARCHAR},#{trsy_ksqsj,jdbcType=VARCHAR},'N',#{trsy_datasource,jdbcType=VARCHAR},#{trsy_jdh,jdbcType=VARCHAR},#{trsy_sjc,jdbcType=DATE},#{trsy_reserve1,jdbcType=VARCHAR},#{trsy_reserve2,jdbcType=VARCHAR},#{trsy_reserve3,jdbcType=VARCHAR},#{trsy_reserve4,jdbcType=DATE},#{trsy_szms,jdbcType=VARCHAR},#{trsy_ywqsd,jdbcType=VARCHAR},#{trsy_sz,jdbcType=VARCHAR},#{trsy_trsymc,jdbcType=VARCHAR},#{trsy_cjrid,jdbcType=VARCHAR},#{trsy_cjrmc,jdbcType=VARCHAR},sysdate,#{trsy_xgrid,jdbcType=VARCHAR},#{trsy_xgrmc,jdbcType=VARCHAR},#{trsy_xgsj,jdbcType=DATE})
 	</insert>
 	<update  id="doUpdateTrsyByVO"  parameterType="XfsyVO">
 		UPDATE   YAGL_XFSY_TRSY
@@ -931,7 +937,7 @@
 			<if test="trsy_trsylx != null">trsylx=#{trsy_trsylx},</if>
 			<if test="trsy_ywksq != null">ywksq=#{trsy_ywksq},</if>
 			<if test="trsy_ksqsj != null">ksqsj=#{trsy_ksqsj},</if>
-			<if test="trsy_deleteFlag != null">delete_flag='N',</if>
+			<if test="trsy_deleteFlag != null">delete_flag=#{trsy_deleteFlag},</if>
 			<if test="trsy_datasource != null">datasource=#{trsy_datasource},</if>
 			<if test="trsy_jdh != null">jdh=#{trsy_jdh},</if>
 			<if test="trsy_sjc != null">sjc=TO_DATE(#{trsy_sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
@@ -942,7 +948,10 @@
 			<if test="trsy_szms != null">szms=#{trsy_szms},</if>
 			<if test="trsy_ywqsd != null">ywqsd=#{trsy_ywqsd},</if>
 			<if test="trsy_sz != null">sz=#{trsy_sz},</if>
-			<if test="trsy_trsymc != null">trsymc=#{trsy_trsymc}</if>
+			<if test="trsy_trsymc != null">trsymc=#{trsy_trsymc},</if>
+			<if test="trsy_xgrid != null">xgrid=#{trsy_xgrid},</if>
+			<if test="trsy_xgrmc != null">xgrmc=#{trsy_xgrmc},</if>
+			xgsj=sysdate
 		</set>
 		WHERE  UUID = #{trsy_uuid}
 	</update>
