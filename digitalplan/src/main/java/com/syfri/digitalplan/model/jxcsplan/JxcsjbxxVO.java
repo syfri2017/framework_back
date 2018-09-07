@@ -16,8 +16,8 @@ public class JxcsjbxxVO extends ValueObject implements Serializable{
 	private String xzqh;	//行政区划
 	private String zbdh;	//值班电话
 	private String xfgx;	//消防管辖
-	private String xfzrrdh;	//辖区负责人
-	private String xfglr;	//辖区负责人电话
+	private String xqfzr;	//辖区负责人
+	private String xqfzrdh;	//辖区负责人电话
 	private String jzfl;	//单位建筑分类
 	private String jzsl;	//建筑数量
 	private String zdmj;	//占地面积
@@ -50,6 +50,7 @@ public class JxcsjbxxVO extends ValueObject implements Serializable{
 	private String jxdwlxmc;	//单位类型
 	private String xfgxmc;	//消防管辖
 	private String xzqhmc;	//行政区划
+	private String jzflmc;	//单位建筑分类
 
 	public String getUuid(){
 		return uuid;
@@ -99,17 +100,17 @@ public class JxcsjbxxVO extends ValueObject implements Serializable{
 	public void setXfgx(String xfgx){
 		this.xfgx = xfgx;
 	}
-	public String getXfzrrdh(){
-		return xfzrrdh;
+	public String getXqfzr() {
+		return xqfzr;
 	}
-	public void setXfzrrdh(String xfzrrdh){
-		this.xfzrrdh = xfzrrdh;
+	public void setXqfzr(String xqfzr) {
+		this.xqfzr = xqfzr;
 	}
-	public String getXfglr(){
-		return xfglr;
+	public String getXqfzrdh() {
+		return xqfzrdh;
 	}
-	public void setXfglr(String xfglr){
-		this.xfglr = xfglr;
+	public void setXqfzrdh(String xqfzrdh) {
+		this.xqfzrdh = xqfzrdh;
 	}
 	public String getJzfl(){
 		return jzfl;
@@ -283,24 +284,25 @@ public class JxcsjbxxVO extends ValueObject implements Serializable{
 	public String getJxdwlxmc() {
 		return jxdwlxmc;
 	}
-
 	public void setJxdwlxmc(String jxdwlxmc) {
 		this.jxdwlxmc = jxdwlxmc;
 	}
-
 	public String getXfgxmc() {
 		return xfgxmc;
 	}
-
 	public void setXfgxmc(String xfgxmc) {
 		this.xfgxmc = xfgxmc;
 	}
-
 	public String getXzqhmc() {
 		return xzqhmc;
 	}
-
 	public void setXzqhmc(String xzqhmc) {
 		this.xzqhmc = xzqhmc;
+	}
+	public String getJzflmc() {
+		return jzflmc;
+	}
+	public void setJzflmc(String jzflmc) {
+		this.jzflmc = jzflmc;
 	}
 }

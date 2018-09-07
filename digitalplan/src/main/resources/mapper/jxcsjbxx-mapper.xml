@@ -32,11 +32,11 @@
             CONNECT BY PRIOR t.UUID = SJJGID
             )
         </if>
-        <if test="xfzrrdh != null and xfzrrdh != '' ">
-            and t.xfzrrdh = #{xfzrrdh}
+        <if test="xqfzr != null and xqfzr != '' ">
+            and t.xqfzr = #{xqfzr}
         </if>
-        <if test="xfglr != null and xfglr != '' ">
-            and t.xfglr = #{xfglr}
+        <if test="xqfzrdh != null and xqfzrdh != '' ">
+            and t.xqfzrdh = #{xqfzrdh}
         </if>
         <if test="jzfl != null and jzfl != '' ">
             and t.jzfl = #{jzfl}
@@ -137,8 +137,8 @@
 		t.xzqh xzqh,
 		t.zbdh zbdh,
 		t.xfgx xfgx,
-		t.xfzrrdh xfzrrdh,
-		t.xfglr xfglr,
+		t.xqfzr xqfzr,
+		t.xqfzrdh xqfzrdh,
 		t.jzfl jzfl,
 		t.jzsl jzsl,
 		t.zdmj zdmj,
@@ -201,11 +201,15 @@
         SELECT
         <include refid="SQL_CONTENT"/>,
         c2.code_name jxdwlxmc,
+        c4.code_name xzqhmc,
         dz.DZJC xfgxmc
         FROM YAGL_JXCS_JBXX t
         <!--九小单位类型-->
         Left Join SYS_CODELIST c1 on c1.CODETYPE = 'JXDWLX' And c1.DELETE_FLAG = 'N'
         Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and t.jxdwlx = c2.CODE_VALUE
+        <!--行政区划-->
+        Left Join SYS_CODELIST c3 on c3.CODETYPE = 'XZQH' And c3.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c4 On c3.CODEID = c4.CODEID And c4.DELETE_FLAG = 'N' and t.xzqh = c4.CODE_VALUE
         <!--消防队站-->
         Left Join YAGL_XFDZ dz On dz.DZID = t.xfgx And dz.DELETE_FLAG = 'N'
         WHERE t.DELETE_FLAG = 'N' AND t.UUID = #{value}
@@ -217,22 +221,22 @@
             SELECT SYS_GUID() AS uuid FROM DUAL
         </selectKey>
         INSERT INTO
-        YAGL_JXCS_JBXX(uuid,dwmc,jxdwlx,dwdz,dwgk,xzqh,zbdh,xfgx,xfzrrdh,xfglr,jzfl,jzsl,zdmj,jzmj,lon,lat,plqkd,plqkn,plqkx,plqkb,gnfqms,zdbwms,zbxftd,bz,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
-        VALUES(#{uuid,jdbcType=VARCHAR},#{dwmc,jdbcType=VARCHAR},#{jxdwlx,jdbcType=VARCHAR},#{dwdz,jdbcType=VARCHAR},#{dwgk,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{zbdh,jdbcType=VARCHAR},#{xfgx,jdbcType=VARCHAR},#{xfzrrdh,jdbcType=VARCHAR},#{xfglr,jdbcType=VARCHAR},#{jzfl,jdbcType=VARCHAR},#{jzsl,jdbcType=DOUBLE},#{zdmj,jdbcType=DOUBLE},#{jzmj,jdbcType=DOUBLE},#{lon,jdbcType=DOUBLE},#{lat,jdbcType=DOUBLE},#{plqkd,jdbcType=VARCHAR},#{plqkn,jdbcType=VARCHAR},#{plqkx,jdbcType=VARCHAR},#{plqkb,jdbcType=VARCHAR},#{gnfqms,jdbcType=VARCHAR},#{zdbwms,jdbcType=VARCHAR},#{zbxftd,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+        YAGL_JXCS_JBXX(uuid,dwmc,jxdwlx,dwdz,dwgk,xzqh,zbdh,xfgx,xqfzr,xqfzrdh,jzfl,jzsl,zdmj,jzmj,lon,lat,plqkd,plqkn,plqkx,plqkb,gnfqms,zdbwms,zbxftd,bz,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+        VALUES(#{uuid,jdbcType=VARCHAR},#{dwmc,jdbcType=VARCHAR},#{jxdwlx,jdbcType=VARCHAR},#{dwdz,jdbcType=VARCHAR},#{dwgk,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{zbdh,jdbcType=VARCHAR},#{xfgx,jdbcType=VARCHAR},#{xqfzr,jdbcType=VARCHAR},#{xqfzrdh,jdbcType=VARCHAR},#{jzfl,jdbcType=VARCHAR},#{jzsl,jdbcType=DOUBLE},#{zdmj,jdbcType=DOUBLE},#{jzmj,jdbcType=DOUBLE},#{lon,jdbcType=DOUBLE},#{lat,jdbcType=DOUBLE},#{plqkd,jdbcType=VARCHAR},#{plqkn,jdbcType=VARCHAR},#{plqkx,jdbcType=VARCHAR},#{plqkb,jdbcType=VARCHAR},#{gnfqms,jdbcType=VARCHAR},#{zdbwms,jdbcType=VARCHAR},#{zbxftd,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
     </insert>
 
     <!--7.批量插入-->
     <insert id="doBatchInsertByList" parameterType="java.util.List">
         INSERT INTO
-        YAGL_JXCS_JBXX(uuid,dwmc,jxdwlx,dwdz,dwgk,xzqh,zbdh,xfgx,xfzrrdh,xfglr,jzfl,jzsl,zdmj,jzmj,lon,lat,plqkd,plqkn,plqkx,plqkb,gnfqms,zdbwms,zbxftd,bz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+        YAGL_JXCS_JBXX(uuid,dwmc,jxdwlx,dwdz,dwgk,xzqh,zbdh,xfgx,xqfzr,xqfzrdh,jzfl,jzsl,zdmj,jzmj,lon,lat,plqkd,plqkn,plqkx,plqkb,gnfqms,zdbwms,zbxftd,bz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
         SELECT SYS_GUID() uuid, A.*
         FROM (
         <foreach collection="list" item="item" index="index" separator="UNION ALL">
             SELECT
             #{item.uuid,jdbcType=VARCHAR} uuid,#{item.dwmc,jdbcType=VARCHAR} dwmc,#{item.jxdwlx,jdbcType=VARCHAR}
             jxdwlx,#{item.dwdz,jdbcType=VARCHAR} dwdz,#{item.dwgk,jdbcType=VARCHAR} dwgk,#{item.xzqh,jdbcType=VARCHAR}
-            xzqh,#{item.zbdh,jdbcType=VARCHAR} zbdh,#{item.xfgx,jdbcType=VARCHAR} xfgx,#{item.xfzrrdh,jdbcType=VARCHAR}
-            xfzrrdh,#{item.xfglr,jdbcType=VARCHAR} xfglr,#{item.jzfl,jdbcType=VARCHAR} jzfl,#{item.jzsl,jdbcType=DOUBLE}
+            xzqh,#{item.zbdh,jdbcType=VARCHAR} zbdh,#{item.xfgx,jdbcType=VARCHAR} xfgx,#{item.xqfzr,jdbcType=VARCHAR}
+            xqfzr,#{item.xqfzrdh,jdbcType=VARCHAR} xqfzrdh,#{item.jzfl,jdbcType=VARCHAR} jzfl,#{item.jzsl,jdbcType=DOUBLE}
             jzsl,#{item.zdmj,jdbcType=DOUBLE} zdmj,#{item.jzmj,jdbcType=DOUBLE} jzmj,#{item.lon,jdbcType=DOUBLE}
             lon,#{item.lat,jdbcType=DOUBLE} lat,#{item.plqkd,jdbcType=VARCHAR} plqkd,#{item.plqkn,jdbcType=VARCHAR}
             plqkn,#{item.plqkx,jdbcType=VARCHAR} plqkx,#{item.plqkb,jdbcType=VARCHAR}
@@ -264,8 +268,8 @@
             <if test="xzqh != null">xzqh=#{xzqh},</if>
             <if test="zbdh != null">zbdh=#{zbdh},</if>
             <if test="xfgx != null">xfgx=#{xfgx},</if>
-            <if test="xfzrrdh != null">xfzrrdh=#{xfzrrdh},</if>
-            <if test="xfglr != null">xfglr=#{xfglr},</if>
+            <if test="xqfzr != null">xqfzr=#{xqfzr},</if>
+            <if test="xqfzrdh != null">xqfzrdh=#{xqfzrdh},</if>
             <if test="jzfl != null">jzfl=#{jzfl},</if>
             <if test="jzsl != null">jzsl=#{jzsl},</if>
             <if test="zdmj != null">zdmj=#{zdmj},</if>
@@ -301,13 +305,13 @@
     <!--10.批量修改-->
     <update id="doBatchUpdateByList" parameterType="java.util.List">
         INSERT INTO
-        YAGL_JXCS_JBXX(uuid,dwmc,jxdwlx,dwdz,dwgk,xzqh,zbdh,xfgx,xfzrrdh,xfglr,jzfl,jzsl,zdmj,jzmj,lon,lat,plqkd,plqkn,plqkx,plqkb,gnfqms,zdbwms,zbxftd,bz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+        YAGL_JXCS_JBXX(uuid,dwmc,jxdwlx,dwdz,dwgk,xzqh,zbdh,xfgx,xqfzr,xqfzrdh,jzfl,jzsl,zdmj,jzmj,lon,lat,plqkd,plqkn,plqkx,plqkb,gnfqms,zdbwms,zbxftd,bz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             #{item.uuid,jdbcType=VARCHAR} uuid,#{item.dwmc,jdbcType=VARCHAR} dwmc,#{item.jxdwlx,jdbcType=VARCHAR}
             jxdwlx,#{item.dwdz,jdbcType=VARCHAR} dwdz,#{item.dwgk,jdbcType=VARCHAR} dwgk,#{item.xzqh,jdbcType=VARCHAR}
-            xzqh,#{item.zbdh,jdbcType=VARCHAR} zbdh,#{item.xfgx,jdbcType=VARCHAR} xfgx,#{item.xfzrrdh,jdbcType=VARCHAR}
-            xfzrrdh,#{item.xfglr,jdbcType=VARCHAR} xfglr,#{item.jzfl,jdbcType=VARCHAR} jzfl,#{item.jzsl,jdbcType=DOUBLE}
+            xzqh,#{item.zbdh,jdbcType=VARCHAR} zbdh,#{item.xfgx,jdbcType=VARCHAR} xfgx,#{item.xqfzr,jdbcType=VARCHAR}
+            xqfzr,#{item.xqfzrdh,jdbcType=VARCHAR} xqfzrdh,#{item.jzfl,jdbcType=VARCHAR} jzfl,#{item.jzsl,jdbcType=DOUBLE}
             jzsl,#{item.zdmj,jdbcType=DOUBLE} zdmj,#{item.jzmj,jdbcType=DOUBLE} jzmj,#{item.lon,jdbcType=DOUBLE}
             lon,#{item.lat,jdbcType=DOUBLE} lat,#{item.plqkd,jdbcType=VARCHAR} plqkd,#{item.plqkn,jdbcType=VARCHAR}
             plqkn,#{item.plqkx,jdbcType=VARCHAR} plqkx,#{item.plqkb,jdbcType=VARCHAR}
@@ -327,8 +331,8 @@
         xzqh = VALUES(xzqh),
         zbdh = VALUES(zbdh),
         xfgx = VALUES(xfgx),
-        xfzrrdh = VALUES(xfzrrdh),
-        xfglr = VALUES(xfglr),
+        xqfzr = VALUES(xqfzr),
+        xqfzrdh = VALUES(xqfzrdh),
         jzfl = VALUES(jzfl),
         jzsl = VALUES(jzsl),
         zdmj = VALUES(zdmj),
