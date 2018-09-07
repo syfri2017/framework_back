@@ -292,7 +292,7 @@
             <if test="zdbwms != null">zdbwms=#{zdbwms},</if>
             <if test="zbxftd != null">zbxftd=#{zbxftd},</if>
             <if test="bz != null">bz=#{bz},</if>
-            <if test="deleteFlag != null">delete_flag='N',</if>
+            <if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
             <!--<if test="cjrid != null">cjrid=#{cjrid},</if>-->
             <!--<if test="cjrmc != null">cjrmc=#{cjrmc},</if>-->
             <!--<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>-->
