@@ -175,7 +175,7 @@ public class ImgUploadController extends BaseController<ImgUploadVO>{
 	 */
 	@ApiOperation(value="新增图片信息",notes="新增")
 	@ApiImplicitParam(name="vo",value="图片对象")
-	@RequiresPermissions("codelist:add")
+	@RequiresPermissions("system/imgupload:add")
 	@PostMapping("/detail/insertByVO")
 	public @ResponseBody ResultVO insertByVO(@RequestBody ImgUploadVO imgUploadVO){
 		ResultVO resultVO = ResultVO.build();
@@ -260,7 +260,7 @@ public class ImgUploadController extends BaseController<ImgUploadVO>{
 	 */
 	@ApiOperation(value="根据主键删除图片",notes="删除")
 	@ApiImplicitParam(name="id",value="图片主键")
-	@RequiresPermissions("codelist:delete")
+	@RequiresPermissions("system/imgupload:delete")
 	@PostMapping("/detail/deleteByIds")
 	public @ResponseBody ResultVO deleteDetailByIds(@RequestBody String id){
 		JSONObject jsonObject = JSON.parseObject(id);
@@ -314,7 +314,7 @@ public class ImgUploadController extends BaseController<ImgUploadVO>{
 	 */
 	@ApiOperation(value="修改图片信息",notes="修改")
 	@ApiImplicitParam(name="vo",value="图片对象")
-	@RequiresPermissions("codelist:edit")
+	@RequiresPermissions("system/imgupload:edit")
 	@PostMapping("/detail/updateByVO")
 	public @ResponseBody ResultVO updateByVO(@RequestBody ImgUploadVO imgUploadVO){
 		ResultVO resultVO = ResultVO.build();
