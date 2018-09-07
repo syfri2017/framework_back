@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.syfri.digitalplan.dao.JxcsxfssDAO">
+<mapper namespace="com.syfri.digitalplan.dao.jxcsplan.JxcsxfssDAO">
     <!--1.查询条件-->
     <sql id="SQL_CONDITION">
         <if test="xfssid != null and xfssid != '' ">
