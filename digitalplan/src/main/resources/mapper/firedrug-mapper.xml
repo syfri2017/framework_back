@@ -62,7 +62,7 @@
 		<if test="bz != null and bz != '' ">
 		 and f.bz = #{bz}
 		</if>
-		<if test="jdh != null and jdh != '' ">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000' ">
 		 and f.jdh = #{jdh}
 		</if>
 		<if test="sjc != null and sjc != '' ">
@@ -82,9 +82,6 @@
 		</if>
 		<if test="hhb != null and hhb != '' ">
 			and f.hhb = #{hhb}
-		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and f.jdh = #{orgJgid}
 		</if>
 	</sql>
 
