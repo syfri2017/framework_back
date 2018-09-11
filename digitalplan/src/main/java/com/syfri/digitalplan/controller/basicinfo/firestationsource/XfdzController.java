@@ -83,7 +83,7 @@ public class XfdzController extends BaseController<XfdzVO> {
     public @ResponseBody ResultVO findSjdzByUser(@RequestBody XfdzVO xfdzVO) {
         ResultVO resultVO = ResultVO.build();
         try {
-            resultVO.setResult(xfdzService.doFindDzTreeByUser(xfdzVO));
+            resultVO.setResult(xfdzService.doFindDzTreeByUserAll(xfdzVO));
         } catch (Exception e) {
             logger.error("{}", e.getMessage());
             resultVO.setCode(EConstants.CODE.FAILURE);
@@ -155,6 +155,24 @@ public class XfdzController extends BaseController<XfdzVO> {
         ResultVO resultVO = ResultVO.build();
         try {
             resultVO.setResult(xfdzService.doDeleteBatch(list));
+        } catch (Exception e) {
+            logger.error("{}", e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
+
+    /**
+     * 根据登陆人组织机构ID获取其队站类型
+     * by li.xue 20180725
+     */
+    @ApiOperation(value = "根据登陆人组织机构ID获取其队站类型", notes = "查询一条信息")
+    @ApiImplicitParam(name = "orgId", value = "组织机构ID")
+    @GetMapping("/doFindDzlxByOrgId/{orgId}")
+    public @ResponseBody ResultVO doFindDzlxByOrgId(@PathVariable String orgId) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(xfdzService.doFindById(orgId).getDzlx());
         } catch (Exception e) {
             logger.error("{}", e.getMessage());
             resultVO.setCode(EConstants.CODE.FAILURE);
