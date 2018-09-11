@@ -53,7 +53,7 @@
 		<if test="endtime != null and endtime != '' ">
 			and TO_CHAR(t.zzsj,'yyyy/MM/dd') &lt;= #{endtime}
 		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000'">
 			and t.jdh = #{jdh}
 		</if>
 		<if test="jgid != null and jgid != '' ">
@@ -80,7 +80,7 @@
 			AND
             (t.jzmc LIKE concat(concat('%',#{jzmc}),'%') OR t.jzwz LIKE concat(concat('%',#{jzmc}),'%'))
 		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000'">
 			and t.jdh = #{jdh}
 		</if>
 	</select>
@@ -114,7 +114,7 @@
         <if test="jzl_dsgd_min != null and jzl_dsgd_min != '' ">
             AND t_jzl.dsgd > #{jzl_dsgd_min}
         </if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000'">
 			and t.jdh = #{jdh}
 		</if>
 	</select>
@@ -139,7 +139,7 @@
         <if test="zzl_jzjg != null and zzl_jzjg != '' ">
             AND t_zzl.jzjg = #{zzl_jzjg}
         </if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000'">
 			and t.jdh = #{jdh}
 		</if>
     </select>
@@ -161,7 +161,7 @@
         <if test="jzlx != null and jzlx != '' ">
             AND t.jzlx = #{jzlx}
         </if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000'">
 			and t.jdh = #{jdh}
 		</if>
     </select>
@@ -289,7 +289,7 @@
 			CONNECT BY PRIOR t.DZID = SJDZID
 			)
 		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000'">
 			and t.jdh = #{jdh}
 		</if>
 		ORDER BY t.XZQH,t.DWXZ,t.DWMC ASC)
@@ -315,7 +315,7 @@
 			CONNECT BY PRIOR t.DZID = SJDZID
 			)
 		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000'">
 			and t.jdh = #{jdh}
 		</if>
 		UNION ALL
@@ -340,7 +340,7 @@
 			CONNECT BY PRIOR t.DZID = SJDZID
 			)
 		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000'">
 			and t.jdh = #{jdh}
 		</if>
 	</select>
@@ -384,7 +384,7 @@
 		<if test="jzfl != null and jzfl != '' ">
 			and t.jzfl = #{jzfl}
 		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000'">
 			and t.jdh = #{jdh}
 		</if>
 		ORDER BY t.XZQH,t.DWXZ,t.DWMC ASC
@@ -412,7 +412,7 @@
 			CONNECT BY PRIOR t.DZID = SJDZID
 			)
 		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000'">
 			and t.jdh = #{jdh}
 		</if>
 	</select>
@@ -439,7 +439,7 @@
 			CONNECT BY PRIOR t.DZID = SJDZID
 			)
 		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000'">
 			and t.jdh = #{jdh}
 		</if>
 	</select>

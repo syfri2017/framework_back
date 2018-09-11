@@ -28,13 +28,13 @@
 			and t.fhdj = #{fhdj}
 		</if>
 		<if test="fhdzid != null and fhdzid != '' ">
-			and t.fhdzid like concat(concat('%',#{fhdzid}),'%')
+			and t.fhdzid IN (SELECT DZID FROM YAGL_XFDZ t START WITH t.DZID = #{fhdzid} CONNECT BY PRIOR t.DZID = SJDZID)
 		</if>
 		<if test="fhdzmc != null and fhdzmc != '' ">
 			and t.fhdzmc = #{fhdzmc}
 		</if>
 		<if test="mhdzid != null and mhdzid != '' ">
-			and t.mhdzid like concat(concat('%',#{mhdzid}),'%')
+			and t.mhdzid IN (SELECT DZID FROM YAGL_XFDZ t START WITH t.DZID = #{mhdzid} CONNECT BY PRIOR t.DZID = SJDZID)
 		</if>
 		<if test="mhdzmc != null and mhdzmc != '' ">
 			and t.mhdzmc = #{mhdzmc}
@@ -99,7 +99,7 @@
 		<if test="datasource != null and datasource != '' ">
 			and t.datasource = #{datasource}
 		</if>
-		<if test="jdh != null and jdh != '' ">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000' ">
 			and t.jdh = #{jdh}
 		</if>
 		<if test="sjc != null and sjc != '' ">
@@ -128,9 +128,6 @@
 		</if>
 		<if test="gisY_max != null and gisY_max != '' ">
 			and t.gis_Y &lt; #{gisY_max}
-		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
 		</if>
 	</sql>
 
@@ -194,7 +191,7 @@
 		C4.CODE_NAME XZQHMC,
 		C6.CODE_NAME JZFLMC,
 		C8.CODE_NAME FHDJMC,
-		C9.DZMC MHDZIDMC,
+		C9.DZJC MHDZIDMC,
 		CASE WHEN C11.XFDWLXMC IS NOT NULL THEN '有' ELSE'无' END XFDWLXMC
 		FROM YAGL_DX_ZDDW T
 		LEFT JOIN SYS_CODELIST C1
@@ -230,11 +227,9 @@
 		AND C9.DELETE_FLAG = 'N'
 		LEFT JOIN TEMP_XFDW C11
 		ON T.UUID = C11.ZDDWID
-		<if test="mhdzid != null and mhdzid != '' ">
-			INNER JOIN YAGL_XFDZ c10
-			ON (t.MHDZID=c10.DZID AND c10.DELETE_FLAG = 'N')
-			AND t.mhdzid IN (SELECT DZID FROM YAGL_XFDZ t START WITH t.DZID = #{mhdzid} CONNECT BY PRIOR t.DZID = SJDZID)
-		</if>
+		INNER JOIN YAGL_XFDZ c10
+		ON t.MHDZID=c10.DZID
+		AND c10.DELETE_FLAG = 'N'
 		WHERE T.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
 		<if test="xfdwlxmc == 1">
