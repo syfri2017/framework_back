@@ -54,7 +54,15 @@
 			and TO_CHAR(t.zzsj,'yyyy/MM/dd') &lt;= #{endtime}
 		</if>
 		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
+			and t.jdh = #{jdh}
+		</if>
+		<if test="jgid != null and jgid != '' ">
+			AND t.jgid IN (
+			SELECT UUID
+			FROM SYS_ORGANIZATION t
+			START WITH t.UUID = #{jgid}
+			CONNECT BY PRIOR t.UUID = SJJGID
+			)
 		</if>
 	</sql>
 
@@ -73,7 +81,7 @@
             (t.jzmc LIKE concat(concat('%',#{jzmc}),'%') OR t.jzwz LIKE concat(concat('%',#{jzmc}),'%'))
 		</if>
 		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
+			and t.jdh = #{jdh}
 		</if>
 	</select>
     <!--高级搜索 建筑类-->
@@ -107,7 +115,7 @@
             AND t_jzl.dsgd > #{jzl_dsgd_min}
         </if>
 		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
+			and t.jdh = #{jdh}
 		</if>
 	</select>
     <!--高级搜索 装置类-->
@@ -132,7 +140,7 @@
             AND t_zzl.jzjg = #{zzl_jzjg}
         </if>
 		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
+			and t.jdh = #{jdh}
 		</if>
     </select>
     <!--高级搜索 储罐类-->
@@ -154,7 +162,7 @@
             AND t.jzlx = #{jzlx}
         </if>
 		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
+			and t.jdh = #{jdh}
 		</if>
     </select>
 
@@ -274,12 +282,16 @@
 			and t.dwmc LIKE concat(concat('%',#{dxmc}),'%')
 		</if>
 		<if test="xfgx != null and xfgx != '' ">
-			and c9.dzbm like concat(#{xfgx},'%')
+			and t.mhdzid IN (
+			SELECT DZID
+			FROM YAGL_XFDZ t
+			START WITH t.DZID = #{xfgx}
+			CONNECT BY PRIOR t.DZID = SJDZID
+			)
 		</if>
 		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
+			and t.jdh = #{jdh}
 		</if>
--- 		and rownum &lt;= 100
 		ORDER BY t.XZQH,t.DWXZ,t.DWMC ASC)
 		UNION ALL
 		SELECT
@@ -290,16 +302,21 @@
 		'消防保卫警卫' yadxType
 		FROM YAGL_DX_BWJW t
 		<!--消防队站-->
-		LEFT JOIN YAGL_XFDZ c9 ON (t.xfgx=c9.DZBM AND c9.DELETE_FLAG = 'N')
+		LEFT JOIN YAGL_XFDZ c9 ON (t.xfgx=c9.dzid AND c9.DELETE_FLAG = 'N')
 		WHERE t.DELETE_FLAG = 'N'
 		<if test="dxmc != null and dxmc != '' ">
 			and t.hdzt LIKE concat(concat('%',#{dxmc}),'%')
 		</if>
 		<if test="xfgx != null and xfgx != '' ">
-			and t.xfgx like concat(#{xfgx},'%')
+			and t.xfgx IN (
+			SELECT DZID
+			FROM YAGL_XFDZ t
+			START WITH t.DZID = #{xfgx}
+			CONNECT BY PRIOR t.DZID = SJDZID
+			)
 		</if>
 		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
+			and t.jdh = #{jdh}
 		</if>
 		UNION ALL
 		SELECT
@@ -310,16 +327,21 @@
 		'其他对象' yadxType
 		FROM YAGL_DX_QTDX t
 		<!--消防队站-->
-		LEFT JOIN YAGL_XFDZ c9 ON (t.xfgx=c9.DZBM AND c9.DELETE_FLAG = 'N')
+		LEFT JOIN YAGL_XFDZ c9 ON (t.xfgx=c9.dzid AND c9.DELETE_FLAG = 'N')
 		WHERE t.DELETE_FLAG = 'N'
 		<if test="dxmc != null and dxmc != '' ">
 			and t.dxmc LIKE concat(concat('%',#{dxmc}),'%')
 		</if>
 		<if test="xfgx != null and xfgx != '' ">
-			and t.xfgx like concat(#{xfgx},'%')
+			and t.xfgx IN (
+			SELECT DZID
+			FROM YAGL_XFDZ t
+			START WITH t.DZID = #{xfgx}
+			CONNECT BY PRIOR t.DZID = SJDZID
+			)
 		</if>
 		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
+			and t.jdh = #{jdh}
 		</if>
 	</select>
 	<!--高级搜索 预案对象信息 重点单位-->
@@ -343,7 +365,12 @@
 			and t.dwmc LIKE concat(concat('%',#{dxmc}),'%')
 		</if>
 		<if test="xfgx != null and xfgx != '' ">
-			and c9.dzbm like concat(#{xfgx},'%')
+			and t.mhdzid IN (
+			SELECT DZID
+			FROM YAGL_XFDZ t
+			START WITH t.DZID = #{xfgx}
+			CONNECT BY PRIOR t.DZID = SJDZID
+			)
 		</if>
 		<if test="dwxz != null and dwxz != '' ">
 			and t.dwxz = #{dwxz}
@@ -358,9 +385,8 @@
 			and t.jzfl = #{jzfl}
 		</if>
 		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
+			and t.jdh = #{jdh}
 		</if>
--- 		AND rownum &lt;= 100
 		ORDER BY t.XZQH,t.DWXZ,t.DWMC ASC
 	</select>
 	<!--高级搜索 预案对象信息 消防保卫警卫-->
@@ -373,16 +399,21 @@
 		'消防保卫警卫' yadxType
 		FROM YAGL_DX_BWJW t
 		<!--消防队站-->
-		LEFT JOIN YAGL_XFDZ c9 ON (t.xfgx=c9.DZBM AND c9.DELETE_FLAG = 'N')
+		LEFT JOIN YAGL_XFDZ c9 ON (t.xfgx=c9.dzid AND c9.DELETE_FLAG = 'N')
 		WHERE t.DELETE_FLAG = 'N'
 		<if test="dxmc != null and dxmc != '' ">
 			and t.hdzt LIKE concat(concat('%',#{dxmc}),'%')
 		</if>
 		<if test="xfgx != null and xfgx != '' ">
-			and t.xfgx like concat(#{xfgx},'%')
+			and t.xfgx IN (
+			SELECT DZID
+			FROM YAGL_XFDZ t
+			START WITH t.DZID = #{xfgx}
+			CONNECT BY PRIOR t.DZID = SJDZID
+			)
 		</if>
 		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
+			and t.jdh = #{jdh}
 		</if>
 	</select>
 	<!--高级搜索 预案对象信息 其他对象-->
@@ -395,16 +426,21 @@
 		'其他对象' yadxType
 		FROM YAGL_DX_QTDX t
 		<!--消防队站-->
-		LEFT JOIN YAGL_XFDZ c9 ON (t.xfgx=c9.DZBM AND c9.DELETE_FLAG = 'N')
+		LEFT JOIN YAGL_XFDZ c9 ON (t.xfgx=c9.dzid AND c9.DELETE_FLAG = 'N')
 		WHERE t.DELETE_FLAG = 'N'
 		<if test="dxmc != null and dxmc != '' ">
 			and t.dxmc LIKE concat(concat('%',#{dxmc}),'%')
 		</if>
 		<if test="xfgx != null and xfgx != '' ">
-			and t.xfgx like concat(#{xfgx},'%')
+			and t.xfgx IN (
+			SELECT DZID
+			FROM YAGL_XFDZ t
+			START WITH t.DZID = #{xfgx}
+			CONNECT BY PRIOR t.DZID = SJDZID
+			)
 		</if>
 		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
+			and t.jdh = #{jdh}
 		</if>
 	</select>
 </mapper>
