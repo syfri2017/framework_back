@@ -179,6 +179,7 @@ public class FirefacilitiesVO extends ValueObject implements Serializable{
 	private String xgrid;	//修改人ID
 	private String xgrmc;	//修改人姓名
 	private String xgsj;	//修改时间
+	private String jdh;    //节点号
 
 	private String jbxx_jzmc;	//建筑分区名称
 	private String jbxx_xfsslxmc;	//消防设施类型名称
@@ -383,5 +384,13 @@ public class FirefacilitiesVO extends ValueObject implements Serializable{
 
 	public void setXgsj(String xgsj) {
 		this.xgsj = xgsj;
+	}
+
+	public String getJdh() {
+		return jdh;
+	}
+
+	public void setJdh(String jdh) {
+		this.jdh = jdh;
 	}
 }
