@@ -4,7 +4,12 @@
 	<!--1.查询条件-->
 	<sql id="SQL_CONDITION">
 		<if test="dzid != null and dzid != '' ">
-			and t.dzid = #{dzid}
+			and t.dzid IN (
+			SELECT DZID
+			FROM YAGL_XFDZ t
+			START WITH t.DZID = #{dzid}
+			CONNECT BY PRIOR t.DZID = SJDZID
+			)
 		</if>
 		<if test="sjdzid != null and sjdzid != '' ">
 			and t.sjdzid = #{sjdzid}
@@ -75,7 +80,7 @@
 		<if test="bz != null and bz != '' ">
 			and t.bz = #{bz}
 		</if>
-		<if test="jdh != null and jdh != '' ">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000' ">
 			and t.jdh = #{jdh}
 		</if>
 		<if test="sjc != null and sjc != '' ">
@@ -110,9 +115,6 @@
 		</if>
 		<if test="gisY != null and gisY != '' ">
 			and t.gis_y = #{gisY}
-		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
 		</if>
 	</sql>
 
