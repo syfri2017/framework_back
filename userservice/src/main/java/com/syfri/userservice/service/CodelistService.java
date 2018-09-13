@@ -1,10 +1,7 @@
 package com.syfri.userservice.service;
 
 import com.syfri.baseapi.service.BaseService;
-import com.syfri.userservice.model.CodelistDetailVO;
-import com.syfri.userservice.model.CodelistParams;
-import com.syfri.userservice.model.CodelistTree;
-import com.syfri.userservice.model.CodelistVO;
+import com.syfri.userservice.model.*;
 
 import java.util.List;
 
@@ -62,7 +59,7 @@ public interface CodelistService  extends BaseService<CodelistVO>{
 	List<CodelistTree> doFindYjlxCodelisttree(String codetype);
 
 	/*--查询行政区划树状结构 by li.xue.--*/
-	List<CodelistTree> getXzqhTreeByUser(String xzqh);
+	List<CodelistTree> getXzqhTreeByUser(OrganizationVO organizationVO);
 
 	/*--查询泡沫液类型树状结构 by liurui.--*/
 	List<CodelistTree> doFindPmylxlisttree(String codetype);

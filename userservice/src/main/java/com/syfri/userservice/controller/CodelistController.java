@@ -404,11 +404,7 @@ public class CodelistController  extends BaseController<CodelistVO>{
 		ResultVO resultVO = ResultVO.build();
 		try{
 			OrganizationVO organizationVO = CurrentUserUtil.getCurrentUser().getOrganizationVO();
-			if(organizationVO!=null && "公安部消防局".equals(organizationVO.getJgmc())){
-				resultVO.setResult(codelistService.getXzqhTreeByUser(null));
-			}else{
-				resultVO.setResult(codelistService.getXzqhTreeByUser(organizationVO.getXzqh()));
-			}
+			resultVO.setResult(codelistService.getXzqhTreeByUser(organizationVO));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
