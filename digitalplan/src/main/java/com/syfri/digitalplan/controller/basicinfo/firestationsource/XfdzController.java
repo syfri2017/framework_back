@@ -83,6 +83,23 @@ public class XfdzController extends BaseController<XfdzVO> {
     public @ResponseBody ResultVO findSjdzByUser(@RequestBody XfdzVO xfdzVO) {
         ResultVO resultVO = ResultVO.build();
         try {
+            resultVO.setResult(xfdzService.doFindDzTreeByUser(xfdzVO));
+        } catch (Exception e) {
+            logger.error("{}", e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
+    /**
+     * 通过登录用户获取队站树（带本级）
+     * by li.xue 20180725
+     */
+    @ApiOperation(value = "通过队站vo获取队站详细信息（带本级）", notes = "查询一条信息")
+    @ApiImplicitParam(name = "vo", value = "队站对象")
+    @PostMapping("/findSjdzByUserAll")
+    public @ResponseBody ResultVO findSjdzByUserAll(@RequestBody XfdzVO xfdzVO) {
+        ResultVO resultVO = ResultVO.build();
+        try {
             resultVO.setResult(xfdzService.doFindDzTreeByUserAll(xfdzVO));
         } catch (Exception e) {
             logger.error("{}", e.getMessage());
