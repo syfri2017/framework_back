@@ -97,7 +97,7 @@ public class XfsyController  extends BaseController<XfsyVO>{
 	public @ResponseBody ResultVO insertByXfsyVO(@RequestBody XfsyVO xfsyVO) {
 		ResultVO resultVO = ResultVO.build();
 		try {
-			resultVO.setResult(xfsyService.doInsertByXfdzVO(xfsyVO));
+			resultVO.setResult(xfsyService.doInsertByXfsyVO(xfsyVO));
 		} catch (Exception e) {
 			logger.error("{}", e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);

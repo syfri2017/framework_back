@@ -83,7 +83,7 @@ public class XfsyServiceImpl extends BaseServiceImpl<XfsyVO> implements XfsyServ
 
     //插入水源 by yushch 20180802
     @Override
-    public XfsyVO doInsertByXfdzVO(XfsyVO xfsyVO) {
+    public XfsyVO doInsertByXfsyVO(XfsyVO xfsyVO) {
         if (!xfsyVO.getSylx().isEmpty()) {
             switch (xfsyVO.getSylx()) {
                 case "01":
