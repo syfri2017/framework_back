@@ -158,8 +158,8 @@
 
 	<!--13向组织机构预案中间表批量插入数据-->
 	<insert id="doInsertDistributeVO" parameterType="DistributeVO" >
-		INSERT INTO YAGL_ORGANIZATION_YA(uuid,jgid,yaid,delete_flag,datasource,sjc)
-		SELECT sys_guid(),s.jgid,#{yaid,jdbcType=VARCHAR},'N','10000000',sysdate
+		INSERT INTO YAGL_ORGANIZATION_YA(uuid,jgid,yaid,delete_flag,jdh,datasource,sjc)
+		SELECT sys_guid(),s.jgid,#{yaid,jdbcType=VARCHAR},'N',#{jdh,jdbcType=VARCHAR},#{datasource,jdbcType=VARCHAR},sysdate
 		FROM sys_organization s where s.jgjc = #{jgid,jdbcType=VARCHAR}
 	</insert>
 
