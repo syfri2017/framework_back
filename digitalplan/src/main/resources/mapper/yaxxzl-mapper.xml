@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syfri.digitalplan.dao.yafjxz.YaxxzlDAO">
+	<!--1.查询条件-->
+	<sql id="SQL_CONDITION">
+		<if test="id != null and id != '' ">
+		 and t.id = #{id}
+		</if>
+		<if test="yaid != null and yaid != '' ">
+		 and t.yaid = #{yaid}
+		</if>
+		<if test="xgxx != null and xgxx != '' ">
+		 and t.xgxx = #{xgxx}
+		</if>
+		<if test="zlmc != null and zlmc != '' ">
+		 and t.zlmc = #{zlmc}
+		</if>
+		<if test="czyid != null and czyid != '' ">
+		 and t.czyid = #{czyid}
+		</if>
+		<if test="czyxm != null and czyxm != '' ">
+		 and t.czyxm = #{czyxm}
+		</if>
+		<if test="jlzt != null and jlzt != '' ">
+		 and t.jlzt = #{jlzt}
+		</if>
+		<if test="cszt != null and cszt != '' ">
+		 and t.cszt = #{cszt}
+		</if>
+		<if test="sjc != null and sjc != '' ">
+		 and t.sjc = #{sjc}
+		</if>
+		<if test="bz != null and bz != '' ">
+		 and t.bz = #{bz}
+		</if>
+		<if test="fjlxdm != null and fjlxdm != '' ">
+		 and t.fjlxdm = #{fjlxdm}
+		</if>
+		<if test="jgid != null and jgid != '' ">
+		 and t.jgid = #{jgid}
+		</if>
+		<if test="sjbb != null and sjbb != '' ">
+		 and t.sjbb = #{sjbb}
+		</if>
+		<if test="cjsj != null and cjsj != '' ">
+		 and t.cjsj = #{cjsj}
+		</if>
+		<if test="ywxtbsid != null and ywxtbsid != '' ">
+		 and t.ywxtbsid = #{ywxtbsid}
+		</if>
+		<if test="sltfjdz != null and sltfjdz != '' ">
+		 and t.sltfjdz = #{sltfjdz}
+		</if>
+	</sql>
+
+	<!--2.查询内容-->
+	<sql id="SQL_CONTENT">
+		t.id id,
+		t.yaid yaid,
+		t.xgxx xgxx,
+		t.zlmc zlmc,
+		t.czyid czyid,
+		t.czyxm czyxm,
+		t.jlzt jlzt,
+		t.cszt cszt,
+		TO_CHAR(t.sjc,'yyyy-MM-dd HH24:mi:ss') sjc,
+		t.bz bz,
+		t.fjlxdm fjlxdm,
+		t.jgid jgid,
+		t.sjbb sjbb,
+		TO_CHAR(t.cjsj,'yyyy-MM-dd HH24:mi:ss') cjsj,
+		t.ywxtbsid ywxtbsid,
+		t.sltfjdz sltfjdz
+	</sql>
+
+	<!--3.查询记录数-->
+	<select id="doSearchCount" parameterType="YaxxzlVO" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_YAXXZL t WHERE 1=1 AND JLZT = '1'
+		<include refid="SQL_CONDITION"/>
+	</select>
+
+	<!--4.按条件查询记录-->
+	<select id="doSearchListByVO" parameterType="YaxxzlVO"  resultType="YaxxzlVO"> 
+		SELECT 
+			<include refid="SQL_CONTENT"/>
+		FROM YAGL_YAXXZL t  WHERE t.JLZT = '1'
+			<include refid="SQL_CONDITION"/>
+	</select>
+
+	<!--5.根据ID查询记录-->
+	<select id="doFindById" parameterType="YaxxzlVO"  resultType="YaxxzlVO">  
+		SELECT 
+		<include refid="SQL_CONTENT"/>
+		FROM YAGL_YAXXZL t 
+		WHERE t.JLZT = '1' AND  t.PKID = #{value}
+	</select>
+
+	<!--6.按照VO插入-->
+	<insert  id="doInsertByVO"  parameterType="YaxxzlVO"> 
+		<selectKey resultType="String" order="BEFORE" keyProperty="pkid">
+			SELECT SYS_GUID() AS pkid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_YAXXZL(id,yaid,xgxx,zlmc,czyid,czyxm,jlzt,cszt,sjc,bz,fjlxdm,jgid,sjbb,cjsj,ywxtbsid,sltfjdz)
+		VALUES(#{id,jdbcType=VARCHAR},#{yaid,jdbcType=VARCHAR},#{xgxx,jdbcType=VARCHAR},#{zlmc,jdbcType=VARCHAR},#{czyid,jdbcType=VARCHAR},#{czyxm,jdbcType=VARCHAR},#{jlzt,jdbcType=DOUBLE},#{cszt,jdbcType=DOUBLE},#{sjc,jdbcType=DATE},#{bz,jdbcType=VARCHAR},#{fjlxdm,jdbcType=VARCHAR},#{jgid,jdbcType=VARCHAR},#{sjbb,jdbcType=DOUBLE},#{cjsj,jdbcType=DATE},#{ywxtbsid,jdbcType=VARCHAR},#{sltfjdz,jdbcType=VARCHAR})
+	 </insert>
+
+	<!--7.批量插入-->
+	<insert  id="doBatchInsertByList"  parameterType="java.util.List"> 
+		INSERT INTO YAGL_YAXXZL(id,yaid,xgxx,zlmc,czyid,czyxm,jlzt,cszt,sjc,bz,fjlxdm,jgid,sjbb,cjsj,ywxtbsid,sltfjdz)
+		SELECT SYS_GUID() pkid, A.* 
+		FROM ( 
+		<foreach collection="list" item="item" index="index" separator="UNION ALL" >
+		SELECT
+			#{item.id,jdbcType=VARCHAR} id,#{item.yaid,jdbcType=VARCHAR} yaid,#{item.xgxx,jdbcType=VARCHAR} xgxx,#{item.zlmc,jdbcType=VARCHAR} zlmc,#{item.czyid,jdbcType=VARCHAR} czyid,#{item.czyxm,jdbcType=VARCHAR} czyxm,#{item.jlzt,jdbcType=DOUBLE} jlzt,#{item.cszt,jdbcType=DOUBLE} cszt,#{item.sjc,jdbcType=DATE} sjc,#{item.bz,jdbcType=VARCHAR} bz,#{item.fjlxdm,jdbcType=VARCHAR} fjlxdm,#{item.jgid,jdbcType=VARCHAR} jgid,#{item.sjbb,jdbcType=DOUBLE} sjbb,#{item.cjsj,jdbcType=DATE} cjsj,#{item.ywxtbsid,jdbcType=VARCHAR} ywxtbsid,#{item.sltfjdz,jdbcType=VARCHAR} sltfjdz
+		FROM DUAL
+		</foreach>
+		) A
+	</insert>
+
+	<!--8.按主键逻辑删除-->
+	<update id="doDeleteById"  parameterType="String"> 
+		UPDATE  YAGL_YAXXZL t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.PKID = #{value} 
+	</update>
+
+	<!--9.按复合条件逻辑更新-->
+	<update  id="doUpdateByVO"  parameterType="YaxxzlVO"> 
+		UPDATE   YAGL_YAXXZL  
+		<set>
+			<if test="id != null">id=#{id},</if>
+			<if test="yaid != null">yaid=#{yaid},</if>
+			<if test="xgxx != null">xgxx=#{xgxx},</if>
+			<if test="zlmc != null">zlmc=#{zlmc},</if>
+			<if test="czyid != null">czyid=#{czyid},</if>
+			<if test="czyxm != null">czyxm=#{czyxm},</if>
+			<if test="jlzt != null">jlzt=#{jlzt},</if>
+			<if test="cszt != null">cszt=#{cszt},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="bz != null">bz=#{bz},</if>
+			<if test="fjlxdm != null">fjlxdm=#{fjlxdm},</if>
+			<if test="jgid != null">jgid=#{jgid},</if>
+			<if test="sjbb != null">sjbb=#{sjbb},</if>
+			<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="ywxtbsid != null">ywxtbsid=#{ywxtbsid},</if>
+			<if test="sltfjdz != null">sltfjdz=#{sltfjdz}</if>
+		</set>
+		WHERE  PKID = #{pkid}
+	</update>
+
+	<!--10.批量修改-->
+	<update id="doBatchUpdateByList"  parameterType="java.util.List">
+		INSERT INTO YAGL_YAXXZL(id,yaid,xgxx,zlmc,czyid,czyxm,jlzt,cszt,sjc,bz,fjlxdm,jgid,sjbb,cjsj,ywxtbsid,sltfjdz)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator="," >
+			#{item.id,jdbcType=VARCHAR} id,#{item.yaid,jdbcType=VARCHAR} yaid,#{item.xgxx,jdbcType=VARCHAR} xgxx,#{item.zlmc,jdbcType=VARCHAR} zlmc,#{item.czyid,jdbcType=VARCHAR} czyid,#{item.czyxm,jdbcType=VARCHAR} czyxm,#{item.jlzt,jdbcType=DOUBLE} jlzt,#{item.cszt,jdbcType=DOUBLE} cszt,#{item.sjc,jdbcType=DATE} sjc,#{item.bz,jdbcType=VARCHAR} bz,#{item.fjlxdm,jdbcType=VARCHAR} fjlxdm,#{item.jgid,jdbcType=VARCHAR} jgid,#{item.sjbb,jdbcType=DOUBLE} sjbb,#{item.cjsj,jdbcType=DATE} cjsj,#{item.ywxtbsid,jdbcType=VARCHAR} ywxtbsid,#{item.sltfjdz,jdbcType=VARCHAR} sltfjdz
+		</foreach>
+		ON DUPLICATE KEY UPDATE   
+			id = VALUES(id),
+			yaid = VALUES(yaid),
+			xgxx = VALUES(xgxx),
+			zlmc = VALUES(zlmc),
+			czyid = VALUES(czyid),
+			czyxm = VALUES(czyxm),
+			jlzt = VALUES(jlzt),
+			cszt = VALUES(cszt),
+			sjc = VALUES(sjc),
+			bz = VALUES(bz),
+			fjlxdm = VALUES(fjlxdm),
+			jgid = VALUES(jgid),
+			sjbb = VALUES(sjbb),
+			cjsj = VALUES(cjsj),
+			ywxtbsid = VALUES(ywxtbsid),
+			sltfjdz = VALUES(sltfjdz)
+	</update>
+
+	<!--11.根据对象查询记录-->
+	<select id="doFindByVO" parameterType="YaxxzlVO"  resultType="YaxxzlVO">  
+		SELECT 
+		<include refid="SQL_CONTENT"/>
+		FROM YAGL_YAXXZL t 
+		WHERE t.JLZT = '1'
+		<include refid="SQL_CONDITION"/>
+	</select>
+
+
+	<!-- 根据预案ID查询预案历史记录  -->
+	<select id="doFindHisByPlanId" parameterType="YaxxzlVO"  resultType="YaxxzlVO">
+		SELECT
+		<include refid="SQL_CONTENT"/>
+		FROM YAGL_YAXXZL t
+		WHERE t.JLZT = '1' AND  t.YAID = #{value}
+	</select>
+
+</mapper>
