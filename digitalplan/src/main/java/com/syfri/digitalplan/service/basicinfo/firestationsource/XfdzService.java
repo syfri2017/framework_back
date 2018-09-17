@@ -33,4 +33,7 @@ public interface XfdzService  extends BaseService<XfdzVO>{
 
     /*--删除从表队站 by li.xue 2018/8/7.--*/
     void doDeleteDetail(XfdzVO xfdzVO);
+
+    /*--根据登录人组织机构ID获取其一级队站 by li.xue 2018/9/17.--*/
+    List<XfdzTree> doFindDzYjByOrgId(String orgId);
 }

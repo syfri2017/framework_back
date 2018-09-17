@@ -196,4 +196,22 @@ public class XfdzController extends BaseController<XfdzVO> {
         }
         return resultVO;
     }
+
+    /**
+     * 根据登陆人组织机构ID获取其队站类型
+     * by li.xue 20180725
+     */
+    @ApiOperation(value = "根据登陆人组织机构ID获取其子一级队站", notes = "查询一条信息")
+    @ApiImplicitParam(name = "orgId", value = "组织机构ID")
+    @GetMapping("/doFindDzYjByOrgId/{orgId}")
+    public @ResponseBody ResultVO doFindDzYjByOrgId(@PathVariable String orgId) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(xfdzService.doFindDzYjByOrgId(orgId));
+        } catch (Exception e) {
+            logger.error("{}", e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
 }
