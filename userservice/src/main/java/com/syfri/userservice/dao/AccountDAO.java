@@ -8,9 +8,12 @@ import java.util.List;
 
 public interface AccountDAO extends BaseDAO<AccountVO>{
 
-	/*新增账户时批量插入账户角色.*/
+	/*--新增账户时批量插入账户角色.--*/
 	int doBatchInsertAccountRoles(List<AccountRoleVO> accountRoles);
 
-	/*修改用户时删除用户中间表数据*/
+	/*--.新增账户时插入初始角色信息--*/
+	int doInsertAccoutRoleInitial(AccountRoleVO accountRoleVO);
+
+	/*--修改用户时删除用户中间表数据.--*/
 	int doDeleteAccountRoles(String userid);
 }

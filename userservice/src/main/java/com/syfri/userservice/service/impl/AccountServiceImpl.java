@@ -87,7 +87,13 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountVO> implements Ac
 			}
 			return accountDAO.doBatchInsertAccountRoles(accountRoles);
 		}else{
-			return -1;
+			//如果新增用户没有选择角色，则默认给用户一个初始角色
+			AccountRoleVO accountRoleVO = new AccountRoleVO();
+			accountRoleVO.setUserid(userid);
+			accountRoleVO.setRoleid("753803FC34FC4424AB6778B0F3132AAF");
+			accountRoleVO.setCreateId(CurrentUserUtil.getCurrentUserId());
+			accountRoleVO.setCreateName(CurrentUserUtil.getCurrentUserName());
+			return accountDAO.doInsertAccoutRoleInitial(accountRoleVO);
 		}
 	}
 
