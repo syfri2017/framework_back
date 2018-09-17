@@ -23,10 +23,10 @@ public interface ImportantpartsService  extends BaseService<ImportantpartsVO>{
     List<ImportantpartsVO> doFindZdbwListByZddwId(String zddwId);
 
     /*--新增重点部位 by li.xue 2018/8/13*/
-    int doInsertZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh);
+    int doInsertZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh, String datasource);
 
     /*--修改重点部位 by li.xue 2018/8/13*/
-    void doUpdateZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh);
+    void doUpdateZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh, String datasource);
 
     /*--通过重点单位ID删除重点部位 by li.xue 2018/8/13*/
     int doDeleteZdbwByZddwId(String zddwId, String xgrid, String xgrmc);
@@ -35,5 +35,5 @@ public interface ImportantpartsService  extends BaseService<ImportantpartsVO>{
     void doDeleteZdbwCongByVO(ImportantpartsVO vo);
 
     /*--根据不同重点部位类型新增从表及从从表  by li.xue 2018/8/15*/
-    void doInsertZdbwCongByVO(ImportantpartsVO zdbwVO, String zdbwid, String jdh);
+    void doInsertZdbwCongByVO(ImportantpartsVO zdbwVO, String zdbwid, String jdh, String datasource);
 }

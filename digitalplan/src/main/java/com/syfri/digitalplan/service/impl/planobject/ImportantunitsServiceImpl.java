@@ -146,11 +146,13 @@ public class ImportantunitsServiceImpl extends BaseServiceImpl<ImportantunitsVO>
 		importantunitsDAO.doInsertByVO(vo);
 		String zddwid = vo.getUuid();
 		String jdh = vo.getJdh();
+		String datasource = vo.getDatasource();
 
 		//重点单位消防力量从表
 		for(XiaofangliliangVO xfllVO : vo.getXfllList()){
 			xfllVO.setZddwid(zddwid);
 			xfllVO.setJdh(jdh);
+			xfllVO.setDatasource(datasource);
 			importantunitsDAO.doInsertByVOXfll(xfllVO);
 		}
 
@@ -158,11 +160,12 @@ public class ImportantunitsServiceImpl extends BaseServiceImpl<ImportantunitsVO>
 		for(ImportantunitsBuildingVO jzxxVO : vo.getJzxxList()){
 			jzxxVO.setZddwid(zddwid);
 			jzxxVO.setJdh(jdh);
+			jzxxVO.setDatasource(datasource);
 			importantunitsDAO.doInsertByVOJzxx(jzxxVO);
 		}
 
 		//重点部位
-		importantpartsService.doInsertZdbwByList(vo.getZdbwList(), zddwid, jdh);
+		importantpartsService.doInsertZdbwByList(vo.getZdbwList(), zddwid, jdh, datasource);
 		return vo;
 	}
 
@@ -173,6 +176,7 @@ public class ImportantunitsServiceImpl extends BaseServiceImpl<ImportantunitsVO>
 		importantunitsDAO.doUpdateByVO(vo);
 		String zddwid = vo.getUuid();
 		String jdh = vo.getJdh();
+		String datasource = vo.getDatasource();
 
 		/*重点单位消防力量从表*/
 		List<XiaofangliliangVO> xfllListOld = importantunitsDAO.doFindXfllListByZddwId(zddwid);
@@ -225,7 +229,7 @@ public class ImportantunitsServiceImpl extends BaseServiceImpl<ImportantunitsVO>
 		}
 
 		/*重点部位信息*/
-		importantpartsService.doUpdateZdbwByList(vo.getZdbwList(), zddwid, jdh);
+		importantpartsService.doUpdateZdbwByList(vo.getZdbwList(), zddwid, jdh, datasource);
 
 		return vo;
 	}

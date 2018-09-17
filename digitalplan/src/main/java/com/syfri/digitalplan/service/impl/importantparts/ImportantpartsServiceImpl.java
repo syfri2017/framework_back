@@ -114,21 +114,22 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 	}
 
 	/*--新增重点部位 by li.xue 2018/8/13*/
-	public int doInsertZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh){
+	public int doInsertZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh, String datasource){
 		int num = 0;
 		for(ImportantpartsVO zdbwVO : list){
 			zdbwVO.setZddwid(zddwId);
 			zdbwVO.setJdh(jdh);
+			zdbwVO.setDatasource(datasource);
 			importantpartsDAO.doInsertByVO(zdbwVO);
 			String zdbwid = zdbwVO.getZdbwid();
-			((ImportantpartsService) AopContext.currentProxy()).doInsertZdbwCongByVO(zdbwVO, zdbwid, jdh);
+			((ImportantpartsService) AopContext.currentProxy()).doInsertZdbwCongByVO(zdbwVO, zdbwid, jdh, datasource);
 			num++;
 		}
 		return num;
 	}
 
 	/*--修改重点部位 by li.xue 2018/8/13*/
-	public void doUpdateZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh){
+	public void doUpdateZdbwByList(List<ImportantpartsVO> list, String zddwId, String jdh, String datasource){
 		List<ImportantpartsVO> listOld = importantpartsDAO.doSearchListByVO(new ImportantpartsVO(zddwId));
 		//先删除旧的有，新的没有的
 		for(ImportantpartsVO voOld : listOld){
@@ -188,6 +189,7 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 									if(StringUtils.isEmpty(wxjzVONew.getUuid())){
 										wxjzVONew.setBwid(voNew.getJzl().getUuid());
 										wxjzVONew.setJdh(jdh);
+										wxjzVONew.setDatasource(datasource);
 										importantpartsDAO.doInsertByVOJzlWxjz(wxjzVONew);
 									}else{
 										importantpartsDAO.doUpdateByVOJzlWxjz(wxjzVONew);
@@ -226,6 +228,7 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 									if(StringUtils.isEmpty(cgVONew.getUuid())){
 										cgVONew.setPkid(voNew.getCgl().getUuid());
 										cgVONew.setJdh(jdh);
+										cgVONew.setDatasource(datasource);
 										importantpartsDAO.doInsertByVOCglCg(cgVONew);
 									}else{
 										importantpartsDAO.doUpdateByVOCglCg(cgVONew);
@@ -237,13 +240,13 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 						//删除旧类型重点部位从表
 						((ImportantpartsService) AopContext.currentProxy()).doDeleteZdbwCongByVO(voOld);
 						//新增新类型重点部位从表
-						((ImportantpartsService) AopContext.currentProxy()).doInsertZdbwCongByVO(voNew, voNew.getZdbwid(), jdh);
+						((ImportantpartsService) AopContext.currentProxy()).doInsertZdbwCongByVO(voNew, voNew.getZdbwid(), jdh, datasource);
 					}
 				}
 			}else{
 				List<ImportantpartsVO> listNew = new ArrayList<>();
 				listNew.add(voNew);
-				((ImportantpartsService) AopContext.currentProxy()).doInsertZdbwByList(listNew, zddwId, jdh);
+				((ImportantpartsService) AopContext.currentProxy()).doInsertZdbwByList(listNew, zddwId, jdh, datasource);
 			}
 		}
 	}
@@ -294,13 +297,14 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 	}
 
 	/*--根据重点部位类型新增从表及从从表  by li.xue 2018/8/15*/
-	public void doInsertZdbwCongByVO(ImportantpartsVO zdbwVO, String zdbwid, String jdh){
+	public void doInsertZdbwCongByVO(ImportantpartsVO zdbwVO, String zdbwid, String jdh, String datasource){
 		if(!StringUtils.isEmpty(zdbwVO.getZdbwlx())){
 			switch(zdbwVO.getZdbwlx()){
 				case "10":
 					ImportantpartsJzlVO jzl = zdbwVO.getJzl();
 					jzl.setZdbwid(zdbwid);
 					jzl.setJdh(jdh);
+					jzl.setDatasource(datasource);
 					//使用性质
 					if(jzl.getSyxzList().size()>0){
 						jzl.setSyxz(jzl.getSyxzList().get(jzl.getSyxzList().size()-1));
@@ -310,6 +314,7 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 					for(WeixianjiezhiVO wxjzVO : jzl.getWxjzList()){
 						wxjzVO.setBwid(jzlId);
 						wxjzVO.setJdh(jdh);
+						wxjzVO.setDatasource(datasource);
 						importantpartsDAO.doInsertByVOJzlWxjz(wxjzVO);
 					}
 					break;
@@ -317,17 +322,20 @@ public class ImportantpartsServiceImpl extends BaseServiceImpl<ImportantpartsVO>
 					ImportantpartsZzlVO zzl = zdbwVO.getZzl();
 					zzl.setZdbwid(zdbwid);
 					zzl.setJdh(jdh);
+					zzl.setDatasource(datasource);
 					importantpartsDAO.doInsertByVOZzl(zzl);
 					break;
 				case "30":
 					ImportantpartsCglVO cgl = zdbwVO.getCgl();
 					cgl.setZdbwid(zdbwid);
 					cgl.setJdh(jdh);
+					cgl.setDatasource(datasource);
 					importantpartsDAO.doInsertByVOCgl(cgl);
 					String cglId = cgl.getUuid();
 					for(ChuguanVO cgVO : cgl.getCgList()){
 						cgVO.setPkid(cglId);
 						cgVO.setJdh(jdh);
+						cgVO.setDatasource(datasource);
 						importantpartsDAO.doInsertByVOCglCg(cgVO);
 					}
 					break;

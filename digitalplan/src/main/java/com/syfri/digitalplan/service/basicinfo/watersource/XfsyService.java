@@ -6,10 +6,10 @@ import com.syfri.digitalplan.model.basicinfo.watersource.XfsyVO;
 import java.util.List;
 
 public interface XfsyService  extends BaseService<XfsyVO>{
-    public XfsyVO doFindSyAndSxByVo(XfsyVO xfsyVO);
-    public List<XfsyVO> doFindListByVO(XfsyVO xfsyVO);
+    XfsyVO doFindSyAndSxByVo(XfsyVO xfsyVO);
+    List<XfsyVO> doFindListByVO(XfsyVO xfsyVO);
     //插入
-    public XfsyVO doInsertByXfdzVO(XfsyVO xfsyVO);
+    XfsyVO doInsertByXfsyVO(XfsyVO xfsyVO);
     //修改
     XfsyVO doUpdateByXfsyVO(XfsyVO xfsyVO);
     //删除

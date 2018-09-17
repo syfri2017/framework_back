@@ -103,6 +103,7 @@ public class DigitalplanlistServiceImpl extends BaseServiceImpl<DigitalplanlistV
             Map ds = (Map) disasterList.get(i);
             DisastersetVO dsVO = new DisastersetVO();
             dsVO.setYaid(digitalplanlistVO.getUuid());//预案id
+            dsVO.setDatasource(digitalplanlistVO.getDatasource());
             dsVO.setJdh(digitalplanlistVO.getJdh());
             dsVO.setZdbwid(ds.get("zdbwid") != null ? ds.get("zdbwid").toString() : "");//重点部位id
             dsVO.setJzid(ds.get("jzid") != null ? ds.get("jzid").toString() : "");
@@ -139,6 +140,7 @@ public class DigitalplanlistServiceImpl extends BaseServiceImpl<DigitalplanlistV
                 ForcedevVO fdVO = new ForcedevVO();
                 fdVO.setZqid(dsVO.getZqid());
                 fdVO.setJdh(dsVO.getJdh());
+                fdVO.setDatasource(dsVO.getDatasource());
                 fdVO.setDjfalx(fd.get("djfalx") != null ? fd.get("djfalx").toString() : "");
                 fdVO.setDzid(fd.get("dzid") != null ? fd.get("dzid").toString() : "");
                 fdVO.setTkwz(fd.get("tkwz") != null ? fd.get("tkwz").toString() : "");
@@ -154,6 +156,7 @@ public class DigitalplanlistServiceImpl extends BaseServiceImpl<DigitalplanlistV
                 KeypointsVO kpVO = new KeypointsVO();
                 kpVO.setZqid(dsVO.getZqid());
                 kpVO.setJdh(dsVO.getJdh());
+                kpVO.setDatasource(dsVO.getDatasource());
                 kpVO.setZsyd(kp.get("zsyd") != null ? kp.get("zsyd").toString() : "");
                 kpVO.setTbjs(kp.get("tbjs") != null ? kp.get("tbjs").toString() : "");
                 kpVO.setCjrid(digitalplanlistVO.getZzrid());
@@ -283,6 +286,7 @@ public class DigitalplanlistServiceImpl extends BaseServiceImpl<DigitalplanlistV
                 disastersetDAO.doUpdateByVO(dsVO);
             } else { //灾情新增
                 dsVO.setJdh(digitalplanlistVO.getJdh());
+                dsVO.setDatasource(digitalplanlistVO.getDatasource());
                 dsVO.setCjrid(digitalplanlistVO.getZzrid());
                 dsVO.setCjrmc(digitalplanlistVO.getZzrmc());
                 dsVO.setDeleteFlag("N");
@@ -306,6 +310,7 @@ public class DigitalplanlistServiceImpl extends BaseServiceImpl<DigitalplanlistV
                     forcedevDAO.doUpdateByVO(fdVO);
                 } else { //力量部署新增
                     fdVO.setJdh(digitalplanlistVO.getJdh());
+                    fdVO.setDatasource(digitalplanlistVO.getDatasource());
                     fdVO.setCjrid(digitalplanlistVO.getZzrid());
                     fdVO.setCjrmc(digitalplanlistVO.getZzrmc());
                     fdVO.setDeleteFlag("N");
@@ -327,6 +332,7 @@ public class DigitalplanlistServiceImpl extends BaseServiceImpl<DigitalplanlistV
                     keypointsDAO.doUpdateByVO(kpVO);
                 } else { //要点提示新增
                     kpVO.setJdh(digitalplanlistVO.getJdh());
+                    kpVO.setDatasource(digitalplanlistVO.getDatasource());
                     kpVO.setCjrid(digitalplanlistVO.getZzrid());
                     kpVO.setCjrmc(digitalplanlistVO.getZzrmc());
                     kpVO.setDeleteFlag("N");
