@@ -61,8 +61,8 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
     /*--通过Dzid查询队站树，不带公安部消防局 by li.xue 2018/7/25.--*/
     public List<XfdzTree> doFindDzTreeByUser(XfdzVO xfdzVO) {
         List<XfdzTree> tree2s = new ArrayList<>();
-        if (redisService.exists("xfdzTree2" + xfdzVO.getDzid())) {
-            tree2s = (List<XfdzTree>) redisService.get("xfdzTree2" + xfdzVO.getDzid());
+        if (redisService.exists("xfdzTree" + xfdzVO.getDzid())) {
+            tree2s = (List<XfdzTree>) redisService.get("xfdzTree" + xfdzVO.getDzid());
         }else{
             tree2s = xfdzDAO.doFindXfdzBySjdzid(xfdzVO.getDzid());
             List<XfdzTree> tree2Children = new ArrayList<>();
@@ -89,7 +89,7 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
                 }
                 tree2Children.add(tree2);
             }
-            redisService.set("xfdzTree2"+xfdzVO.getDzid(), tree2s);
+            redisService.set("xfdzTree"+xfdzVO.getDzid(), tree2s);
         }
         return tree2s;
     }
