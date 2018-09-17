@@ -634,7 +634,7 @@
 
 	<!-- 17.根据上级队站ID查询队站列表 by li.xue -->
 	<select id="doFindXfdzBySjdzid" parameterType="String" resultType="XfdzTree">
-		SELECT dzid,dzjc,dzbm FROM YAGL_XFDZ WHERE delete_flag = 'N' AND sjdzid = #{value} order by dzbm
+		SELECT dzid,dzjc,dzbm FROM YAGL_XFDZ WHERE delete_flag = 'N' AND sjdzid = #{value} AND substr(dzlx,0,2)!='0A' order by dzbm
 	</select>
 
 	<!-- 根据队站名称查询 by li.xue -->
