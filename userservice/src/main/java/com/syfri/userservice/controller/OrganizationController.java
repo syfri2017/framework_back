@@ -3,6 +3,7 @@ package com.syfri.userservice.controller;
 import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import com.syfri.userservice.model.OrganizationTree;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -71,6 +72,24 @@ public class OrganizationController  extends BaseController<OrganizationVO>{
 			resultVO.setResult(organizationService.doFindDetailById(uuid));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	/**
+	 * 通过登录用户获取队站树
+	 * by li.xue 20180725
+	 */
+	@ApiOperation(value = "通过组织机构vo获取组织机构详细信息", notes = "查询一条信息")
+	@ApiImplicitParam(name = "vo", value = "组织机构")
+	@PostMapping("/findJgTreeByUser")
+	public @ResponseBody ResultVO findSjdzByUser(@RequestBody OrganizationVO organizationVO) {
+		ResultVO resultVO = ResultVO.build();
+		try {
+			resultVO.setResult(organizationService.doFindJgTreeByUser(organizationVO));
+		} catch (Exception e) {
+			logger.error("{}", e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
 		}
 		return resultVO;

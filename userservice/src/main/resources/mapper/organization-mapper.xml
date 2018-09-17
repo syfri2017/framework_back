@@ -435,4 +435,9 @@
 		AND sjjgid = 'eb09df352cda4902b24c54dd2b2ce656' AND SUBSTR(jgid,3,6) = '000000' AND jgid BETWEEN '11000000' AND '65000000'
 	</select>
 
+	<!-- 17.根据上级机构ID查询机构列表 by li.xue -->
+	<select id="doFindJgBySjjgid" parameterType="String" resultType="OrganizationTree">
+		SELECT uuid,jgjc,jgid FROM SYS_ORGANIZATION WHERE delete_flag = 'N' AND sjjgid = #{value} order by jgid
+	</select>
+
 </mapper>
