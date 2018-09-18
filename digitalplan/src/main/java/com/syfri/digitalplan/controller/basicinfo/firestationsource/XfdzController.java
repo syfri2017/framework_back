@@ -214,4 +214,18 @@ public class XfdzController extends BaseController<XfdzVO> {
         }
         return resultVO;
     }
+
+
+    @ApiOperation(value="查询分发获取其相应机构ID",notes="列表信息")
+    @ApiImplicitParam(name="vo",value = "业务实体")
+    @PostMapping("doFindCorresJgid")
+    public @ResponseBody ResultVO doFindCorresJgid(@RequestBody XfdzVO xfdzVO) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(xfdzService.doFindCorresJgid(xfdzVO));
+        } catch (Exception e) {
+            logger.error("{}",e.getMessage());
+        }
+        return resultVO;
+    }
 }

@@ -284,4 +284,65 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
         list.add(xfdzTree);
         return list;
     }
+
+    /*--预案分发，获取其相应的机构ID by li.xue 2018/9/18.--*/
+    @Override
+    public String doFindCorresJgid(XfdzVO xfdzVO){
+        String jgid = "";
+        //登陆人机构-队站类型
+        String dlrjgid = xfdzVO.getReserve1();
+        String dlrjglx = xfdzDAO.doFindById(dlrjgid).getDzlx();
+        //预案制作机构ID、制作机构-队站类型
+        String dzid = xfdzVO.getDzid();
+        String dzlx = xfdzDAO.doFindById(dzid).getDzlx();
+        int num = 0;
+        switch(dlrjglx){
+            case "0100":
+                switch(dzlx){
+                    case "0200":
+                        num = 1;
+                        break;
+                    case "0300":
+                        num = 2;
+                        break;
+                    case "0500":
+                        num = 3;
+                        break;
+                    case "0900":
+                        num = 4;
+                        break;
+                }
+                break;
+            case "0200":
+                switch(dzlx){
+                    case "0300":
+                        num = 1;
+                        break;
+                    case "0500":
+                        num = 2;
+                        break;
+                    case "0900":
+                        num = 3;
+                        break;
+                }
+                break;
+            case "0300":
+                switch(dzlx){
+                    case "0500":
+                        num = 1;
+                        break;
+                    case "0900":
+                        num = 2;
+                        break;
+                }
+                break;
+        }
+        String temp = dzid;
+        for(int i=0; i<num; i++){
+           XfdzVO tempVO = xfdzDAO.doFindById(temp);
+           temp = tempVO.getSjdzid();
+           jgid = tempVO.getDzid();
+        }
+        return jgid;
+    }
 }

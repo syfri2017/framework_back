@@ -36,4 +36,7 @@ public interface XfdzService  extends BaseService<XfdzVO>{
 
     /*--根据登录人组织机构ID获取其一级队站 by li.xue 2018/9/17.--*/
     List<XfdzTree> doFindDzYjByOrgId(String orgId);
+
+    /*--预案分发，获取其相应的机构ID by li.xue 2018/9/18.--*/
+    String doFindCorresJgid(XfdzVO xfdzVO);
 }
