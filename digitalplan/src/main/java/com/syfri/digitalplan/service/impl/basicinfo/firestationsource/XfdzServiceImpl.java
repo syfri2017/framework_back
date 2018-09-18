@@ -276,6 +276,12 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
     /*--根据登录人组织机构ID获取其一级队站 by li.xue 2018/9/17.--*/
     @Override
     public List<XfdzTree> doFindDzYjByOrgId(String orgId){
-        return xfdzDAO.doFindXfdzBySjdzid(orgId);
+        List<XfdzTree> list = new ArrayList<>();
+        XfdzVO xfdzVO = xfdzDAO.doFindById(orgId);
+        XfdzTree xfdzTree = new XfdzTree(xfdzVO.getDzid(), xfdzVO.getDzjc(), xfdzVO.getDzbm());
+        List<XfdzTree> children = xfdzDAO.doFindXfdzBySjdzid(orgId);
+        xfdzTree.setChildren(children);
+        list.add(xfdzTree);
+        return list;
     }
 }
