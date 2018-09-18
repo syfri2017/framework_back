@@ -110,3 +110,14 @@ spring:
       url: jdbc:oracle:thin:@10.119.119.232:1521/SZHYAGLDB
       username: SZHYAGL
       password: SZHYAGL
+---
+spring:
+  profiles: history
+  druid:
+    #配置druid连接池
+    datasource:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: oracle.jdbc.OracleDriver
+      url: jdbc:oracle:thin:@10.119.119.232:1521/orcl
+      username: SZHYAGLHIS
+      password: SZHYAGLHIS
