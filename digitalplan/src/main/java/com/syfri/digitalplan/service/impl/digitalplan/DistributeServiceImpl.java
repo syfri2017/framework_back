@@ -25,20 +25,22 @@ public class DistributeServiceImpl extends BaseServiceImpl<DistributeVO> impleme
 
 	/*向组织机构预案中间表批量插入数据*/
 	@Override
-	public DistributeVO doInsertDistributeVO(DistributeVO distributeVO){
+	public int doInsertDistributeList(List<DistributeVO> distributeList){
 		//删除原来的预案分发数据
-		distributeDAO.doDeleteByYaid(distributeVO.getYaid());
-		List jgjcList = distributeVO.getFfzd();
-		for(int i=0;i<jgjcList.size();i++){
-			distributeVO.setJgid((String) jgjcList.get(i));
-			distributeDAO.doInsertDistributeVO(distributeVO);
+		int i = 0;
+		if(distributeList!=null && distributeList.size()>0){
+			distributeDAO.doDeleteByYaid(distributeList.get(0).getYaid());
+			for(DistributeVO vo : distributeList){
+				distributeDAO.doInsertDistributeVO(vo);
+				i++;
+			}
 		}
-		return distributeVO;
+		return i;
 	}
 
 	/*根据预案ID查询分发的总队*/
 	@Override
-	public List<String> doFindFfzd(String yaid){
-		return distributeDAO.doFindFfzd(yaid);
+	public List<DistributeVO> doFindFfdzByYaid(String yaid){
+		return distributeDAO.doFindFfdzByYaid(yaid);
 	}
 }

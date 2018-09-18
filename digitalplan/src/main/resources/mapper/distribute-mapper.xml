@@ -152,22 +152,21 @@
 	</select>
 
 	<!--12.根据预案ID删除记录-->
-	<delete id="doDeleteByYaid" parameterType="String">
-		DELETE FROM YAGL_ORGANIZATION_YA WHERE yaid = #{value}
-	</delete>
+	<update id="doDeleteByYaid" parameterType="String">
+		UPDATE YAGL_ORGANIZATION_YA SET DELETE_FLAG = 'Y' WHERE yaid = #{value}
+	</update>
 
 	<!--13向组织机构预案中间表批量插入数据-->
 	<insert id="doInsertDistributeVO" parameterType="DistributeVO" >
 		INSERT INTO YAGL_ORGANIZATION_YA(uuid,jgid,yaid,delete_flag,jdh,datasource,sjc)
-		SELECT sys_guid(),s.jgid,#{yaid,jdbcType=VARCHAR},'N',#{jdh,jdbcType=VARCHAR},#{datasource,jdbcType=VARCHAR},sysdate
-		FROM sys_organization s where s.jgjc = #{jgid,jdbcType=VARCHAR}
+		VALUES (sys_guid(),#{jgid,jdbcType=VARCHAR},#{yaid,jdbcType=VARCHAR},'N',#{jdh,jdbcType=VARCHAR},#{datasource,jdbcType=VARCHAR},sysdate)
 	</insert>
 
 	<!--14.根据预案ID查询分发的总队-->
-	<select id="doFindFfzd" parameterType="String" resultType="String">
-		SELECT jgjc FROM YAGL_ORGANIZATION_YA t
-		LEFT JOIN sys_organization s ON t.jgid = s.jgid
-		WHERE t.yaid = #{value}
+	<select id="doFindFfdzByYaid" parameterType="String" resultType="DistributeVO">
+		SELECT t.uuid,t.jgid,t.yaid FROM YAGL_ORGANIZATION_YA t
+		LEFT JOIN sys_organization s ON t.jgid = s.uuid
+		WHERE t.delete_flag = 'N' AND t.yaid = #{value}
 	</select>
 
 </mapper>

@@ -12,5 +12,5 @@ public interface DistributeDAO extends BaseDAO<DistributeVO> {
 	/*根据预案ID删除记录.*/
 	void doDeleteByYaid(String yaid);
 	/*根据预案ID查询分发的总队*/
-	List<String> doFindFfzd(String yaid);
+	List<DistributeVO> doFindFfdzByYaid(String yaid);
 }

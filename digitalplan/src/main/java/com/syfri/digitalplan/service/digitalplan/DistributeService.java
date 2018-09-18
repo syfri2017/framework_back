@@ -9,8 +9,8 @@ import java.util.List;
 public interface DistributeService  extends BaseService<DistributeVO> {
 
 	/*向组织机构预案中间表批量插入数据*/
-	DistributeVO doInsertDistributeVO(DistributeVO distributeVO);
+	int doInsertDistributeList(List<DistributeVO> distributeList);
 
 	/*根据预案ID查询分发的总队*/
-	List<String> doFindFfzd(String yaid);
+	List<DistributeVO> doFindFfdzByYaid(String yaid);
 }
