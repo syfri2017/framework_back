@@ -8,8 +8,6 @@
 	<link rel="icon" href="img/icon/w1_03.png">
 	<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
 	<link href="http://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.css" rel="stylesheet" type="text/css" />
-	<!--<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
-	<!-- viewer 图片查看插件 -->
 	<link href="css/viewer.min.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" href="css/toolbar.css">
 	<link rel="stylesheet" href="css/catalog.css">
@@ -22,9 +20,7 @@
 	<script type="text/javascript" src="http://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.js"></script>
 	<script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<!-- viewer 图片查看插件 -->
 	<script type="text/javascript" src="js/viewer.min.js"></script>
-
 	<title>数字化预案管理平台</title>
 </head>
 <style>
@@ -114,16 +110,12 @@
 	}
 
 	.tabs-body {
-		/*border-bottom: 1px solid #B4C9C6;
-          border-left: 1px solid #B4C9C6;
-          border-right: 1px solid #B4C9C6;*/
 		float: left;
 		padding: 5px;
 		width: %;
 	}
 
 	.tab_line {
-		/*  border-bottom: 1px solid #3366CC;*/
 		height: 30px;
 		margin-top: -3px;
 		position: relative;
@@ -142,8 +134,6 @@
 
 	.z-main {
 		position: fixed;
-		/*left: 2em;
-        right: 2em;*/
 		top: 50px;
 		bottom: 0.5px;
 		overflow: auto;
@@ -216,7 +206,6 @@
 	.item {
 		height: 48px;
 		padding: 10px;
-		/*background: #f4f4f4;*/
 		background-color: #0066CC;
 		color: #FFFFFF;
 	}
@@ -234,7 +223,6 @@
 		font-size: 14px;
 		color: #333333;
 		letter-spacing: 1px;
-		/*background: #BDCFF4;*/
 	}
 </style>
 <style type="text/css">
@@ -245,29 +233,22 @@
 	}
 
 	table.dataintable th {
-		/*vertical-align: baseline;*/
 		padding: 5px 15px 5px 6px;
-		/*background-color: #CCCCCC;
-        color: #0066CC;*/
 		background-color: #0066CC;
 		color: #FFFFFF;
 	}
 
 	table.dataintable td {
-		/*vertical-align: text-top;*/
-		/*	padding: 6px 15px 6px 6px;*/
 		border: 1px solid #EAEAEA;
 	}
 
 	.dataintable tr>td>li {
-		/*vertical-align: text-top;*/
 		padding: 6px 15px 6px 6px;
 		font-weight: 900;
 		color: red;
 	}
 
 	table.dataintable tr:nth-child(odd) {
-		/*background-color: #F5F5F5;*/
 	}
 
 	table.dataintable tr:nth-child(even) {
@@ -332,8 +313,6 @@
 		border: 1px solid #EAEAEA;
 	}
 </style>
-<!--display:none;-->
-
 <body>
 <!--model1-->
 <div id="offzz" style="display: none;">
@@ -527,15 +506,8 @@
 			</table>
 		</div>
 		<div class="zzbs" style="display: none;">
-			<ul>
-				<li class="liz">
-					<p>单体建筑</p>
-					<h4 id="jzmc"></h4>
-				</li>
-				<li class="liy">
-					<p>单体建筑</p>
-					<h4 id="jzmcb"></h4>
-				</li>
+			<ul id="jzmc">
+
 			</ul>
 		</div>
 		<div style="display: none">
@@ -567,34 +539,13 @@
 						</li>
 						<li class="liz">
 							<p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-							<p class="wze" class="item2" target="right"
-							</p>
+							<p class="wze" class="item2" target="right" </p>
 						</li>
-						<!--<li class="liy">
-                            <p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-                            <p class="wzf" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liz">
-                            <p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-                            <p class="wzg" class="item2" target="right">
-                            </p>
-                        </li>-->
 						<li class="liy">
 							<p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
 							<p class="wzh" class="item2" target="right">
 							</p>
 						</li>
-						<!--<li class="liz">
-                            <p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-                            <p class="wzi" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liy">
-                            <p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-                            <p class="wzj" class="item2" target="right">
-                            </p>
-                        </li>-->
 						<li class="liz">
 							<p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
 							<p class="wzk" class="item2" target="right">
@@ -605,36 +556,6 @@
 							<p class="wzl" class="item2" target="right">
 							</p>
 						</li>
-						<!--<li class="liz">
-                            <p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-                            <p class="wzm" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liy">
-                            <p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-                            <p class="wzn" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liz">
-                            <p style="font-size: 13px;color: #FF0000;font-weight:700 ;">消防控制室</p>
-                            <p class="wzo" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liy">
-                            <p style="font-size: 13px;color: #FFCC33;font-weight:700 ;">防排烟设施</p>
-                            <p class="wzp" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liz">
-                            <p style="font-size: 13px;color: #B39A9A;font-weight:700 ;">其他灭火系统</p>
-                            <p class="wzq" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liy">
-                            <p style="font-size: 13px;color: #B39A9A;font-weight:700 ;">其他灭火系统</p>
-                            <p class="wzr" class="item2" target="right">
-                            </p>
-                        </li>-->
 
 					</ul>
 				</li>
@@ -668,31 +589,13 @@
 							<p class="wze" class="item2" target="right">
 							</p>
 						</li>
-						<!--<li class="liy">
-                            <p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-                            <p class="wzf" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liz">
-                            <p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-                            <p class="wzg" class="item2" target="right">
-                            </p>
-                        </li>-->
+
 						<li class="liy">
 							<p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
 							<p class="wzh" class="item2" target="right">
 							</p>
 						</li>
-						<!--<li class="liz">
-                            <p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-                            <p class="wzi" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liy">
-                            <p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-                            <p class="wzj" class="item2" target="right">
-                            </p>
-                        </li>-->
+
 						<li class="liz">
 							<p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
 							<p class="wzk" class="item2" target="right">
@@ -703,36 +606,6 @@
 							<p class="wzl" class="item2" target="right">
 							</p>
 						</li>
-						<!--<li class="liz">
-                            <p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-                            <p class="wzm" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liy">
-                            <p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-                            <p class="wzn" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liz">
-                            <p style="font-size: 13px;color: #FF0000;font-weight:700 ;">消防控制室</p>
-                            <p class="wzo" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liy">
-                            <p style="font-size: 13px;color: #FFCC33;font-weight:700 ;">防排烟设施</p>
-                            <p class="wzp" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liz">
-                            <p style="font-size: 13px;color: #B39A9A;font-weight:700 ;">其他灭火系统</p>
-                            <p class="wzg" class="item2" target="right">
-                            </p>
-                        </li>
-                        <li class="liy">
-                            <p style="font-size: 13px;color: #B39A9A;font-weight:700 ;">其他灭火系统</p>
-                            <p class="wzr" class="item2" target="right">
-                            </p>
-                        </li>-->
 
 					</ul>
 				</li>
@@ -752,23 +625,8 @@
 			</ul>
 		</div>
 		<div class="zzbs" style="display: none">
-			<ul>
-				<li class="liz">
-					<h4>灾情1</h4>
-					<p>灾情位置：<span id="zqbwc"></span></p>
-				</li>
-				<li class="liy">
-					<h4>灾情2</h4>
-					<p>灾情位置：<span id="zqbwd"></span></p>
-				</li>
-				<li class="liz">
-					<h4>灾情3</h4>
-					<p>灾情位置：<span id="zqbw"></span></p>
-				</li>
-				<li class="liy">
-					<h4>灾情4</h4>
-					<p>灾情位置：<span id="zqbwb"></span></p>
-				</li>
+			<ul id="zqbwb">
+
 			</ul>
 		</div>
 	</div>
@@ -953,10 +811,7 @@
 		</div>
 	</div>
 </div>
-<!--<div id="sideToolbar">
-    <div id="sideCatalog"></div>
-</div>
-<div class="fullscreenHandler"></div>-->
+
 </body>
 <script>
     $("#imgbtn").click(function() {
@@ -966,14 +821,7 @@
         $("#dailog").hide();
     })
 </script>
-<!--<script type="text/javascript">
-        if(window.navigator.onLine == true) {
-            alert("已连接互联网");
-        } else {
-            alert("未连接互联网");
-            document.getElementById("offzz").style.display="block";
-        }
-</script>-->
+
 <script>
     $(function() {
         $.ajax({
@@ -1070,9 +918,6 @@
                 fhdjmc = data.compZddwInfo.fhdjmc;
                 $("#fhdjmc").append(fhdjmc);
 
-                dzmc = data.disastersetList[2].forcedevList[2].dzmc;
-                $("#dzmc").append(dzmc);
-
                 dzmczd = data.disastersetList[0].forcedevList[0].dzmc;
                 $("#dzmczd").append(dzmczd);
 
@@ -1088,7 +933,7 @@
                 dwdz = data.compZddwInfo.dwdz;
                 $("#dwdz").append(dwdz);
 
-                gisX = data.compZddwInfo.gisX+','+data.compZddwInfo.gisY;
+                gisX = data.compZddwInfo.gisX + ',' + data.compZddwInfo.gisY;
                 $("#gisX").append(gisX);
 
                 jzflmc = data.compZddwInfo.jzflmc;
@@ -1126,48 +971,27 @@
                 $("#plqkb").append(plqkb);
 
                 //建筑信息
-                jzmc = data.areaBuildingList[0].jzmc;
-                $("#jzmc").append(jzmc);
-
-                jzmcb = data.areaBuildingList[1].jzmc;
-                $("#jzmcb").append(jzmcb);
-
+                for(var i = 0; i < data.areaBuildingList.length; i++) {
+                    jzmc = " <li class='liz'><p>单体建筑</p><h4>" + data.areaBuildingList[i].jzmc + "</h4></li>";
+                    $("#jzmc").append(jzmc);
+                }
                 //消防设施
                 dtjza = data.areaBuildingList[0].jzmc;
                 $("#dtjza").append(dtjza);
-
                 dtjzb = data.areaBuildingList[1].jzmc;
                 $("#dtjzb").append(dtjzb);
-
-
                 wz = data.areaBuildingList[0].firefacilites[1001][1].wz;
                 $(".wz").append(wz);
                 wzb = data.areaBuildingList[0].firefacilites[1001][0].wz;
                 $(".wzb").append(wzb);
-
                 wzc = data.areaBuildingList[0].firefacilites[1002][1].wz;
                 $(".wzc").append(wzc);
-
                 wzd = data.areaBuildingList[0].firefacilites[1002][0].wz;
                 $(".wzd").append(wzd);
-
                 wze = data.areaBuildingList[0].firefacilites[1003][0].wz;
                 $(".wze").append(wze);
-
-//					wzf = data.areaBuildingList[0].firefacilites[1003][1].wz;
-//					$(".wzf").append(wzf);
-//
-//					wzg = data.areaBuildingList[0].firefacilites[1004][0].wz;
-//					$(".wzg").append(wzg);
-
                 wzh = data.areaBuildingList[0].firefacilites[2001][0].wz;
                 $(".wzh").append(wzh);
-
-//					wzi = data.areaBuildingList[0].firefacilites[1004][1].wz;
-//					$(".wzi").append(wzi);
-//
-//					wzj = data.areaBuildingList[0].firefacilites[1005][0].wz;
-//					$(".wzj").append(wzj);
 
                 wzk = data.areaBuildingList[0].firefacilites[2004][1].wz;
                 $(".wzk").append(wzk);
@@ -1175,26 +999,7 @@
                 wzl = data.areaBuildingList[0].firefacilites[2004][0].wz;
                 $(".wzl").append(wzl);
 
-//					wzm = data.areaBuildingList[0].firefacilites[1005][1].wz;
-//					$(".wzm").append(wzm);
-//
-//					wzn = data.areaBuildingList[0].firefacilites[2003][0].wz;
-//					$(".wzn").append(wzn);
-//
-//					wzo = data.areaBuildingList[0].firefacilites[2003][1].wz;
-//					$(".wzo").append(wzo);
-//
-//					wzp = data.areaBuildingList[0].firefacilites[2006][0].wz;
-//					$(".wzp").append(wzp);
-//
-//					wzq = data.areaBuildingList[0].firefacilites[2006][1].wz;
-//					$(".wzq").append(wzq);
-//
-//					wzr = data.areaBuildingList[0].firefacilites[1005][0].wz;
-//					$(".wzr").append(wzr);
-
                 //重点部位
-
                 zdbwmc = data.jzlpartsList[0].zdbwmc;
                 $("#zdbwmc").append(zdbwmc);
                 zdbwmcb = data.jzlpartsList[1].zdbwmc;
@@ -1205,16 +1010,13 @@
 
                 zdbwwzb = data.jzlpartsList[1].zdbwwz;
                 $("#zdbwwzb").append(zdbwwzb);
-
                 //灾情信息 disastersetList
-                zqbwb = data.disastersetList[0].zqbw;
-                $("#zqbwb").append(zqbwb);
-                zqbw = data.disastersetList[3].zqbw;
-                $("#zqbw").append(zqbw);
-                zqbwc = data.disastersetList[1].zqbw;
-                $("#zqbwc").append(zqbwc);
-                zqbwd = data.disastersetList[2].zqbw;
-                $("#zqbwd").append(zqbwd);
+                for(var i = 0; i < data.disastersetList.length; i++) {
+
+                    zqbwb = "<li style='background:#f0f8ff;padding:10px;'><h4>灾情" + [i + 1] + "</h4><p>灾情位置:<span>" + data.disastersetList[i].zqbw + "</span></p></li>";
+                    $("#zqbwb").append(zqbwb);
+                }
+
             }
         });
     });
@@ -1227,32 +1029,22 @@
         width: $(window).width(),
         height: $(window).height()
     }
-    //		var docUrl = 'resources/重点单位预案-支队级.docx';
     $(function() {
-//			$('#sideToolbar').sideToolbar();
-//			$('#sideCatalog').sideCatalog({
-//				content: '#content'
-//			});
+
         $('#photos').each(function(index, item) {
             new Viewer(item);
         });
-        // var currentUrl = window.location.href;
-        // var qrcodeAPI = 'http://pan.baidu.com/share/qrcode?w=150&h=150&url=';
-        // $('.qrcode-img').attr('src', qrcodeAPI + currentUrl);
+
 
         $(window).resize(function() {
             viewportResize();
         });
         viewportResize();
-        //文档滚动事件
-//			$(document).scroll(function(e) {
-//				var scrollX = window.scrollX;
-//				$('#sideToolbar').css('left', $('.content-block').offset().left - scrollX + 970);
-//			});
+
     });
 
     function exportDoc() {
-        // debugger
+
         window.open(docUrl);
     }
 
@@ -1260,10 +1052,6 @@
         viewportSize['width'] = $(window).width();
         viewportSize['height'] = $(window).height();
 
-//			var scrollX = window.scrollX;
-//
-//			$('#catalog').css('height', viewportSize.height / 2);
-//			$('#sideToolbar').css('left', $('.content-block').offset().left + 970);
     }
 
     function openPhoto(photoId) {
@@ -1331,7 +1119,6 @@
             dataType: "json",
             //请求成功完成后要执行的方法
             success: function(data) {
-//				    var middle = [];
                 PI = 3.14159265358979324;
                 x_pi = 3.14159265358979324 * 3000.0 / 180.0;
                 // 百度地图API功能
@@ -1344,7 +1131,7 @@
                 var gispt = new BMap.Point(gisX, gisY);
 
                 var middle = wgs84_bd09(gispt);
-                var pt = new BMap.Point(middle.lng,middle.lat);
+                var pt = new BMap.Point(middle.lng, middle.lat);
 
                 map.centerAndZoom(pt, 17);
                 map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
@@ -1363,7 +1150,7 @@
                     gisX = data.compZddwInfo.gisX;
                     gisY = data.compZddwInfo.gisY;
                     var middle = wgs84_bd09(gispt);
-                    var pt = new BMap.Point(middle.lng,middle.lat);
+                    var pt = new BMap.Point(middle.lng, middle.lat);
 
                     var myIcon2 = new BMap.Icon("img/icon/w1_05.png", new BMap.Size(26, 26)); //点击后的新图标
                     marker.setIcon(myIcon2);
@@ -1436,10 +1223,6 @@
                 //delta
                 function delta(lng, lat) {
 
-                    // Krasovsky 1940
-                    // a = 6378245.0, 1/f = 298.3
-                    // b = a * (1 - f)
-                    // ee = (a^2 - b^2) / a^2;
                     var a = 6378245.0; //  a: 卫星椭球坐标投影到平面地图坐标系的投影因子。
                     var ee = 0.00669342162296594323; //  ee: 椭球的偏心率。
                     var dLng = transformLng(lng - 105.0, lat - 35.0);
@@ -1473,7 +1256,6 @@
                             'lng': wgsLng,
                             'lat': wgsLat
                         };
-
 
                     var d = delta(wgsLng, wgsLat);
                     return {
