@@ -145,5 +145,22 @@ public class ZipCompressUtil {
         }
         return;
     }
+
+
+
+
+        public static void main(String[] args)
+        {
+            ZipCompressUtil zipCom = new ZipCompressUtil("D:\\电影.zip","F:\\电影");
+            try
+            {
+                zipCom.zip();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
 }
 
