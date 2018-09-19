@@ -5,6 +5,7 @@ import com.syfri.baseapi.utils.EConstants;
 import com.syfri.digitalplan.model.firefacilities.*;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +58,7 @@ public class FirefacilitiesController extends BaseController<FirefacilitiesVO> {
 
     @ApiOperation(value = "删除安全设施", notes = "列表信息")
     @ApiImplicitParam(name = "vo", value = "安全设施")
+    @RequiresPermissions("buildingzoning/firefacilities:delete")
     @PostMapping("/doDeleteFacilities")
     public @ResponseBody
     ResultVO doDeleteFacilities(@RequestBody List<FirefacilitiesVO> facilitiesList) {
@@ -78,6 +80,7 @@ public class FirefacilitiesController extends BaseController<FirefacilitiesVO> {
 
     @ApiOperation(value = "消防设施新增", notes = "新增")
     @ApiImplicitParam(name = "vo", value = "消防设施")
+    @RequiresPermissions("buildingzoning/firefacilities:add")
     @PostMapping("/insertByVO")
     public @ResponseBody
     ResultVO insertByVO(@RequestBody FirefacilitiesVO firefacilitiesVO) {
@@ -94,6 +97,7 @@ public class FirefacilitiesController extends BaseController<FirefacilitiesVO> {
 
     @ApiOperation(value = "修改消防设施", notes = "列表信息")
     @ApiImplicitParam(name = "vo", value = "消防设施")
+    @RequiresPermissions("buildingzoning/firefacilities:edit")
     @PostMapping("/doUpdateFirefacilities")
     public @ResponseBody
     ResultVO doUpdateFirefacilities(@RequestBody FirefacilitiesVO firefacilitiesVO) {

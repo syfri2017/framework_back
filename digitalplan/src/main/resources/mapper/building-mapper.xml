@@ -36,7 +36,7 @@
 		<if test="bz != null and bz != '' ">
 		 and t.bz = #{bz}
 		</if>
-		<if test="jdh != null and jdh != '' ">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000' ">
 		 and t.jdh = #{jdh}
 		</if>
 		<if test="sjc != null and sjc != '' ">

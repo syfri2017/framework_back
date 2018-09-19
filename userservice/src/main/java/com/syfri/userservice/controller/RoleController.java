@@ -92,7 +92,7 @@ public class RoleController  extends BaseController<RoleVO>{
 	 */
 	@ApiOperation(value="根据角色修改角色及其资源信息",notes="修改")
 	@ApiImplicitParam(name="vo",value="角色对象")
-	@RequiresPermissions("system/role:update")
+	@RequiresPermissions("system/role:edit")
 	@PostMapping("/updateByVO")
 	public @ResponseBody ResultVO updateByVO(@RequestBody RoleVO roleVO){
 		ResultVO resultVO = ResultVO.build();

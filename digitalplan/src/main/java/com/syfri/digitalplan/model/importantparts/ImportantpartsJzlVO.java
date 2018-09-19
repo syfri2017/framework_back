@@ -30,6 +30,8 @@ public class ImportantpartsJzlVO extends ValueObject implements Serializable{
 
 	private List<WeixianjiezhiVO> wxjzList;    //危险介质列表
 
+	private List<String> syxzList;    //使用性质List
+
 	public String getUuid(){
 		return uuid;
 	}
@@ -133,5 +135,12 @@ public class ImportantpartsJzlVO extends ValueObject implements Serializable{
 	}
 	public void setWxjzList(List<WeixianjiezhiVO> wxjzList) {
 		this.wxjzList = wxjzList;
+	}
+
+	public List<String> getSyxzList() {
+		return syxzList;
+	}
+	public void setSyxzList(List<String> syxzList) {
+		this.syxzList = syxzList;
 	}
 }

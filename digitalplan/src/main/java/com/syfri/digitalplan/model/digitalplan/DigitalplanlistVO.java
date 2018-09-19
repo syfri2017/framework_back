@@ -245,6 +245,7 @@ public class DigitalplanlistVO extends ValueObject implements Serializable{
 	private String yaztmc;	//预案状态
 	private String yajbmc;	//预案级别
 	private String shztmc;	//审核状态
+	private String zzjgmc;  //制作机构名称
 
 	private List<DisastersetVO> disasterListVo; //灾情设定
 	public List<DisastersetVO> getDisasterListVo() {
@@ -286,7 +287,12 @@ public class DigitalplanlistVO extends ValueObject implements Serializable{
 	public void setShztmc(String shztmc){
 		this.shztmc = shztmc;
 	}
-
+	public String getZzjgmc() {
+		return zzjgmc;
+	}
+	public void setZzjgmc(String zzjgmc) {
+		this.zzjgmc = zzjgmc;
+	}
 
 	public String getYadxType() {
 		return yadxType;

@@ -135,6 +135,7 @@ public class XfsyVO extends ValueObject implements Serializable{
 
     //天然水源属性信息
     private String trsy_uuid;	//主键
+    private String trsy_trsymc;	//天然水源名称
     private String trsy_trsylx;	//天然水源类型
     private String trsy_sz;	//水质
     private String trsy_szms;	//水质描述
@@ -149,6 +150,12 @@ public class XfsyVO extends ValueObject implements Serializable{
     private String trsy_reserve2;	//备用字段2
     private String trsy_reserve3;	//备用字段3
     private String trsy_reserve4;	//备用字段4
+    private String trsy_cjrid;	//创建人ID
+    private String trsy_cjrmc;	//创建人名称
+    private String trsy_cjsj;	//创建时间
+    private String trsy_xgrid;	//修改人ID
+    private String trsy_xgrmc;	//修改人姓名
+    private String trsy_xgsj;	//修改时间
 
 	private String trsy_trsylxmc;	//天然水源类型名称
 	private String trsy_szmc;	//水质名称
@@ -748,6 +755,12 @@ public class XfsyVO extends ValueObject implements Serializable{
     public void setTrsy_uuid(String trsy_uuid) {
         this.trsy_uuid = trsy_uuid;
     }
+    public String getTrsy_trsymc() {
+        return trsy_trsymc;
+    }
+    public void setTrsy_trsymc(String trsy_trsymc) {
+        this.trsy_trsymc = trsy_trsymc;
+    }
     public String getTrsy_trsylx() {
         return trsy_trsylx;
     }
@@ -832,8 +845,44 @@ public class XfsyVO extends ValueObject implements Serializable{
     public void setTrsy_reserve4(String trsy_reserve4) {
         this.trsy_reserve4 = trsy_reserve4;
     }
+    public String getTrsy_cjrid() {
+        return trsy_cjrid;
+    }
+    public void setTrsy_cjrid(String trsy_cjrid) {
+        this.trsy_cjrid = trsy_cjrid;
+    }
+    public String getTrsy_cjrmc() {
+        return trsy_cjrmc;
+    }
+    public void setTrsy_cjrmc(String trsy_cjrmc) {
+        this.trsy_cjrmc = trsy_cjrmc;
+    }
+    public String getTrsy_cjsj() {
+        return trsy_cjsj;
+    }
+    public void setTrsy_cjsj(String trsy_cjsj) {
+        this.trsy_cjsj = trsy_cjsj;
+    }
+    public String getTrsy_xgrid() {
+        return trsy_xgrid;
+    }
+    public void setTrsy_xgrid(String trsy_xgrid) {
+        this.trsy_xgrid = trsy_xgrid;
+    }
+    public String getTrsy_xgrmc() {
+        return trsy_xgrmc;
+    }
+    public void setTrsy_xgrmc(String trsy_xgrmc) {
+        this.trsy_xgrmc = trsy_xgrmc;
+    }
+    public String getTrsy_xgsj() {
+        return trsy_xgsj;
+    }
+    public void setTrsy_xgsj(String trsy_xgsj) {
+        this.trsy_xgsj = trsy_xgsj;
+    }
 
-	public String getSylxmc() {
+    public String getSylxmc() {
 		return sylxmc;
 	}
 	public void setSylxmc(String sylxmc) {

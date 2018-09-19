@@ -12,7 +12,6 @@ public class DistributeVO extends ValueObject implements Serializable{
 	private String uuid;	//主键
 	private String jgid;	//机构ID
 	private String yaid;	//预案ID
-	private List<String> ffzd;  //接受前台传递的机构字符串
 	private String deleteFlag;	//删除标志
 	private String datasource;	//数据来源[100000一体化]
 	private String sjc;	//时间戳
@@ -39,12 +38,6 @@ public class DistributeVO extends ValueObject implements Serializable{
 	}
 	public void setYaid(String yaid){
 		this.yaid = yaid;
-	}
-	public List<String> getFfzd() {
-		return ffzd;
-	}
-	public void setFfzd(List<String> ffzd) {
-		this.ffzd = ffzd;
 	}
 	public String getDeleteFlag(){
 		return deleteFlag;

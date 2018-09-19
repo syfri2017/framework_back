@@ -41,4 +41,21 @@ public class UtilController  extends BaseController<UtilXfdzVO>{
 		return resultVO;
 	}
 
+	/**
+	 * 根据总队查询其下属支队
+	 * by li.xue 20180829
+	 */
+	@ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
+	@ApiImplicitParam(name = "dzid", value = "队站ID")
+	@GetMapping("/doFindXfdzByZongdId/{dzid}")
+	public @ResponseBody ResultVO doFindXfdzByZongdId(@PathVariable String dzid) {
+		ResultVO resultVO = ResultVO.build();
+		try {
+			resultVO.setResult(utilService.doFindXfdzByZongdId(dzid));
+		} catch (Exception e) {
+			logger.error("{}", e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }

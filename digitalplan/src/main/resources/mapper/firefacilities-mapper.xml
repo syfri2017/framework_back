@@ -69,8 +69,8 @@
 		<if test="cjsj != null and cjsj != '' ">
 			and t.cjsj = #{cjsj}
 		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000'">
+			and t.jdh = #{jdh}
 		</if>
 	</sql>
 

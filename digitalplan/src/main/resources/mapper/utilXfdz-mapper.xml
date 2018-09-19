@@ -317,4 +317,14 @@
 		ORDER BY DZBM
 	</select>
 
+	<!--12.展示到总队数据-->
+	<select id="doFindXfdzByZongdId" resultType="UtilXfdzVO" parameterType="String">
+		SELECT DZBM codeValue,DZJC codeName,DZID dzid
+		FROM YAGL_XFDZ t
+		WHERE t.DELETE_FLAG = 'N'
+		AND t.SJDZID = #{value}
+		ORDER BY DZBM
+	</select>
+
+
 </mapper>

@@ -45,6 +45,7 @@ public class EquipmentsourceServiceImpl extends BaseServiceImpl<EquipmentVO> imp
 		for (EquipengineVO vo : equipmentVO.getEquipengineVOList()) {
 			vo.setZbid(equipmentVO.getUuid());
 			vo.setJdh(equipmentVO.getJdh());
+			vo.setDatasource(equipmentVO.getDatasource());
 			equipengineDAO.doInsertByVO(vo);
 		}
 		return equipmentVO;
@@ -100,6 +101,7 @@ public class EquipmentsourceServiceImpl extends BaseServiceImpl<EquipmentVO> imp
             }else{ //新增
                 vo.setZbid(equipmentVO.getUuid());
                 vo.setJdh(equipmentVO.getJdh());
+                vo.setDatasource(equipmentVO.getDatasource());
                 vo.setCjrid(equipmentVO.getXgrid());
                 vo.setCjrmc(equipmentVO.getXgrmc());
                 equipengineDAO.doInsertByVO(vo);

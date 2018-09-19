@@ -50,6 +50,7 @@ public class DigitalplanlistController  extends BaseController<DigitalplanlistVO
 	*/
 	@ApiOperation(value="预案审批",notes="修改")
 	@ApiImplicitParam(name="vo",value="预案")
+	@RequiresPermissions("digitalplan/digitalplan_approve:approve")
 	@PostMapping("/approveByVO")
 	public @ResponseBody ResultVO updateByVO(@RequestBody DigitalplanlistVO digitalplanlistVO){
 		ResultVO resultVO = ResultVO.build();
@@ -72,7 +73,7 @@ public class DigitalplanlistController  extends BaseController<DigitalplanlistVO
 	 */
 	@ApiOperation(value="根据预案新增预案",notes="新增")
 	@ApiImplicitParam(name="vo",value="预案对象")
-	@RequiresPermissions("digitalplan:add")
+	@RequiresPermissions("digitalplan/digitalplan:add")
 	@PostMapping("/insertByVO")
 	public @ResponseBody ResultVO insertByVO(@RequestBody DigitalplanlistVO digitalplanlistVO){
 		ResultVO resultVO = ResultVO.build();
@@ -95,7 +96,7 @@ public class DigitalplanlistController  extends BaseController<DigitalplanlistVO
 	 */
 	@ApiOperation(value="根据预案修改预案",notes="修改")
 	@ApiImplicitParam(name="vo",value="预案对象")
-	@RequiresPermissions("digitalplan:update")
+	@RequiresPermissions("digitalplan/digitalplan:edit")
 	@PostMapping("/doUpdateByVO")
 	public @ResponseBody ResultVO doUpdateByVO(@RequestBody DigitalplanlistVO digitalplanlistVO){
 		ResultVO resultVO = ResultVO.build();
@@ -118,6 +119,7 @@ public class DigitalplanlistController  extends BaseController<DigitalplanlistVO
 	 */
 	@ApiOperation(value="删除预案",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="预案")
+	@RequiresPermissions("digitalplan/digitalplan:delete")
 	@PostMapping("/doDeleteDigitalplan")
 	public @ResponseBody ResultVO doDeleteDigitalplan(@RequestBody List<DigitalplanlistVO> digitalplanList,DigitalplanlistVO digitalplanVo) {
 		ResultVO resultVO = ResultVO.build();

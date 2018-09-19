@@ -4,6 +4,7 @@ import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class FiredrugController  extends BaseController<FiredrugVO>{
 
 	@ApiOperation(value="消防药剂新增",notes="新增")
 	@ApiImplicitParam(name="vo",value="消防药剂")
+	@RequiresPermissions("basicinfo/firedrug:add")
 	@PostMapping("/insertByVO")
 	public @ResponseBody ResultVO insertByVO(@RequestBody FiredrugVO firedrugVO){
 		ResultVO resultVO = ResultVO.build();
@@ -43,6 +45,7 @@ public class FiredrugController  extends BaseController<FiredrugVO>{
 
 	@ApiOperation(value="删除消防药剂",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="消防药剂")
+	@RequiresPermissions("basicinfo/firedrug:delete")
 	@PostMapping("/doDeleteDrug")
 	public @ResponseBody ResultVO doDeleteDrug(@RequestBody List<FiredrugVO> firedrugList) {
 		ResultVO resultVO = ResultVO.build();
@@ -57,6 +60,7 @@ public class FiredrugController  extends BaseController<FiredrugVO>{
 
 	@ApiOperation(value="修改消防药剂",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="消防药剂")
+	@RequiresPermissions("basicinfo/firedrug:edit")
 	@PostMapping("/doUpdateDrug")
 	public @ResponseBody ResultVO doUpdateDrug(@RequestBody FiredrugVO firedrugVO) {
 		ResultVO resultVO = ResultVO.build();

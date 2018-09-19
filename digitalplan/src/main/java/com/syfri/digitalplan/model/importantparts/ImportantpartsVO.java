@@ -42,6 +42,13 @@ public class ImportantpartsVO extends ValueObject implements Serializable{
 	private ImportantpartsZzlVO zzl;    //重点部位-装置类
 	private ImportantpartsCglVO cgl;    //重点部位-储罐类
 
+	public ImportantpartsVO() {
+	}
+
+	public ImportantpartsVO(String zddwid) {
+		this.zddwid = zddwid;
+	}
+
 	public String getZdbwid(){ return zdbwid; }
 	public void setZdbwid(String zdbwid){ this.zdbwid = zdbwid; }
 	public String getZddwid(){ return zddwid; }

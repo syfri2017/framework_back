@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("distribute")
@@ -28,10 +30,10 @@ public class DistributeController  extends BaseController<DistributeVO> {
 	 */
 	@ApiOperation(value="获取所有总队",notes="列表信息")
 	@PostMapping("/distribute")
-	public @ResponseBody ResultVO distribute(@RequestBody DistributeVO distributeVO){
+	public @ResponseBody ResultVO distribute(@RequestBody List<DistributeVO> distributeList){
 		ResultVO resultVO = ResultVO.build();
 		try{
-			resultVO.setResult(distributeService.doInsertDistributeVO(distributeVO));
+			resultVO.setResult(distributeService.doInsertDistributeList(distributeList));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
@@ -43,11 +45,11 @@ public class DistributeController  extends BaseController<DistributeVO> {
 	 * 获取已经分发的总队信息
 	 */
 	@ApiOperation(value="获取已经分发的总队信息",notes="列表信息")
-	@GetMapping("/doFindFfzd/{yaid}")
-	public @ResponseBody ResultVO doFindFfzd(@PathVariable String yaid){
+	@GetMapping("/doFindFfdz/{yaid}")
+	public @ResponseBody ResultVO doFindFfdz(@PathVariable String yaid){
 		ResultVO resultVO = ResultVO.build();
 		try{
-			resultVO.setResult(distributeService.doFindFfzd(yaid));
+			resultVO.setResult(distributeService.doFindFfdzByYaid(yaid));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);

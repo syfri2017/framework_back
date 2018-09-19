@@ -6,6 +6,7 @@ import com.syfri.digitalplan.dao.auxiliarydecision.danger.DangerDAO;
 import com.syfri.digitalplan.utils.Base64ImageUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.ui.Model;
@@ -92,6 +93,7 @@ public class DangerController  extends BaseController<DangerVO>{
 	 */
 	@ApiOperation(value="化危品新增",notes="新增")
 	@ApiImplicitParam(name="vo",value="化危品")
+	@RequiresPermissions("auxiliarydecision/danger:add")
 	@PostMapping("/insertByVO")
 	public @ResponseBody ResultVO insertByVO(@RequestBody DangerVO dangerVO){
 		ResultVO resultVO = ResultVO.build();
@@ -106,6 +108,7 @@ public class DangerController  extends BaseController<DangerVO>{
 
 	@ApiOperation(value="删除化危品",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="化危品")
+	@RequiresPermissions("auxiliarydecision/danger:delete")
 	@PostMapping("/doDeleteDanger")
 	public @ResponseBody ResultVO doDeleteDanger(@RequestBody List<DangerVO> dangerList) {
 		ResultVO resultVO = ResultVO.build();
@@ -120,6 +123,7 @@ public class DangerController  extends BaseController<DangerVO>{
 
 	@ApiOperation(value="修改化危品",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="化危品")
+	@RequiresPermissions("auxiliarydecision/danger:edit")
 	@PostMapping("/doUpdateDanger")
 	public @ResponseBody ResultVO doUpdateDanger(@RequestBody DangerVO dangerVO) {
 		ResultVO resultVO = ResultVO.build();

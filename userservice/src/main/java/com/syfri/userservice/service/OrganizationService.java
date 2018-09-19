@@ -19,4 +19,7 @@ public interface OrganizationService  extends BaseService<OrganizationVO>{
 
 	/*--获取全部机构.--*/
 	List<OrganizationTree> doFindAllOrganization();
+
+	/*--根据用户获取组织机构树.--*/
+	List<OrganizationTree> doFindJgTreeByUser(OrganizationVO organizationVO);
 }

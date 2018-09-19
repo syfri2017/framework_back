@@ -5,6 +5,7 @@ import com.syfri.baseapi.utils.EConstants;
 import com.syfri.digitalplan.model.basicinfo.equipmentsource.EquipmentVO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.core.env.Environment;
@@ -33,6 +34,7 @@ public class EquipmentsourceController  extends BaseController<EquipmentVO>{
 
 	@ApiOperation(value="装备器材新增",notes="新增")
 	@ApiImplicitParam(name="vo",value="装备器材")
+	@RequiresPermissions("basicinfo/equipment:add")
 	@PostMapping("/insertByVO")
 	public @ResponseBody ResultVO insertByVO(@RequestBody EquipmentVO equipmentVO){
 		ResultVO resultVO = ResultVO.build();
@@ -47,6 +49,7 @@ public class EquipmentsourceController  extends BaseController<EquipmentVO>{
 
 	@ApiOperation(value="删除装备器材",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="装备器材")
+	@RequiresPermissions("basicinfo/equipment:delete")
 	@PostMapping("/doDeleteEquipment")
 	public @ResponseBody ResultVO doDeleteEquipment(@RequestBody List<EquipmentVO> equipmentList) {
 		ResultVO resultVO = ResultVO.build();
@@ -59,8 +62,9 @@ public class EquipmentsourceController  extends BaseController<EquipmentVO>{
 		return resultVO;
 	}
 
-	@ApiOperation(value="修改消防药剂",notes="列表信息")
-	@ApiImplicitParam(name="vo",value="消防药剂")
+	@ApiOperation(value="修改装备器材",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="装备器材")
+	@RequiresPermissions("basicinfo/equipment:edit")
 	@PostMapping("/doUpdateEquipment")
 	public @ResponseBody ResultVO doUpdateEquipment(@RequestBody EquipmentVO equipmentVO) {
 		ResultVO resultVO = ResultVO.build();

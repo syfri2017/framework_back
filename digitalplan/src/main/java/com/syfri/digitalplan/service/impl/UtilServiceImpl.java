@@ -28,4 +28,10 @@ public class UtilServiceImpl extends BaseServiceImpl<UtilXfdzVO> implements Util
 	public List<UtilXfdzVO> doSearchContingents(){
 		return utilDAO.doSearchContingents();
 	}
+
+	/*--根据总队ID获取其下属队站 by li.xue 2018/8/29.--*/
+	@Override
+	public List<UtilXfdzVO> doFindXfdzByZongdId(String dzid){
+		return utilDAO.doFindXfdzByZongdId(dzid);
+	}
 }

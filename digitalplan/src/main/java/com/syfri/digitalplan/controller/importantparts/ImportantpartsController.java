@@ -66,4 +66,21 @@ public class ImportantpartsController  extends BaseController<ImportantpartsVO>{
 		return resultVO;
 	}
 
+	/**
+	 * 通过重点单位 查询包含分区详情
+	 */
+	@ApiOperation(value="通过重点单位ID获取其重点部位信息",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="重点单位对象")
+	@GetMapping("/doFindZdbwListByZddwId/{zddwId}")
+	public @ResponseBody ResultVO doFindZdbwListByZddwId(@PathVariable String zddwId) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(importantpartsService.doFindZdbwListByZddwId(zddwId));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
 }

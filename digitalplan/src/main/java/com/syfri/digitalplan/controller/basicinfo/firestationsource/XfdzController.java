@@ -6,6 +6,7 @@ import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -89,6 +90,23 @@ public class XfdzController extends BaseController<XfdzVO> {
         }
         return resultVO;
     }
+    /**
+     * 通过登录用户获取队站树（带本级）
+     * by li.xue 20180725
+     */
+    @ApiOperation(value = "通过队站vo获取队站详细信息（带本级）", notes = "查询一条信息")
+    @ApiImplicitParam(name = "vo", value = "队站对象")
+    @PostMapping("/findSjdzByUserAll")
+    public @ResponseBody ResultVO findSjdzByUserAll(@RequestBody XfdzVO xfdzVO) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(xfdzService.doFindDzTreeByUserAll(xfdzVO));
+        } catch (Exception e) {
+            logger.error("{}", e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
 
     @ApiOperation(value="判断队站名称是否已存在",notes="列表信息")
     @ApiImplicitParam(name="vo",value="消防队站")
@@ -110,6 +128,7 @@ public class XfdzController extends BaseController<XfdzVO> {
      */
     @ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
     @ApiImplicitParam(name = "vo", value = "队站对象")
+    @RequiresPermissions("basicinfo/firestation:add")
     @PostMapping("/insertByXfdzVO")
     public @ResponseBody ResultVO insertByXfdzVO(@RequestBody XfdzVO xfdzVO) {
         ResultVO resultVO = ResultVO.build();
@@ -128,6 +147,7 @@ public class XfdzController extends BaseController<XfdzVO> {
      */
     @ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
     @ApiImplicitParam(name = "vo", value = "队站对象")
+    @RequiresPermissions("basicinfo/firestation:edit")
     @PostMapping("/updateByXfdzVO")
     public @ResponseBody ResultVO updateByXfdzVO(@RequestBody XfdzVO xfdzVO) {
         ResultVO resultVO = ResultVO.build();
@@ -146,6 +166,7 @@ public class XfdzController extends BaseController<XfdzVO> {
      */
     @ApiOperation(value = "通过队站vo获取队站详细信息", notes = "查询一条信息")
     @ApiImplicitParam(name = "vo", value = "队站对象")
+    @RequiresPermissions("basicinfo/firestation:delete")
     @PostMapping("/doDeleteBatch")
     public @ResponseBody ResultVO doDeleteBatch(@RequestBody List<XfdzVO> list) {
         ResultVO resultVO = ResultVO.build();
@@ -154,6 +175,56 @@ public class XfdzController extends BaseController<XfdzVO> {
         } catch (Exception e) {
             logger.error("{}", e.getMessage());
             resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
+
+    /**
+     * 根据登陆人组织机构ID获取其队站类型
+     * by li.xue 20180725
+     */
+    @ApiOperation(value = "根据登陆人组织机构ID获取其队站类型", notes = "查询一条信息")
+    @ApiImplicitParam(name = "orgId", value = "组织机构ID")
+    @GetMapping("/doFindDzlxByOrgId/{orgId}")
+    public @ResponseBody ResultVO doFindDzlxByOrgId(@PathVariable String orgId) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(xfdzService.doFindById(orgId).getDzlx());
+        } catch (Exception e) {
+            logger.error("{}", e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
+
+    /**
+     * 根据登陆人组织机构ID获取其队站类型
+     * by li.xue 20180725
+     */
+    @ApiOperation(value = "根据登陆人组织机构ID获取其子一级队站", notes = "查询一条信息")
+    @ApiImplicitParam(name = "orgId", value = "组织机构ID")
+    @GetMapping("/doFindDzYjByOrgId/{orgId}")
+    public @ResponseBody ResultVO doFindDzYjByOrgId(@PathVariable String orgId) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(xfdzService.doFindDzYjByOrgId(orgId));
+        } catch (Exception e) {
+            logger.error("{}", e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
+
+
+    @ApiOperation(value="查询分发获取其相应机构ID",notes="列表信息")
+    @ApiImplicitParam(name="vo",value = "业务实体")
+    @PostMapping("doFindCorresJgid")
+    public @ResponseBody ResultVO doFindCorresJgid(@RequestBody XfdzVO xfdzVO) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(xfdzService.doFindCorresJgid(xfdzVO));
+        } catch (Exception e) {
+            logger.error("{}",e.getMessage());
         }
         return resultVO;
     }

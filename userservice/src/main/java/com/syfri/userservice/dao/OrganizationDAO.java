@@ -1,6 +1,7 @@
 package com.syfri.userservice.dao;
 
 import com.syfri.baseapi.dao.BaseDAO;
+import com.syfri.userservice.model.OrganizationTree;
 import com.syfri.userservice.model.OrganizationVO;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface OrganizationDAO extends BaseDAO<OrganizationVO>{
 
 	/*--获取全部机构.--*/
 	List<OrganizationVO> doFindAllOrganization();
+
+	/*--根据上级机构ID查询组织机构列表 by li.xue.--*/
+	List<OrganizationTree> doFindJgBySjjgid(String sjjgid);
 }

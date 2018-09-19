@@ -107,7 +107,7 @@ public class UserController  extends BaseController<UserVO>{
 	 */
 	@ApiOperation(value="根据用户修改用户（包括账户和角色）",notes="修改")
 	@ApiImplicitParam(name="vo",value="用户对象")
-	@RequiresPermissions("system/user:update")
+	@RequiresPermissions("system/user:edit")
 	@PostMapping("/updateByVO")
 	public @ResponseBody ResultVO updateByVO(@RequestBody UserVO userVO){
 		ResultVO resultVO = ResultVO.build();

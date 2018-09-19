@@ -188,6 +188,12 @@
 		) A
 	</insert>
 
+	<!--13.-->
+	<insert id="doInsertAccoutRoleInitial" parameterType="AccountVO">
+		INSERT INTO SYS_ACCOUNT_ROLE(pkid,userid,roleid,create_id,create_name,create_time,delete_flag)
+		VALUES(SYS_GUID(),#{userid,jdbcType=VARCHAR},#{roleid,jdbcType=VARCHAR},#{createId,jdbcType=VARCHAR},#{createName,jdbcType=VARCHAR},SYSDATE,'N')
+	</insert>
+
 	<!--14.修改用户先删除用户时批量插入用户角色（中间表）-->
 	<delete id="doDeleteAccountRoles" parameterType="String">
 		DELETE FROM SYS_ACCOUNT_ROLE WHERE USERID = #{value}

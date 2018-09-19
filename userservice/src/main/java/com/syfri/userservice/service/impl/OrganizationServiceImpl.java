@@ -123,4 +123,51 @@ public class OrganizationServiceImpl extends BaseServiceImpl<OrganizationVO> imp
 		}
 		return organizationTrees;
 	}
+
+	/*--根据用户获取组织机构树.--*/
+	@Override
+	public List<OrganizationTree> doFindJgTreeByUser(OrganizationVO organizationVO){
+		List<OrganizationTree> tree1s = new ArrayList<>();
+		if (redisService.exists("organizationTreeByUser" + organizationVO.getUuid())) {
+			tree1s = (List<OrganizationTree>) redisService.get("organizationTreeByUser" + organizationVO.getUuid());
+		}else{
+			OrganizationTree tree1 = new OrganizationTree(organizationVO.getUuid(), organizationVO.getJgjc(), organizationVO.getJgid());
+			//获取组织机构下的总队
+			List<OrganizationVO> zongduiList = organizationDAO.getZongdui();
+			List<OrganizationTree> tree2s = new ArrayList<>();
+			for(OrganizationVO zongdui : zongduiList){
+				tree2s.add(new OrganizationTree(zongdui.getUuid(), zongdui.getJgjc(), zongdui.getJgid()));
+			}
+			List<OrganizationTree> tree2Children = new ArrayList<>();
+			for (OrganizationTree tree2 : tree2s) {
+				List<OrganizationTree> tree3s = organizationDAO.doFindJgBySjjgid(tree2.getUuid());
+				List<OrganizationTree> tree3Children = new ArrayList<>();
+				for (OrganizationTree tree3 : tree3s) {
+					List<OrganizationTree> tree4s = organizationDAO.doFindJgBySjjgid(tree3.getUuid());
+					List<OrganizationTree> tree4Children = new ArrayList<>();
+					for (OrganizationTree tree4 : tree4s) {
+						List<OrganizationTree> tree5s = organizationDAO.doFindJgBySjjgid(tree4.getUuid());
+						if (!tree5s.isEmpty()) {
+							tree4.setChildren(tree5s);
+						}
+						tree4Children.add(tree4);
+					}
+					if (!tree4s.isEmpty()) {
+						tree3.setChildren(tree4s);
+					}
+					tree3Children.add(tree3);
+				}
+				if (!tree3Children.isEmpty()) {
+					tree2.setChildren(tree3Children);
+				}
+				tree2Children.add(tree2);
+			}
+			if (!tree2Children.isEmpty()) {
+				tree1.setChildren(tree2Children);
+			}
+			tree1s.add(tree1);
+			redisService.set("organizationTreeByUser"+organizationVO.getUuid(), tree1s);
+		}
+		return tree1s;
+	}
 }

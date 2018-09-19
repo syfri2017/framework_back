@@ -61,8 +61,8 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
     /*--通过Dzid查询队站树，不带公安部消防局 by li.xue 2018/7/25.--*/
     public List<XfdzTree> doFindDzTreeByUser(XfdzVO xfdzVO) {
         List<XfdzTree> tree2s = new ArrayList<>();
-        if (redisService.exists("xfdzTree2" + xfdzVO.getDzid())) {
-            tree2s = (List<XfdzTree>) redisService.get("xfdzTree2" + xfdzVO.getDzid());
+        if (redisService.exists("xfdzTree" + xfdzVO.getDzid())) {
+            tree2s = (List<XfdzTree>) redisService.get("xfdzTree" + xfdzVO.getDzid());
         }else{
             tree2s = xfdzDAO.doFindXfdzBySjdzid(xfdzVO.getDzid());
             List<XfdzTree> tree2Children = new ArrayList<>();
@@ -89,15 +89,15 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
                 }
                 tree2Children.add(tree2);
             }
-            redisService.set("xfdzTree2"+xfdzVO.getDzid(), tree2s);
+            redisService.set("xfdzTree"+xfdzVO.getDzid(), tree2s);
         }
         return tree2s;
     }
     /*--通过Dzid查询队站树ALL(包括公安部消防局) by li.xue 2018/7/25.--*/
     public List<XfdzTree> doFindDzTreeByUserAll(XfdzVO xfdzVO) {
         List<XfdzTree> tree1s = new ArrayList<>();
-        if (redisService.exists("xfdzTree" + xfdzVO.getDzid())) {
-            tree1s = (List<XfdzTree>) redisService.get("xfdzTree" + xfdzVO.getDzid());
+        if (redisService.exists("xfdzTreeAll" + xfdzVO.getDzid())) {
+            tree1s = (List<XfdzTree>) redisService.get("xfdzTreeAll" + xfdzVO.getDzid());
         }else{
             XfdzTree tree1 = new XfdzTree(xfdzVO.getDzid(), xfdzVO.getDzjc(), xfdzVO.getDzbm());
             List<XfdzTree> tree2s = xfdzDAO.doFindXfdzBySjdzid(xfdzVO.getDzid());
@@ -129,7 +129,7 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
                 tree1.setChildren(tree2Children);
             }
             tree1s.add(tree1);
-            redisService.set("xfdzTree"+xfdzVO.getDzid(), tree1s);
+            redisService.set("xfdzTreeAll"+xfdzVO.getDzid(), tree1s);
         }
         return tree1s;
     }
@@ -271,5 +271,78 @@ public class XfdzServiceImpl extends BaseServiceImpl<XfdzVO> implements XfdzServ
                     break;
             }
         }
+    }
+
+    /*--根据登录人组织机构ID获取其一级队站 by li.xue 2018/9/17.--*/
+    @Override
+    public List<XfdzTree> doFindDzYjByOrgId(String orgId){
+        List<XfdzTree> list = new ArrayList<>();
+        XfdzVO xfdzVO = xfdzDAO.doFindById(orgId);
+        XfdzTree xfdzTree = new XfdzTree(xfdzVO.getDzid(), xfdzVO.getDzjc(), xfdzVO.getDzbm());
+        List<XfdzTree> children = xfdzDAO.doFindXfdzBySjdzid(orgId);
+        xfdzTree.setChildren(children);
+        list.add(xfdzTree);
+        return list;
+    }
+
+    /*--预案分发，获取其相应的机构ID by li.xue 2018/9/18.--*/
+    @Override
+    public String doFindCorresJgid(XfdzVO xfdzVO){
+        String jgid = "";
+        //登陆人机构-队站类型
+        String dlrjgid = xfdzVO.getReserve1();
+        String dlrjglx = xfdzDAO.doFindById(dlrjgid).getDzlx();
+        //预案制作机构ID、制作机构-队站类型
+        String dzid = xfdzVO.getDzid();
+        String dzlx = xfdzDAO.doFindById(dzid).getDzlx();
+        int num = 0;
+        switch(dlrjglx){
+            case "0100":
+                switch(dzlx){
+                    case "0200":
+                        num = 1;
+                        break;
+                    case "0300":
+                        num = 2;
+                        break;
+                    case "0500":
+                        num = 3;
+                        break;
+                    case "0900":
+                        num = 4;
+                        break;
+                }
+                break;
+            case "0200":
+                switch(dzlx){
+                    case "0300":
+                        num = 1;
+                        break;
+                    case "0500":
+                        num = 2;
+                        break;
+                    case "0900":
+                        num = 3;
+                        break;
+                }
+                break;
+            case "0300":
+                switch(dzlx){
+                    case "0500":
+                        num = 1;
+                        break;
+                    case "0900":
+                        num = 2;
+                        break;
+                }
+                break;
+        }
+        String temp = dzid;
+        for(int i=0; i<num; i++){
+           XfdzVO tempVO = xfdzDAO.doFindById(temp);
+           temp = tempVO.getSjdzid();
+           jgid = tempVO.getDzid();
+        }
+        return jgid;
     }
 }

@@ -11,6 +11,8 @@ public class ImportantunitsBuildingVO extends ValueObject implements Serializabl
 	private String uuid;	//主键
 	private String zddwid;	//重点单位ID
 	private String jzid;	//建筑ID
+	private String jzmc;    //建筑名称
+	private String jzlx;    //建筑类型
 	private String deleteFlag;	//删除标志
 	private String datasource;	//数据来源[100000一体化]
 	private String jdh;	//节点号
@@ -37,6 +39,18 @@ public class ImportantunitsBuildingVO extends ValueObject implements Serializabl
 	}
 	public void setJzid(String jzid){
 		this.jzid = jzid;
+	}
+	public String getJzmc() {
+		return jzmc;
+	}
+	public void setJzmc(String jzmc) {
+		this.jzmc = jzmc;
+	}
+	public String getJzlx() {
+		return jzlx;
+	}
+	public void setJzlx(String jzlx) {
+		this.jzlx = jzlx;
 	}
 	public String getDeleteFlag(){
 		return deleteFlag;

@@ -88,20 +88,24 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
             case "20":
                 buildingVO.setJzl_jzid(jzid);
                 buildingVO.setJzl_jdh(buildingVO.getJdh());
+                buildingVO.setJzl_datasource(buildingVO.getDatasource());
                 buildingDAO.doInsertJzlByVO(buildingVO);
                 break;
             case "30":
                 buildingVO.setZzl_jzid(jzid);
                 buildingVO.setZzl_jdh(buildingVO.getJdh());
+                buildingVO.setZzl_datasource(buildingVO.getDatasource());
                 buildingDAO.doInsertZzlByVO(buildingVO);
                 break;
             case "40":
                 buildingVO.setCgl_jzid(jzid);
                 buildingVO.setCgl_jdh(buildingVO.getJdh());
+                buildingVO.setCgl_datasource(buildingVO.getDatasource());
                 buildingDAO.doInsertCglByVO(buildingVO);
                 for (ChuguanVO vo : buildingVO.getChuguanList()) {
                     vo.setPkid(buildingVO.getCgl_uuid());
                     vo.setJdh(buildingVO.getJdh());
+                    vo.setDatasource(buildingVO.getDatasource());
                     buildingDAO.doInsertChuguanByVO(vo);
                 }
                 break;
@@ -115,8 +119,6 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
         String jzlx = buildingVO.getJzlx();
         BuildingVO oldVO = buildingDAO.doFindById(jzid);
         buildingDAO.doUpdateByVO(buildingVO);
-//        BuildingVO detailVO = buildingVO.getBuildingVO();
-//        detailVO.setJzid(jzid);
         if (!oldVO.getJzlx().equals(jzlx)) {
             this.doDeleteBuildingzoning(oldVO);
             this.doInsertDetailByVO(buildingVO);
@@ -162,6 +164,7 @@ public class BuildingServiceImpl extends BaseServiceImpl<BuildingVO> implements 
                             //新增
                             newVO.setPkid(buildingVO.getCgl_uuid());
                             newVO.setJdh(buildingVO.getJdh());
+                            newVO.setDatasource(buildingVO.getDatasource());
                             buildingDAO.doInsertChuguanByVO(newVO);
                         }
                     }

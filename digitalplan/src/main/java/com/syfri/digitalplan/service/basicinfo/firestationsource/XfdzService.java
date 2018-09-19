@@ -23,7 +23,7 @@ public interface XfdzService  extends BaseService<XfdzVO>{
     XfdzVO doUpdateByXfdzVO(XfdzVO xfdzVO);
 
     /*--判断队站从表执行新增还是修改 by li.xue 2018/08/02.--*/
-    public void doExeInsertOrUpdate(XfdzVO xfdzVO);
+    void doExeInsertOrUpdate(XfdzVO xfdzVO);
 
     /*--判断队站名称是否存在 by li.xue 2018/7/25.--*/
     int doCheckName(String dzmc);
@@ -33,4 +33,10 @@ public interface XfdzService  extends BaseService<XfdzVO>{
 
     /*--删除从表队站 by li.xue 2018/8/7.--*/
     void doDeleteDetail(XfdzVO xfdzVO);
+
+    /*--根据登录人组织机构ID获取其一级队站 by li.xue 2018/9/17.--*/
+    List<XfdzTree> doFindDzYjByOrgId(String orgId);
+
+    /*--预案分发，获取其相应的机构ID by li.xue 2018/9/18.--*/
+    String doFindCorresJgid(XfdzVO xfdzVO);
 }

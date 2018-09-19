@@ -4,7 +4,12 @@
 	<!--1.查询条件-->
 	<sql id="SQL_CONDITION">
 		<if test="dzid != null and dzid != '' ">
-			and t.dzid = #{dzid}
+			and t.dzid IN (
+			SELECT DZID
+			FROM YAGL_XFDZ t
+			START WITH t.DZID = #{dzid}
+			CONNECT BY PRIOR t.DZID = SJDZID
+			)
 		</if>
 		<if test="sjdzid != null and sjdzid != '' ">
 			and t.sjdzid = #{sjdzid}
@@ -75,7 +80,7 @@
 		<if test="bz != null and bz != '' ">
 			and t.bz = #{bz}
 		</if>
-		<if test="jdh != null and jdh != '' ">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000' ">
 			and t.jdh = #{jdh}
 		</if>
 		<if test="sjc != null and sjc != '' ">
@@ -110,9 +115,6 @@
 		</if>
 		<if test="gisY != null and gisY != '' ">
 			and t.gis_y = #{gisY}
-		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
 		</if>
 	</sql>
 
@@ -190,8 +192,8 @@
 		<selectKey resultType="String" order="BEFORE" keyProperty="dzid">
 			SELECT SYS_GUID() AS dzid FROM DUAL
 		</selectKey>
-		INSERT INTO YAGL_XFDZ(dzid,sjdzid,dzlx,dzbm,dzmc,dzjc,dzdz,lon,lat,xzqh,lxr,lxdh,czhm,zqcls,zbqcs,mhjzl,gxsys,gxzddws,xqmj,xqfw,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,gis_x,gis_y)
-		VALUES(#{dzid,jdbcType=VARCHAR},#{sjdzid,jdbcType=VARCHAR},#{dzlx,jdbcType=VARCHAR},#{dzbm,jdbcType=VARCHAR},#{dzmc,jdbcType=VARCHAR},#{dzjc,jdbcType=VARCHAR},#{dzdz,jdbcType=VARCHAR},#{lon,jdbcType=DOUBLE},#{lat,jdbcType=DOUBLE},#{xzqh,jdbcType=VARCHAR},#{lxr,jdbcType=VARCHAR},#{lxdh,jdbcType=VARCHAR},#{czhm,jdbcType=VARCHAR},#{zqcls,jdbcType=DOUBLE},#{zbqcs,jdbcType=DOUBLE},#{mhjzl,jdbcType=DOUBLE},#{gxsys,jdbcType=DOUBLE},#{gxzddws,jdbcType=DOUBLE},#{xqmj,jdbcType=DOUBLE},#{xqfw,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{gisX,jdbcType=DOUBLE},#{gisY,jdbcType=DOUBLE})
+		INSERT INTO YAGL_XFDZ(dzid,sjdzid,dzlx,dzbm,dzmc,dzjc,dzdz,lon,lat,xzqh,lxr,lxdh,czhm,zqcls,zbqcs,mhjzl,gxsys,gxzddws,xqmj,xqfw,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,gis_x,gis_y,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj)
+		VALUES(#{dzid,jdbcType=VARCHAR},#{sjdzid,jdbcType=VARCHAR},#{dzlx,jdbcType=VARCHAR},#{dzbm,jdbcType=VARCHAR},#{dzmc,jdbcType=VARCHAR},#{dzjc,jdbcType=VARCHAR},#{dzdz,jdbcType=VARCHAR},#{lon,jdbcType=DOUBLE},#{lat,jdbcType=DOUBLE},#{xzqh,jdbcType=VARCHAR},#{lxr,jdbcType=VARCHAR},#{lxdh,jdbcType=VARCHAR},#{czhm,jdbcType=VARCHAR},#{zqcls,jdbcType=DOUBLE},#{zbqcs,jdbcType=DOUBLE},#{mhjzl,jdbcType=DOUBLE},#{gxsys,jdbcType=DOUBLE},#{gxzddws,jdbcType=DOUBLE},#{xqmj,jdbcType=DOUBLE},#{xqfw,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{gisX,jdbcType=DOUBLE},#{gisY,jdbcType=DOUBLE},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE})
 	</insert>
 
 	<!--7.批量插入-->
@@ -615,13 +617,24 @@
 		<!--行政区划-->
 		Left Join SYS_CODELIST c3 on c3.CODETYPE = 'XZQH' And c3.DELETE_FLAG = 'N'
 		Left Join SYS_CODELIST_DETAIL c4 On c3.CODEID = c4.CODEID And c4.DELETE_FLAG = 'N' and t.xzqh = c4.CODE_VALUE
-		WHERE t.DELETE_FLAG = 'N' and t.xzqh like concat(#{xzqh},'%')
+		WHERE t.DELETE_FLAG = 'N'
+		<if test="dzid != null and dzid != '' ">
+			and t.dzid IN (
+			SELECT DZID
+			FROM YAGL_XFDZ t
+			START WITH t.DZID = #{dzid}
+			CONNECT BY PRIOR t.DZID = SJDZID
+			)
+		</if>
+		<if test="xzqh != null and xzqh != '' ">
+			and t.xzqh like concat(#{xzqh},'%')
+		</if>
 		ORDER BY t.dzbm
 	</select>
 
 	<!-- 17.根据上级队站ID查询队站列表 by li.xue -->
 	<select id="doFindXfdzBySjdzid" parameterType="String" resultType="XfdzTree">
-		SELECT dzid,dzjc,dzbm FROM YAGL_XFDZ WHERE delete_flag = 'N' AND sjdzid = #{value} order by dzbm
+		SELECT dzid,dzjc,dzbm FROM YAGL_XFDZ WHERE delete_flag = 'N' AND sjdzid = #{value} AND substr(dzlx,0,2)!='0A' order by dzbm
 	</select>
 
 	<!-- 根据队站名称查询 by li.xue -->

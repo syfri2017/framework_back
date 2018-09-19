@@ -4,6 +4,7 @@ import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,7 @@ public class FireengineController  extends BaseController<FireengineVO>{
 	 */
 	@ApiOperation(value="删除车辆信息",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="车辆")
+	@RequiresPermissions("basicinfo/fireengine:delete")
 	@PostMapping("/doDeleteFireengine")
 	public @ResponseBody ResultVO doDeleteFireengine(@RequestBody List<FireengineVO> fireengineList) {
 		ResultVO resultVO = ResultVO.build();
@@ -57,6 +59,7 @@ public class FireengineController  extends BaseController<FireengineVO>{
 	 */
 	@ApiOperation(value="车辆新增",notes="新增")
 	@ApiImplicitParam(name="vo",value="车辆")
+	@RequiresPermissions("basicinfo/fireengine:add")
 	@PostMapping("/insertByVO")
 	public @ResponseBody ResultVO insertByVO(@RequestBody FireengineVO fireengineVO){
 		ResultVO resultVO = ResultVO.build();
@@ -79,6 +82,7 @@ public class FireengineController  extends BaseController<FireengineVO>{
 	 */
 	@ApiOperation(value="修改车辆",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="车辆")
+	@RequiresPermissions("basicinfo/fireengine:edit")
 	@PostMapping("/doUpdateFireengine")
 	public @ResponseBody ResultVO doUpdateFireengine(@RequestBody FireengineVO fireengineVO) {
 		ResultVO resultVO = ResultVO.build();

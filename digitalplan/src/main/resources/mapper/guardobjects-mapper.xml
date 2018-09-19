@@ -34,7 +34,7 @@
 		 and t.zdbw = #{zdbw}
 		</if>
 		<if test="xfgx != null and xfgx != '' ">
-		 and t.xfgx = #{xfgx}
+		 and t.xfgx IN (SELECT DZID FROM YAGL_XFDZ t START WITH t.DZID = #{xfgx} CONNECT BY PRIOR t.DZID = SJDZID)
 		</if>
 		<if test="lsyhqk != null and lsyhqk != '' ">
 		 and t.lsyhqk = #{lsyhqk}
@@ -102,7 +102,7 @@
 		<if test="bz != null and bz != '' ">
 		 and t.bz = #{bz}
 		</if>
-		<if test="jdh != null and jdh != '' ">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000' ">
 		 and t.jdh = #{jdh}
 		</if>
 		<if test="sjc != null and sjc != '' ">
@@ -345,8 +345,8 @@
 		<if test="uuid != null and uuid != '' ">
 			and t.uuid = #{uuid}
 		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000'">
+			and t.jdh = #{jdh}
 		</if>
 		<!--add end-->
 	</select>

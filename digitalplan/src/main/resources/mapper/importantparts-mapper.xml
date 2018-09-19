@@ -72,7 +72,7 @@
 		t.reserve3 reserve3,
 		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
 	</sql>
-	<!--21.建筑类查询内容-->
+	<!--2-1.建筑类查询内容-->
 	<sql id="SQL_JZL_CONTENT">
 		t2.uuid uuid,
 		t2.zdbwid zdbwid,
@@ -89,7 +89,7 @@
 		t2.reserve3 reserve3,
 		TO_CHAR(t2.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
 	</sql>
-	<!--22.装置类查询内容-->
+	<!--2-2.装置类查询内容-->
 	<sql id="SQL_ZZL_CONTENT">
 		t2.uuid uuid,
 		t2.zdbwid zdbwid,
@@ -111,7 +111,7 @@
 		t2.reserve3 reserve3,
 		TO_CHAR(t2.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
 	</sql>
-	<!--23.储罐类查询内容-->
+	<!--2-3.储罐类查询内容-->
 	<sql id="SQL_CGL_CONTENT">
 		t2.uuid uuid,
 		t2.zdbwid zdbwid,
@@ -133,6 +133,51 @@
 		t2.reserve2 reserve2,
 		t2.reserve3 reserve3,
 		TO_CHAR(t2.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
+	</sql>
+	<!--2-4.建筑类-危险介质查询内容-->
+	<sql id="SQL_JZL_WXJZ_CONTENT">
+		t1.uuid uuid,
+		t1.bwid bwid,
+		t1.jzmc jzmc,
+		t1.jzsjcl jzsjcl,
+		t1.jzlhtx jzlhtx,
+		t1.jzbz jzbz,
+		t1.delete_flag deleteFlag,
+		t1.datasource datasource,
+		t1.jdh jdh,
+		TO_CHAR(t1.sjc,'yyyy-MM-dd HH24:mi:ss') sjc,
+		t1.reserve1 reserve1,
+		t1.reserve2 reserve2,
+		t1.reserve3 reserve3,
+		TO_CHAR(t1.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
+	</sql>
+	<!--2-5.储罐类-储罐查询内容-->
+	<sql id="SQL_CGL_CG_CONTENT">
+		t1.uuid uuid,
+		t1.sjlx sjlx,
+		t1.pkid pkid,
+		t1.cgmc cgmc,
+		t1.cglx cglx,
+		t1.cgrl cgrl,
+		t1.cgzj cgzj,
+		t1.cggd cggd,
+		t1.cgzc cgzc,
+		t1.gdmj gdmj,
+		t1.gzyl gzyl,
+		t1.ccwd ccwd,
+		t1.ccjzmc ccjzmc,
+		t1.ccjzlhxz ccjzlhxz,
+		t1.ccjzsjcl ccjzsjcl,
+		t1.ccjzywgd ccjzywgd,
+		t1.bz bz,
+		t1.delete_flag deleteFlag,
+		t1.datasource datasource,
+		t1.jdh jdh,
+		TO_CHAR(t1.sjc,'yyyy-MM-dd HH24:mi:ss') sjc,
+		t1.reserve1 reserve1,
+		t1.reserve2 reserve2,
+		t1.reserve3 reserve3,
+		TO_CHAR(t1.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
 	</sql>
 
 	<!--3.查询记录数-->
@@ -172,7 +217,7 @@
 			SELECT SYS_GUID() AS zdbwid FROM DUAL
 		</selectKey>
 		INSERT INTO YAGL_ZDBW(zdbwid,zddwid,zdbwlx,zdbwmc,zdbwwz,wxxfx,zysx,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
-		VALUES(#{zdbwid,jdbcType=VARCHAR},#{zddwid,jdbcType=VARCHAR},#{zdbwlx,jdbcType=VARCHAR},#{zdbwmc,jdbcType=VARCHAR},#{zdbwwz,jdbcType=VARCHAR},#{wxxfx,jdbcType=VARCHAR},#{zysx,jdbcType=VARCHAR},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},#{cjsj,jdbcType=DATE},#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+		VALUES(#{zdbwid,jdbcType=VARCHAR},#{zddwid,jdbcType=VARCHAR},#{zdbwlx,jdbcType=VARCHAR},#{zdbwmc,jdbcType=VARCHAR},#{zdbwwz,jdbcType=VARCHAR},#{wxxfx,jdbcType=VARCHAR},#{zysx,jdbcType=VARCHAR},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
 	 </insert>
 
 	<!--7.批量插入-->
@@ -209,8 +254,8 @@
 			<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=TO_DATE(#{xgsj},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="deleteFlag != null">delete_flag='N',</if>
+			xgsj=sysdate,
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="bz != null">bz=#{bz},</if>
 			<if test="jdh != null">jdh=#{jdh},</if>
@@ -416,6 +461,273 @@
 		Left Join SYS_CODELIST c1 on c1.CODETYPE = 'ZDBWLX' And c1.DELETE_FLAG = 'N'
 		Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and t.zdbwlx = c2.CODE_VALUE
 		WHERE t.DELETE_FLAG = 'N' AND t.ZDBWLX = '30' AND t.ZDDWID = #{value}
+	</select>
+
+	<!--15.新增重点部位-建筑类 by li.xue 2018/8/13 -->
+	<insert  id="doInsertByVOJzl"  parameterType="com.syfri.digitalplan.model.importantparts.ImportantpartsJzlVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_ZDBW_JZL(uuid,zdbwid,syxz,jzjg,qymj,gnms,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{zdbwid,jdbcType=VARCHAR},#{syxz,jdbcType=VARCHAR},#{jzjg,jdbcType=VARCHAR},#{qymj,jdbcType=DOUBLE},#{gnms,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+
+	<!--16.修改重点部位-建筑类 by li.xue 2018/8/13 -->
+	<update  id="doUpdateByVOJzl"  parameterType="com.syfri.digitalplan.model.importantparts.ImportantpartsJzlVO">
+		UPDATE   YAGL_ZDBW_JZL
+		<set>
+			<if test="uuid != null">uuid=#{uuid},</if>
+			<if test="zdbwid != null">zdbwid=#{zdbwid},</if>
+			<if test="syxz != null">syxz=#{syxz},</if>
+			<if test="jzjg != null">jzjg=#{jzjg},</if>
+			<if test="qymj != null">qymj=#{qymj},</if>
+			<if test="gnms != null">gnms=#{gnms},</if>
+			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  UUID = #{uuid}
+	</update>
+
+	<!--17.按重点部位ID删除重点部位-建筑类 by li.xue 2018/8/13 -->
+	<update id="doDeleteByZdbwIdJzl"  parameterType="String">
+		UPDATE  YAGL_ZDBW_JZL t SET t.DELETE_FLAG = 'Y'  WHERE t.ZDBWID = #{value}
+	</update>
+
+	<!--18.新增重点部位-建筑类-危险介质 by li.xue 2018/8/13 -->
+	<insert  id="doInsertByVOJzlWxjz"  parameterType="com.syfri.digitalplan.model.buildingzoning.WeixianjiezhiVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_ZDBW_JZL_WXJZ(uuid,bwid,jzmc,jzsjcl,jzlhtx,jzbz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{bwid,jdbcType=VARCHAR},#{jzmc,jdbcType=VARCHAR},#{jzsjcl,jdbcType=DOUBLE},#{jzlhtx,jdbcType=VARCHAR},#{jzbz,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+
+	<!--19.修改重点部位-建筑类-危险介质 by li.xue 2018/8/13 -->
+	<update  id="doUpdateByVOJzlWxjz"  parameterType="com.syfri.digitalplan.model.buildingzoning.WeixianjiezhiVO">
+		UPDATE   YAGL_ZDBW_JZL_WXJZ
+		<set>
+			<if test="uuid != null">uuid=#{uuid},</if>
+			<if test="bwid != null">bwid=#{bwid},</if>
+			<if test="jzmc != null">jzmc=#{jzmc},</if>
+			<if test="jzsjcl != null">jzsjcl=#{jzsjcl},</if>
+			<if test="jzlhtx != null">jzlhtx=#{jzlhtx},</if>
+			<if test="jzbz != null">jzbz=#{jzbz},</if>
+			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  UUID = #{uuid}
+	</update>
+
+	<!--20.按重点部位-建筑类ID删除重点部位-建筑类-危险介质 by li.xue 2018/8/13 -->
+	<update id="doDeleteByZdbwJzlIdJzlWxjz"  parameterType="String">
+		UPDATE  YAGL_ZDBW_JZL_WXJZ t SET t.DELETE_FLAG = 'Y'  WHERE  t.BWID = #{value}
+	</update>
+
+	<!--21.新增重点部位-装置类 by li.xue 2018/8/13 -->
+	<insert  id="doInsertByVOZzl"  parameterType="com.syfri.digitalplan.model.importantparts.ImportantpartsZzlVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_ZDBW_ZZL(uuid,zdbwid,jzjg,zdmj,zzgd,zzzc,jsfzr,jsfzrdh,ylxx,cwxx,gylc,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{zdbwid,jdbcType=VARCHAR},#{jzjg,jdbcType=VARCHAR},#{zdmj,jdbcType=DOUBLE},#{zzgd,jdbcType=DOUBLE},#{zzzc,jdbcType=VARCHAR},#{jsfzr,jdbcType=VARCHAR},#{jsfzrdh,jdbcType=VARCHAR},#{ylxx,jdbcType=VARCHAR},#{cwxx,jdbcType=VARCHAR},#{gylc,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+
+	<!--22.修改重点部位-装置类 by li.xue 2018/8/13 -->
+	<update  id="doUpdateByVOZzl"  parameterType="com.syfri.digitalplan.model.importantparts.ImportantpartsZzlVO">
+		UPDATE   YAGL_ZDBW_ZZL
+		<set>
+			<if test="uuid != null">uuid=#{uuid},</if>
+			<if test="zdbwid != null">zdbwid=#{zdbwid},</if>
+			<if test="jzjg != null">jzjg=#{jzjg},</if>
+			<if test="zdmj != null">zdmj=#{zdmj},</if>
+			<if test="zzgd != null">zzgd=#{zzgd},</if>
+			<if test="zzzc != null">zzzc=#{zzzc},</if>
+			<if test="jsfzr != null">jsfzr=#{jsfzr},</if>
+			<if test="jsfzrdh != null">jsfzrdh=#{jsfzrdh},</if>
+			<if test="ylxx != null">ylxx=#{ylxx},</if>
+			<if test="cwxx != null">cwxx=#{cwxx},</if>
+			<if test="gylc != null">gylc=#{gylc},</if>
+			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  UUID = #{uuid}
+	</update>
+
+	<!--23.按重点部位ID删除重点部位-装置类 by li.xue 2018/8/13 -->
+	<update id="doDeleteByZdbwIdZzl"  parameterType="String">
+		UPDATE  YAGL_ZDBW_ZZL t SET t.DELETE_FLAG = 'Y'  WHERE t.ZDBWID = #{value}
+	</update>
+
+	<!--24.新增重点部位-储罐类 by li.xue 2018/8/13 -->
+	<insert  id="doInsertByVOCgl"  parameterType="com.syfri.digitalplan.model.importantparts.ImportantpartsCglVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_ZDBW_CGL(uuid,zdbwid,zrj,cgsl,cgjg,ccjzms,jsfzr,jsfzrdh,plqkd,plqkn,plqkx,plqkb,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{zdbwid,jdbcType=VARCHAR},#{zrj,jdbcType=DOUBLE},#{cgsl,jdbcType=DOUBLE},#{cgjg,jdbcType=DOUBLE},#{ccjzms,jdbcType=VARCHAR},#{jsfzr,jdbcType=VARCHAR},#{jsfzrdh,jdbcType=VARCHAR},#{plqkd,jdbcType=VARCHAR},#{plqkn,jdbcType=VARCHAR},#{plqkx,jdbcType=VARCHAR},#{plqkb,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+
+	<!--25.修改重点部位-储罐类 by li.xue 2018/8/13 -->
+	<update  id="doUpdateByVOCgl"  parameterType="com.syfri.digitalplan.model.importantparts.ImportantpartsCglVO">
+		UPDATE   YAGL_ZDBW_CGL
+		<set>
+			<if test="uuid != null">uuid=#{uuid},</if>
+			<if test="zdbwid != null">zdbwid=#{zdbwid},</if>
+			<if test="zrj != null">zrj=#{zrj},</if>
+			<if test="cgsl != null">cgsl=#{cgsl},</if>
+			<if test="cgjg != null">cgjg=#{cgjg},</if>
+			<if test="ccjzms != null">ccjzms=#{ccjzms},</if>
+			<if test="jsfzr != null">jsfzr=#{jsfzr},</if>
+			<if test="jsfzrdh != null">jsfzrdh=#{jsfzrdh},</if>
+			<if test="plqkd != null">plqkd=#{plqkd},</if>
+			<if test="plqkn != null">plqkn=#{plqkn},</if>
+			<if test="plqkx != null">plqkx=#{plqkx},</if>
+			<if test="plqkb != null">plqkb=#{plqkb},</if>
+			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  UUID = #{uuid}
+	</update>
+
+	<!--26.按重点部位ID删除重点部位-储罐类 by li.xue 2018/8/13 -->
+	<update id="doDeleteByZdbwIdCgl"  parameterType="String">
+		UPDATE  YAGL_ZDBW_CGL t SET t.DELETE_FLAG = 'Y'  WHERE t.ZDBWID = #{value}
+	</update>
+
+	<!--27.新增重点部位-储罐类-储罐 by li.xue 2018/8/13 -->
+	<insert  id="doInsertByVOCglCg"  parameterType="com.syfri.digitalplan.model.buildingzoning.ChuguanVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_JZBW_CGL_CG(uuid,sjlx,pkid,cgmc,cglx,cgrl,cgzj,cggd,cgzc,gdmj,gzyl,ccwd,ccjzmc,ccjzlhxz,ccjzsjcl,ccjzywgd,bz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{sjlx,jdbcType=VARCHAR},#{pkid,jdbcType=VARCHAR},#{cgmc,jdbcType=VARCHAR},#{cglx,jdbcType=VARCHAR},#{cgrl,jdbcType=DOUBLE},#{cgzj,jdbcType=DOUBLE},#{cggd,jdbcType=DOUBLE},#{cgzc,jdbcType=DOUBLE},#{gdmj,jdbcType=DOUBLE},#{gzyl,jdbcType=VARCHAR},#{ccwd,jdbcType=VARCHAR},#{ccjzmc,jdbcType=VARCHAR},#{ccjzlhxz,jdbcType=VARCHAR},#{ccjzsjcl,jdbcType=DOUBLE},#{ccjzywgd,jdbcType=DOUBLE},#{bz,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	</insert>
+
+	<!--28.修改重点部位-储罐类-储罐 by li.xue 2018/8/13 -->
+	<update  id="doUpdateByVOCglCg"  parameterType="com.syfri.digitalplan.model.buildingzoning.ChuguanVO">
+		UPDATE   YAGL_JZBW_CGL_CG
+		<set>
+			<if test="uuid != null">uuid=#{uuid},</if>
+			<if test="sjlx != null">sjlx=#{sjlx},</if>
+			<if test="pkid != null">pkid=#{pkid},</if>
+			<if test="cgmc != null">cgmc=#{cgmc},</if>
+			<if test="cglx != null">cglx=#{cglx},</if>
+			<if test="cgrl != null">cgrl=#{cgrl},</if>
+			<if test="cgzj != null">cgzj=#{cgzj},</if>
+			<if test="cggd != null">cggd=#{cggd},</if>
+			<if test="cgzc != null">cgzc=#{cgzc},</if>
+			<if test="gdmj != null">gdmj=#{gdmj},</if>
+			<if test="gzyl != null">gzyl=#{gzyl},</if>
+			<if test="ccwd != null">ccwd=#{ccwd},</if>
+			<if test="ccjzmc != null">ccjzmc=#{ccjzmc},</if>
+			<if test="ccjzlhxz != null">ccjzlhxz=#{ccjzlhxz},</if>
+			<if test="ccjzsjcl != null">ccjzsjcl=#{ccjzsjcl},</if>
+			<if test="ccjzywgd != null">ccjzywgd=#{ccjzywgd},</if>
+			<if test="bz != null">bz=#{bz},</if>
+			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="datasource != null">datasource=#{datasource},</if>
+			<if test="jdh != null">jdh=#{jdh},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  UUID = #{uuid}
+	</update>
+
+	<!--29.按重点部位-储罐类ID删除重点部位-储罐类-储罐 by li.xue 2018/8/13 -->
+	<update id="doDeleteByZdbwCglIdCglCg"  parameterType="String">
+		UPDATE  YAGL_JZBW_CGL_CG t SET t.DELETE_FLAG = 'Y'  WHERE t.PKID = #{value}
+	</update>
+
+	<!--30.根据重点部位ID查询重点部位-建筑类 by li.xue 2018/8/14-->
+	<select id="doFindJzlByZdbwId" parameterType="String" resultType="com.syfri.digitalplan.model.importantparts.ImportantpartsJzlVO">
+		SELECT
+		<include refid="SQL_JZL_CONTENT"/>
+		FROM YAGL_ZDBW_JZL t2
+		WHERE t2.DELETE_FLAG = 'N' AND t2.ZDBWID = #{value}
+	</select>
+
+	<!--30.根据重点部位ID查询重点部位-装置类 by li.xue 2018/8/14-->
+	<select id="doFindZzlByZdbwId" parameterType="String" resultType="com.syfri.digitalplan.model.importantparts.ImportantpartsZzlVO">
+		SELECT
+		<include refid="SQL_ZZL_CONTENT"/>
+		FROM YAGL_ZDBW_ZZL t2
+		WHERE t2.DELETE_FLAG = 'N' AND t2.ZDBWID = #{value}
+	</select>
+
+	<!--30.根据重点部位ID查询重点部位-储罐类 by li.xue 2018/8/14-->
+	<select id="doFindCglByZdbwId" parameterType="String" resultType="com.syfri.digitalplan.model.importantparts.ImportantpartsCglVO">
+		SELECT
+		<include refid="SQL_CGL_CONTENT"/>
+		FROM YAGL_ZDBW_CGL t2
+		WHERE t2.DELETE_FLAG = 'N' AND t2.ZDBWID = #{value}
+	</select>
+
+	<!--31.根据重点部位-建筑类ID查询其危险介质 by li.xue 2081/8/14-->
+	<select id="doFindWxjzByJzlId" parameterType="String" resultType="com.syfri.digitalplan.model.buildingzoning.WeixianjiezhiVO">
+		SELECT
+		<include refid="SQL_JZL_WXJZ_CONTENT"/>
+		FROM YAGL_ZDBW_JZL_WXJZ t1
+		WHERE t1.DELETE_FLAG = 'N' AND t1.BWID = #{value}
+	</select>
+
+	<!--31.根据重点部位-储罐类ID查询其罐体信息 by li.xue 2081/8/14-->
+	<select id="doFindCgByCglId" parameterType="String" resultType="com.syfri.digitalplan.model.buildingzoning.ChuguanVO">
+		SELECT
+		<include refid="SQL_CGL_CG_CONTENT"/>
+		FROM YAGL_JZBW_CGL_CG t1
+		WHERE t1.DELETE_FLAG = 'N' AND t1.SJLX = 'BW' AND t1.PKID = #{value}
+	</select>
+
+	<!--32.通过危险介质ID删除危险介质 by li.xue 2018/8/14-->
+	<update id="doDeleteWxjzById"  parameterType="String">
+		UPDATE  YAGL_ZDBW_JZL_WXJZ t SET t.DELETE_FLAG = 'Y'  WHERE t.UUID = #{value}
+	</update>
+
+	<!--33.通过储罐ID删除储罐 by li.xue 2018/8/14-->
+	<update id="doDeleteCgById"  parameterType="String">
+		UPDATE  YAGL_JZBW_CGL_CG t SET t.DELETE_FLAG = 'Y'  WHERE t.UUID = #{value}
+	</update>
+
+	<!--34.根据重点部位ID判断JZL从表是否存在 by li.xue 2018/8/15-->
+	<select id="doCountJzlByZdbwId" parameterType="String" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_ZDBW_JZL t WHERE DELETE_FLAG = 'N' AND t.zdbwid = #{zdbwid}
+	</select>
+
+	<!--35.根据重点部位ID判断ZZL从表是否存在 by li.xue 2018/8/15-->
+	<select id="doCountZzlByZdbwId" parameterType="String" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_ZDBW_ZZL t WHERE DELETE_FLAG = 'N' AND t.zdbwid = #{zdbwid}
+	</select>
+
+	<!--36.根据重点部位ID判断CGL从表是否存在 by li.xue 2018/8/15-->
+	<select id="doCountCglByZdbwId" parameterType="String" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_ZDBW_CGL t WHERE DELETE_FLAG = 'N' AND t.zdbwid = #{zdbwid}
 	</select>
 
 </mapper>

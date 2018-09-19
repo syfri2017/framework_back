@@ -80,7 +80,7 @@
 		<if test="bz != null and bz != '' ">
 			and t.bz = #{bz}
 		</if>
-		<if test="jdh != null and jdh != '' ">
+		<if test="jdh != null and jdh != '' and orgJgid != '01000000' ">
 			and t.jdh = #{jdh}
 		</if>
 		<if test="sjc != null and sjc != '' ">
@@ -103,9 +103,6 @@
 		</if>
 		<if test="endtime != null and endtime != '' ">
 			and TO_CHAR(t.shsj,'yyyy/MM/dd') &lt;= #{endtime}
-		</if>
-		<if test="orgJgid != null and orgJgid != '' and orgJgid != '01000000'">
-			and t.jdh = #{orgJgid}
 		</if>
 	</sql>
 
@@ -156,7 +153,8 @@
 		c2.code_name yalxmc,
 		c4.code_name yaztmc,
 		c6.code_name yajbmc,
-		c8.code_name shztmc
+		c8.code_name shztmc,
+		c9.jgmc zzjgmc
 		FROM YAGL_YA_ZDDW t
 		<!--预案类型-->
 		Left Join SYS_CODELIST c1 on c1.CODETYPE = 'YALX' And c1.DELETE_FLAG = 'N'
@@ -170,6 +168,8 @@
 		<!--审核状态-->
 		Left Join SYS_CODELIST c7 on c7.CODETYPE = 'YASHZT' And c7.DELETE_FLAG = 'N'
 		Left Join SYS_CODELIST_DETAIL c8 On c8.CODEID = c7.CODEID And c8.DELETE_FLAG = 'N' and t.SHZT = c8.CODE_VALUE
+		<!--制作机构-->
+		Left Join SYS_ORGANIZATION c9 on c9.UUID = t.jgid
 		WHERE t.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
 		ORDER BY NVL(xgsj,zzsj) DESC
@@ -311,7 +311,8 @@
 		c2.code_name yalxmc,
 		c4.code_name yaztmc,
 		c6.code_name yajbmc,
-		c8.code_name shztmc
+		c8.code_name shztmc,
+		c9.jgmc zzjgmc
 		FROM YAGL_YA_ZDDW t
 		<!--预案类型-->
 		Left Join SYS_CODELIST c1 on c1.CODETYPE = 'YALX' And c1.DELETE_FLAG = 'N'
@@ -325,6 +326,8 @@
 		<!--审核状态-->
 		Left Join SYS_CODELIST c7 on c7.CODETYPE = 'YASHZT' And c7.DELETE_FLAG = 'N'
 		Left Join SYS_CODELIST_DETAIL c8 On c8.CODEID = c7.CODEID And c8.DELETE_FLAG = 'N' and t.SHZT = c8.CODE_VALUE
+		<!--制作机构-->
+		Left Join SYS_ORGANIZATION c9 on c9.UUID = t.jgid
 		WHERE t.DELETE_FLAG = 'N'
 		ORDER BY NVL(xgsj,zzsj) DESC
 		<include refid="SQL_CONDITION"/>
@@ -379,7 +382,8 @@
 		c2.code_name yalxmc,
 		c4.code_name yaztmc,
 		c6.code_name yajbmc,
-		c8.code_name shztmc
+		c8.code_name shztmc,
+		c9.jgmc zzjgmc
 		FROM YAGL_YA_ZDDW t
 		<!--预案类型-->
 		Left Join SYS_CODELIST c1 on c1.CODETYPE = 'YALX' And c1.DELETE_FLAG = 'N'
@@ -393,6 +397,7 @@
 		<!--审核状态-->
 		Left Join SYS_CODELIST c7 on c7.CODETYPE = 'YASHZT' And c7.DELETE_FLAG = 'N'
 		Left Join SYS_CODELIST_DETAIL c8 On c8.CODEID = c7.CODEID And c8.DELETE_FLAG = 'N' and t.SHZT = c8.CODE_VALUE
+		Left Join SYS_ORGANIZATION c9 on c9.UUID = t.jgid
 		WHERE t.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
 		<!--预案审核列表不加载状态为编辑中的预案-->
