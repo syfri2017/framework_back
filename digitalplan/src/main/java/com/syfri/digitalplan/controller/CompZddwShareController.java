@@ -239,7 +239,6 @@ public class CompZddwShareController {
             // 重点部位（储罐类）
             vc.put("cglpartsList", importantpartsService.doFindCglListByZddwId(zddwid));
             // 建筑分区和消防设施
-
             List<BuildingVO> bvs = importantunitsService.doFindBuildingDetailsAndFirefacilitiesByVo(vo);
             vc.put("areaBuildingList", doJxsl(bvs));
 
@@ -270,6 +269,7 @@ public class CompZddwShareController {
 
                 //3、将json对象转化为json字符串
                 String result = jsonObject.toString();
+                result=new StringBuffer("var data =").append(result).toString();
                 String targerPath=new StringBuffer(yafjxzProperties.getSavePath()).append("/temp/")
                         .append(System.currentTimeMillis()).append("/").toString();
             String targerDwmcPath=new StringBuffer(targerPath).append(vo.getDwmc()).toString();
