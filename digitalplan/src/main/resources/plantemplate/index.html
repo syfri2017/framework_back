@@ -512,116 +512,12 @@
 		</div>
 		<div style="display: none">
 			<ul class="menu">
-				<li class="title">
-					<h4 class="item item1">单体建筑-<span id="dtjza"></span>
-						<span style="float:right; margin: 5px;font-size: 10px;">收起</span>
-					</h4>
-					<ul class="content" style="overflow-y:auto;overflow-x:hidden;">
-						<li class="liz">
-							<p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-							<p class="wz" class="item2" target="right">
-							</p>
-						</li>
-						<li class="liy">
-							<p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-							<p class="wzb" class="item2" target="right">
-							</p>
-						</li>
-						<li class="liz">
-							<p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-							<p class="wzc" class="item2" target="right">
-							</p>
-						</li>
-						<li class="liy">
-							<p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-							<p class="wzd" class="item2" target="right">
-							</p>
-						</li>
-						<li class="liz">
-							<p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-							<p class="wze" class="item2" target="right" </p>
-						</li>
-						<li class="liy">
-							<p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-							<p class="wzh" class="item2" target="right">
-							</p>
-						</li>
-						<li class="liz">
-							<p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-							<p class="wzk" class="item2" target="right">
-							</p>
-						</li>
-						<li class="liy">
-							<p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-							<p class="wzl" class="item2" target="right">
-							</p>
-						</li>
-
-					</ul>
-				</li>
-				<li class="title">
-					<h4 class="item item1">单体建筑-<span id="dtjzb"></span>
-						<span style="float:right; margin: 5px;font-size: 10px;">收起</span>
-					</h4>
-					<ul class="content" style="overflow-y:auto;overflow-x:hidden;">
-						<li class="liz">
-							<p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-							<p class="wz" class="item2" target="right">
-							</p>
-						</li>
-						<li class="liy">
-							<p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-							<p class="wzb" class="item2" target="right">
-							</p>
-						</li>
-						<li class="liz">
-							<p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-							<p class="wzc" class="item2" target="right">
-							</p>
-						</li>
-						<li class="liy">
-							<p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-							<p class="wzd" class="item2" target="right">
-							</p>
-						</li>
-						<li class="liz">
-							<p style="font-size: 13px;color: red;font-weight:700 ;">安全疏散设施</p>
-							<p class="wze" class="item2" target="right">
-							</p>
-						</li>
-
-						<li class="liy">
-							<p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-							<p class="wzh" class="item2" target="right">
-							</p>
-						</li>
-
-						<li class="liz">
-							<p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-							<p class="wzk" class="item2" target="right">
-							</p>
-						</li>
-						<li class="liy">
-							<p style="font-size: 13px;color: #3366CC;font-weight:700 ;">消防水系统</p>
-							<p class="wzl" class="item2" target="right">
-							</p>
-						</li>
-
-					</ul>
+				<li class="title" id="dtjza">
 				</li>
 			</ul>
 		</div>
 		<div class="zzbs" style="display: none">
-			<ul>
-				<li class="liz">
-					<h4 id="zdbwmc"></h4>
-					<p id="zdbwwz"></p>
-				</li>
-				<li class="liy">
-					<h4 id="zdbwmcb"></h4>
-					<p id="zdbwwzb"></p>
-				</li>
-
+			<ul id="zdbwmc">
 			</ul>
 		</div>
 		<div class="zzbs" style="display: none">
@@ -911,12 +807,16 @@
 
         fhdjmc = data.compZddwInfo.fhdjmc;
         $("#fhdjmc").append(fhdjmc);
+        //数据
+        for(var i=0;i<1; i++){
+            dzmczd = data.disastersetList[i].forcedevList[i].dzmc;
+            $("#dzmczd").append(dzmczd);
+        }
 
-//      dzmczd = data.disastersetList[0].forcedevList[0].dzmc;
-//      $("#dzmczd").append(dzmczd);
-//
-//      xgsj = data.disastersetList[0].forcedevList[0].xgsj;
-//      $("#xgsj").append(xgsj);
+        for(var i=0;i<1; i++){
+            xgsj = data.disastersetList[i].forcedevList[i].xgsj;
+            $("#xgsj").append(xgsj);
+        }
 
         zzrmc = data.compPlanInfo.zzrmc;
         $("#zzrmc").append(zzrmc);
@@ -926,9 +826,6 @@
 
         dwdz = data.compZddwInfo.dwdz;
         $("#dwdz").append(dwdz);
-
-        gisX = data.compZddwInfo.gisX + ',' + data.compZddwInfo.gisY;
-        $("#gisX").append(gisX);
 
         jzflmc = data.compZddwInfo.jzflmc;
         $("#jzflmc").append(jzflmc);
@@ -966,51 +863,60 @@
 
         //建筑信息
         for(var i = 0; i < data.areaBuildingList.length; i++) {
-            jzmc = " <li class='liz'><p>单体建筑</p><h4>" + data.areaBuildingList[i].jzmc + "</h4></li>";
+            jzmc = " <li style='padding:10px;'><p>单体建筑</p><h4>" + data.areaBuildingList[i].jzmc + "</h4></li>";
             $("#jzmc").append(jzmc);
         }
         //消防设施
-//      dtjza = data.areaBuildingList[0].jzmc;
-//      $("#dtjza").append(dtjza);
-//      dtjzb = data.areaBuildingList[1].jzmc;
-//      $("#dtjzb").append(dtjzb);
-//      wz = data.areaBuildingList[0].firefacilites[1001][1].wz;
-//      $(".wz").append(wz);
-//      wzb = data.areaBuildingList[0].firefacilites[1001][0].wz;
-//      $(".wzb").append(wzb);
-//      wzc = data.areaBuildingList[0].firefacilites[1002][1].wz;
-//      $(".wzc").append(wzc);
-//      wzd = data.areaBuildingList[0].firefacilites[1002][0].wz;
-//      $(".wzd").append(wzd);
-//      wze = data.areaBuildingList[0].firefacilites[1003][0].wz;
-//      $(".wze").append(wze);
-//      wzh = data.areaBuildingList[0].firefacilites[2001][0].wz;
-//      $(".wzh").append(wzh);
-//
-//      wzk = data.areaBuildingList[0].firefacilites[2004][1].wz;
-//      $(".wzk").append(wzk);
-//
-//      wzl = data.areaBuildingList[0].firefacilites[2004][0].wz;
-//      $(".wzl").append(wzl);
-//
-//      //重点部位
-//      zdbwmc = data.jzlpartsList[0].zdbwmc;
-//      $("#zdbwmc").append(zdbwmc);
-//      zdbwmcb = data.jzlpartsList[1].zdbwmc;
-//      $("#zdbwmcb").append(zdbwmcb);
-//
-//      zdbwwz = data.jzlpartsList[0].zdbwwz;
-//      $("#zdbwwz").append(zdbwwz);
-//
-//      zdbwwzb = data.jzlpartsList[1].zdbwwz;
-//      $("#zdbwwzb").append(zdbwwzb);
-        //灾情信息 disastersetList
-        for(var i = 0; i < data.disastersetList.length; i++) {
+        for(var i = 0; i < data.areaBuildingList.length; i++) {
+            var wza="";
+            var wzb="";
+            var wzc="";
+            var wzd="";
+            var wze="";
+            for(var j=0;j<data.areaBuildingList.length;j++ ){
 
-            zqbwb = "<li style='background:#f0f8ff;padding:10px;'><h4>灾情" + [i + 1] + "</h4><p>灾情位置:<span>" + data.disastersetList[i].zqbw + "</span></p></li>";
-            $("#zqbwb").append(zqbwb);
+                wza += "<li class='liz'><p class='item2' target='right'>"+
+                    data.areaBuildingList[i].firefacilites[1001][j].wz
+                    +"</p></li>";
+            };
+            for(var r=0;r<data.areaBuildingList.length;r++ ){
+                wzb += "<li class='liz'><p class='item2' target='right'>"+
+                    data.areaBuildingList[i].firefacilites[1002][r].wz
+                    +"</p></li>";
+            };
+            for(var p=0;p<1;p++ ){
+                wzd += "<li class='liz'><p class='item2' target='right'>"+
+                    data.areaBuildingList[i].firefacilites[1003][p].wz
+                    +"</p></li>";
+            };
+            for(var k=0;k<1;k++ ){
+                wze += "<li class='liz'><p class='item2' target='right'>"+
+                    data.areaBuildingList[i].firefacilites[2001][k].wz
+                    +"</p></li>";
+            };
+            for(var s=0;s<data.areaBuildingList.length;s++ ){
+                wzc += "<li class='liz'><p class='item2' target='right'>"+
+                    data.areaBuildingList[i].firefacilites[2004][s].wz
+                    +"</p></li>";
+            };
+
+            dtjza = "<h4 class='item item1'>单体建筑-<span>"+data.areaBuildingList[i].jzmc+"</span><span style='float:right; margin: 5px;font-size: 10px;'></span></h4>"
+                +"<ul class='content' style='overflow-y:auto;overflow-x:hidden;'>"+
+                wza+wzb+wze+wzd+wzc+"</ul>";
+            $("#dtjza").append(dtjza);
         }
 
+        //重点部位
+        for(var i=0;i<data.jzlpartsList.length; i++){
+            zdbwmc = "<li style='padding:10px;'><h4>"+data.jzlpartsList[i].zdbwmc+"</h4><p>"+data.jzlpartsList[0].zdbwwz+"</p></li>";
+            $("#zdbwmc").append(zdbwmc);
+        }
+
+        //灾情信息 disastersetList
+        for(var i = 0; i < data.disastersetList.length; i++) {
+            zqbwb = "<li style='padding:10px;'><h4>灾情" + [i + 1] + "</h4><p>灾情位置:<span>" + data.disastersetList[i].zqbw + "</span></p></li>";
+            $("#zqbwb").append(zqbwb);
+        }
 
     });
 </script>
@@ -1112,16 +1018,14 @@
         });
         gisX = data.compZddwInfo.gisX;
         gisY = data.compZddwInfo.gisY;
-
         var gispt = new BMap.Point(gisX, gisY);
-
         var middle = wgs84_bd09(gispt);
         var pt = new BMap.Point(middle.lng, middle.lat);
-
+        gisXY = middle.lng + ','+'<br>' + middle.lat;
+        $("#gisX").append(gisXY);
         map.centerAndZoom(pt, 17);
         map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
         //创建图标
-
         map.clearOverlays();
         enableMapClick: false;
         var myIcon = new BMap.Icon("img/icon/w1_03.png", new BMap.Size(26, 26));
@@ -1129,14 +1033,11 @@
             icon: myIcon
         }); // 创建标注
         map.addOverlay(marker);
-        //
         marker.addEventListener("click", function() {
-
             gisX = data.compZddwInfo.gisX;
             gisY = data.compZddwInfo.gisY;
             var middle = wgs84_bd09(gispt);
             var pt = new BMap.Point(middle.lng, middle.lat);
-
             var myIcon2 = new BMap.Icon("img/icon/w1_05.png", new BMap.Size(26, 26)); //点击后的新图标
             marker.setIcon(myIcon2);
             marker.setTop(true, 27000000); //标注遮挡问题
@@ -1173,7 +1074,6 @@
             var infoWindow = new BMap.InfoWindow(contents); //创建信息窗口对象
             map.openInfoWindow(infoWindow, pt);
         });
-
         var opts = {
             position: pt, // 指定文本标注所在的地理位置
             offset: new BMap.Size(-15, 30) //设置文本偏移量
@@ -1204,10 +1104,8 @@
             if(r != null) return unescape(r[2]);
             return null;
         };
-
         //delta
         function delta(lng, lat) {
-
             var a = 6378245.0; //  a: 卫星椭球坐标投影到平面地图坐标系的投影因子。
             var ee = 0.00669342162296594323; //  ee: 椭球的偏心率。
             var dLng = transformLng(lng - 105.0, lat - 35.0);
@@ -1289,7 +1187,6 @@
             ret += (150.0 * Math.sin(x / 12.0 * this.PI) + 300.0 * Math.sin(x / 30.0 * this.PI)) * 2.0 / 3.0;
             return ret;
         };
-
 
     })
 </script>
