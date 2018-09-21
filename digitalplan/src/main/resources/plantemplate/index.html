@@ -10,7 +10,6 @@
 	<link href="http://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.css" rel="stylesheet" type="text/css" />
 	<link href="css/viewer.min.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" href="css/toolbar.css">
-	<link rel="stylesheet" href="css/catalog.css">
 	<link rel="stylesheet" href="css/dialog.css">
 	<link rel="stylesheet" href="css/viewer.min.css">
 	<link rel="stylesheet" href="css/project.css">
@@ -389,11 +388,11 @@
 				</tr>
 				<tr style='height:40px;'>
 					<td class="lna">防火管辖大队:</td>
-					<td class="lnb" id="dzmc"></td>
+					<td class="lnb" id="fhdzidmc"></td>
 				</tr>
 				<tr style='height:40px;'>
 					<td class="lna">灭火责任队站:</td>
-					<td class="lnb" id="dzmczd"></td>
+					<td class="lnb" id="mhdzidmc"></td>
 				</tr>
 				<tr style='height:40px;'>
 					<td class="lna">审核/更新时间:</td>
@@ -711,6 +710,8 @@
 </body>
 <script type="text/javascript" src="shuju.json"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/screenfull.min.js" ></script>
+<script type="text/javascript" src="js/toolbar.js" ></script>
 <script>
     $("#imgbtn").click(function() {
         $("#dailog").show();
@@ -730,7 +731,7 @@
         var yajbmc = "";
         var fhdjmc = "";
         var dzmc = [];
-        var dzmczd = [];
+        var dzmczd = "";
         var xgsj = [];
         var zzrmc = "";
         var shrmc = "";
@@ -808,15 +809,17 @@
         fhdjmc = data.compZddwInfo.fhdjmc;
         $("#fhdjmc").append(fhdjmc);
         //数据
-        for(var i=0;i<1; i++){
-            dzmczd = data.disastersetList[i].forcedevList[i].dzmc;
-            $("#dzmczd").append(dzmczd);
-        }
-
-        for(var i=0;i<1; i++){
-            xgsj = data.disastersetList[i].forcedevList[i].xgsj;
-            $("#xgsj").append(xgsj);
-        }
+        //防火
+        fhdzidmc = data.compZddwInfo.fhdzidmc;
+        $("#fhdzidmc").append(fhdzidmc);
+        //灭火
+        mhdzidmc = data.compZddwInfo.mhdzidmc;
+        $("#mhdzidmc").append(mhdzidmc);
+        xgsj = data.compZddwInfo.xgsj;
+        $("#xgsj").append(xgsj);
+        //备注
+        bz = data.compZddwInfo.bz;
+        $("#bz").append(bz);
 
         zzrmc = data.compPlanInfo.zzrmc;
         $("#zzrmc").append(zzrmc);
@@ -862,8 +865,8 @@
         $("#plqkb").append(plqkb);
 
         //建筑信息
-        for(var i = 0; i < data.areaBuildingList.length; i++) {
-            jzmc = " <li style='padding:10px;'><p>单体建筑</p><h4>" + data.areaBuildingList[i].jzmc + "</h4></li>";
+        for(var z = 0; z < data.areaBuildingList.length; z++) {
+            jzmc = " <li style='padding:10px;'><p>单体建筑</p><h4>" + data.areaBuildingList[z].jzmc + "</h4></li>";
             $("#jzmc").append(jzmc);
         }
         //消防设施
@@ -907,21 +910,20 @@
         }
 
         //重点部位
-        for(var i=0;i<data.jzlpartsList.length; i++){
-            zdbwmc = "<li style='padding:10px;'><h4>"+data.jzlpartsList[i].zdbwmc+"</h4><p>"+data.jzlpartsList[0].zdbwwz+"</p></li>";
+        for(var m=0;m<data.jzlpartsList.length; m++){
+            zdbwmc = "<li style='padding:10px;'><h4>"+data.jzlpartsList[m].zdbwmc+"</h4><p>"+data.jzlpartsList[m].zdbwwz+"</p></li>";
             $("#zdbwmc").append(zdbwmc);
         }
 
         //灾情信息 disastersetList
-        for(var i = 0; i < data.disastersetList.length; i++) {
-            zqbwb = "<li style='padding:10px;'><h4>灾情" + [i + 1] + "</h4><p>灾情位置:<span>" + data.disastersetList[i].zqbw + "</span></p></li>";
+        for(var  n = 0; n < data.disastersetList.length; n++) {
+            zqbwb = "<li style='padding:10px;'><h4>灾情" + [n + 1] + "</h4><p>灾情位置:<span>" + data.disastersetList[n].zqbw + "</span></p></li>";
             $("#zqbwb").append(zqbwb);
         }
 
     });
 </script>
 <script src="js/toolbar.js"></script>
-<script src="js/catalog.js"></script>
 <script src="js/screenfull.min.js"></script>
 <script type="text/javascript">
     var viewportSize = {
