@@ -138,16 +138,33 @@
     <!--4.按条件查询记录-->
     <select id="doSearchListByVO" parameterType="JxcsjzxxVO" resultType="JxcsjzxxVO">
         SELECT
-        <include refid="SQL_CONTENT"/>
-        FROM YAGL_JXCS_JZXX t WHERE t.DELETE_FLAG = 'N'
+        <include refid="SQL_CONTENT"/>,
+        c2.code_name jzsyxzmc,
+        c4.code_name jzjgmc
+        FROM YAGL_JXCS_JZXX t
+        <!--建筑使用性质-->
+        Left Join SYS_CODELIST c1 on c1.CODETYPE = 'JZSYXZ' And c1.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and t.jzsyxz = c2.CODE_VALUE
+        <!--建筑结构-->
+        Left Join SYS_CODELIST c3 on c3.CODETYPE = 'JZJG' And c3.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c4 On c3.CODEID = c4.CODEID And c4.DELETE_FLAG = 'N' and t.jzjg = c4.CODE_VALUE
+        WHERE t.DELETE_FLAG = 'N'
         <include refid="SQL_CONDITION"/>
     </select>
 
     <!--5.根据ID查询记录-->
     <select id="doFindById" parameterType="JxcsjzxxVO" resultType="JxcsjzxxVO">
         SELECT
-        <include refid="SQL_CONTENT"/>
+        <include refid="SQL_CONTENT"/>,
+        c2.code_name jzsyxzmc,
+        c4.code_name jzjgmc
         FROM YAGL_JXCS_JZXX t
+        <!--建筑使用性质-->
+        Left Join SYS_CODELIST c1 on c1.CODETYPE = 'JZSYXZ' And c1.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and t.jzsyxz = c2.CODE_VALUE
+        <!--建筑结构-->
+        Left Join SYS_CODELIST c3 on c3.CODETYPE = 'JZJG' And c3.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c4 On c3.CODEID = c4.CODEID And c4.DELETE_FLAG = 'N' and t.jzjg = c4.CODE_VALUE
         WHERE t.DELETE_FLAG = 'N' AND t.JZID = #{value}
     </select>
 
@@ -284,8 +301,16 @@
     <!--11.根据对象查询记录-->
     <select id="doFindByVO" parameterType="JxcsjzxxVO" resultType="JxcsjzxxVO">
         SELECT
-        <include refid="SQL_CONTENT"/>
+        <include refid="SQL_CONTENT"/>,
+        c2.code_name jzsyxzmc,
+        c4.code_name jzjgmc
         FROM YAGL_JXCS_JZXX t
+        <!--建筑使用性质-->
+        Left Join SYS_CODELIST c1 on c1.CODETYPE = 'JZSYXZ' And c1.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and t.jzsyxz = c2.CODE_VALUE
+        <!--建筑结构-->
+        Left Join SYS_CODELIST c3 on c3.CODETYPE = 'JZJG' And c3.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c4 On c3.CODEID = c4.CODEID And c4.DELETE_FLAG = 'N' and t.jzjg = c4.CODE_VALUE
         WHERE t.DELETE_FLAG = 'N'
         <include refid="SQL_CONDITION"/>
     </select>
