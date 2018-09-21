@@ -2,9 +2,12 @@ package com.syfri.userservice.config;
 
 import com.syfri.userservice.filter.MyFormAuthenticationFilter;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
+import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -29,9 +32,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import javax.servlet.Filter;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 @Configuration
 @AutoConfigureAfter(Environment.class)
@@ -105,7 +106,19 @@ public class ShiroConfig implements EnvironmentAware {
 	@Bean("securityManager")
 	public SecurityManager securityManager(SessionManager sessionManager, RedisTemplate redisTemplate){
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-		securityManager.setRealm(myShiroRealm());
+		/** 单Realm
+		 * securityManager.setRealm(myShiroRealm());
+		 */
+
+		/** 多Realm
+		 *
+		 */
+		securityManager.setAuthenticator(infoModularRealmAuthenticator(myShiroRealm(),infoCollectRealm()));
+		List<Realm> list = new ArrayList<>();
+		list.add(myShiroRealm());
+		list.add(infoCollectRealm());
+		securityManager.setRealms(list);
+
 		securityManager.setSessionManager(sessionManager);
 //		securityManager.setCacheManager(redisCacheManager());
 		securityManager.setCacheManager(ehCacheManager());
@@ -178,6 +191,32 @@ public class ShiroConfig implements EnvironmentAware {
 		myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
 		return myShiroRealm;
 	}
+
+	/**
+	 * 信息采集验证Realm
+	 */
+	@Bean("infoCollectRealm")
+	public InfoCollectRealm infoCollectRealm(){
+		return new InfoCollectRealm();
+	}
+
+	/**
+	 * 认证器
+	 */
+	@Bean
+	public InfoModularRealmAuthenticator infoModularRealmAuthenticator(MyShiroRealm myShiroRealm, InfoCollectRealm infoCollectRealm){
+		// 自定义模块化认证器，用于解决多realm抛出异常问题
+		ModularRealmAuthenticator authenticator = new InfoModularRealmAuthenticator();
+		// 认证策略：AtLeastOneSuccessfulStrategy(默认)，AllSuccessfulStrategy，FirstSuccessfulStrategy
+		authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
+		// 加入realms
+		List<Realm> realms = new ArrayList<>();
+		realms.add(myShiroRealm);
+		realms.add(infoCollectRealm);
+		authenticator.setRealms(realms);
+		return (InfoModularRealmAuthenticator) authenticator;
+	}
+
 
 	/**
 	 * 采用MD5密码加密

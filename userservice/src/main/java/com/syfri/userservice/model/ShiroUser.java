@@ -31,6 +31,9 @@ public class ShiroUser implements Serializable{
 	/*组织机构*/
 	private OrganizationVO organizationVO;
 
+	/*统一社会信用代码*/
+	private String unscid;
+
 	public ShiroUser() {
 	}
 
@@ -94,5 +97,13 @@ public class ShiroUser implements Serializable{
 
 	public void setResourceTrees(List<ResourceTree> resourceTrees) {
 		this.resourceTrees = resourceTrees;
+	}
+
+	public String getUnscid() {
+		return unscid;
+	}
+
+	public void setUnscid(String unscid) {
+		this.unscid = unscid;
 	}
 }

@@ -1,10 +1,7 @@
 package com.syfri.userservice.controller;
 
 import com.syfri.baseapi.model.ResultVO;
-import com.syfri.userservice.model.AccountVO;
-import com.syfri.userservice.model.MenuTree;
-import com.syfri.userservice.model.ResourceTree;
-import com.syfri.userservice.model.ShiroUser;
+import com.syfri.userservice.model.*;
 import com.syfri.userservice.utils.CurrentUserUtil;
 import com.syfri.userservice.utils.ImageCodeUtil;
 import io.swagger.annotations.Api;
