@@ -7,10 +7,10 @@
             and t.jzid = #{jzid}
         </if>
         <if test="jzmc != null and jzmc != '' ">
-            and t.jzmc = #{jzmc}
+            and t.jzmc LIKE concat(concat('%',#{jzmc}),'%')
         </if>
         <if test="jzwz != null and jzwz != '' ">
-            and t.jzwz = #{jzwz}
+            and t.jzwz LIKE concat(concat('%',#{jzwz}),'%')
         </if>
         <if test="jzsyxz != null and jzsyxz != '' ">
             and t.jzsyxz = #{jzsyxz}
@@ -314,6 +314,25 @@
         WHERE t.DELETE_FLAG = 'N'
         <include refid="SQL_CONDITION"/>
     </select>
+
+    <!--12.按复合条件逻辑删除-->
+    <update id="doDeleteByVO" parameterType="JxcsjzxxVO">
+        UPDATE YAGL_JXCS_JZXX
+        <set>
+            <if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
+            <if test="xgrid != null">xgrid=#{xgrid},</if>
+            <if test="xgrmc != null">xgrmc=#{xgrmc},</if>
+            <if test="xgsj != null">xgsj=TO_DATE(#{xgsj},'yyyy-MM-dd HH24:mi:ss'),</if>
+            <if test="datasource != null">datasource=#{datasource},</if>
+            <if test="jdh != null">jdh=#{jdh},</if>
+            <if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+            <if test="reserve1 != null">reserve1=#{reserve1},</if>
+            <if test="reserve2 != null">reserve2=#{reserve2},</if>
+            <if test="reserve3 != null">reserve3=#{reserve3},</if>
+            <if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+        </set>
+        WHERE JZID = #{jzid}
+    </update>
 
     <!--根据单位id获取建筑详情集合-->
     <select id="doFindJzxxByDwid" parameterType="JxcsjbxxVO" resultType="JxcsjzxxVO">

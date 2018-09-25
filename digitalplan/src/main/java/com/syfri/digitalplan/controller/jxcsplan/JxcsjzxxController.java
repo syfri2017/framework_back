@@ -7,10 +7,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
-import com.syfri.digitalplan.model.jxcsplan.JxcsjbxxVO;
 import com.syfri.digitalplan.model.jxcsplan.JxcsjzxxVO;
 import com.syfri.digitalplan.service.jxcsplan.JxcsjzxxService;
 import com.syfri.baseapi.controller.BaseController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("jxcsjzxx")
@@ -31,6 +32,48 @@ public class JxcsjzxxController  extends BaseController<JxcsjzxxVO>{
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(jxcsjzxxService.doFindJzxxByDwid(dwid));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	@ApiOperation(value="根据建筑id逻辑删除建筑",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="建筑")
+	@PostMapping("/doDeleteByList")
+	public @ResponseBody ResultVO doDeleteByList(@RequestBody List<JxcsjzxxVO> jxcsjzxxList){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(jxcsjzxxService.doDeleteByList(jxcsjzxxList));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	@ApiOperation(value="建筑新增",notes="新增")
+	@ApiImplicitParam(name="vo",value="建筑")
+	@PostMapping("/doInsertByVO")
+	public @ResponseBody ResultVO doInsertByVO(@RequestBody JxcsjzxxVO jxcsjzxxVO){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(jxcsjzxxService.doInsertByVO(jxcsjzxxVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	@ApiOperation(value="建筑修改",notes="修改")
+	@ApiImplicitParam(name="vo",value="建筑")
+	@PostMapping("/doUpdateByVO")
+	public @ResponseBody ResultVO doUpdateByVO(@RequestBody JxcsjzxxVO jxcsjzxxVO) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(jxcsjzxxService.doUpdateByVO(jxcsjzxxVO));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);

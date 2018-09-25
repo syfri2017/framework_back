@@ -9,4 +9,6 @@ public interface JxcsjzxxService  extends BaseService<JxcsjzxxVO>{
 
     /*--根据单位ID查询其建筑信息 by liurui 2018/9/7--*/
     List<JxcsjzxxVO> doFindJzxxByDwid(String dwid);
+
+    int doDeleteByList(List<JxcsjzxxVO> jxcsjzxxList);
 }

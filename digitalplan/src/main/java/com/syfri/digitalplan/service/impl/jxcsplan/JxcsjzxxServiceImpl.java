@@ -26,4 +26,21 @@ public class JxcsjzxxServiceImpl extends BaseServiceImpl<JxcsjzxxVO> implements 
 	public List<JxcsjzxxVO> doFindJzxxByDwid(String dwid){
 		return jxcsjzxxDAO.doFindJzxxByDwid(dwid);
 	}
+
+	@Override
+	public int doDeleteByList(List<JxcsjzxxVO> jxcsjzxxList) {
+		int count = 0;
+		if (jxcsjzxxList.size() > 0) {
+			for (JxcsjzxxVO jxcsjzxxVO : jxcsjzxxList) {
+				JxcsjzxxVO vo = new JxcsjzxxVO();
+				vo.setJzid(jxcsjzxxVO.getJzid());
+				vo.setXgrid(jxcsjzxxVO.getXgrid());
+				vo.setXgrmc(jxcsjzxxVO.getXgrmc());
+//				vo.setXgsj("1");
+				vo.setDeleteFlag("Y");
+				count = count + jxcsjzxxDAO.doDeleteByVO(vo);
+			}
+		}
+		return count;
+	}
 }
