@@ -15,21 +15,37 @@ import java.util.List;
 @Service("yafjxzService")
 public class YafjxzServiceImpl extends BaseServiceImpl<YafjxzVO> implements YafjxzService {
 
-	@Autowired
-	private YafjxzDAO yafjxzDAO;
+    @Autowired
+    private YafjxzDAO yafjxzDAO;
 
-	@Override
-	public YafjxzDAO getBaseDAO() {
-		return yafjxzDAO;
-	}
+    @Override
+    public YafjxzDAO getBaseDAO() {
+        return yafjxzDAO;
+    }
 
-	public void doDeletcNotIn(String oldYafjxzVOs){
-		yafjxzDAO.doDeletcNotIn(oldYafjxzVOs);
-	};
+    public void doDeletcNotIn(String oldYafjxzVOs) {
+        yafjxzDAO.doDeletcNotIn(oldYafjxzVOs);
+    }
 
-	@Override
-	public List<YafjxzVO> doFindByPlanId(String yaid){
-		List<YafjxzVO> resultList= yafjxzDAO.doFindByPlanId(yaid);
-		return resultList;
-	}
+    ;
+
+    @Override
+    public List<YafjxzVO> doFindByPlanId(YafjxzVO yafjxzVO) {
+        List<YafjxzVO> resultList = null;
+        if(yafjxzVO.getKzm().equals("pic")){
+            resultList = yafjxzDAO.doFindPicsByPlanId(yafjxzVO);
+        }else{
+            resultList = yafjxzDAO.doFindByPlanId(yafjxzVO);
+        }
+
+        return resultList;
+    }
+
+    public int doUpdateByVOList(List<YafjxzVO> yafjxzVOList) {
+        int count = 0;
+        for (YafjxzVO vo : yafjxzVOList) {
+            count = count + yafjxzDAO.doUpdateByVO(vo);
+        }
+        return count;
+    }
 }

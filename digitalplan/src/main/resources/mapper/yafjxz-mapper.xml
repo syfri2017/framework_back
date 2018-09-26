@@ -157,7 +157,7 @@
 			<if test="cjsj != null">cjsj=sysdate,</if>
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=sysdate,</if>
+			xgsj=sysdate,
 			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="datasource != null">datasource=#{datasource},</if>
 			<if test="bz != null">bz=#{bz},</if>
@@ -168,7 +168,7 @@
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  YAID = #{yaid}
+		WHERE  UUID = #{uuid}
 	</update>
 
 	<!--10.批量修改-->
@@ -215,12 +215,20 @@
 		DELETE FROM YAGL_YA_ZDDW_FJ WHERE UUID NOT IN  #{oldYafjxzVOs}
 	</delete>
 
-	<!-- 根据预案ID查询记录  -->
+	<!-- 根据预案ID查询压缩文件记录  -->
 	<select id="doFindByPlanId" parameterType="YafjxzVO"  resultType="YafjxzVO">
 		SELECT
 		<include refid="SQL_CONTENT"/>
 		FROM YAGL_YA_ZDDW_FJ t
-		WHERE t.DELETE_FLAG = 'N' AND  t.YAID = #{value}
+		WHERE t.DELETE_FLAG = 'N' AND  t.YAID = #{yaid} AND t.KZM=#{kzm}
+	</select>
+
+	<!-- 根据预案ID查询图片文件记录  -->
+	<select id="doFindPicsByPlanId" parameterType="YafjxzVO"  resultType="YafjxzVO">
+		SELECT
+		<include refid="SQL_CONTENT"/>
+		FROM YAGL_YA_ZDDW_FJ t
+		WHERE t.DELETE_FLAG = 'N' AND t.YAID = #{yaid} AND (t.KZM='.png' OR t.KZM='.jpg')
 	</select>
 
 </mapper>

@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface YafjxzDAO extends BaseDAO<YafjxzVO>{
     public void doDeletcNotIn(String oldYafjxzVOs);
-    List<YafjxzVO> doFindByPlanId(String yaid);
+    List<YafjxzVO> doFindByPlanId(YafjxzVO yafjxzVO);
+    List<YafjxzVO> doFindPicsByPlanId(YafjxzVO yafjxzVO);
 }

@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface YafjxzService  extends BaseService<YafjxzVO>{
     public void doDeletcNotIn(String oldYafjxzVOs);
-    List<YafjxzVO> doFindByPlanId(String yaid);
+    List<YafjxzVO> doFindByPlanId(YafjxzVO yafjxzVO);
+    public int  doUpdateByVOList(List<YafjxzVO> yafjxzVOList);
 }
