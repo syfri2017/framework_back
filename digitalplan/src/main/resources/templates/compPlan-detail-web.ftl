@@ -1423,46 +1423,18 @@
                 <span class="header-title-inner">附图</span>
             </h2>
             <div class="sub-block">
-                <div id="photos_1" class="sub-block block-level-2" data-menu-text="实景照片-万达中心">
-                    <h3 class="sub-block-header">
-                        <span class="header-title-inner">实景照片 - 万达中心</span>
-                    </h3>
-                    <div class="sub-block-body">
-                        <img class="photo-tag" src="http://localhost:80/upload/pic/sjtp.png" alt=""/>
+            <#list pictureList as pic>
+                <#if pic??>
+                    <div id="photos_${pic_index+1}" class="sub-block block-level-2" data-menu-text="${pic.wjm}">
+                        <h3 class="sub-block-header">
+                            <span class="header-title-inner"><#if pic.wjm??>${pic.wjm}</#if></span>
+                        </h3>
+                        <div class="sub-block-body">
+                            <img class="photo-tag" src="http://localhost:80/upload/${pic.yllj}" alt=""/>
+                        </div>
                     </div>
-                </div>
-                <div id="photos_2" class="sub-block block-level-2" data-menu-text="总平面图-万达中心">
-                    <h3 class="sub-block-header">
-                        <span class="header-title-inner">总平面图 - 万达中心</span>
-                    </h3>
-                    <div class="sub-block-body">
-                        <img class="photo-tag" src="http://localhost:80/upload/pic/zpmt.png" alt=""/>
-                    </div>
-                </div>
-                <div id="photos_3" class="sub-block block-level-2" data-menu-text="内部平面图-B1层平面图">
-                    <h3 class="sub-block-header">
-                        <span class="header-title-inner">内部平面图 - B1层平面图</span>
-                    </h3>
-                    <div class="sub-block-body">
-                        <img class="photo-tag" src="http://localhost:80/upload/pic/nbpmtB1.png" alt=""/>
-                    </div>
-                </div>
-                <div id="photos_4" class="sub-block block-level-2" data-menu-text="内部平面图-4层平面图">
-                    <h3 class="sub-block-header">
-                        <span class="header-title-inner">内部平面图 - 4层平面图</span>
-                    </h3>
-                    <div class="sub-block-body">
-                        <img class="photo-tag" src="http://localhost:80/upload/pic/nbpmt4.png" alt=""/>
-                    </div>
-                </div>
-                <div id="photos_5" class="sub-block block-level-2" data-menu-text="作战部署图-灾情4-33层力量部署图">
-                    <h3 class="sub-block-header">
-                        <span class="header-title-inner">作战部署图 - 灾情4 - 33层力量部署图</span>
-                    </h3>
-                    <div class="sub-block-body">
-                        <img class="photo-tag" src="http://localhost:80/upload/pic/1clbst.png" alt=""/>
-                    </div>
-                </div>
+                </#if>
+            </#list>
             </div>
         </div>
         <!-- end 附图 -->

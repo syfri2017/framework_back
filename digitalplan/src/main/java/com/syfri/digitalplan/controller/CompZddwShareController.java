@@ -7,6 +7,9 @@ import com.syfri.digitalplan.model.digitalplan.DigitalplanlistVO;
 import com.syfri.digitalplan.model.digitalplan.DisastersetVO;
 import com.syfri.digitalplan.model.firefacilities.*;
 import com.syfri.digitalplan.model.planobject.ImportantunitsVO;
+import com.syfri.digitalplan.model.yafjxz.YafjxzVO;
+import com.syfri.digitalplan.utils.Pic;
+import com.syfri.digitalplan.utils.VelocityUtil;
 import com.syfri.digitalplan.utils.*;
 import org.springframework.util.ResourceUtils;
 import java.nio.file.Files;
@@ -36,8 +39,6 @@ import com.syfri.digitalplan.service.importantparts.ImportantpartsService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
-import java.io.FileInputStream;
-import net.sf.json.JSONObject;
 
 /**
  * @Description: 数字化预案分享
@@ -213,95 +214,6 @@ public class CompZddwShareController {
 //
 //        return res;
 //    }
-
-    /**
-     * 重点单位导出html模板数据
-     */
-
-    @GetMapping("/exportData/{uuid}")
-    public void exportData(HttpServletRequest request, HttpServletResponse response, @PathVariable("uuid") String uuid) {
-        String basePath = yafjxzProperties.getSavePath() + "pic\\%s.png";
-        try {
-            Map<String,Object> vc = new HashMap<String,Object>();
-
-            String zddwid = digitalplanlistService.doFindById(uuid).getDxid();
-            ImportantunitsVO vo = importantunitsService.doFindById(zddwid);
-            // 预案基础信息
-            vc.put("compPlanInfo", digitalplanlistService.doFindById(uuid));
-            // 重点单位基础信息
-            vc.put("compZddwInfo", importantunitsService.doFindById(zddwid));
-            // 灾情设定 力量部署 要点提示
-            vc.put("disastersetList", disastersetService.doFindByPlanId(uuid));
-            // 重点部位（建筑类）
-            vc.put("jzlpartsList", importantpartsService.doFindJzlListByZddwId(zddwid));
-            // 重点部位（装置类）
-            vc.put("zzlpartsList", importantpartsService.doFindZzlListByZddwId(zddwid));
-            // 重点部位（储罐类）
-            vc.put("cglpartsList", importantpartsService.doFindCglListByZddwId(zddwid));
-            // 建筑分区和消防设施
-            List<BuildingVO> bvs = importantunitsService.doFindBuildingDetailsAndFirefacilitiesByVo(vo);
-            vc.put("areaBuildingList", doJxsl(bvs));
-
-                //word中图片
-    /*            vc.put("sjtp", Pic.getImageStr(String.format(basePath, "sjtp")));
-                vc.put("zpmt", Pic.getImageStr(String.format(basePath, "zpmt")));
-                vc.put("clbst1", Pic.getImageStr(String.format(basePath, "1clbst")));
-                vc.put("scjglxt1", Pic.getImageStr(String.format(basePath, "1scjglxt")));
-                vc.put("clbst2", Pic.getImageStr(String.format(basePath, "2clbst")));
-                vc.put("scjglxt2", Pic.getImageStr(String.format(basePath, "2scjglxt")));
-                vc.put("clbst3", Pic.getImageStr(String.format(basePath, "3clbst")));
-                vc.put("scjglxt3", Pic.getImageStr(String.format(basePath, "3scjglxt")));
-                vc.put("clbst4", Pic.getImageStr(String.format(basePath, "4clbst")));
-                vc.put("scjglxt4", Pic.getImageStr(String.format(basePath, "4scjglxt")));
-                vc.put("cllbst18", Pic.getImageStr(String.format(basePath, "18cllbst")));
-                vc.put("cllbst24", Pic.getImageStr(String.format(basePath, "24cllbst")));
-                vc.put("cllbst433", Pic.getImageStr(String.format(basePath, "433cllbst")));
-                vc.put("B1czdbst", Pic.getImageStr(String.format(basePath, "B1czdbst")));
-                vc.put("lmt", Pic.getImageStr(String.format(basePath, "lmt")));
-                vc.put("lmt18", Pic.getImageStr(String.format(basePath, "lmt18")));
-                vc.put("lmt90", Pic.getImageStr(String.format(basePath, "lmt90")));
-                vc.put("nbpmt4", Pic.getImageStr(String.format(basePath, "nbpmt4")));
-                vc.put("nbpmt18", Pic.getImageStr(String.format(basePath, "nbpmt18")));
-                vc.put("nbpmt33", Pic.getImageStr(String.format(basePath, "nbpmt33")));
-                vc.put("nbpmtB1", Pic.getImageStr(String.format(basePath, "nbpmtB1")));*/
-                vc.put("msg", "yes");//map里面装有yes
-                JSONObject jsonObject = JSONObject.fromObject(vc);
-
-                //3、将json对象转化为json字符串
-                String result = jsonObject.toString();
-                result=new StringBuffer("var data =").append(result).toString();
-                String targerPath=new StringBuffer(yafjxzProperties.getSavePath()).append("/temp/")
-                        .append(System.currentTimeMillis()).append("/").toString();
-            String targerDwmcPath=new StringBuffer(targerPath).append(vo.getDwmc()).toString();
-            String targerDwmcZipPath=new StringBuffer(targerDwmcPath).append(".zip").toString();
-            try{
-                //获取resource下文件
-                File sfile1 = ResourceUtils.getFile("classpath:plantemplate");
-                File folder = new File(targerPath);
-                //先创建文件夹
-                if(!folder.exists()){
-                    folder.mkdirs();
-                }
-                //拷贝文件到临时文件夹
-                CreateFileUtil.copyDir(sfile1.toPath().toString(),targerDwmcPath);
-                //创建json文件
-                CreateFileUtil.createJsonFile(result,targerDwmcPath,"shuju");
-                //压缩文件
-                ZipUtil.zip(targerDwmcPath,targerPath,vo.getDwmc()+".zip");
-
-                DownloadUtil.zip(( new FileInputStream(new File(targerDwmcZipPath))),  request,  response,  vo.getDwmc()+".zip");
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
 
 
     /**
