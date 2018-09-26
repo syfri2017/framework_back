@@ -13,7 +13,7 @@
             and t.jzwz LIKE concat(concat('%',#{jzwz}),'%')
         </if>
         <if test="jzsyxz != null and jzsyxz != '' ">
-            and t.jzsyxz = #{jzsyxz}
+            and t.jzsyxz LIKE concat(rtrim(#{jzsyxz},'0'),'%')
         </if>
         <if test="jzjg != null and jzjg != '' ">
             and t.jzjg = #{jzjg}
@@ -75,7 +75,7 @@
         <if test="datasource != null and datasource != '' ">
             and t.datasource = #{datasource}
         </if>
-        <if test="jdh != null and jdh != '' ">
+        <if test="jdh != null and jdh != '' and orgJgid != '01000000' ">
             and t.jdh = #{jdh}
         </if>
         <if test="sjc != null and sjc != '' ">
