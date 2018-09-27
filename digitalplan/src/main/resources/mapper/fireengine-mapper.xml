@@ -445,4 +445,36 @@
 		ORDER BY XZQH,CLLX,CPHM ASC
 	</select>
 
+	<select id="doFindListByGis" parameterType="FireengineVO"  resultType="FireengineVO">
+		SELECT
+		<include refid="SQL_CONTENT"/>,
+		c4.CODE_NAME cllxmc,
+		c9.DZMC ssdzmc
+		FROM YAGL_WL_XFCLXX t
+		<!-- 车辆类型 -->
+		Left Join SYS_CODELIST c3
+		on c3.CODETYPE = 'CLLX'
+		And c3.DELETE_FLAG = 'N'
+		Left Join SYS_CODELIST_DETAIL c4
+		On c3.CODEID = c4.CODEID
+		And c4.DELETE_FLAG = 'N'
+		and t.CLLX = c4.CODE_VALUE
+		<!-- 所属队站 -->
+		LEFT JOIN YAGL_XFDZ c9 ON (t.SSDZ=c9.DZID AND c9.DELETE_FLAG = 'N')
+		WHERE t.DELETE_FLAG = 'N'
+		<if test="gisX_min != null and gisX_min != '' ">
+			and t.gis_X > #{gisX_min}
+		</if>
+		<if test="gisX_max != null and gisX_max != '' ">
+			and t.gis_X &lt; #{gisX_max}
+		</if>
+		<if test="gisY_min != null and gisY_min != '' ">
+			and t.gis_Y > #{gisY_min}
+		</if>
+		<if test="gisY_max != null and gisY_max != '' ">
+			and t.gis_Y &lt; #{gisY_max}
+		</if>
+		ORDER BY CLLX,SSDZ,CPHM ASC
+	</select>
+
 </mapper>

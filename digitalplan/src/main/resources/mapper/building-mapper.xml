@@ -594,7 +594,7 @@
 
 	<!--通过重点单位id查询包含建筑id，建筑类型-->
 	<select id="doFindJzidJzlxListByZddwid" parameterType="String"  resultType="BuildingVO">
-		SELECT t.JZID,t2.JZLX
+		SELECT t.JZID,t2.JZLX,t2.JZMC
 		FROM YAGL_DX_ZDDW_JZFQ t
 		LEFT JOIN YAGL_DWJZXX t2
 		ON t.JZID=t2.JZID

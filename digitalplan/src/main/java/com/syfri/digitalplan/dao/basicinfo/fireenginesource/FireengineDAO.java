@@ -9,10 +9,11 @@ public interface FireengineDAO extends BaseDAO<FireengineVO>{
      * @Description:
      * @Param:
      * @Return:
-     * @Author: zhaijianchen
+     * @Author: liurui
      * @Modified By:
-     * @Date: 2018/7/25 13:05
+     * @Date: 2018/9/21 15:15
      */
-   public List<FireengineVO> doSearchByVO(FireengineVO fireengineVO);
+   public List<FireengineVO> doFindListByGis(FireengineVO fireengineVO);
+
 
 }

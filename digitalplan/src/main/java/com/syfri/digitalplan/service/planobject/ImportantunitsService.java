@@ -1,6 +1,7 @@
 package com.syfri.digitalplan.service.planobject;
 
 import com.syfri.baseapi.service.BaseService;
+import com.syfri.digitalplan.model.basicinfo.fireenginesource.FireengineVO;
 import com.syfri.digitalplan.model.buildingzoning.BuildingVO;
 import com.syfri.digitalplan.model.planobject.ImportantunitsBuildingVO;
 import com.syfri.digitalplan.model.planobject.XiaofangliliangVO;
@@ -44,4 +45,16 @@ public interface ImportantunitsService  extends BaseService<ImportantunitsVO>{
 
     /*--根据重点单位ID查询单位建筑信息详情 by li.xue 2018/8/16--*/
     List<BuildingVO> doFindJzxxDetailByZddwId(String zddwid);
+
+    /**
+     * 通过重点单位Gis坐标 查询周围1公里水源信息
+     * author liurui
+     */
+    Map<String, List> doFindXfsyListByZddwGis(ImportantunitsVO vo);
+
+    /**
+     * 通过重点单位Gis坐标 查询周围1公里车辆信息
+     * author liurui
+     */
+    List<FireengineVO> doFindXfclListByZddwGis(ImportantunitsVO vo);
 }

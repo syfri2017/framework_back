@@ -207,4 +207,40 @@ public class ImportantunitsController  extends BaseController<ImportantunitsVO>{
 		}
 		return resultVO;
 	}
+
+	/**
+	 * 通过重点单位Gis坐标 查询周围1公里水源信息
+	 * by liurui 2018/9/20
+	 */
+	@ApiOperation(value="通过重点单位Gis坐标 查询周围1公里水源信息",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="水源")
+	@PostMapping("/doFindXfsyListByZddwGis")
+	public @ResponseBody ResultVO doFindXfsyListByZddwGis(@RequestBody ImportantunitsVO vo) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(importantunitsService.doFindXfsyListByZddwGis(vo));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+	/**
+	 * 通过重点单位Gis坐标 查询周围1公里车辆信息
+	 * by liurui 2018/9/20
+	 */
+	@ApiOperation(value="通过重点单位Gis坐标 查询周围1公里车辆信息",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="车辆")
+	@PostMapping("/doFindXfclListByZddwGis")
+	public @ResponseBody ResultVO doFindXfclListByZddwGis(@RequestBody ImportantunitsVO vo) {
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(importantunitsService.doFindXfclListByZddwGis(vo));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
 }
