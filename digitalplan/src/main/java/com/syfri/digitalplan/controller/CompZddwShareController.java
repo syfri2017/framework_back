@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.syfri.digitalplan.service.planobject.ImportantunitsService;
 import com.syfri.digitalplan.service.digitalplan.DigitalplanlistService;
 import com.syfri.digitalplan.service.digitalplan.DisastersetService;
-import com.syfri.digitalplan.service.digitalplan.ForcedevService;
+import com.syfri.digitalplan.service.yafjxz.YafjxzService;
 import com.syfri.digitalplan.service.digitalplan.KeypointsService;
 import com.syfri.digitalplan.service.importantparts.ImportantpartsService;
 
@@ -71,7 +71,7 @@ public class CompZddwShareController {
     private DisastersetService disastersetService;
 
     @Autowired
-    private ForcedevService forcedevService;
+    private YafjxzService yafjxzService;
 
     @Autowired
     private ImportantpartsService importantpartsService;
@@ -123,6 +123,7 @@ public class CompZddwShareController {
         model.addAttribute("compZddwInfo", vo);
         // 灾情设定、力量部署、要点提示
         model.addAttribute("disastersetList", disastersetService.doFindByPlanId(uuid));
+
         if (type.equals("detail")) {
             // 重点部位（建筑类）
             model.addAttribute("jzlpartsList", importantpartsService.doFindJzlListByZddwId(zddwid));
@@ -133,6 +134,11 @@ public class CompZddwShareController {
             // 建筑分区和消防设施
             model.addAttribute("areaBuildingList", importantunitsService.doFindBuildingDetailsAndFirefacilitiesByVo(vo));
         }
+        // 附图
+        YafjxzVO yafjxzVO = new YafjxzVO();
+        yafjxzVO.setKzm("pic");
+        yafjxzVO.setYaid(uuid);
+        model.addAttribute("pictureList", yafjxzService.doFindByPlanId(yafjxzVO));
 
 //        // 功能分区-装置
 //        model.addAttribute("areaDeviceList", zddwWrapperMap.get("areaDeviceList"));
