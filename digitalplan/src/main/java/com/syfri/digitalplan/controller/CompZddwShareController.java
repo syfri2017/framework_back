@@ -252,29 +252,14 @@ public class CompZddwShareController {
             // 建筑分区和消防设施
             List<BuildingVO> bvs = importantunitsService.doFindBuildingDetailsAndFirefacilitiesByVo(vo);
             vc.put("areaBuildingList", doJxsl(bvs));
+            //文件系统地址（http://localhost:80）
+            vc.put("serverUrl", yafjxzProperties.getFileServerUrl());
+            // 附图
+            YafjxzVO yafjxzVO = new YafjxzVO();
+            yafjxzVO.setKzm("pic");
+            yafjxzVO.setYaid(uuid);
+            vc.put("pictureList", yafjxzService.doFindByPlanId(yafjxzVO));
 
-            //word中图片
-    /*            vc.put("sjtp", Pic.getImageStr(String.format(basePath, "sjtp")));
-                vc.put("zpmt", Pic.getImageStr(String.format(basePath, "zpmt")));
-                vc.put("clbst1", Pic.getImageStr(String.format(basePath, "1clbst")));
-                vc.put("scjglxt1", Pic.getImageStr(String.format(basePath, "1scjglxt")));
-                vc.put("clbst2", Pic.getImageStr(String.format(basePath, "2clbst")));
-                vc.put("scjglxt2", Pic.getImageStr(String.format(basePath, "2scjglxt")));
-                vc.put("clbst3", Pic.getImageStr(String.format(basePath, "3clbst")));
-                vc.put("scjglxt3", Pic.getImageStr(String.format(basePath, "3scjglxt")));
-                vc.put("clbst4", Pic.getImageStr(String.format(basePath, "4clbst")));
-                vc.put("scjglxt4", Pic.getImageStr(String.format(basePath, "4scjglxt")));
-                vc.put("cllbst18", Pic.getImageStr(String.format(basePath, "18cllbst")));
-                vc.put("cllbst24", Pic.getImageStr(String.format(basePath, "24cllbst")));
-                vc.put("cllbst433", Pic.getImageStr(String.format(basePath, "433cllbst")));
-                vc.put("B1czdbst", Pic.getImageStr(String.format(basePath, "B1czdbst")));
-                vc.put("lmt", Pic.getImageStr(String.format(basePath, "lmt")));
-                vc.put("lmt18", Pic.getImageStr(String.format(basePath, "lmt18")));
-                vc.put("lmt90", Pic.getImageStr(String.format(basePath, "lmt90")));
-                vc.put("nbpmt4", Pic.getImageStr(String.format(basePath, "nbpmt4")));
-                vc.put("nbpmt18", Pic.getImageStr(String.format(basePath, "nbpmt18")));
-                vc.put("nbpmt33", Pic.getImageStr(String.format(basePath, "nbpmt33")));
-                vc.put("nbpmtB1", Pic.getImageStr(String.format(basePath, "nbpmtB1")));*/
             vc.put("msg", "yes");//map里面装有yes
             JSONObject jsonObject = JSONObject.fromObject(vc);
 
