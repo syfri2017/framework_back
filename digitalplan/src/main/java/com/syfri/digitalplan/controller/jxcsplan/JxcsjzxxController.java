@@ -81,4 +81,18 @@ public class JxcsjzxxController  extends BaseController<JxcsjzxxVO>{
 		return resultVO;
 	}
 
+	//add by yushch 建筑新增 返回建筑vo
+	@ApiOperation(value="建筑新增",notes="新增")
+	@ApiImplicitParam(name="vo",value="建筑")
+	@PostMapping("/doInsertBuildingByVO")
+	public @ResponseBody ResultVO doInsertBuildingByVO(@RequestBody JxcsjzxxVO jxcsjzxxVO){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(jxcsjzxxService.doInsertBuildingByVO(jxcsjzxxVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }

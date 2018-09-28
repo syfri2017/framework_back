@@ -19,6 +19,14 @@ public class JxcsdlyzVO extends ValueObject implements Serializable{
 	private String reserve2;	//备用字段2
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
+	private String jzid;
+
+	public String getJzid() {
+		return jzid;
+	}
+	public void setJzid(String jzid) {
+		this.jzid = jzid;
+	}
 
 	public String getUuid(){
 		return uuid;

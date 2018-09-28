@@ -41,4 +41,19 @@ public class JxcsjbxxController  extends BaseController<JxcsjbxxVO>{
 		return resultVO;
 	}
 
+	@ApiOperation(value="根据VO保存",notes="注意事项")
+	@ApiImplicitParam(name="vo",value = "业务实体")
+	@PostMapping("/doInsertByVo")
+	public @ResponseBody ResultVO save(@RequestBody JxcsjbxxVO vo) throws Exception{
+		ResultVO resultVO = ResultVO.build();
+		try {
+			resultVO.setResult(jxcsjbxxService.doInsertJbcsByVO(vo));
+		} catch (Exception e) {
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+
+		return 	resultVO;
+	}
+
 }

@@ -138,7 +138,7 @@
         FROM (
         <foreach collection="list" item="item" index="index" separator="UNION ALL">
             SELECT
-            #{item.xfssid,jdbcType=VARCHAR} xfssid,#{item.dwid,jdbcType=VARCHAR} dwid,#{item.xfssmc,jdbcType=VARCHAR}
+            #{item.dwid,jdbcType=VARCHAR} dwid,#{item.xfssmc,jdbcType=VARCHAR}
             xfssmc,#{item.xfsslx,jdbcType=VARCHAR} xfsslx,#{item.wz,jdbcType=VARCHAR} wz,#{item.sl,jdbcType=DOUBLE}
             sl,#{item.bz,jdbcType=VARCHAR} bz,'N' delete_flag,#{item.cjrid,jdbcType=VARCHAR}
             cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR}
