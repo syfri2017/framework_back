@@ -535,7 +535,6 @@
 	</h2>
 	<div class="z-main">
 		<div class="j-main" id="images">
-			<!--<img class='photo-tag' data-photo-id='21' src='http://localhost/upload/dlwd/pictures/20180927152850/实景照片——万达中心.png' alt='预案图'>-->
 		</div>
 	</div>
 </div>
@@ -558,7 +557,7 @@
     $(function() {
         var images = [];
         for(var z = 0; z < data.pictureList.length; z++) {
-            images = "<div class='sub-block'><div class='sub-block-body' style='text-align:center'><h3 class='sub-block-header'><span class='header-title-inner'>"+data.pictureList[z].wjm+"</span></h3><img class='photo-tag' data-photo-id='21' src='http://localhost/upload/"+data.pictureList[z].yllj+"' alt='预案图'></div></div>";
+            images = "<div class='sub-block'><div class='sub-block-body' style='text-align:center'><h3 class='sub-block-header'><span class='header-title-inner'>"+data.pictureList[z].wjm+"</span></h3><img class='photo-tag' data-photo-id='21' src='"+data.serverUrl+""+data.pictureList[z].yllj+"' alt='预案图'></div></div>";
             $("#images").append(images);
         }
     })

@@ -260,7 +260,7 @@ public class CompZddwShareController {
             yafjxzVO.setYaid(uuid);
             vc.put("pictureList", yafjxzService.doFindByPlanId(yafjxzVO));
 
-            vc.put("msg", "yes");//map里面装有yes
+            vc.put("msg", "yes");
             JSONObject jsonObject = JSONObject.fromObject(vc);
 
             //3、将json对象转化为json字符串
