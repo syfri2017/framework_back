@@ -1,7 +1,7 @@
 package com.syfri.digitalplan.model.jxcsplan;
 
 import java.io.Serializable;
-
+import java.util.List;
 import com.syfri.baseapi.model.ValueObject;
 
 public class JxcsjbxxVO extends ValueObject implements Serializable{
@@ -51,6 +51,9 @@ public class JxcsjbxxVO extends ValueObject implements Serializable{
 	private String xfgxmc;	//消防管辖
 	private String xzqhmc;	//行政区划
 	private String jzflmc;	//单位建筑分类
+
+	private List<JxcsjzxxVO> jzxxList;//九小建筑信息列表
+	private List<JxcsxfssVO> xfssList;//九小消防设施列表
 
 	public String getUuid(){
 		return uuid;
@@ -304,5 +307,18 @@ public class JxcsjbxxVO extends ValueObject implements Serializable{
 	}
 	public void setJzflmc(String jzflmc) {
 		this.jzflmc = jzflmc;
+	}
+
+	public List<JxcsjzxxVO> getJzxxList() {
+		return jzxxList;
+	}
+	public void setJzxxList(List<JxcsjzxxVO> jzxxList) {
+		this.jzxxList = jzxxList;
+	}
+	public List<JxcsxfssVO> getXfssList() {
+		return xfssList;
+	}
+	public void setXfssList(List<JxcsxfssVO> xfssList) {
+		this.xfssList = xfssList;
 	}
 }

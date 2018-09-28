@@ -43,4 +43,9 @@ public class JxcsjzxxServiceImpl extends BaseServiceImpl<JxcsjzxxVO> implements 
 		}
 		return count;
 	}
+
+	public JxcsjzxxVO doInsertBuildingByVO(JxcsjzxxVO vo){
+		jxcsjzxxDAO.doInsertByVO(vo);
+		return vo;
+	}
 }

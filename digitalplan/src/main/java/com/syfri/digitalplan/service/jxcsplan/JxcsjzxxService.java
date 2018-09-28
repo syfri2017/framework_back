@@ -11,4 +11,7 @@ public interface JxcsjzxxService  extends BaseService<JxcsjzxxVO>{
     List<JxcsjzxxVO> doFindJzxxByDwid(String dwid);
 
     int doDeleteByList(List<JxcsjzxxVO> jxcsjzxxList);
+
+    //新增建筑信息 返回建筑vo add by yushch 20180925
+    JxcsjzxxVO doInsertBuildingByVO(JxcsjzxxVO vo);
 }

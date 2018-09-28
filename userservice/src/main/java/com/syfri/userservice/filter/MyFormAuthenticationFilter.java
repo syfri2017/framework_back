@@ -56,7 +56,7 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter {
 	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
 		//登陆方式
 		String loginType = ((InfoCollectToken) token).getLoginType();
-		loginType = "MyShiro";
+		//loginType = "MyShiro";
 		if(LoginType.INFOCOLLECT.toString().equals(loginType)){
 			//HttpServletRequest req = (HttpServletRequest) request;
 			//req.getSession().setAttribute("loginType", "infoCollect");

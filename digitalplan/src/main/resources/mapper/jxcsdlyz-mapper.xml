@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.syfri.userservice.dao.JxcsdlyzDAO">
+<mapper namespace="com.syfri.digitalplan.dao.jxcsplan.JxcsdlyzDAO">
 	<!--1.查询条件-->
 	<sql id="SQL_CONDITION">
 		<if test="uuid != null and uuid != '' ">
@@ -76,22 +76,22 @@
 	</select>
 
 	<!--6.按照VO插入-->
-	<insert  id="doInsertByVO"  parameterType="JxcsdlyzVO"> 
-		<selectKey resultType="String" order="BEFORE" keyProperty="pkid">
-			SELECT SYS_GUID() AS pkid FROM DUAL
+	<insert id="doInsertByVO" parameterType="JxcsdlyzVO">
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
 		</selectKey>
 		INSERT INTO YAGL_JXCS_DLYZ(uuid,dwid,unscid,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
 		VALUES(#{uuid,jdbcType=VARCHAR},#{dwid,jdbcType=VARCHAR},#{unscid,jdbcType=VARCHAR},'N',#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
 	 </insert>
 
 	<!--7.批量插入-->
-	<insert  id="doBatchInsertByList"  parameterType="java.util.List"> 
-		INSERT INTO YAGL_JXCS_DLYZ(uuid,dwid,unscid,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
-		SELECT SYS_GUID() pkid, A.* 
+	<insert id="doBatchInsertByList" parameterType="java.util.List">
+		INSERT INTO YAGL_JXCS_JBXX_JZXX(uuid,dwid,jzid,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+		SELECT SYS_GUID() uuid, A.*
 		FROM ( 
 		<foreach collection="list" item="item" index="index" separator="UNION ALL" >
 		SELECT
-			#{item.uuid,jdbcType=VARCHAR} uuid,#{item.dwid,jdbcType=VARCHAR} dwid,#{item.unscid,jdbcType=VARCHAR} unscid,'N' delete_flag,#{item.datasource,jdbcType=VARCHAR} datasource,#{item.jdh,jdbcType=VARCHAR} jdh,#{item.sjc,jdbcType=DATE} sjc,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4
+			#{item.dwid,jdbcType=VARCHAR} dwid,#{item.jzid,jdbcType=VARCHAR} jzid,'N' delete_flag,#{item.datasource,jdbcType=VARCHAR} datasource,#{item.jdh,jdbcType=VARCHAR} jdh,#{item.sjc,jdbcType=DATE} sjc,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4
 		FROM DUAL
 		</foreach>
 		) A
