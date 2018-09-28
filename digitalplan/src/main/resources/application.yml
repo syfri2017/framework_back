@@ -1,6 +1,8 @@
 #server
 server:
   port: 8005
+  tomcat:
+    max-http-post-size: -1
 ###################  自定义项目配置  ###################
 yafjxz:
   file-server-url: http://localhost:80/upload/
