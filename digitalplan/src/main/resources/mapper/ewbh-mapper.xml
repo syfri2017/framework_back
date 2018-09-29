@@ -63,6 +63,9 @@
         <if test="reserve4 != null and reserve4 != '' ">
             and t.reserve4 = #{reserve4}
         </if>
+        <if test="bhnr != null and bhnr != '' ">
+            and t.bhnr = #{bhnr}
+        </if>
     </sql>
 
     <!--2.查询内容-->
@@ -86,7 +89,8 @@
 		t.reserve1 reserve1,
 		t.reserve2 reserve2,
 		t.reserve3 reserve3,
-		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
+		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
+		t.bhnr bhnr
 	</sql>
 
     <!--3.查询记录数-->
@@ -124,14 +128,14 @@
             SELECT SYS_GUID() AS uuid FROM DUAL
         </selectKey>
         INSERT INTO
-        YAGL_EWBH_FJ(uuid,zddwid,xzlj,wjm,kzm,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
-        VALUES(#{uuid,jdbcType=VARCHAR},#{zddwid,jdbcType=VARCHAR},#{xzlj,jdbcType=VARCHAR},#{wjm,jdbcType=VARCHAR},#{kzm,jdbcType=VARCHAR},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+        YAGL_EWBH_FJ(uuid,zddwid,xzlj,wjm,kzm,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,bhnr)
+        VALUES(#{uuid,jdbcType=VARCHAR},#{zddwid,jdbcType=VARCHAR},#{xzlj,jdbcType=VARCHAR},#{wjm,jdbcType=VARCHAR},#{kzm,jdbcType=VARCHAR},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},'N',#{datasource,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{bhnr,jdbcType=VARCHAR})
     </insert>
 
     <!--7.批量插入-->
     <insert id="doBatchInsertByList" parameterType="java.util.List">
         INSERT INTO
-        YAGL_EWBH_FJ(uuid,zddwid,xzlj,wjm,kzm,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+        YAGL_EWBH_FJ(uuid,zddwid,xzlj,wjm,kzm,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,delete_flag,datasource,bz,jdh,sjc,reserve1,reserve2,reserve3,reserve4,bhnr)
         SELECT SYS_GUID() uuid, A.*
         FROM (
         <foreach collection="list" item="item" index="index" separator="UNION ALL">
@@ -143,7 +147,7 @@
             delete_flag,#{item.datasource,jdbcType=VARCHAR} datasource,#{item.bz,jdbcType=VARCHAR}
             bz,#{item.jdh,jdbcType=VARCHAR} jdh,#{item.sjc,jdbcType=DATE} sjc,#{item.reserve1,jdbcType=VARCHAR}
             reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR}
-            reserve3,#{item.reserve4,jdbcType=DATE} reserve4
+            reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.bhnr,jdbcType=VARCHAR} bhnr
             FROM DUAL
         </foreach>
         ) A
@@ -177,7 +181,8 @@
             <if test="reserve1 != null">reserve1=#{reserve1},</if>
             <if test="reserve2 != null">reserve2=#{reserve2},</if>
             <if test="reserve3 != null">reserve3=#{reserve3},</if>
-            <if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+            <if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
+            <if test="bhnr != null">bhnr=#{bhnr}</if>
         </set>
         WHERE UUID = #{uuid}
     </update>
@@ -195,7 +200,7 @@
             delete_flag,#{item.datasource,jdbcType=VARCHAR} datasource,#{item.bz,jdbcType=VARCHAR}
             bz,#{item.jdh,jdbcType=VARCHAR} jdh,#{item.sjc,jdbcType=DATE} sjc,#{item.reserve1,jdbcType=VARCHAR}
             reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR}
-            reserve3,#{item.reserve4,jdbcType=DATE} reserve4
+            reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.bhnr,jdbcType=VARCHAR} bhnr
         </foreach>
         ON DUPLICATE KEY UPDATE
         uuid = VALUES(uuid),
@@ -217,7 +222,8 @@
         reserve1 = VALUES(reserve1),
         reserve2 = VALUES(reserve2),
         reserve3 = VALUES(reserve3),
-        reserve4 = VALUES(reserve4)
+        reserve4 = VALUES(reserve4),
+        bhnr = VALUES(bhnr)
     </update>
 
     <!--11.根据对象查询记录-->

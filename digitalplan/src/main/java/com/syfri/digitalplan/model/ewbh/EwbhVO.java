@@ -28,8 +28,10 @@ public class EwbhVO extends ValueObject implements Serializable{
 	private String reserve2;	//备注2
 	private String reserve3;	//备注3
 	private String reserve4;	//备注4
+	private byte[] bhnr;	//标绘内容JSON
 
 	private String zddwmc;	//重点单位名称
+	private String ewbhjson;
 
 	public String getUuid(){
 		return uuid;
@@ -150,6 +152,22 @@ public class EwbhVO extends ValueObject implements Serializable{
 	}
 	public void setReserve4(String reserve4){
 		this.reserve4 = reserve4;
+	}
+
+	public byte[] getBhnr() {
+		return bhnr;
+	}
+
+	public void setBhnr(byte[] bhnr) {
+		this.bhnr = bhnr;
+	}
+
+	public String getEwbhjson() {
+		return ewbhjson;
+	}
+
+	public void setEwbhjson(String ewbhjson) {
+		this.ewbhjson = ewbhjson;
 	}
 
 	public String getZddwmc() {
