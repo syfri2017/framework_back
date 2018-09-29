@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syfri.digitalplan.dao.bigscreen.overview.DpDAO">
+	<!--1.查询条件-->
+	<sql id="SQL_CONDITION">
+		<if test="uuid != null and uuid != '' ">
+		 and t.uuid = #{uuid}
+		</if>
+		<if test="bname != null and bname != '' ">
+		 and t.bname = #{bname}
+		</if>
+		<if test="bvalue != null and bvalue != '' ">
+		 and t.bvalue = #{bvalue}
+		</if>
+		<if test="btype != null and btype != '' ">
+		 and t.btype = #{btype}
+		</if>
+		<if test="sjc != null and sjc != '' ">
+		 and t.sjc = #{sjc}
+		</if>
+		<if test="deleteFlag != null and deleteFlag != '' ">
+		 and t.delete_flag = #{deleteFlag}
+		</if>
+		<if test="reserve1 != null and reserve1 != '' ">
+		 and t.reserve1 = #{reserve1}
+		</if>
+		<if test="reserve2 != null and reserve2 != '' ">
+		 and t.reserve2 = #{reserve2}
+		</if>
+		<if test="reserve3 != null and reserve3 != '' ">
+		 and t.reserve3 = #{reserve3}
+		</if>
+		<if test="reserve4 != null and reserve4 != '' ">
+		 and t.reserve4 = #{reserve4}
+		</if>
+	</sql>
+
+	<!--2.查询内容-->
+	<sql id="SQL_CONTENT">
+		t.uuid uuid,
+		t.bname bname,
+		t.bvalue bvalue,
+		t.btype btype,
+		TO_CHAR(t.sjc,'yyyy-MM-dd HH24:mi:ss') sjc,
+		t.delete_flag deleteFlag,
+		t.reserve1 reserve1,
+		t.reserve2 reserve2,
+		t.reserve3 reserve3,
+		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
+	</sql>
+
+	<!--3.查询记录数-->
+	<select id="doSearchCount" parameterType="DpVO" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM YAGL_DP t WHERE 1=1 AND DELETE_FLAG = 'N'
+		<include refid="SQL_CONDITION"/>
+	</select>
+
+	<!--4.按条件查询记录-->
+	<select id="doSearchListByVO" parameterType="DpVO"  resultType="DpVO"> 
+		SELECT 
+			<include refid="SQL_CONTENT"/>
+		FROM YAGL_DP t  WHERE t.DELETE_FLAG = 'N' 
+			<include refid="SQL_CONDITION"/>
+	</select>
+
+	<!--5.根据ID查询记录-->
+	<select id="doFindById" parameterType="DpVO"  resultType="DpVO">  
+		SELECT 
+		<include refid="SQL_CONTENT"/>
+		FROM YAGL_DP t 
+		WHERE t.DELETE_FLAG = 'N' AND  t.PKID = #{value} 
+	</select>
+
+	<!--6.按照VO插入-->
+	<insert  id="doInsertByVO"  parameterType="DpVO"> 
+		<selectKey resultType="String" order="BEFORE" keyProperty="pkid">
+			SELECT SYS_GUID() AS pkid FROM DUAL
+		</selectKey>
+		INSERT INTO YAGL_DP(uuid,bname,bvalue,btype,sjc,delete_flag,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{bname,jdbcType=VARCHAR},#{bvalue,jdbcType=VARCHAR},#{btype,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},'N',#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+	 </insert>
+
+	<!--7.批量插入-->
+	<insert  id="doBatchInsertByList"  parameterType="java.util.List"> 
+		INSERT INTO YAGL_DP(uuid,bname,bvalue,btype,sjc,delete_flag,reserve1,reserve2,reserve3,reserve4)
+		SELECT SYS_GUID() pkid, A.* 
+		FROM ( 
+		<foreach collection="list" item="item" index="index" separator="UNION ALL" >
+		SELECT
+			#{item.uuid,jdbcType=VARCHAR} uuid,#{item.bname,jdbcType=VARCHAR} bname,#{item.bvalue,jdbcType=VARCHAR} bvalue,#{item.btype,jdbcType=VARCHAR} btype,#{item.sjc,jdbcType=DATE} sjc,'N' delete_flag,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4
+		FROM DUAL
+		</foreach>
+		) A
+	</insert>
+
+	<!--8.按主键逻辑删除-->
+	<update id="doDeleteById"  parameterType="String"> 
+		UPDATE  YAGL_DP t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.PKID = #{value} 
+	</update>
+
+	<!--9.按复合条件逻辑更新-->
+	<update  id="doUpdateByVO"  parameterType="DpVO"> 
+		UPDATE   YAGL_DP  
+		<set>
+			<if test="uuid != null">uuid=#{uuid},</if>
+			<if test="bname != null">bname=#{bname},</if>
+			<if test="bvalue != null">bvalue=#{bvalue},</if>
+			<if test="btype != null">btype=#{btype},</if>
+			<if test="sjc != null">sjc=TO_DATE(#{sjc},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=#{reserve3},</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  PKID = #{pkid}
+	</update>
+
+	<!--10.批量修改-->
+	<update id="doBatchUpdateByList"  parameterType="java.util.List">
+		INSERT INTO YAGL_DP(uuid,bname,bvalue,btype,sjc,delete_flag,reserve1,reserve2,reserve3,reserve4)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator="," >
+			#{item.uuid,jdbcType=VARCHAR} uuid,#{item.bname,jdbcType=VARCHAR} bname,#{item.bvalue,jdbcType=VARCHAR} bvalue,#{item.btype,jdbcType=VARCHAR} btype,#{item.sjc,jdbcType=DATE} sjc,'N' delete_flag,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4
+		</foreach>
+		ON DUPLICATE KEY UPDATE   
+			uuid = VALUES(uuid),
+			bname = VALUES(bname),
+			bvalue = VALUES(bvalue),
+			btype = VALUES(btype),
+			sjc = VALUES(sjc),
+			delete_flag = VALUES(delete_flag),
+			reserve1 = VALUES(reserve1),
+			reserve2 = VALUES(reserve2),
+			reserve3 = VALUES(reserve3),
+			reserve4 = VALUES(reserve4)
+	</update>
+
+	<!--11.根据对象查询记录-->
+	<select id="doFindByVO" parameterType="DpVO"  resultType="DpVO">  
+		SELECT 
+		<include refid="SQL_CONTENT"/>
+		FROM YAGL_DP t 
+		WHERE t.DELETE_FLAG = 'N' 
+		<include refid="SQL_CONDITION"/>
+	</select>
+
+	<!--通过DpVO获取列表-->
+	<select id="getListByType" parameterType="DpVO"  resultType="DpVO">
+		SELECT
+		<include refid="SQL_CONTENT"/>
+		FROM YAGL_DP t
+		WHERE t.DELETE_FLAG = 'N'
+		<include refid="SQL_CONDITION"/>
+	</select>
+</mapper>
