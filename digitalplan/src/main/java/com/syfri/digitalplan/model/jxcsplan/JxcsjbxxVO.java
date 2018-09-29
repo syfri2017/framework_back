@@ -47,6 +47,15 @@ public class JxcsjbxxVO extends ValueObject implements Serializable{
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
 
+	private String sjzt; //数据状态
+	private String shzt; //审核状态
+	private String shrid; //审核人id
+	private String shrmc; //审核人名称
+	private String shrzw; //审核人职务
+	private String shsj;  //审核时间
+	private String sjztmc; //数据状态mc
+	private String shztmc; //审核状态mc
+
 	private String jxdwlxmc;	//单位类型
 	private String xfgxmc;	//消防管辖
 	private String xzqhmc;	//行政区划
@@ -282,6 +291,55 @@ public class JxcsjbxxVO extends ValueObject implements Serializable{
 	}
 	public void setReserve4(String reserve4){
 		this.reserve4 = reserve4;
+	}
+
+	public String getSjzt() {
+		return sjzt;
+	}
+	public void setSjzt(String sjzt) {
+		this.sjzt = sjzt;
+	}
+	public String getShzt() {
+		return shzt;
+	}
+	public void setShzt(String shzt) {
+		this.shzt = shzt;
+	}
+	public String getShrid() {
+		return shrid;
+	}
+	public void setShrid(String shrid) {
+		this.shrid = shrid;
+	}
+	public String getShrmc() {
+		return shrmc;
+	}
+	public void setShrmc(String shrmc) {
+		this.shrmc = shrmc;
+	}
+	public String getShrzw() {
+		return shrzw;
+	}
+	public void setShrzw(String shrzw) {
+		this.shrzw = shrzw;
+	}
+	public String getShsj() {
+		return shsj;
+	}
+	public void setShsj(String shsj) {
+		this.shsj = shsj;
+	}
+	public String getSjztmc() {
+		return sjztmc;
+	}
+	public void setSjztmc(String sjztmc) {
+		this.sjztmc = sjztmc;
+	}
+	public String getShztmc() {
+		return shztmc;
+	}
+	public void setShztmc(String shztmc) {
+		this.shztmc = shztmc;
 	}
 
 	public String getJxdwlxmc() {

@@ -122,6 +122,24 @@
         <if test="reserve4 != null and reserve4 != '' ">
             and t.reserve4 = #{reserve4}
         </if>
+        <if test="sjzt != null and sjzt != '' ">
+            and t.sjzt = #{sjzt}
+        </if>
+        <if test="shzt != null and shzt != '' ">
+            and t.shzt = #{shzt}
+        </if>
+        <if test="shrid != null and shrid != '' ">
+            and t.shrid = #{shrid}
+        </if>
+        <if test="shrmc != null and shrmc != '' ">
+            and t.shrmc = #{shrmc}
+        </if>
+        <if test="shrzw != null and shrzw != '' ">
+            and t.shrzw = #{shrzw}
+        </if>
+        <if test="shsj != null and shsj != '' ">
+            and t.shsj = #{shsj}
+        </if>
 
     </sql>
 
@@ -164,7 +182,13 @@
 		t.reserve1 reserve1,
 		t.reserve2 reserve2,
 		t.reserve3 reserve3,
-		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
+		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
+		t.sjzt sjzt,
+		t.shzt shzt,
+		t.shrid shrid,
+		t.shrmc shrmc,
+		t.shrzw shrzw,
+		TO_CHAR(t.shsj,'yyyy-MM-dd HH24:mi:ss') shsj
 	</sql>
 
     <!--3.查询记录数-->
@@ -180,7 +204,9 @@
         c2.code_name jxdwlxmc,
         c4.code_name xzqhmc,
         c6.code_name jzflmc,
-        dz.DZJC xfgxmc
+        dz.DZJC xfgxmc,
+        c8.code_name sjztmc,
+        c10.code_name shztmc
         FROM YAGL_JXCS_JBXX t
         <!--九小单位类型-->
         Left Join SYS_CODELIST c1 on c1.CODETYPE = 'JXDWLX' And c1.DELETE_FLAG = 'N'
@@ -193,6 +219,12 @@
         Left Join SYS_CODELIST_DETAIL c6 On c5.CODEID = c6.CODEID And c6.DELETE_FLAG = 'N' and t.jzfl = c6.CODE_VALUE
         <!--消防队站-->
         Left Join YAGL_XFDZ dz On dz.DZID = t.xfgx And dz.DELETE_FLAG = 'N'
+        <!--数据状态    暂用预案状态代码集-->
+        Left Join SYS_CODELIST c7 on c7.CODETYPE = 'YAZT' And c7.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c8 On c8.CODEID = c7.CODEID And c8.DELETE_FLAG = 'N' and t.SJZT = c8.CODE_VALUE
+        <!--审核状态  暂用预案审核状态代码集-->
+        Left Join SYS_CODELIST c9 on c9.CODETYPE = 'YASHZT' And c9.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c10 On c10.CODEID = c9.CODEID And c10.DELETE_FLAG = 'N' and t.SHZT = c10.CODE_VALUE
         WHERE t.DELETE_FLAG = 'N'
         <include refid="SQL_CONDITION"/>
         ORDER BY NVL(xgsj,cjsj) DESC
@@ -205,7 +237,9 @@
         c2.code_name jxdwlxmc,
         c4.code_name xzqhmc,
         c6.code_name jzflmc,
-        dz.DZJC xfgxmc
+        dz.DZJC xfgxmc,
+        c8.code_name sjztmc,
+        c10.code_name shztmc
         FROM YAGL_JXCS_JBXX t
         <!--九小单位类型-->
         Left Join SYS_CODELIST c1 on c1.CODETYPE = 'JXDWLX' And c1.DELETE_FLAG = 'N'
@@ -218,6 +252,12 @@
         Left Join SYS_CODELIST_DETAIL c6 On c5.CODEID = c6.CODEID And c6.DELETE_FLAG = 'N' and t.jzfl = c6.CODE_VALUE
         <!--消防队站-->
         Left Join YAGL_XFDZ dz On dz.DZID = t.xfgx And dz.DELETE_FLAG = 'N'
+        <!--数据状态    暂用预案状态代码集-->
+        Left Join SYS_CODELIST c7 on c7.CODETYPE = 'YAZT' And c7.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c8 On c8.CODEID = c7.CODEID And c8.DELETE_FLAG = 'N' and t.SJZT = c8.CODE_VALUE
+        <!--审核状态  暂用预案审核状态代码集-->
+        Left Join SYS_CODELIST c9 on c9.CODETYPE = 'YASHZT' And c9.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c10 On c10.CODEID = c9.CODEID And c10.DELETE_FLAG = 'N' and t.SHZT = c10.CODE_VALUE
         WHERE t.DELETE_FLAG = 'N' AND t.UUID = #{value}
     </select>
 
@@ -227,14 +267,14 @@
             SELECT SYS_GUID() AS uuid FROM DUAL
         </selectKey>
         INSERT INTO
-        YAGL_JXCS_JBXX(uuid,dwmc,jxdwlx,dwdz,dwgk,xzqh,zbdh,xfgx,xqfzr,xqfzrdh,jzfl,jzsl,zdmj,jzmj,lon,lat,plqkd,plqkn,plqkx,plqkb,gnfqms,zdbwms,zbxftd,bz,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
-        VALUES(#{uuid,jdbcType=VARCHAR},#{dwmc,jdbcType=VARCHAR},#{jxdwlx,jdbcType=VARCHAR},#{dwdz,jdbcType=VARCHAR},#{dwgk,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{zbdh,jdbcType=VARCHAR},#{xfgx,jdbcType=VARCHAR},#{xqfzr,jdbcType=VARCHAR},#{xqfzrdh,jdbcType=VARCHAR},#{jzfl,jdbcType=VARCHAR},#{jzsl,jdbcType=DOUBLE},#{zdmj,jdbcType=DOUBLE},#{jzmj,jdbcType=DOUBLE},#{lon,jdbcType=DOUBLE},#{lat,jdbcType=DOUBLE},#{plqkd,jdbcType=VARCHAR},#{plqkn,jdbcType=VARCHAR},#{plqkx,jdbcType=VARCHAR},#{plqkb,jdbcType=VARCHAR},#{gnfqms,jdbcType=VARCHAR},#{zdbwms,jdbcType=VARCHAR},#{zbxftd,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+        YAGL_JXCS_JBXX(uuid,dwmc,jxdwlx,dwdz,dwgk,xzqh,zbdh,xfgx,xqfzr,xqfzrdh,jzfl,jzsl,zdmj,jzmj,lon,lat,plqkd,plqkn,plqkx,plqkb,gnfqms,zdbwms,zbxftd,bz,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4,sjzt,shzt,shrid,shrmc,shrzw,shsj)
+        VALUES(#{uuid,jdbcType=VARCHAR},#{dwmc,jdbcType=VARCHAR},#{jxdwlx,jdbcType=VARCHAR},#{dwdz,jdbcType=VARCHAR},#{dwgk,jdbcType=VARCHAR},#{xzqh,jdbcType=VARCHAR},#{zbdh,jdbcType=VARCHAR},#{xfgx,jdbcType=VARCHAR},#{xqfzr,jdbcType=VARCHAR},#{xqfzrdh,jdbcType=VARCHAR},#{jzfl,jdbcType=VARCHAR},#{jzsl,jdbcType=DOUBLE},#{zdmj,jdbcType=DOUBLE},#{jzmj,jdbcType=DOUBLE},#{lon,jdbcType=DOUBLE},#{lat,jdbcType=DOUBLE},#{plqkd,jdbcType=VARCHAR},#{plqkn,jdbcType=VARCHAR},#{plqkx,jdbcType=VARCHAR},#{plqkb,jdbcType=VARCHAR},#{gnfqms,jdbcType=VARCHAR},#{zdbwms,jdbcType=VARCHAR},#{zbxftd,jdbcType=VARCHAR},#{bz,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{sjzt,jdbcType=VARCHAR},#{shzt,jdbcType=VARCHAR},#{shrid,jdbcType=VARCHAR},#{shrmc,jdbcType=VARCHAR},#{shrzw,jdbcType=VARCHAR},#{shsj,jdbcType=DATE})
     </insert>
 
     <!--7.批量插入-->
     <insert id="doBatchInsertByList" parameterType="java.util.List">
         INSERT INTO
-        YAGL_JXCS_JBXX(uuid,dwmc,jxdwlx,dwdz,dwgk,xzqh,zbdh,xfgx,xqfzr,xqfzrdh,jzfl,jzsl,zdmj,jzmj,lon,lat,plqkd,plqkn,plqkx,plqkb,gnfqms,zdbwms,zbxftd,bz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+        YAGL_JXCS_JBXX(uuid,dwmc,jxdwlx,dwdz,dwgk,xzqh,zbdh,xfgx,xqfzr,xqfzrdh,jzfl,jzsl,zdmj,jzmj,lon,lat,plqkd,plqkn,plqkx,plqkb,gnfqms,zdbwms,zbxftd,bz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4,sjzt,shzt,shrid,shrmc,shrzw,shsj)
         SELECT SYS_GUID() uuid, A.*
         FROM (
         <foreach collection="list" item="item" index="index" separator="UNION ALL">
@@ -251,7 +291,8 @@
             delete_flag,#{item.datasource,jdbcType=VARCHAR} datasource,#{item.jdh,jdbcType=VARCHAR}
             jdh,#{item.sjc,jdbcType=DATE} sjc,#{item.reserve1,jdbcType=VARCHAR}
             reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR}
-            reserve3,#{item.reserve4,jdbcType=DATE} reserve4
+            reserve3,#{item.reserve4,jdbcType=DATE} reserve4,
+            #{sjzt,jdbcType=VARCHAR},#{shzt,jdbcType=VARCHAR},#{shrid,jdbcType=VARCHAR},#{shrmc,jdbcType=VARCHAR},#{shrzw,jdbcType=VARCHAR},#{shsj,jdbcType=DATE}
             FROM DUAL
         </foreach>
         ) A
@@ -304,6 +345,12 @@
             <if test="reserve2 != null">reserve2=#{reserve2},</if>
             <if test="reserve3 != null">reserve3=#{reserve3},</if>
             <if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+            <if test="sjzt != null">sjzt=#{sjzt},</if>
+            <if test="shzt != null">shzt=#{shzt},</if>
+            <if test="shrid != null">shrid=#{shrid},</if>
+            <if test="shrmc != null">shrmc=#{shrmc},</if>
+            <if test="shrzw != null">shrzw=#{shrzw},</if>
+            <if test="shsj != null">shsj=TO_DATE(#{shsj},'yyyy-MM-dd HH24:mi:ss')</if>
         </set>
         WHERE UUID = #{uuid}
     </update>
@@ -311,7 +358,7 @@
     <!--10.批量修改-->
     <update id="doBatchUpdateByList" parameterType="java.util.List">
         INSERT INTO
-        YAGL_JXCS_JBXX(uuid,dwmc,jxdwlx,dwdz,dwgk,xzqh,zbdh,xfgx,xqfzr,xqfzrdh,jzfl,jzsl,zdmj,jzmj,lon,lat,plqkd,plqkn,plqkx,plqkb,gnfqms,zdbwms,zbxftd,bz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
+        YAGL_JXCS_JBXX(uuid,dwmc,jxdwlx,dwdz,dwgk,xzqh,zbdh,xfgx,xqfzr,xqfzrdh,jzfl,jzsl,zdmj,jzmj,lon,lat,plqkd,plqkn,plqkx,plqkb,gnfqms,zdbwms,zbxftd,bz,delete_flag,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4,sjzt,shzt,shrid,shrmc,shrzw,shsj)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             #{item.uuid,jdbcType=VARCHAR} uuid,#{item.dwmc,jdbcType=VARCHAR} dwmc,#{item.jxdwlx,jdbcType=VARCHAR}
@@ -326,7 +373,8 @@
             delete_flag,#{item.datasource,jdbcType=VARCHAR} datasource,#{item.jdh,jdbcType=VARCHAR}
             jdh,#{item.sjc,jdbcType=DATE} sjc,#{item.reserve1,jdbcType=VARCHAR}
             reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR}
-            reserve3,#{item.reserve4,jdbcType=DATE} reserve4
+            reserve3,#{item.reserve4,jdbcType=DATE} reserve4,
+            #{sjzt,jdbcType=VARCHAR},#{shzt,jdbcType=VARCHAR},#{shrid,jdbcType=VARCHAR},#{shrmc,jdbcType=VARCHAR},#{shrzw,jdbcType=VARCHAR},#{shsj,jdbcType=DATE}
         </foreach>
         ON DUPLICATE KEY UPDATE
         uuid = VALUES(uuid),
@@ -360,14 +408,28 @@
         reserve1 = VALUES(reserve1),
         reserve2 = VALUES(reserve2),
         reserve3 = VALUES(reserve3),
-        reserve4 = VALUES(reserve4)
+        reserve4 = VALUES(reserve4),
+        sjzt = VALUES(sjzt),
+        shzt = VALUES(shzt),
+        shrid = VALUES(shrid),
+        shrmc = VALUES(shrmc),
+        shrzw = VALUES(shrzw),
+        shsj = VALUES(shsj)
     </update>
 
     <!--11.根据对象查询记录-->
     <select id="doFindByVO" parameterType="JxcsjbxxVO" resultType="JxcsjbxxVO">
         SELECT
-        <include refid="SQL_CONTENT"/>
+        <include refid="SQL_CONTENT"/>,
+        c8.code_name sjztmc,
+        c10.code_name shztmc
         FROM YAGL_JXCS_JBXX t
+        <!--数据状态    暂用预案状态代码集-->
+        Left Join SYS_CODELIST c7 on c7.CODETYPE = 'YAZT' And c7.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c8 On c8.CODEID = c7.CODEID And c8.DELETE_FLAG = 'N' and t.SJZT = c8.CODE_VALUE
+        <!--审核状态  暂用预案审核状态代码集-->
+        Left Join SYS_CODELIST c9 on c9.CODETYPE = 'YASHZT' And c9.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c10 On c10.CODEID = c9.CODEID And c10.DELETE_FLAG = 'N' and t.SHZT = c10.CODE_VALUE
         WHERE t.DELETE_FLAG = 'N'
         <include refid="SQL_CONDITION"/>
     </select>
