@@ -151,4 +151,10 @@
 		<include refid="SQL_CONDITION"/>
 	</select>
 
+	<!--根据单位id删除信息-->
+	<update id="doDeleteByDwid"  parameterType="String">
+		delete FROM  YAGL_JXCS_DLYZ t
+		WHERE t.DWID = #{value}
+	</update>
+
 </mapper>

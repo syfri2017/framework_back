@@ -127,7 +127,7 @@
         </selectKey>
         INSERT INTO
         YAGL_JXCS_XFSS(xfssid,dwid,xfssmc,xfsslx,wz,sl,bz,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,datasource,jdh,sjc,reserve1,reserve2,reserve3,reserve4)
-        VALUES(#{xfssid,jdbcType=VARCHAR},#{dwid,jdbcType=VARCHAR},#{xfssmc,jdbcType=VARCHAR},#{xfsslx,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},#{bz,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},#{cjsj,jdbcType=DATE},#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+        VALUES(#{xfssid,jdbcType=VARCHAR},#{dwid,jdbcType=VARCHAR},#{xfssmc,jdbcType=VARCHAR},#{xfsslx,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{sl,jdbcType=DOUBLE},#{bz,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{datasource,jdbcType=VARCHAR},#{jdh,jdbcType=VARCHAR},#{sjc,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
     </insert>
 
     <!--7.批量插入-->
@@ -141,7 +141,7 @@
             #{item.dwid,jdbcType=VARCHAR} dwid,#{item.xfssmc,jdbcType=VARCHAR}
             xfssmc,#{item.xfsslx,jdbcType=VARCHAR} xfsslx,#{item.wz,jdbcType=VARCHAR} wz,#{item.sl,jdbcType=DOUBLE}
             sl,#{item.bz,jdbcType=VARCHAR} bz,'N' delete_flag,#{item.cjrid,jdbcType=VARCHAR}
-            cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR}
+            cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,sysdate,#{item.xgrid,jdbcType=VARCHAR}
             xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.xgsj,jdbcType=DATE}
             xgsj,#{item.datasource,jdbcType=VARCHAR} datasource,#{item.jdh,jdbcType=VARCHAR}
             jdh,#{item.sjc,jdbcType=DATE} sjc,#{item.reserve1,jdbcType=VARCHAR}
