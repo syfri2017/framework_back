@@ -47,7 +47,7 @@ public class JxcsjbxxController  extends BaseController<JxcsjbxxVO>{
 	public @ResponseBody ResultVO save(@RequestBody JxcsjbxxVO vo) throws Exception{
 		ResultVO resultVO = ResultVO.build();
 		try {
-			resultVO.setResult(jxcsjbxxService.doInsertJbcsByVO(vo));
+			resultVO.setResult(jxcsjbxxService.doInsertJxcsByVO(vo));
 		} catch (Exception e) {
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
@@ -56,4 +56,17 @@ public class JxcsjbxxController  extends BaseController<JxcsjbxxVO>{
 		return 	resultVO;
 	}
 
+	@ApiOperation(value="根据VO更新",notes="注意事项")
+	@ApiImplicitParam(name="vo",value = "业务实体")
+	@PostMapping("/doUpdateJxcsByVO")
+	public @ResponseBody ResultVO doUpdateJxcsByVO(@RequestBody JxcsjbxxVO vo) throws Exception{
+		ResultVO resultVO = ResultVO.build();
+		try {
+			resultVO.setResult(jxcsjbxxService.doUpdateJxcsByVO(vo));
+		} catch (Exception e) {
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return 	resultVO;
+	}
 }

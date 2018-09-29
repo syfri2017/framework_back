@@ -139,7 +139,9 @@ public class CompZddwShareController {
         yafjxzVO.setKzm("pic");
         yafjxzVO.setYaid(uuid);
         model.addAttribute("pictureList", yafjxzService.doFindByPlanId(yafjxzVO));
-
+        //lxy添加vue服务器路径
+        model.addAttribute("vueServerUrl", yafjxzProperties.getVueServerUrl());
+        model.addAttribute("serverUrl", yafjxzProperties.getFileServerUrl());
 //        // 功能分区-装置
 //        model.addAttribute("areaDeviceList", zddwWrapperMap.get("areaDeviceList"));
 //        // 消防设施

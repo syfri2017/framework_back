@@ -21,6 +21,16 @@ public class YafjxzProperties {
 
     private String fileServerUrl= "http://10.119.119.145:80";
 
+    private String vueServerUrl= "http://10.119.119.145:80";
+
+    public String getVueServerUrl() {
+        return vueServerUrl;
+    }
+
+    public void setVueServerUrl(String vueServerUrl) {
+        this.vueServerUrl = vueServerUrl;
+    }
+
     public static String getYafjxzPrefix() {
         return YAFJXZ_PREFIX;
     }
