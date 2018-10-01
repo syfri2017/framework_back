@@ -1,11 +1,19 @@
 #server
 server:
-  port: 8804
+  port: 8805
+  tomcat:
+    max-http-post-size: -1
 #------------------------------------------------------------
 #spring
 spring:
   profiles:
     active: dev
+  http:
+      converters:
+        preferred-json-mapper: fastjson
+      multipart:
+        max-request-size: 512MB #最大请求大小
+        max-file-size: 512MB #最大文件大小
   druid:
     #配置druid连接池
     datasource:
@@ -23,11 +31,10 @@ spring:
       maxPoolPreparedStatementPerConnectionSize: 20
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
 
-
   mybatis:
-    mapperLocations: classpath:mapper/*-mapper.xml
-    typeAliasesPackage: com.syfri.userservice
-    basePackage: com.syfri.userservice.dao
+    mapperLocations: classpath*:mapper/*-mapper.xml
+    typeAliasesPackage: com.syfri.exhibition
+    basePackage: com.syfri.exhibition.dao
     configuration:
       cacheEnabled: false
       lazyLoadingEnabled: false
@@ -37,10 +44,8 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
   redis:
-      host: 10.119.119.233
-      port: 6379
-      expire: 1800
-      timeout: 0
+    host: 10.119.119.233
+    port: 6379
 #------------------------------------------------------------
 #pagehelper分页插件设置
 pagehelper:
@@ -50,11 +55,29 @@ pagehelper:
   row-bounds-with-count: true
   auto-dialect: true
 #------------------------------------------------------------
+#logging:
+#  level: debug
 logging:
   level.root: info
   level.com.syfri: debug
   path: logs/
-  file: userservice.log
+  file: exhibition.log
+#------------------------------------------------------------
+#swagger:
+#  title: springboot
+#  description: springboot swagger
+#  version: 1.0
+#  license: 111
+#  license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+#  terms-of-service-url: https://github.com/dyc87112/spring-boot-starter-swagger
+#  contact:
+#    email: xxx@syfri.cn
+#    name: lx
+#    url: http://blog.didispace.com
+#  base-package: com.syfri
+#------------------------------------------------------------
+
+
   ##########################################################
   ###################  开发环境的profile  ###################
   ##########################################################
@@ -83,19 +106,14 @@ spring:
       url: jdbc:oracle:thin:@10.119.119.232:1521/XFXHDB
       username: XFXHZH
       password: XFXHZH
-
-
-#------------------------------------------------------------
-#swagger:
-#  title: springboot
-#  description: springboot swagger
-#  version: 1.0
-#  license: 111
-#  license-url: https://www.apache.org/licenses/LICENSE-2.0.html
-#  terms-of-service-url: https://github.com/dyc87112/spring-boot-starter-swagger
-#  contact:
-#    email: xxx@syfri.cn
-#    name: lx
-#    url: http://blog.didispace.com
-#  base-package: com.syfri
-#------------------------------------------------------------
+---
+spring:
+  profiles: history
+  druid:
+    #配置druid连接池
+    datasource:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: oracle.jdbc.OracleDriver
+      url: jdbc:oracle:thin:@10.119.119.232:1521/orcl
+      username: XFXHZHHIS
+      password: XFXHZHHIS

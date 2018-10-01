@@ -3,10 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/baseapi" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/demo" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/digitalplan" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/exhibition" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/generator" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/userserver" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/userservice" charset="UTF-8" />
   </component>
 </project>

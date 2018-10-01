@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/baseapi/baseapi.iml" filepath="$PROJECT_DIR$/baseapi/baseapi.iml" />
       <module fileurl="file://$PROJECT_DIR$/digitalplan/digitalplan.iml" filepath="$PROJECT_DIR$/digitalplan/digitalplan.iml" />
+      <module fileurl="file://$PROJECT_DIR$/exhibition/exhibition.iml" filepath="$PROJECT_DIR$/exhibition/exhibition.iml" />
       <module fileurl="file://$PROJECT_DIR$/framework.iml" filepath="$PROJECT_DIR$/framework.iml" />
       <module fileurl="file://$PROJECT_DIR$/generator/generator.iml" filepath="$PROJECT_DIR$/generator/generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/userservice/userservice.iml" filepath="$PROJECT_DIR$/userservice/userservice.iml" />
