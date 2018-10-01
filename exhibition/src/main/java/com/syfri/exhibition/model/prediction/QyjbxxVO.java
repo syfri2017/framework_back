@@ -1,4 +1,4 @@
-package com.syfri.exhibition.model.ybm;
+package com.syfri.exhibition.model.prediction;
 
 import java.io.Serializable;
 

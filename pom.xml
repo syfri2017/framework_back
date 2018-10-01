@@ -9,7 +9,6 @@
         <module>baseapi</module>
         <module>generator</module>
         <module>userservice</module>
-        <module>digitalplan</module>
         <module>exhibition</module>
     </modules>
 
