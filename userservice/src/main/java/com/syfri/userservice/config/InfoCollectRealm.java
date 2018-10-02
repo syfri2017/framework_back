@@ -1,6 +1,5 @@
 package com.syfri.userservice.config;
 
-import com.syfri.userservice.dao.InfoCollectDAO;
 import com.syfri.userservice.model.*;
 import com.syfri.userservice.service.*;
 import org.apache.shiro.SecurityUtils;
