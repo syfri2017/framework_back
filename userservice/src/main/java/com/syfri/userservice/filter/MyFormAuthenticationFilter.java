@@ -61,7 +61,7 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter {
 			//HttpServletRequest req = (HttpServletRequest) request;
 			//req.getSession().setAttribute("loginType", "infoCollect");
 			WebUtils.getAndClearSavedRequest(request);
-			String infoCollectUrl = "/jxcsplan/jxcsplanAll";
+			String infoCollectUrl = "/prediction/predictionAll";
 			WebUtils.redirectToSavedRequest(request, response, infoCollectUrl);
 		}else{
 			issueSuccessRedirect(request, response);
