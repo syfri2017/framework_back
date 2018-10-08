@@ -24,7 +24,12 @@
             <artifactId>baseapi</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
+        <!--手机验证码-->
+        <dependency>
+            <groupId>com.github.qcloudsms</groupId>
+            <artifactId>sms</artifactId>
+            <version>0.9.2</version>
+        </dependency>
         <!-- Shiro start -->
         <dependency>
             <groupId>org.apache.shiro</groupId>

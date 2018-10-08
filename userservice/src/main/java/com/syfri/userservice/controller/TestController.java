@@ -2,7 +2,11 @@ package com.syfri.userservice.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.qcloudsms.SmsSingleSender;
+import com.github.qcloudsms.SmsSingleSenderResult;
 import com.syfri.baseapi.controller.BaseController;
+import com.syfri.baseapi.model.ResultVO;
+import com.syfri.baseapi.utils.EConstants;
 import com.syfri.userservice.model.*;
 import com.syfri.userservice.service.*;
 import io.swagger.annotations.Api;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import  com.syfri.userservice.config.properties.MsgProperties;
 
 @Api(value = "测试",tags = "测试API",description = "测试")
 @Controller
@@ -35,6 +40,56 @@ public class TestController extends BaseController<UserVO>{
 
 	@Autowired
 	private CodelistService codelistService;
+
+	@Autowired
+	private MsgProperties pMsgProperties;
+
+	@RequestMapping(value = "${msg.send-path}")
+	@ResponseBody
+	public Object send(){
+		return send("15604023161");
+	}
+
+
+	public ResultVO send(String phone){
+		ResultVO resultVO = ResultVO.build();
+		//Map<String ,String> r=new HashMap<String ,String>();
+		if(!(phone.equals("")||null == phone)){
+			//假设短信模板 id 为 123，模板内容为：测试短信，{1}，{2}，{3}，上学。
+			SmsSingleSender sender;
+			try {
+				sender = new SmsSingleSender(pMsgProperties.getAppId(),pMsgProperties.getAppKey());
+				ArrayList<String> params = new ArrayList<String>();
+				//6位随机数验证码
+				StringBuffer randomStr=new StringBuffer();
+				for(int i=1;i<=6;i++){
+					randomStr.append((int)(Math.random()*9+1));
+				}
+				params.add(randomStr.toString());
+				SmsSingleSenderResult result = sender.sendWithParam("86", phone, pMsgProperties.getTemplId(), params, "", "", "");
+
+				if(result.result==0){
+					resultVO.setCode(EConstants.CODE.SUCCESS);
+					//生成的随机数(可以去掉)
+					resultVO.setMsg( randomStr.toString());
+				}else{
+					resultVO.setCode(EConstants.CODE.FAILURE);
+					resultVO.setMsg( result.errMsg);
+				}
+			} catch (Exception e) {
+				resultVO.setCode(EConstants.CODE.FAILURE);
+				resultVO.setMsg(  e.getMessage());
+				e.printStackTrace();
+
+				return resultVO;
+			}
+		}else{
+
+			resultVO.setCode(EConstants.CODE.FAILURE);
+			resultVO.setMsg("获取手机号失败");
+		}
+		return resultVO;
+	}
 
 	@Override
 	public UserService getBaseService() {
