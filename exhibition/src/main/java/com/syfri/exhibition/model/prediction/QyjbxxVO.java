@@ -41,6 +41,10 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
 
+	private String yjdz;	//邮寄地址
+	private String sjztmc;	//数据状态名称
+	private String shztmc;	//审核状态名称
+
 	public String getQyid(){
 		return qyid;
 	}
@@ -232,5 +236,29 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	}
 	public void setReserve4(String reserve4){
 		this.reserve4 = reserve4;
+	}
+
+	public String getYjdz() {
+		return yjdz;
+	}
+
+	public void setYjdz(String yjdz) {
+		this.yjdz = yjdz;
+	}
+
+	public String getSjztmc() {
+		return sjztmc;
+	}
+
+	public void setSjztmc(String sjztmc) {
+		this.sjztmc = sjztmc;
+	}
+
+	public String getShztmc() {
+		return shztmc;
+	}
+
+	public void setShztmc(String shztmc) {
+		this.shztmc = shztmc;
 	}
 }
