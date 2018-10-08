@@ -1,6 +1,14 @@
 #server
 server:
   port: 8804
+#---------短信验证码--------------------
+msg:
+  validate-path: pvalidate #手机短信验证码认证请求的路径（未启用）
+  send-path: send #手机短信验证码认证请求的路径
+  appId: 1400063133
+  appKey: 37c7d27d8a4c6d5231eb68003ef09d1e
+  signId: 35509
+  templId: 77405
 #------------------------------------------------------------
 #spring
 spring:
