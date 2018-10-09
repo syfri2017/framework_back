@@ -152,6 +152,7 @@
     <select id="doSearchListByVO" parameterType="QyjbxxVO" resultType="QyjbxxVO">
         SELECT
         <include refid="SQL_CONTENT"/>,
+        k.tyshxydm tyshxydm,
         c2.code_name sjztmc,
         c4.code_name shztmc
         FROM CFPA_QY_JBXX t
@@ -161,6 +162,8 @@
         <!--审核状态-->
         Left Join SYS_CODELIST c3 on c3.CODETYPE = 'SHZT' And c3.DELETE_FLAG = 'N'
         Left Join SYS_CODELIST_DETAIL c4 On c4.CODEID = c3.CODEID And c4.DELETE_FLAG = 'N' and t.shzt = c4.CODE_VALUE
+        <!--统一社会信用代码-->
+        Left Join CFPA_QY_KPXX k on t.qyid = k.qyid And k.DELETE_FLAG = 'N'
         WHERE t.DELETE_FLAG = 'N'
         <include refid="SQL_CONDITION"/>
     </select>
