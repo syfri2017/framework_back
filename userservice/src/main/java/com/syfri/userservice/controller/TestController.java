@@ -60,10 +60,13 @@ public class TestController extends BaseController<UserVO>{
 	@RequestMapping(value = "${msg.send-path}")
 	@ResponseBody
 	public Object send(){
-		//return send("15604023161");
-		return null;
+		return send("15604023161");
 	}
 
+	/**
+	 * 发送邮箱验证码
+	 * @return
+	 */
 	@GetMapping("/sendMail")
 	public Object sendMail(){
 		MimeMessage message=jms.createMimeMessage();
@@ -81,26 +84,16 @@ public class TestController extends BaseController<UserVO>{
 			e.printStackTrace();
 			System.out.println("html格式邮件发送失败");
 		}
-//		//建立邮件消息
-//		SimpleMailMessage mainMessage = new SimpleMailMessage();
-//		//发送者
-//		mainMessage.setFrom("1106612528@qq.com");
-//		//接收者
-//		mainMessage.setTo("lixiaoyang@syfri.cn");
-//		// 发送的标题
-//		mainMessage.setSubject("嗨喽");
-//		// 发送的内容
-//		mainMessage.setText("hello world</br> 11111111111</br>");
-//		jms.send(mainMessage);
 		return null;
 	}
 
-
-
-
+	/**
+	 * 发送短信验证码
+	 * @param phone 电话号码
+	 * @return
+	 */
 	public ResultVO send(String phone){
 		ResultVO resultVO = ResultVO.build();
-		//Map<String ,String> r=new HashMap<String ,String>();
 		if(!(phone.equals("")||null == phone)){
 			//假设短信模板 id 为 123，模板内容为：测试短信，{1}，{2}，{3}，上学。
 			SmsSingleSender sender;
@@ -111,7 +104,6 @@ public class TestController extends BaseController<UserVO>{
 				String randomStr=MathUtil.getCode(6);
 				params.add(randomStr);
 				SmsSingleSenderResult result = sender.sendWithParam("86", phone, pMsgProperties.getTemplId(), params, "", "", "");
-
 				if(result.result==0){
 					resultVO.setCode(EConstants.CODE.SUCCESS);
 					//生成的随机数(可以去掉)
