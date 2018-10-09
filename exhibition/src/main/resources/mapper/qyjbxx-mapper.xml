@@ -336,6 +336,7 @@
     <select id="doFindZsxxByQyjbxx" parameterType="QyjbxxVO" resultType="QyjbxxVO">
         SELECT
         s.username,
+        s.userid,
         u.pkid,
         <include refid="SQL_CONTENT"/>
         FROM SYS_ACCOUNT s
