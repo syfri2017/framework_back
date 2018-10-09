@@ -59,6 +59,9 @@
         <if test="sjzt != null and sjzt != '' ">
             and t.sjzt = #{sjzt}
         </if>
+        <if test="approveflag != null and approveflag != '' ">
+            and t.sjzt != '01'
+        </if>
         <if test="shzt != null and shzt != '' ">
             and t.shzt = #{shzt}
         </if>

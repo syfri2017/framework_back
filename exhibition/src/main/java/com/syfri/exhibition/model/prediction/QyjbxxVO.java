@@ -44,6 +44,7 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	private String yjdz;	//邮寄地址
 	private String sjztmc;	//数据状态名称
 	private String shztmc;	//审核状态名称
+	private String approveflag;	//审核查询标识
 
 	private String tyshxydm;	//统一社会信用代码/纳税人识别号
 	private String yyzzBase64;	//营业执照(Base64格式)
@@ -282,5 +283,13 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getApproveflag() {
+		return approveflag;
+	}
+
+	public void setApproveflag(String approveflag) {
+		this.approveflag = approveflag;
 	}
 }
