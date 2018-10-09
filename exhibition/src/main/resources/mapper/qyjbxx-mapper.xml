@@ -336,6 +336,7 @@
     <select id="doFindZsxxByQyjbxx" parameterType="QyjbxxVO" resultType="QyjbxxVO">
         SELECT
         s.username,
+        u.pkid,
         <include refid="SQL_CONTENT"/>
         FROM SYS_ACCOUNT s
         LEFT JOIN CFPA_QY_JBXX t ON s.userid = t.userid AND t.DELETE_FLAG = 'N'

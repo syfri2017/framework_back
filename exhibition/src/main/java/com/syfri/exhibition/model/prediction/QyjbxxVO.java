@@ -50,6 +50,7 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	private String yyzzBase64;	//营业执照(Base64格式)
 
 	private String username;   //登陆账号
+	private String pkid;   //用户表主键
 
 	public String getQyid(){
 		return qyid;
@@ -283,6 +284,14 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getPkid() {
+		return pkid;
+	}
+
+	public void setPkid(String pkid) {
+		this.pkid = pkid;
 	}
 
 	public String getApproveflag() {
