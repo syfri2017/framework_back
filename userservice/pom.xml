@@ -30,6 +30,11 @@
             <artifactId>sms</artifactId>
             <version>0.9.2</version>
         </dependency>
+        <!-- 支持发送邮件 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
         <!-- Shiro start -->
         <dependency>
             <groupId>org.apache.shiro</groupId>

@@ -12,7 +12,10 @@ import com.syfri.userservice.service.*;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,10 +47,30 @@ public class TestController extends BaseController<UserVO>{
 	@Autowired
 	private MsgProperties pMsgProperties;
 
+	@Autowired
+	JavaMailSender jms;
+
 	@RequestMapping(value = "${msg.send-path}")
 	@ResponseBody
 	public Object send(){
-		return send("15604023161");
+		//return send("15604023161");
+		return null;
+	}
+
+	@GetMapping("/sendMail")
+	public Object sendMail(){
+		//建立邮件消息
+		SimpleMailMessage mainMessage = new SimpleMailMessage();
+		//发送者
+		mainMessage.setFrom("1106612528@qq.com");
+		//接收者
+		mainMessage.setTo("lixiaoyang@syfri.cn");
+		// 发送的标题
+		mainMessage.setSubject("嗨喽");
+		// 发送的内容
+		mainMessage.setText("hello world");
+		jms.send(mainMessage);
+		return null;
 	}
 
 

@@ -30,8 +30,13 @@ spring:
       poolPreparedStatements: true
       maxPoolPreparedStatementPerConnectionSize: 20
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-
-
+  mail:
+    default-encoding: UTF-8
+    host: smtp.qq.com
+    port: 25 #25
+    protocol: smtp
+    username: 1106612528@qq.com
+    password: xjeolnetxnuljbee
   mybatis:
     mapperLocations: classpath:mapper/*-mapper.xml
     typeAliasesPackage: com.syfri.userservice
