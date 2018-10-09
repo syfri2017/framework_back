@@ -156,4 +156,22 @@ public class UserController  extends BaseController<UserVO>{
 		}
 		return resultVO;
 	}
+
+	/**
+	 * 将密码重置成111111
+	 */
+	@ApiOperation(value="将密码重置成111111",notes="列表信息")
+	@ApiImplicitParam(name="vo",value="用户")
+	@PostMapping("/doResetPassword")
+	public @ResponseBody ResultVO doResetPassword(@RequestBody UserVO userVO){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			userVO.setPassword("111111");
+			resultVO.setResult(userService.doUpdateUserRoles(userVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }
