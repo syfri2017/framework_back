@@ -23,7 +23,7 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	private String lxrsj;	//联系人手机
 	private String wz;	//网址
 	private String dzyx;	//电子邮箱
-	private String yyzz;	//营业执照
+	private byte[] yyzz;	//营业执照
 	private String sjzt;	//数据状态
 	private String shzt;	//审核状态
 	private String shrid;	//审核人ID
@@ -44,6 +44,9 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	private String yjdz;	//邮寄地址
 	private String sjztmc;	//数据状态名称
 	private String shztmc;	//审核状态名称
+
+	private String tyshxydm;	//统一社会信用代码/纳税人识别号
+	private String yyzzBase64;	//营业执照(Base64格式)
 
 	public String getQyid(){
 		return qyid;
@@ -135,12 +138,15 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	public void setDzyx(String dzyx){
 		this.dzyx = dzyx;
 	}
-	public String getYyzz(){
+
+	public byte[] getYyzz() {
 		return yyzz;
 	}
-	public void setYyzz(String yyzz){
+
+	public void setYyzz(byte[] yyzz) {
 		this.yyzz = yyzz;
 	}
+
 	public String getSjzt(){
 		return sjzt;
 	}
@@ -260,5 +266,21 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 
 	public void setShztmc(String shztmc) {
 		this.shztmc = shztmc;
+	}
+
+	public String getTyshxydm() {
+		return tyshxydm;
+	}
+
+	public void setTyshxydm(String tyshxydm) {
+		this.tyshxydm = tyshxydm;
+	}
+
+	public String getYyzzBase64() {
+		return yyzzBase64;
+	}
+
+	public void setYyzzBase64(String yyzzBase64) {
+		this.yyzzBase64 = yyzzBase64;
 	}
 }
