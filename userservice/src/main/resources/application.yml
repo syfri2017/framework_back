@@ -9,6 +9,7 @@ msg:
   appKey: 37c7d27d8a4c6d5231eb68003ef09d1e
   signId: 35509
   templId: 77405
+#---------邮箱验证码--------------------
 mail:
   from: 1106612528@qq.com  #发送邮箱
   subject: 展会邮箱验证码 #邮箱标题
@@ -38,11 +39,11 @@ spring:
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
   mail:
     default-encoding: UTF-8
-    host: smtp.qq.com
-    port: 25 #25
+    host: smtp.qq.com #QQ邮箱SMTP服务器
+    port: 25 #端口
     protocol: smtp
     username: 1106612528@qq.com
-    password: xjeolnetxnuljbee
+    password: xjeolnetxnuljbee #QQ邮箱生成授权码  QQ邮箱-设置-账户- POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV服务 - 开启服务
   mybatis:
     mapperLocations: classpath:mapper/*-mapper.xml
     typeAliasesPackage: com.syfri.userservice
