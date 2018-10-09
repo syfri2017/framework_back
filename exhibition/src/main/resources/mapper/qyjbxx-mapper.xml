@@ -326,4 +326,19 @@
         <include refid="SQL_CONDITION"/>
     </select>
 
+    <!--11.根据用户、公司对象查询展商记录 by li.xue 2018/10/9 11:16-->
+    <select id="doFindZsxxByQyjbxx" parameterType="QyjbxxVO" resultType="QyjbxxVO">
+        SELECT
+        s.username,
+        <include refid="SQL_CONTENT"/>
+        FROM SYS_ACCOUNT s
+        LEFT JOIN CFPA_QY_JBXX t ON s.userid = t.userid AND t.DELETE_FLAG = 'N'
+        INNER JOIN SYS_USER u ON s.userid = u.userid AND u.DELETE_FLAG = 'N' AND u.deptid = 'ZSYH'
+        WHERE s.DELETE_FLAG = 'N'
+        <if test="username != null and username != '' ">
+            and s.username LIKE concat(concat('%',#{username}),'%')
+        </if>
+        <include refid="SQL_CONDITION"/>
+    </select>
+
 </mapper>

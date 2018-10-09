@@ -48,6 +48,8 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	private String tyshxydm;	//统一社会信用代码/纳税人识别号
 	private String yyzzBase64;	//营业执照(Base64格式)
 
+	private String username;   //登陆账号
+
 	public String getQyid(){
 		return qyid;
 	}
@@ -247,40 +249,38 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	public String getYjdz() {
 		return yjdz;
 	}
-
 	public void setYjdz(String yjdz) {
 		this.yjdz = yjdz;
 	}
-
 	public String getSjztmc() {
 		return sjztmc;
 	}
-
 	public void setSjztmc(String sjztmc) {
 		this.sjztmc = sjztmc;
 	}
-
 	public String getShztmc() {
 		return shztmc;
 	}
-
 	public void setShztmc(String shztmc) {
 		this.shztmc = shztmc;
 	}
-
 	public String getTyshxydm() {
 		return tyshxydm;
 	}
-
 	public void setTyshxydm(String tyshxydm) {
 		this.tyshxydm = tyshxydm;
 	}
-
 	public String getYyzzBase64() {
 		return yyzzBase64;
 	}
-
 	public void setYyzzBase64(String yyzzBase64) {
 		this.yyzzBase64 = yyzzBase64;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }
