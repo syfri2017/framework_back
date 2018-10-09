@@ -9,7 +9,7 @@ import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import com.syfri.userservice.model.*;
 import com.syfri.userservice.service.*;
-import com.syfri.userservice.utils.MathUtil;
+import com.syfri.baseapi.utils.MathUtil;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

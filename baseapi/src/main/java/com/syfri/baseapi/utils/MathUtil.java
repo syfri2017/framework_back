@@ -1,4 +1,4 @@
-package com.syfri.userservice.utils;
+package com.syfri.baseapi.utils;
 
 /**
  * @Description:
