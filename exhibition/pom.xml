@@ -34,6 +34,11 @@ c
             <artifactId>shiro-core</artifactId>
             <version>1.4.0</version>
         </dependency>
+        <!-- 支持发送邮件 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
         <!-- 本地使用 velocity 作为代码生成器，兼容idea -->
         <dependency>
             <groupId>org.apache.velocity</groupId>

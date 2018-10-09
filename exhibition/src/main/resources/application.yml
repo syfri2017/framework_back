@@ -3,6 +3,13 @@ server:
   port: 8805
   tomcat:
     max-http-post-size: -1
+#---------邮箱验证码--------------------
+mail:
+  from: 1106612528@qq.com  #发送邮箱
+  subject: 展会邮箱验证码 #邮箱标题
+  time: 1小时             #时效
+  system-name: 展会系统  #系统名称
+  text:
 #------------------------------------------------------------
 #spring
 spring:
