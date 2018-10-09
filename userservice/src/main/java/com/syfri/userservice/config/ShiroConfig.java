@@ -169,6 +169,7 @@ public class ShiroConfig implements EnvironmentAware {
 		filterMap.put("/swagger-ui.html", "anon");
 
 		filterMap.put("/shiro", "anon");
+		filterMap.put("/test/**", "anon");
 
 		//验证码可以不经授权访问
 		filterMap.put("/imageCode", "anon");
