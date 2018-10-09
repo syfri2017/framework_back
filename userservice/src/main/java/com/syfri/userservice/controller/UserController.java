@@ -167,6 +167,7 @@ public class UserController  extends BaseController<UserVO>{
 		ResultVO resultVO = ResultVO.build();
 		try{
 			userVO.setPassword("111111");
+			userVO.setDeptid("ZSYH");
 			resultVO.setResult(userService.doUpdateUserRoles(userVO));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
