@@ -487,4 +487,38 @@ public class CodelistServiceImpl extends BaseServiceImpl<CodelistVO> implements 
 		}
 		return codelistTrees;
 	}
+	/*--公司主营产品
+	* -- by yushch-- */
+	//代码集eg:1000 1001-1099
+	@Override
+	public List<CodelistTree> doFindZycptree(String codetype) {
+		// 目的树
+		List<CodelistTree> codelistTrees = new ArrayList<>();
+		// 源数据
+		List<CodelistDetailVO> codelistDetailVOs = codelistDAO.doFindCodelistByType(codetype);
+		if (codelistDetailVOs != null && codelistDetailVOs.size() > 0) {
+			for (CodelistDetailVO codelistDetailVO : codelistDetailVOs) {
+				// 选出第一级类别
+				if (codelistDetailVO.getCodeValue().endsWith("000")) {
+					CodelistTree tree = new CodelistTree();
+					tree.setCodeName(codelistDetailVO.getCodeName());
+					tree.setCodeValue(codelistDetailVO.getCodeValue());
+					List<CodelistTree> children = new ArrayList();
+					//第二级别
+					for (CodelistDetailVO codelistDetailVO2 : codelistDetailVOs) {
+						if (codelistDetailVO2.getCodeValue().startsWith(codelistDetailVO.getCodeValue().substring(0,1))&&!codelistDetailVO2.equals(codelistDetailVO)){
+							CodelistTree tree2 = new CodelistTree();
+							tree2.setCodeName(codelistDetailVO2.getCodeName());
+							tree2.setCodeValue(codelistDetailVO2.getCodeValue());
+							children.add(tree2);
+						}
+					}
+					if(!children.isEmpty() )
+						tree.setChildren(children);
+					codelistTrees.add(tree);
+				}
+			}
+		}
+		return codelistTrees;
+	}
 }

@@ -461,4 +461,19 @@ public class CodelistController  extends BaseController<CodelistVO>{
 		}
 		return resultVO;
 	}
+	//by yushch 20181009
+	//代码集eg:1000 1001-1099
+	@ApiOperation(value="查询主营产品树状资源",notes="查询")
+	@ApiImplicitParam(name="codetype",value="代码类型")
+	@RequestMapping("/getZycpTree/{codetype}")
+	public @ResponseBody ResultVO getZycpTree(@PathVariable String codetype){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(codelistService.doFindZycptree(codetype));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }
