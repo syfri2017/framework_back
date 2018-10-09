@@ -28,6 +28,13 @@ public class RoleVO extends ValueObject implements Serializable{
 	private String deleteFlag;	//删除标志
 	private List<ResourceVO> resources;  //资源权限
 
+	public RoleVO() {
+	}
+
+	public RoleVO(String roleid) {
+		this.roleid = roleid;
+	}
+
 	public String getRoleid() {
 		return roleid;
 	}

@@ -1,6 +1,7 @@
 package com.syfri.userservice.service.impl;
 
 import com.syfri.userservice.model.AccountVO;
+import com.syfri.userservice.model.RoleVO;
 import com.syfri.userservice.service.AccountService;
 import com.syfri.userservice.service.OrganizationService;
 import com.syfri.userservice.utils.CurrentUserUtil;
@@ -13,6 +14,7 @@ import com.syfri.userservice.model.UserVO;
 import com.syfri.userservice.service.UserService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -56,11 +58,16 @@ public class UserServiceImpl extends BaseServiceImpl<UserVO> implements UserServ
 		userVO.setCreateName(CurrentUserUtil.getCurrentUserName());
 		userVO.setUserid(accountVO.getUserid());
 		userDAO.doInsertByVO(userVO);
-		if(!userVO.getOrganizationId().isEmpty()){
+		if(userVO.getOrganizationId() != null && !"".equals(userVO.getOrganizationId())){
 			userVO.setOrganizationName(organizationService.doFindById(userVO.getOrganizationId()).getJgjc());
 		}
 
 		//向中间表中插入账户角色情况
+		if("ZSYH".equals(userVO.getDeptid())){
+			List<RoleVO> roles = new ArrayList<>();
+			roles.add(new RoleVO("5E2EE48C361A4BBB825C4A2E8330102F"));
+			userVO.setRoles(roles);
+		}
 		accountService.doInsertAccountRolesBatch(accountVO.getUserid(), userVO.getRoles());
 		return userVO;
 	}
@@ -74,13 +81,15 @@ public class UserServiceImpl extends BaseServiceImpl<UserVO> implements UserServ
 
 		//修改用户表基本信息
 		userDAO.doUpdateByVO(userVO);
-		if(!userVO.getOrganizationId().isEmpty()){
+		if(userVO.getOrganizationId() != null && !"".equals(userVO.getOrganizationId())){
 			userVO.setOrganizationName(organizationService.doFindById(userVO.getOrganizationId()).getJgjc());
 		}
 
 		//修改角色中间表信息
-		accountService.doDeleteAccountRoles(userVO.getUserid());
-		accountService.doInsertAccountRolesBatch(accountVO.getUserid(), userVO.getRoles());
+		if(!"ZSYH".equals(userVO.getDeptid())){
+			accountService.doDeleteAccountRoles(userVO.getUserid());
+			accountService.doInsertAccountRolesBatch(accountVO.getUserid(), userVO.getRoles());
+		}
 		return userVO;
 	}
 
