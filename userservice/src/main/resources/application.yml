@@ -9,6 +9,12 @@ msg:
   appKey: 37c7d27d8a4c6d5231eb68003ef09d1e
   signId: 35509
   templId: 77405
+mail:
+  from: 1106612528@qq.com  #发送邮箱
+  subject: 展会邮箱验证码 #邮箱标题
+  time: 1小时             #时效
+  system-name: 展会系统  #系统名称
+  text:
 #------------------------------------------------------------
 #spring
 spring:

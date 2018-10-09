@@ -9,11 +9,13 @@ import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import com.syfri.userservice.model.*;
 import com.syfri.userservice.service.*;
+import com.syfri.userservice.utils.MathUtil;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 import  com.syfri.userservice.config.properties.MsgProperties;
+import com.syfri.userservice.config.properties.MailProperties;
+
+import javax.mail.internet.MimeMessage;
 
 @Api(value = "测试",tags = "测试API",description = "测试")
-@Controller
+@RestController
 @RequestMapping("/test")
 public class TestController extends BaseController<UserVO>{
 
@@ -48,7 +53,9 @@ public class TestController extends BaseController<UserVO>{
 	private MsgProperties pMsgProperties;
 
 	@Autowired
-	JavaMailSender jms;
+	private JavaMailSender jms;
+	@Autowired
+	private MailProperties mp;
 
 	@RequestMapping(value = "${msg.send-path}")
 	@ResponseBody
@@ -59,19 +66,36 @@ public class TestController extends BaseController<UserVO>{
 
 	@GetMapping("/sendMail")
 	public Object sendMail(){
-		//建立邮件消息
-		SimpleMailMessage mainMessage = new SimpleMailMessage();
-		//发送者
-		mainMessage.setFrom("1106612528@qq.com");
-		//接收者
-		mainMessage.setTo("lixiaoyang@syfri.cn");
-		// 发送的标题
-		mainMessage.setSubject("嗨喽");
-		// 发送的内容
-		mainMessage.setText("hello world");
-		jms.send(mainMessage);
+		MimeMessage message=jms.createMimeMessage();
+		try {
+			//true表示需要创建一个multipart message
+			MimeMessageHelper helper=new MimeMessageHelper(message,true);
+			helper.setFrom(mp.getFrom());
+			helper.setTo("lixiaoyang@syfri.cn");
+			helper.setSubject(mp.getSubject());
+			String randomStr=MathUtil.getCode(6);
+			helper.setText(String.format(mp.getText(),randomStr),true);
+			jms.send(message);
+			System.out.println("html格式邮件发送成功");
+		}catch (Exception e){
+			e.printStackTrace();
+			System.out.println("html格式邮件发送失败");
+		}
+//		//建立邮件消息
+//		SimpleMailMessage mainMessage = new SimpleMailMessage();
+//		//发送者
+//		mainMessage.setFrom("1106612528@qq.com");
+//		//接收者
+//		mainMessage.setTo("lixiaoyang@syfri.cn");
+//		// 发送的标题
+//		mainMessage.setSubject("嗨喽");
+//		// 发送的内容
+//		mainMessage.setText("hello world</br> 11111111111</br>");
+//		jms.send(mainMessage);
 		return null;
 	}
+
+
 
 
 	public ResultVO send(String phone){
@@ -84,11 +108,8 @@ public class TestController extends BaseController<UserVO>{
 				sender = new SmsSingleSender(pMsgProperties.getAppId(),pMsgProperties.getAppKey());
 				ArrayList<String> params = new ArrayList<String>();
 				//6位随机数验证码
-				StringBuffer randomStr=new StringBuffer();
-				for(int i=1;i<=6;i++){
-					randomStr.append((int)(Math.random()*9+1));
-				}
-				params.add(randomStr.toString());
+				String randomStr=MathUtil.getCode(6);
+				params.add(randomStr);
 				SmsSingleSenderResult result = sender.sendWithParam("86", phone, pMsgProperties.getTemplId(), params, "", "", "");
 
 				if(result.result==0){
