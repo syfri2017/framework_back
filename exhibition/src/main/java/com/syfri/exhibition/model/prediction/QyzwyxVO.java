@@ -25,6 +25,11 @@ public class QyzwyxVO extends ValueObject implements Serializable{
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
 
+	private String cplx;	//产品类型
+	private String cplxmc;	//产品类名称
+
+	private String czqysl;	//参展企业数量
+
 	public String getUuid(){
 		return uuid;
 	}
@@ -120,5 +125,29 @@ public class QyzwyxVO extends ValueObject implements Serializable{
 	}
 	public void setReserve4(String reserve4){
 		this.reserve4 = reserve4;
+	}
+
+	public String getCplx() {
+		return cplx;
+	}
+
+	public void setCplx(String cplx) {
+		this.cplx = cplx;
+	}
+
+	public String getCplxmc() {
+		return cplxmc;
+	}
+
+	public void setCplxmc(String cplxmc) {
+		this.cplxmc = cplxmc;
+	}
+
+	public String getCzqysl() {
+		return czqysl;
+	}
+
+	public void setCzqysl(String czqysl) {
+		this.czqysl = czqysl;
 	}
 }
