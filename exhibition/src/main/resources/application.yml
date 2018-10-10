@@ -99,6 +99,9 @@ spring:
       url: jdbc:oracle:thin:@10.119.119.232:1521/XFXHDB
       username: XFXHZH
       password: XFXHZH
+#      url: jdbc:oracle:thin:@localhost:1521/orcl
+#      username: rliu
+#      password: RLIU
   ##########################################################
   ###################  正式环境的profile  ###################
   ##########################################################
@@ -113,6 +116,9 @@ spring:
       url: jdbc:oracle:thin:@10.119.119.232:1521/XFXHDB
       username: XFXHZH
       password: XFXHZH
+#      url: jdbc:oracle:thin:@localhost:1521/orcl
+#      username: rliu
+#      password: RLIU
 ---
 spring:
   profiles: history

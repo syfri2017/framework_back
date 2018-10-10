@@ -5,6 +5,7 @@ import com.syfri.baseapi.utils.EConstants;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import com.syfri.exhibition.utils.Base64ImageUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 	 * @Author: rliu
 	 * @Date: 2018/10/9 10:35
 	 */
-	@ApiOperation(value="",notes="")
+	@ApiOperation(value="根据企业id获取营业执照",notes="vo")
 	@GetMapping("/doFindYyzzById/{qyid}")
 	public @ResponseBody ResultVO getDetail(@PathVariable String qyid){
 		ResultVO resultVO = ResultVO.build();
@@ -65,4 +66,24 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
         }
         return resultVO;
     }
+
+	/**
+	 * @Description: 根据企业id更新基本信息
+	 * @Author: rliu
+	 * @Date: 2018/10/9 10:35
+	 */
+	@ApiOperation(value="",notes="修改")
+	@ApiImplicitParam(name="vo",value="企业对象")
+//	@RequiresPermissions("prediction/exhprediction_approve:approve")
+	@PostMapping("/updateByVO")
+	public @ResponseBody ResultVO updateByVO(@RequestBody QyjbxxVO qyjbxxVO){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(qyjbxxService.doUpdateByVO(qyjbxxVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }
