@@ -37,7 +37,19 @@ public class QyzwyxServiceImpl extends BaseServiceImpl<QyzwyxVO> implements Qyzw
 		return qyzwyxDAO.dofindtjfx(qyzwyxVO);
 	}
 
-
+	/*
+	 * @Description:
+	 * @Param:
+	 * @Return:
+	 * @Author: zhaijianchen
+	 * @Modified By:
+	 * @Date: 2018/10/10 14:33
+	 */
+	/*--查询：统计分析数据.--*/
+	@Override
+	public List<QyzwyxVO> dofindtjfxsj(QyzwyxVO qyzwyxVO){
+		return qyzwyxDAO.dofindtjfxsj(qyzwyxVO);
+	}
 
 
 }

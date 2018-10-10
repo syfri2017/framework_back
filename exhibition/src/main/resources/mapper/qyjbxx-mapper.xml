@@ -194,7 +194,7 @@
         </selectKey>
         INSERT INTO
         CFPA_QY_JBXX(qyid,userid,zwgsmc,ywgsmc,frdb,frdbdh,yjdzsheng,yjdzshi,yjdzxx,bgdh,cz,lxr,lxrsj,wz,dzyx,yyzz,sjzt,shzt,shrid,shrmc,shsj,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4)
-        VALUES(#{qyid,jdbcType=VARCHAR},#{userid,jdbcType=VARCHAR},#{zwgsmc,jdbcType=VARCHAR},#{ywgsmc,jdbcType=VARCHAR},#{frdb,jdbcType=VARCHAR},#{frdbdh,jdbcType=VARCHAR},#{yjdzsheng,jdbcType=VARCHAR},#{yjdzshi,jdbcType=VARCHAR},#{yjdzxx,jdbcType=VARCHAR},#{bgdh,jdbcType=VARCHAR},#{cz,jdbcType=VARCHAR},#{lxr,jdbcType=VARCHAR},#{lxrsj,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{dzyx,jdbcType=VARCHAR},#{yyzz,jdbcType=VARCHAR},#{sjzt,jdbcType=VARCHAR},#{shzt,jdbcType=VARCHAR},#{shrid,jdbcType=VARCHAR},#{shrmc,jdbcType=VARCHAR},#{shsj,jdbcType=DATE},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},#{cjsj,jdbcType=DATE},#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+        VALUES(#{qyid,jdbcType=VARCHAR},#{userid,jdbcType=VARCHAR},#{zwgsmc,jdbcType=VARCHAR},#{ywgsmc,jdbcType=VARCHAR},#{frdb,jdbcType=VARCHAR},#{frdbdh,jdbcType=VARCHAR},#{yjdzsheng,jdbcType=VARCHAR},#{yjdzshi,jdbcType=VARCHAR},#{yjdzxx,jdbcType=VARCHAR},#{bgdh,jdbcType=VARCHAR},#{cz,jdbcType=VARCHAR},#{lxr,jdbcType=VARCHAR},#{lxrsj,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{dzyx,jdbcType=VARCHAR},#{yyzz,jdbcType=VARCHAR},#{sjzt,jdbcType=VARCHAR},#{shzt,jdbcType=VARCHAR},#{shrid,jdbcType=VARCHAR},#{shrmc,jdbcType=VARCHAR},#{shsj,jdbcType=DATE},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
     </insert>
 
     <!--7.批量插入-->
@@ -232,7 +232,7 @@
     <update id="doUpdateByVO" parameterType="QyjbxxVO">
         UPDATE CFPA_QY_JBXX
         <set>
-            <if test="qyid != null">qyid=#{qyid},</if>
+        <!--    <if test="qyid != null">qyid=#{qyid},</if>  -->
             <if test="userid != null">userid=#{userid},</if>
             <if test="zwgsmc != null">zwgsmc=#{zwgsmc},</if>
             <if test="ywgsmc != null">ywgsmc=#{ywgsmc},</if>
@@ -259,7 +259,7 @@
             <if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>
             <if test="xgrid != null">xgrid=#{xgrid},</if>
             <if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-            <if test="xgsj != null">xgsj=TO_DATE(#{xgsj},'yyyy-MM-dd HH24:mi:ss'),</if>
+            xgsj=sysdate,
             <if test="reserve1 != null">reserve1=#{reserve1},</if>
             <if test="reserve2 != null">reserve2=#{reserve2},</if>
             <if test="reserve3 != null">reserve3=#{reserve3},</if>
