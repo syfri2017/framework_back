@@ -68,23 +68,34 @@ public class TestController extends BaseController<UserVO>{
 	 * @return
 	 */
 	@GetMapping("/sendMail")
-	public Object sendMail(){
-		MimeMessage message=jms.createMimeMessage();
-		try {
-			//true表示需要创建一个multipart message
-			MimeMessageHelper helper=new MimeMessageHelper(message,true);
-			helper.setFrom(mp.getFrom());
-			helper.setTo("huangrui@syfri.cn");
-			helper.setSubject(mp.getSubject());
-			String randomStr=MathUtil.getCode(6);
-			helper.setText(String.format(mp.getText(),randomStr),true);
-			jms.send(message);
-			System.out.println("html格式邮件发送成功");
-		}catch (Exception e){
-			e.printStackTrace();
-			System.out.println("html格式邮件发送失败");
+	public Object sendMail(String mail){
+		ResultVO resultVO = ResultVO.build();
+		if(!(mail.equals("")||null == mail)) {
+			MimeMessage message = jms.createMimeMessage();
+			try {
+				//true表示需要创建一个multipart message
+				MimeMessageHelper helper = new MimeMessageHelper(message, true);
+				helper.setFrom(mp.getFrom());
+				helper.setTo(mail);
+				helper.setSubject(mp.getSubject());
+				String randomStr = MathUtil.getCode(6);
+				helper.setText(String.format(mp.getText(), randomStr), true);
+				jms.send(message);
+				resultVO.setCode(EConstants.CODE.SUCCESS);
+				//生成的随机数(可以去掉)
+				resultVO.setMsg(randomStr.toString());
+				System.out.println("html格式邮件发送成功");
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("html格式邮件发送失败");
+				resultVO.setCode(EConstants.CODE.FAILURE);
+				return resultVO;
+			}
+		}else{
+			resultVO.setCode(EConstants.CODE.FAILURE);
+			resultVO.setMsg("获取邮箱失败");
 		}
-		return null;
+		return resultVO;
 	}
 
 	/**

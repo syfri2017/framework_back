@@ -20,6 +20,12 @@ public class QyzwyxVO extends ValueObject implements Serializable{
 	private String xgrid;	//修改人ID
 	private String xgrmc;	//修改人姓名
 	private String xgsj;	//修改时间
+
+	private String S1;	//24-50 m2
+	private String S2;	//50-100 m2
+	private String S3;	//100-200m2
+	private String S4;	//200 m2以上。
+
 	private String reserve1;	//备用字段1
 	private String reserve2;	//备用字段2
 	private String reserve3;	//备用字段3
@@ -34,8 +40,41 @@ public class QyzwyxVO extends ValueObject implements Serializable{
 
 	private String bwzwgssl;//标准展位数量
 
+
+	public String getS1() {
+		return S1;
+	}
+
+	public void setS1(String s1) {
+		S1 = s1;
+	}
+
+	public String getS2() {
+		return S2;
+	}
+
+	public void setS2(String s2) {
+		S2 = s2;
+	}
+
+	public String getS3() {
+		return S3;
+	}
+
+	public void setS3(String s3) {
+		S3 = s3;
+	}
+
 	public String getBwzwgssl() {
 		return bwzwgssl;
+	}
+
+	public String getS4() {
+		return S4;
+	}
+
+	public void setS4(String s4) {
+		S4 = s4;
 	}
 
 	public void setBwzwgssl(String bwzwgssl) {
