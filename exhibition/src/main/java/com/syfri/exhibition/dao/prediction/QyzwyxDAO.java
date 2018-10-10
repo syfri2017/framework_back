@@ -10,4 +10,6 @@ public interface QyzwyxDAO extends BaseDAO<QyzwyxVO>{
     /*--根据对象查询记录.--*/
     List<QyzwyxVO> dofindtjfx(QyzwyxVO qyzwyxVO);
 
+    List<QyzwyxVO> dofindtjfxsj(QyzwyxVO qyzwyxVO);
+
 }

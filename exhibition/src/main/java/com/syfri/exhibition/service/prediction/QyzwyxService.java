@@ -9,6 +9,7 @@ public interface QyzwyxService  extends BaseService<QyzwyxVO>{
 
     /*--查询：代码集.--*/
     List<QyzwyxVO> dofindtjfx(QyzwyxVO qyzwyxVO);
-
+    /*--查询：代码集.--*/
+    List<QyzwyxVO> dofindtjfxsj(QyzwyxVO qyzwyxVO);
 
 }

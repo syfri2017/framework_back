@@ -52,5 +52,28 @@ public class QyzwyxController  extends BaseController<QyzwyxVO>{
 		return resultVO;
 	}
 
+	/*
+	 * @Description:
+	 * @Param:
+	 * @Return:
+	 * @Author: zhaijianchen
+	 * @Modified By:
+	 * @Date: 2018/10/10 14:31
+	 */
+	@ApiOperation(value="统计分析图表数据",notes="统计分析图表数据")
+	@ApiImplicitParam(name="vo",value="统计分析图表数据")
+	@PostMapping("/dofindtjfxsj")
+	public @ResponseBody ResultVO dofindtjfxsj(@RequestBody QyzwyxVO qyzwyxVO){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(qyzwyxService.dofindtjfxsj(qyzwyxVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+
 
 }

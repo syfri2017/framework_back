@@ -202,17 +202,58 @@
 
     <!--12.统计分析 -->
     <select id="dofindtjfx" parameterType="QyzwyxVO" resultType="QyzwyxVO">
-        SELECT
-        <include refid="SQL_CONTENT"/>,
-        k.cplx cplx,
-        c2.code_name cplxmc
-        FROM CFPA_QY_ZWYX t,CFPA_QY_CPJS k
-        <!--产品类型-->
-        Left Join SYS_CODELIST c1 on c1.CODETYPE = 'CPLX' And c1.DELETE_FLAG = 'N'
-        Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and k.cplx = c2.CODE_VALUE
-        WHERE t.delete_flag = 'N'
-        AND t.qyid = k.qyid
-        And k.DELETE_FLAG = 'N'
+             SELECT gg.code_name cplxmc,
+             COUNT(1) AS czqysl,
+             SUM(sngdzw) + SUM(swgdzw) AS gdzwmj,
+             SUM(bzzwgs) AS bwzwgssl
+           from (
+           SELECT
+                   t.qyid, sngdzw, swgdzw, c2.code_name,t.bzzwgs
+                    FROM CFPA_QY_ZWYX t
+                    Left Join CFPA_QY_CPJS k
+                    on k.qyid = t.qyid
+                    Left Join SYS_CODELIST c1
+                    on c1.CODETYPE = 'CPLX'
+                    And c1.DELETE_FLAG = 'N'
+                    Left Join SYS_CODELIST_DETAIL c2
+                    On c1.CODEID = c2.CODEID
+                    And c2.DELETE_FLAG = 'N'
+                    and CONCAT(substr(k.cplx,0,1),'000')= c2.CODE_VALUE
+
+                     WHERE t.delete_flag = 'N'
+                     AND t.qyid = k.qyid
+                     And k.DELETE_FLAG = 'N'
+
+                     ) gg
+          group by gg.code_name
+    </select>
+
+    <!--13.面积分类 -->
+    <select id="dofindtjfxsj" parameterType="QyzwyxVO" resultType="QyzwyxVO">
+        SELECT gg.code_name cplxmc,
+          COUNT(1) AS czqysl,
+          SUM(sngdzw) + SUM(swgdzw) AS gdzwmj,
+          SUM(bzzwgs) AS bwzwgssl
+           from (
+           SELECT
+                   t.qyid, sngdzw, swgdzw, c2.code_name,t.bzzwgs
+                    FROM CFPA_QY_ZWYX t
+                    Left Join CFPA_QY_CPJS k
+                    on k.qyid = t.qyid
+                    Left Join SYS_CODELIST c1
+                    on c1.CODETYPE = 'CPLX'
+                    And c1.DELETE_FLAG = 'N'
+                    Left Join SYS_CODELIST_DETAIL c2
+                    On c1.CODEID = c2.CODEID
+                    And c2.DELETE_FLAG = 'N'
+                    and CONCAT(substr(k.cplx,0,1),'000')= c2.CODE_VALUE
+
+                     WHERE t.delete_flag = 'N'
+                     AND t.qyid = k.qyid
+                     And k.DELETE_FLAG = 'N'
+
+                     ) gg
+          group by gg.code_name
     </select>
 
 </mapper>

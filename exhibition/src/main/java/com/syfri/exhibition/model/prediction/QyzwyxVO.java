@@ -30,6 +30,26 @@ public class QyzwyxVO extends ValueObject implements Serializable{
 
 	private String czqysl;	//参展企业数量
 
+	private String gdzwmj;//光地展位面积
+
+	private String bwzwgssl;//标准展位数量
+
+	public String getBwzwgssl() {
+		return bwzwgssl;
+	}
+
+	public void setBwzwgssl(String bwzwgssl) {
+		this.bwzwgssl = bwzwgssl;
+	}
+
+	public String getGdzwmj() {
+		return gdzwmj;
+	}
+
+	public void setGdzwmj(String gdzwmj) {
+		this.gdzwmj = gdzwmj;
+	}
+
 	public String getUuid(){
 		return uuid;
 	}
