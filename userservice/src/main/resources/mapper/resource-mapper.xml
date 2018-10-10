@@ -266,7 +266,7 @@
 
 	<!--17.根据角色列表，父节点获取资源列表-->
 	<select id="doFindResourceByParentId" parameterType="java.util.Map" resultType="ResourceVO">
-		SELECT DISTINCT r.resourceid,r.resourcename,r.resourceinfo,r.parentid,r.seqno,r.icon，
+		SELECT DISTINCT r.resourceid,r.resourcename,r.resourceinfo,r.parentid,r.seqno,r.icon,
 		r.type,
 		r.create_name createName,
 		TO_CHAR(r.create_time,'yyyy-MM-dd HH24:mi:ss') createTime,
@@ -283,6 +283,9 @@
 		</if>
 		<if test="parentid!=null">
 			AND parentid = #{parentid}
+		</if>
+		<if test="type!=null">
+			AND type= #{type}
 		</if>
 		ORDER BY seqno
 	</select>
