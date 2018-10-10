@@ -57,10 +57,10 @@ public class TestController extends BaseController<UserVO>{
 	@Autowired
 	private MailProperties mp;
 
-	@RequestMapping(value = "${msg.send-path}")
+	@RequestMapping(value = "send")
 	@ResponseBody
 	public Object send(){
-		return send("15604023161");
+		return send("18904047625");
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class TestController extends BaseController<UserVO>{
 			//true表示需要创建一个multipart message
 			MimeMessageHelper helper=new MimeMessageHelper(message,true);
 			helper.setFrom(mp.getFrom());
-			helper.setTo("lixiaoyang@syfri.cn");
+			helper.setTo("huangrui@syfri.cn");
 			helper.setSubject(mp.getSubject());
 			String randomStr=MathUtil.getCode(6);
 			helper.setText(String.format(mp.getText(),randomStr),true);
@@ -92,6 +92,7 @@ public class TestController extends BaseController<UserVO>{
 	 * @param phone 电话号码
 	 * @return
 	 */
+	@GetMapping("/sendMessage")
 	public ResultVO send(String phone){
 		ResultVO resultVO = ResultVO.build();
 		if(!(phone.equals("")||null == phone)){
