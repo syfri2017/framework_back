@@ -12,4 +12,5 @@ public interface QyzwyxDAO extends BaseDAO<QyzwyxVO>{
 
     List<QyzwyxVO> dofindtjfxsj(QyzwyxVO qyzwyxVO);
 
+
 }
