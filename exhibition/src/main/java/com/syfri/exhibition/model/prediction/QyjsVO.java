@@ -1,6 +1,7 @@
 package com.syfri.exhibition.model.prediction;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.syfri.baseapi.model.ValueObject;
 
@@ -10,7 +11,7 @@ public class QyjsVO extends ValueObject implements Serializable{
 
 	private String uuid;	//主键
 	private String qyid;	//企业ID
-	private String logo;	//企业logo
+	private byte[] logo;	//企业logo
 	private String qyjj;	//企业简介
 	private String deleteFlag;	//删除标志
 	private String cjrid;	//创建人ID
@@ -24,6 +25,9 @@ public class QyjsVO extends ValueObject implements Serializable{
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
 
+	private String logoBase64;	//企业logo(Base64格式)
+	private List<QycpjsVO> qycpjsVOList;//企业产品介绍list
+
 	public String getUuid(){
 		return uuid;
 	}
@@ -36,12 +40,15 @@ public class QyjsVO extends ValueObject implements Serializable{
 	public void setQyid(String qyid){
 		this.qyid = qyid;
 	}
-	public String getLogo(){
+
+	public byte[] getLogo() {
 		return logo;
 	}
-	public void setLogo(String logo){
+
+	public void setLogo(byte[] logo) {
 		this.logo = logo;
 	}
+
 	public String getQyjj(){
 		return qyjj;
 	}
@@ -113,5 +120,20 @@ public class QyjsVO extends ValueObject implements Serializable{
 	}
 	public void setReserve4(String reserve4){
 		this.reserve4 = reserve4;
+	}
+
+	public String getLogoBase64() {
+		return logoBase64;
+	}
+
+	public void setLogoBase64(String logoBase64) {
+		this.logoBase64 = logoBase64;
+	}
+
+	public List<QycpjsVO> getQycpjsVOList() {
+		return qycpjsVOList;
+	}
+	public void setQycpjsVOList(List<QycpjsVO> qycpjsVOList) {
+		this.qycpjsVOList = qycpjsVOList;
 	}
 }

@@ -1,6 +1,7 @@
 package com.syfri.exhibition.model.prediction;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.syfri.baseapi.model.ValueObject;
 
@@ -36,6 +37,8 @@ public class QywjdcVO extends ValueObject implements Serializable{
 	private String gsxzmc;	//公司性质名称
 	private String gxjsjbmc;	//高新技术级别名称
 	private String hyxydjmc;	//行业信用等级名称
+
+	List<String> zycpList;
 
 	public String getUuid(){
 		return uuid;
@@ -204,5 +207,13 @@ public class QywjdcVO extends ValueObject implements Serializable{
 
 	public void setHyxydjmc(String hyxydjmc) {
 		this.hyxydjmc = hyxydjmc;
+	}
+
+	public List<String> getZycpList() {
+		return zycpList;
+	}
+
+	public void setZycpList(List<String> zycpList) {
+		this.zycpList = zycpList;
 	}
 }
