@@ -28,4 +28,12 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 	public List<QyjbxxVO> doFindZsxxByQyjbxx(QyjbxxVO qyjbxxVO){
 		return qyjbxxDAO.doFindZsxxByQyjbxx(qyjbxxVO);
 	}
+
+	public int doDeleteJbxx(List<QyjbxxVO> voList){
+		int sum = 0;
+		for(QyjbxxVO vo :voList){
+			sum = sum + qyjbxxDAO.doUpdateByVO(vo);
+		}
+		return sum;
+	}
 }

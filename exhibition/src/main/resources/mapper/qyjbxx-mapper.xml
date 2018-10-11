@@ -257,7 +257,7 @@
             <if test="shrid != null">shrid=#{shrid},</if>
             <if test="shrmc != null">shrmc=#{shrmc},</if>
             <if test="shsj != null">shsj=sysdate,</if>
-            <if test="deleteFlag != null">delete_flag='N',</if>
+            <if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
             <if test="cjrid != null">cjrid=#{cjrid},</if>
             <if test="cjrmc != null">cjrmc=#{cjrmc},</if>
             <if test="cjsj != null">cjsj=sysdate,</if>
