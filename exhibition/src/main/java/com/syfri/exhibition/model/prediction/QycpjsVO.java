@@ -26,6 +26,7 @@ public class QycpjsVO extends ValueObject implements Serializable{
 	private String reserve4;	//备用字段4
 
 	private String cplxmc;	//产品类型名称
+    private String cptpBase64;	//产品图片(Base64格式)
 
 	public String getUuid(){
 		return uuid;
@@ -134,4 +135,12 @@ public class QycpjsVO extends ValueObject implements Serializable{
 	public void setCplxmc(String cplxmc) {
 		this.cplxmc = cplxmc;
 	}
+
+    public String getCptpBase64() {
+        return cptpBase64;
+    }
+
+    public void setCptpBase64(String cptpBase64) {
+        this.cptpBase64 = cptpBase64;
+    }
 }

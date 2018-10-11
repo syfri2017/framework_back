@@ -24,6 +24,8 @@ public class QyjsVO extends ValueObject implements Serializable{
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
 
+	private String logoBase64;	//企业logo(Base64格式)
+
 	public String getUuid(){
 		return uuid;
 	}
@@ -116,5 +118,13 @@ public class QyjsVO extends ValueObject implements Serializable{
 	}
 	public void setReserve4(String reserve4){
 		this.reserve4 = reserve4;
+	}
+
+	public String getLogoBase64() {
+		return logoBase64;
+	}
+
+	public void setLogoBase64(String logoBase64) {
+		this.logoBase64 = logoBase64;
 	}
 }
