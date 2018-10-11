@@ -211,4 +211,16 @@
 		AND q.DELETE_FLAG = 'N'
 		WHERE q.dzyx = #{value}
 	</select>
+
+	<!--按邮箱查询用户名-->
+	<select id="getUsernameByMail" parameterType="String"  resultType="String">
+		SELECT
+		t.username
+		FROM SYS_ACCOUNT t
+		LEFT JOIN CFPA_QY_JBXX q
+		ON t.userid = q.userid
+		AND t.DELETE_FLAG = 'N'
+		AND q.DELETE_FLAG = 'N'
+		WHERE q.dzyx = #{value}
+	</select>
 </mapper>

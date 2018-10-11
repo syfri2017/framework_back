@@ -100,4 +100,9 @@ public class SignInServiceImpl extends BaseServiceImpl<AccountVO> implements Sig
 			return accountDAO.doInsertAccoutRoleInitial(accountRoleVO);
 		}
 	}
+
+	@Override
+	public String getUsernameByMail(String mail) {
+		return this.signInDAO.getUsernameByMail(mail);
+	}
 }

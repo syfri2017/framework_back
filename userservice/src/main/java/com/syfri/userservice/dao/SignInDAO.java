@@ -8,4 +8,6 @@ import java.util.List;
 public interface SignInDAO extends BaseDAO<AccountVO>{
 
 	List<AccountVO> doSearchListByMail(String mail);
+
+	String getUsernameByMail(String mail);
 }

@@ -75,7 +75,7 @@ public class SignInController extends BaseController<AccountVO>{
 	public @ResponseBody ResultVO getMailNum(@PathVariable String mail){
 		ResultVO resultVO = ResultVO.build();
 		try{
-			if(signInService.doSearchListByMail(mail).size() == 0){
+			if(signInService.doSearchListByMail(mail.replace("_",".")).size() == 0){
 				resultVO.setResult(0);
 			}else{
 				resultVO.setResult(1);
@@ -176,5 +176,10 @@ public class SignInController extends BaseController<AccountVO>{
 			resultVO.setCode(EConstants.CODE.FAILURE);
 		}
 		return resultVO;
+	}
+
+	@GetMapping("/getUsernameByMail/{mail}")
+	public @ResponseBody String getUsernameByMail(@PathVariable String mail){
+		return signInService.getUsernameByMail(mail.replace("_","."));
 	}
 }

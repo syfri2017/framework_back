@@ -16,4 +16,6 @@ public interface SignInService extends BaseService<AccountVO>{
 	public int doInsertAccountByVO(AccountVO accountVO);
 
 	public int doInsertAccountRolesBatch(String userid, List<RoleVO> roles);
+
+	public String getUsernameByMail(String mail);
 }
