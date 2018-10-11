@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
+import java.util.Map;
 
 @Api(value = "账户管理",tags = "账户管理API",description = "账户管理")
 @RestController
@@ -167,7 +168,7 @@ public class SignInController extends BaseController<AccountVO>{
 	@ApiOperation(value="根据用户新增用户（包括账户和角色）",notes="新增")
 	@ApiImplicitParam(name="vo",value="用户对象")
 	@PostMapping("/insertByVO")
-	public @ResponseBody ResultVO insertByVO(@RequestBody UserVO userVO){
+	public @ResponseBody ResultVO insertByVO(@PathVariable UserVO userVO){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(signInService.doInsertUserRoles(userVO));
@@ -180,6 +181,24 @@ public class SignInController extends BaseController<AccountVO>{
 
 	@GetMapping("/getUsernameByMail/{mail}")
 	public @ResponseBody String getUsernameByMail(@PathVariable String mail){
-		return signInService.getUsernameByMail(mail.replace("_","."));
+		String username = null;
+		try{
+			username = signInService.getUsernameByMail(mail.replace("_","."));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+		}
+		return username;
+	}
+
+	@PostMapping("/findByUniscid")
+	public @ResponseBody ResultVO findByUniscid(@PathVariable Map<String,Object> params){
+		ResultVO resultVO = ResultVO.build();
+//		try{
+			resultVO.setResult(signInService.findByUniscid(params));
+//		}catch(Exception e){
+//			logger.error("{}",e.getMessage());
+//			resultVO.setCode(EConstants.CODE.FAILURE);
+//		}
+		return resultVO;
 	}
 }

@@ -1,21 +1,25 @@
 package com.syfri.userservice.service;
 
+import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.service.BaseService;
 import com.syfri.userservice.model.AccountVO;
 import com.syfri.userservice.model.RoleVO;
 import com.syfri.userservice.model.UserVO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SignInService extends BaseService<AccountVO>{
 
 	List<AccountVO> doSearchListByMail(String mail);
 
-	public UserVO doInsertUserRoles(UserVO userVO);
+	UserVO doInsertUserRoles(UserVO userVO);
 
-	public int doInsertAccountByVO(AccountVO accountVO);
+	int doInsertAccountByVO(AccountVO accountVO);
 
-	public int doInsertAccountRolesBatch(String userid, List<RoleVO> roles);
+	int doInsertAccountRolesBatch(String userid, List<RoleVO> roles);
 
-	public String getUsernameByMail(String mail);
+	String getUsernameByMail(String mail);
+
+	List<AccountVO> findByUniscid(Map<String,Object> params);
 }

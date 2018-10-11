@@ -1,6 +1,7 @@
 package com.syfri.userservice.service.impl;
 
 import com.syfri.baseapi.dao.BaseDAO;
+import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.service.impl.BaseServiceImpl;
 import com.syfri.userservice.dao.AccountDAO;
 import com.syfri.userservice.dao.SignInDAO;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
 @Service("SignInService")
@@ -104,5 +106,10 @@ public class SignInServiceImpl extends BaseServiceImpl<AccountVO> implements Sig
 	@Override
 	public String getUsernameByMail(String mail) {
 		return this.signInDAO.getUsernameByMail(mail);
+	}
+
+	@Override
+	public List<AccountVO> findByUniscid(Map<String,Object> params) {
+		return this.signInDAO.findByUniscid(params);
 	}
 }
