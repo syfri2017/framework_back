@@ -10,7 +10,7 @@ public class QyjsVO extends ValueObject implements Serializable{
 
 	private String uuid;	//主键
 	private String qyid;	//企业ID
-	private String logo;	//企业logo
+	private byte[] logo;	//企业logo
 	private String qyjj;	//企业简介
 	private String deleteFlag;	//删除标志
 	private String cjrid;	//创建人ID
@@ -36,12 +36,15 @@ public class QyjsVO extends ValueObject implements Serializable{
 	public void setQyid(String qyid){
 		this.qyid = qyid;
 	}
-	public String getLogo(){
+
+	public byte[] getLogo() {
 		return logo;
 	}
-	public void setLogo(String logo){
+
+	public void setLogo(byte[] logo) {
 		this.logo = logo;
 	}
+
 	public String getQyjj(){
 		return qyjj;
 	}
