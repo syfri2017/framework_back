@@ -149,7 +149,7 @@
         <!--行业信用等级-->
         Left Join SYS_CODELIST c5 on c5.CODETYPE = 'HYXYDJ' And c5.DELETE_FLAG = 'N'
         Left Join SYS_CODELIST_DETAIL c6 On c6.CODEID = c5.CODEID And c6.DELETE_FLAG = 'N' and t.hyxydj = c6.CODE_VALUE
-        WHERE t.DELETE_FLAG = 'N' AND t.UUID = #{value}
+        WHERE t.DELETE_FLAG = 'N' AND t.QYID = #{value}
     </select>
 
     <!--6.按照VO插入-->
