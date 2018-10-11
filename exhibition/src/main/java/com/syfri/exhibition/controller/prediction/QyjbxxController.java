@@ -14,6 +14,8 @@ import com.syfri.exhibition.model.prediction.QyjbxxVO;
 import com.syfri.exhibition.service.prediction.QyjbxxService;
 import com.syfri.baseapi.controller.BaseController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("qyjbxx")
 public class QyjbxxController  extends BaseController<QyjbxxVO>{
@@ -108,4 +110,38 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 		}
 		return resultVO;
 	}
+	//add by yushch 20181010
+	@ApiOperation(value="根据VO保存",notes="保存")
+	@PostMapping("/doInsertByVo")
+	public @ResponseBody ResultVO save(@RequestBody QyjbxxVO vo) throws Exception{
+		ResultVO resultVO = ResultVO.build();
+		try {
+			resultVO.setResult(qyjbxxService.doInsertByVO(vo));
+		} catch (Exception e) {
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+
+		return 	resultVO;
+	}
+	@ApiOperation(value = "根据id更新基本信息", notes = "修改")
+	@PostMapping("/doUpdateByVO")
+	public @ResponseBody ResultVO doUpdateByVO(@RequestBody QyjbxxVO vo) {
+		ResultVO resultVO = ResultVO.build();
+		try {
+			resultVO.setResult(qyjbxxService.doUpdateByVO(vo));
+		} catch (Exception e) {
+			logger.error("{}", e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+	//上传图片并加水印 by yushch
+	@RequestMapping(value = "/upload")
+	@ResponseBody
+	public boolean upload(HttpServletRequest request, QyjbxxVO yjbxxVO) {
+		System.out.println(666);
+		return true;
+	}
+
 }
