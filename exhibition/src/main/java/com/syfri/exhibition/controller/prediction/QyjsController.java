@@ -3,13 +3,11 @@ package com.syfri.exhibition.controller.prediction;
 import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import com.syfri.exhibition.utils.Base64ImageUtil;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.syfri.exhibition.model.prediction.QyjsVO;
 import com.syfri.exhibition.service.prediction.QyjsService;
@@ -51,4 +49,32 @@ public class QyjsController extends BaseController<QyjsVO> {
         return resultVO;
     }
 
+    //add by yushch 20181011
+    @ApiOperation(value="根据VO保存",notes="保存")
+    @PostMapping("/doInsertByVo")
+    public @ResponseBody ResultVO save(@RequestBody QyjsVO vo) throws Exception{
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(qyjsService.doInsertQyAndCpByVO(vo));
+        } catch (Exception e) {
+            logger.error("{}",e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+
+        return 	resultVO;
+    }
+
+    @ApiOperation(value="根据VO更新",notes="更新")
+    @ApiImplicitParam(name="vo",value = "九小场所")
+    @PostMapping("/doUpdateQyCpByVO")
+    public @ResponseBody ResultVO doUpdateQyCpByVO(@RequestBody QyjsVO vo) throws Exception{
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(qyjsService.doUpdateQyCpByVO(vo));
+        } catch (Exception e) {
+            logger.error("{}",e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return 	resultVO;
+    }
 }

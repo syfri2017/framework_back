@@ -74,6 +74,30 @@ public class QyzwyxController  extends BaseController<QyzwyxVO>{
 		return resultVO;
 	}
 
+	//add by yushch 20181010
+	@ApiOperation(value="根据VO保存",notes="保存")
+	@PostMapping("/doInsertByVo")
+	public @ResponseBody ResultVO save(@RequestBody QyzwyxVO vo) throws Exception{
+		ResultVO resultVO = ResultVO.build();
+		try {
+			resultVO.setResult(qyzwyxService.doInsertByVO(vo));
+		} catch (Exception e) {
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return 	resultVO;
+	}
 
-
+	@ApiOperation(value = "根据id更新基本信息", notes = "修改")
+	@PostMapping("/doUpdateByVO")
+	public @ResponseBody ResultVO doUpdateByVO(@RequestBody QyzwyxVO vo) {
+		ResultVO resultVO = ResultVO.build();
+		try {
+			resultVO.setResult(qyzwyxService.doUpdateByVO(vo));
+		} catch (Exception e) {
+			logger.error("{}", e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }
