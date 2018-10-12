@@ -26,10 +26,39 @@ public class QyzwyxVO extends ValueObject implements Serializable{
 	private String S3;	//100-200m2
 	private String S4;	//200 m2以上。
 
+	private String zwmjfw;//展位面积范围类型
+	private String zwmjfwmc;//展位面积范围名称
+	private String sl;//展位面积范围数量
+
 	private String reserve1;	//备用字段1
 	private String reserve2;	//备用字段2
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
+
+
+	public String getZwmjfw() {
+		return zwmjfw;
+	}
+
+	public void setZwmjfw(String zwmjfw) {
+		this.zwmjfw = zwmjfw;
+	}
+
+	public String getZwmjfwmc() {
+		return zwmjfwmc;
+	}
+
+	public void setZwmjfwmc(String zwmjfwmc) {
+		this.zwmjfwmc = zwmjfwmc;
+	}
+
+	public String getSl() {
+		return sl;
+	}
+
+	public void setSl(String sl) {
+		this.sl = sl;
+	}
 
 	private String cplx;	//产品类型
 	private String cplxmc;	//产品类名称
