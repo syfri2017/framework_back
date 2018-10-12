@@ -36,6 +36,12 @@ public class UserVO extends ValueObject implements Serializable{
 	private String organizationId;  //组织机构
 	private String organizationName;  //组织机构名称
 
+	public UserVO() {
+	}
+
+	public UserVO(String userid) {
+		this.userid = userid;
+	}
 
 	public String getPkid(){
 		return pkid;

@@ -34,6 +34,9 @@ public class ShiroUser implements Serializable{
 	/*统一社会信用代码*/
 	private String unscid;
 
+	/*用户类型*/
+	private String deptid;
+
 	public ShiroUser() {
 	}
 
@@ -105,5 +108,13 @@ public class ShiroUser implements Serializable{
 
 	public void setUnscid(String unscid) {
 		this.unscid = unscid;
+	}
+
+	public String getDeptid() {
+		return deptid;
+	}
+
+	public void setDeptid(String deptid) {
+		this.deptid = deptid;
 	}
 }
