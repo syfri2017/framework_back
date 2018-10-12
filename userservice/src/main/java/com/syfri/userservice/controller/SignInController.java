@@ -192,6 +192,36 @@ public class SignInController extends BaseController<AccountVO>{
 		return username;
 	}
 
+    @ApiOperation(value="根据phone查询用户信息",notes="查询")
+    @ApiImplicitParam(name="phone",value="参数列表")
+    @GetMapping("/findByPhone/{phone}")
+    public @ResponseBody ResultVO findByPhone(@PathVariable String phone){
+        ResultVO resultVO = ResultVO.build();
+        try{
+            resultVO.setResult(signInService.findByPhone(phone));
+        }catch(Exception e){
+            logger.error("{}",e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+
+        }
+        return resultVO;
+    }
+
+    @ApiOperation(value="根据mail查询用户信息",notes="查询")
+    @ApiImplicitParam(name="mail",value="参数列表")
+    @GetMapping("/findByMail/{mail}")
+    public @ResponseBody ResultVO findByMail(@PathVariable String mail){
+        ResultVO resultVO = ResultVO.build();
+        try{
+            resultVO.setResult(signInService.findByMail(mail.replace("_",".")));
+        }catch(Exception e){
+            logger.error("{}",e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+
+        }
+        return resultVO;
+    }
+
 	@ApiOperation(value="根据unscid查询用户信息",notes="查询")
 	@ApiImplicitParam(name="map",value="参数列表")
 	@PostMapping("/findByUnscid")

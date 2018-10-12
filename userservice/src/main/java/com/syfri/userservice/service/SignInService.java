@@ -20,6 +20,10 @@ public interface SignInService extends BaseService<AccountVO>{
 
 	String getUsernameByMail(String mail);
 
+	List<AccountVO> findByPhone(String phone);
+
+	List<AccountVO> findByMail(String mail);
+
 	List<AccountVO> findByUnscid(Map params);
 
 	int doUpdateAccount(AccountVO accountVO);

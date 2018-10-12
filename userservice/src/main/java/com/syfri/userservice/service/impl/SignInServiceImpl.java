@@ -112,6 +112,16 @@ public class SignInServiceImpl extends BaseServiceImpl<AccountVO> implements Sig
 	}
 
 	@Override
+	public List<AccountVO> findByPhone(String phone) {
+		return this.signInDAO.findByPhone(phone);
+	}
+
+	@Override
+	public List<AccountVO> findByMail(String mail) {
+		return this.signInDAO.findByMail(mail);
+	}
+
+	@Override
 	public int doUpdateAccount(AccountVO accountVO) {
 		accountVO.setAlterName("Web rearrange");
 		if(accountVO.getPassword() == null || "".equals(accountVO.getPassword())){

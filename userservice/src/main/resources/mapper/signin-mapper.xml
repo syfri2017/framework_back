@@ -207,9 +207,9 @@
 		FROM SYS_ACCOUNT t
 		LEFT JOIN CFPA_QY_JBXX q
 		ON t.userid = q.userid
-		AND t.DELETE_FLAG = 'N'
 		AND q.DELETE_FLAG = 'N'
-		WHERE q.dzyx = #{value}
+		WHERE t.DELETE_FLAG = 'N'
+		AND q.dzyx = #{value}
 	</select>
 
 	<!--按邮箱查询用户名-->
@@ -219,9 +219,30 @@
 		FROM SYS_ACCOUNT t
 		LEFT JOIN CFPA_QY_JBXX q
 		ON t.userid = q.userid
-		AND t.DELETE_FLAG = 'N'
 		AND q.DELETE_FLAG = 'N'
-		WHERE q.dzyx = #{value}
+		WHERE t.DELETE_FLAG = 'N'
+		AND q.dzyx = #{value}
+	</select>
+
+	<!--按phone查询用户信息-->
+	<select id="findByPhone" parameterType="String"  resultType="AccountVO">
+		SELECT
+		<include refid="SQL_CONTENT"/>
+		FROM SYS_ACCOUNT t
+		WHERE t.DELETE_FLAG = 'N'
+		AND q.username = #{value}
+	</select>
+
+	<!--按mail查询用户信息-->
+	<select id="findByMail" parameterType="String"  resultType="AccountVO">
+		SELECT
+		<include refid="SQL_CONTENT"/>
+		FROM SYS_ACCOUNT t
+		LEFT JOIN CFPA_QY_JBXX q
+		ON t.userid = q.userid
+		AND q.DELETE_FLAG = 'N'
+		WHERE t.DELETE_FLAG = 'N'
+		AND q.dzyx = #{value}
 	</select>
 
 	<!--按unscid查询用户信息-->
