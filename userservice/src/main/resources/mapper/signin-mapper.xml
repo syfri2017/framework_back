@@ -224,8 +224,8 @@
 		WHERE q.dzyx = #{value}
 	</select>
 
-	<!--按uniscid查询用户id-->
-	<select id="findByUniscid" parameterType="Map"  resultType="AccountVO">
+	<!--按unscid查询用户信息-->
+	<select id="findByUnscid" parameterType="java.util.Map"  resultType="AccountVO">
 		SELECT
 		<include refid="SQL_CONTENT"/>
 		FROM SYS_ACCOUNT t
@@ -236,11 +236,7 @@
 		ON q.qyid = q2.qyid
 		AND q2.DELETE_FLAG = 'N'
 		WHERE t.DELETE_FLAG = 'N'
-		<if test="uniscid != null and uniscid != '' ">
-			AND q2.tyshxydm = #{uniscid}
-		</if>
-		<if test="companyname != null and companyname != '' ">
-			AND q.zwgsmc = #{companyname}
-		</if>
+		AND q2.tyshxydm = #{unscid}
+		AND q.zwgsmc = #{companyname}
 	</select>
 </mapper>

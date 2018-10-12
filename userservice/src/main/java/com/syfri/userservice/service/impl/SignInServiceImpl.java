@@ -1,7 +1,6 @@
 package com.syfri.userservice.service.impl;
 
 import com.syfri.baseapi.dao.BaseDAO;
-import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.service.impl.BaseServiceImpl;
 import com.syfri.userservice.dao.AccountDAO;
 import com.syfri.userservice.dao.SignInDAO;
@@ -13,7 +12,6 @@ import com.syfri.userservice.model.UserVO;
 import com.syfri.userservice.service.AccountService;
 import com.syfri.userservice.service.OrganizationService;
 import com.syfri.userservice.service.SignInService;
-import com.syfri.userservice.utils.CurrentUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,7 +107,19 @@ public class SignInServiceImpl extends BaseServiceImpl<AccountVO> implements Sig
 	}
 
 	@Override
-	public List<AccountVO> findByUniscid(Map<String,Object> params) {
-		return this.signInDAO.findByUniscid(params);
+	public List<AccountVO> findByUnscid(Map params) {
+		return this.signInDAO.findByUnscid(params);
+	}
+
+	@Override
+	public int doUpdateAccount(AccountVO accountVO) {
+		accountVO.setAlterName("Web rearrange");
+		if(accountVO.getPassword() == null || "".equals(accountVO.getPassword())){
+			accountVO.setPassword(null);
+		}else{
+			accountVO = accountService.getPasswordEncry(accountVO);
+			//accountVO = ((AccountService) AopContext.currentProxy()).getPasswordEncry(accountVO);
+		}
+		return this.accountDAO.doUpdateByVO(accountVO);
 	}
 }

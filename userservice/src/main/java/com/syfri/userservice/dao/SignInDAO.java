@@ -13,5 +13,5 @@ public interface SignInDAO extends BaseDAO<AccountVO>{
 
 	String getUsernameByMail(String mail);
 
-	List<AccountVO> findByUniscid(Map<String,Object> params);
+	List<AccountVO> findByUnscid(Map<String,Object> params);
 }

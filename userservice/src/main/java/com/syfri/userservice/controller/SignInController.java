@@ -168,7 +168,7 @@ public class SignInController extends BaseController<AccountVO>{
 	@ApiOperation(value="根据用户新增用户（包括账户和角色）",notes="新增")
 	@ApiImplicitParam(name="vo",value="用户对象")
 	@PostMapping("/insertByVO")
-	public @ResponseBody ResultVO insertByVO(@PathVariable UserVO userVO){
+	public @ResponseBody ResultVO insertByVO(@RequestBody UserVO userVO){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(signInService.doInsertUserRoles(userVO));
@@ -179,6 +179,8 @@ public class SignInController extends BaseController<AccountVO>{
 		return resultVO;
 	}
 
+	@ApiOperation(value="根据邮箱查询用户名",notes="查询")
+	@ApiImplicitParam(name="mail",value="邮箱")
 	@GetMapping("/getUsernameByMail/{mail}")
 	public @ResponseBody String getUsernameByMail(@PathVariable String mail){
 		String username = null;
@@ -190,15 +192,32 @@ public class SignInController extends BaseController<AccountVO>{
 		return username;
 	}
 
-	@PostMapping("/findByUniscid")
-	public @ResponseBody ResultVO findByUniscid(@PathVariable Map<String,Object> params){
+	@ApiOperation(value="根据unscid查询用户信息",notes="查询")
+	@ApiImplicitParam(name="map",value="参数列表")
+	@PostMapping("/findByUnscid")
+	public @ResponseBody ResultVO findByUnscid(@RequestBody Map params){
 		ResultVO resultVO = ResultVO.build();
-//		try{
-			resultVO.setResult(signInService.findByUniscid(params));
-//		}catch(Exception e){
-//			logger.error("{}",e.getMessage());
-//			resultVO.setCode(EConstants.CODE.FAILURE);
-//		}
+		try{
+			resultVO.setResult(signInService.findByUnscid(params));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+
+		}
+		return resultVO;
+	}
+
+	@ApiOperation(value="根据用户修改用户",notes="修改")
+	@ApiImplicitParam(name="vo",value="用户对象")
+	@PostMapping("/updateByVO")
+	public @ResponseBody ResultVO updateByVO(@RequestBody AccountVO accountVO){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(signInService.doUpdateAccount(accountVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
 		return resultVO;
 	}
 }

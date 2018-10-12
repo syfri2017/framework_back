@@ -1,6 +1,5 @@
 package com.syfri.userservice.service;
 
-import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.service.BaseService;
 import com.syfri.userservice.model.AccountVO;
 import com.syfri.userservice.model.RoleVO;
@@ -21,5 +20,7 @@ public interface SignInService extends BaseService<AccountVO>{
 
 	String getUsernameByMail(String mail);
 
-	List<AccountVO> findByUniscid(Map<String,Object> params);
+	List<AccountVO> findByUnscid(Map params);
+
+	int doUpdateAccount(AccountVO accountVO);
 }
