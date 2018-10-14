@@ -5,7 +5,6 @@ import com.syfri.baseapi.utils.EConstants;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import com.syfri.exhibition.utils.Base64ImageUtil;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +12,18 @@ import org.springframework.web.bind.annotation.*;
 import com.syfri.exhibition.model.prediction.QyjbxxVO;
 import com.syfri.exhibition.service.prediction.QyjbxxService;
 import com.syfri.baseapi.controller.BaseController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("qyjbxx")
@@ -132,9 +140,74 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 	//上传图片并加水印 by yushch
 	@RequestMapping(value = "/upload")
 	@ResponseBody
-	public boolean upload(HttpServletRequest request, QyjbxxVO yjbxxVO) {
-		System.out.println(666);
-		return true;
+	public Map<String, Object> uploadAttachment(HttpServletRequest request, QyjbxxVO vo)
+			throws UnsupportedEncodingException {
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			byte[] buffer = null;
+			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+			Iterator<String> iterator = multipartRequest.getFileNames();
+
+			while (iterator.hasNext()) {
+				MultipartFile multipartFile = multipartRequest.getFile(iterator.next());
+				if ("".equals(multipartFile.getOriginalFilename())) throw new RuntimeException("文件为空");
+				InputStream fis = null;
+				try {
+					fis = multipartFile.getInputStream();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				//加水印
+				Image image = ImageIO.read(fis);
+				BufferedImage bi = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
+				Graphics2D g2 = bi.createGraphics();
+				g2.drawImage(image, 0, 0, image.getWidth(null), image.getHeight(null), null);
+				//颜色
+				Color color=new Color(255,0,0);
+				g2.setColor(color);
+				g2.setFont(new Font("宋体", Font.BOLD, 20));
+				//透明度
+				float alpha = 0.5f;
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP,
+						alpha));
+				String text = "仅用于第十八届国际消防展信息比对";
+				//调整图片位置
+				g2.drawString(text, 0, image.getHeight(null)/2);
+				g2.dispose();
+
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ImageIO.write( bi, "jpg", bos );
+				bos.flush();
+				fis.close();
+				bos.close();
+				buffer = bos.toByteArray();
+				vo.setYyzz(buffer);
+				qyjbxxService.doUpdateByVO(vo);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+
 	}
 
+	//add by yushch 20181014
+	@ApiOperation(value="根据userid获取企业信息",notes="vo")
+	@PostMapping("/doFindByUserid")
+	public @ResponseBody ResultVO doFindByUserid(@RequestBody QyjbxxVO vo){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			QyjbxxVO result = qyjbxxService.doFindByVO(vo);
+			//将二进制转为Base64格式字符串
+			String photo64 = Base64ImageUtil.byteArr2String(result.getYyzz());
+			result.setYyzzBase64(photo64);
+			resultVO.setResult(result);
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }
