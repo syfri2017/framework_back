@@ -12,6 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import com.syfri.exhibition.model.prediction.QyjsVO;
 import com.syfri.exhibition.service.prediction.QyjsService;
 import com.syfri.baseapi.controller.BaseController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 @RestController
 @RequestMapping("qyjs")
@@ -76,5 +87,44 @@ public class QyjsController extends BaseController<QyjsVO> {
             resultVO.setCode(EConstants.CODE.FAILURE);
         }
         return 	resultVO;
+    }
+    @RequestMapping(value = "/upload")
+    @ResponseBody
+    public Map<String, Object> uploadAttachment(HttpServletRequest request, QyjsVO vo)
+            throws UnsupportedEncodingException {
+        //上传图片
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			byte[] buffer = null;
+			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+			Iterator<String> iterator = multipartRequest.getFileNames();
+
+			while (iterator.hasNext()) {
+				MultipartFile multipartFile = multipartRequest.getFile(iterator.next());
+				if ("".equals(multipartFile.getOriginalFilename())) throw new RuntimeException("文件为空");
+				InputStream fis = null;
+				try {
+					fis = multipartFile.getInputStream();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				byte[] b = new byte[1024];
+				int n;
+				while ((n = fis.read(b)) != -1)
+				{
+					bos.write(b, 0, n);
+				}
+				fis.close();
+				bos.close();
+				buffer = bos.toByteArray();
+				vo.setLogo(buffer);
+                qyjsService.doUpdateByVO(vo);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+
     }
 }

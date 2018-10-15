@@ -12,6 +12,8 @@ import com.syfri.exhibition.model.prediction.QycpjsVO;
 import com.syfri.exhibition.service.prediction.QycpjsService;
 import com.syfri.baseapi.controller.BaseController;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
@@ -50,4 +52,40 @@ public class QycpjsController extends BaseController<QycpjsVO> {
         return resultVO;
     }
 
+    @RequestMapping(value = "/upload")
+    public @ResponseBody QycpjsVO uploadAttachment(HttpServletRequest request, QycpjsVO vo)
+            throws UnsupportedEncodingException {
+        //返回base64位图片
+        /*
+        try {
+            byte[] buffer = null;
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> iterator = multipartRequest.getFileNames();
+            while (iterator.hasNext()) {
+                MultipartFile multipartFile = multipartRequest.getFile(iterator.next());
+                if ("".equals(multipartFile.getOriginalFilename())) throw new RuntimeException("文件为空");
+                InputStream fis = null;
+                try {
+                    fis = multipartFile.getInputStream();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                byte[] b = new byte[1024];
+                int n;
+                while ((n = fis.read(b)) != -1)
+                {
+                    bos.write(b, 0, n);
+                }
+                fis.close();
+                bos.close();
+                buffer = bos.toByteArray();
+                vo.setCptp(buffer);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        */
+        return vo;
+    }
 }
