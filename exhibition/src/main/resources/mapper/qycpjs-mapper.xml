@@ -122,10 +122,10 @@
         FROM (
         <foreach collection="list" item="item" index="index" separator="UNION ALL">
             SELECT
-            #{item.uuid,jdbcType=VARCHAR} uuid,#{item.qyid,jdbcType=VARCHAR} qyid,#{item.cptp,jdbcType=VARCHAR}
+            #{item.qyid,jdbcType=VARCHAR} qyid,#{item.cptp,jdbcType=VARCHAR}
             cptp,#{item.cplx,jdbcType=VARCHAR} cplx,#{item.cpjj,jdbcType=VARCHAR} cpjj,'N'
             delete_flag,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR}
-            cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR}
+            cjrmc,SYSDATE cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR}
             xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR}
             reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR}
             reserve3,#{item.reserve4,jdbcType=DATE} reserve4
@@ -148,7 +148,7 @@
             <if test="cptp != null">cptp=#{cptp},</if>
             <if test="cplx != null">cplx=#{cplx},</if>
             <if test="cpjj != null">cpjj=#{cpjj},</if>
-            <if test="deleteFlag != null">delete_flag='N',</if>
+            <if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
             <if test="cjrid != null">cjrid=#{cjrid},</if>
             <if test="cjrmc != null">cjrmc=#{cjrmc},</if>
             <if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>

@@ -202,61 +202,87 @@
 
     <!--12.统计分析 -->
     <select id="dofindtjfx" parameterType="QyzwyxVO" resultType="QyzwyxVO">
-             SELECT gg.code_name cplxmc,
-             COUNT(1) AS czqysl,
-             SUM(sngdzw) + SUM(swgdzw) AS gdzwmj,
-             SUM(bzzwgs) AS bwzwgssl
-           from (
-           SELECT
-                   t.qyid, sngdzw, swgdzw, c2.code_name,t.bzzwgs
-                    FROM CFPA_QY_ZWYX t
-                    Left Join CFPA_QY_CPJS k
-                    on k.qyid = t.qyid
-                    Left Join SYS_CODELIST c1
-                    on c1.CODETYPE = 'CPLX'
-                    And c1.DELETE_FLAG = 'N'
-                    Left Join SYS_CODELIST_DETAIL c2
-                    On c1.CODEID = c2.CODEID
-                    And c2.DELETE_FLAG = 'N'
-                    and CONCAT(substr(k.cplx,0,1),'000')= c2.CODE_VALUE
-
-                     WHERE t.delete_flag = 'N'
-                     AND t.qyid = k.qyid
-                     And k.DELETE_FLAG = 'N'
-
-                     ) gg
-          group by gg.code_name
+      SELECT C.CODE_NAME cplxmc,
+           NVL(Q.CZQYSL, 0) czqysl,
+           NVL(Q.BZZWGS, 0) bwzwgssl,
+           NVL(Q.GDZWMJ, 0) gdzwmj
+      FROM (SELECT CODE_VALUE, CODE_NAME
+              FROM SYS_CODELIST_DETAIL
+             WHERE CODETYPE = 'CPLX'
+               AND DELETE_FLAG = 'N'
+               AND SUBSTR(CODE_VALUE, 2, 3) = '000') C
+      LEFT JOIN (SELECT CPLX,
+                        COUNT(1) CZQYSL,
+                        SUM(BZZWGS) BZZWGS,
+                        SUM(SNGDZW) + SUM(SWGDZW) GDZWMJ
+                   FROM (SELECT TT1.QYID,
+                                TT1.CPLX,
+                                TT2.BZZWGS,
+                                TT2.SNGDZW,
+                                TT2.SWGDZW
+                           FROM (SELECT DISTINCT T1.QYID,
+                                                 CONCAT(SUBSTR(T2.CPLX, 0, 1),
+                                                        '000') CPLX
+                                   FROM CFPA_QY_JBXX T1
+                                  INNER JOIN CFPA_QY_CPJS T2
+                                     ON T1.QYID = T2.QYID
+                                    AND T2.DELETE_FLAG = 'N'
+                                  WHERE T1.DELETE_FLAG = 'N') TT1
+                           LEFT JOIN CFPA_QY_ZWYX TT2
+                             ON TT1.QYID = TT2.QYID
+                            AND TT2.DELETE_FLAG = 'N')
+                  GROUP BY CPLX) Q
+        ON C.CODE_VALUE = Q.CPLX
+     ORDER BY c.CODE_VALUE
     </select>
 
     <!--13.面积分类 -->
     <select id="dofindtjfxsj" parameterType="QyzwyxVO" resultType="QyzwyxVO">
-        SELECT c.code_name cplxmc,
-        nvl(q.s1, 0) s1,
-        nvl(q.s2, 0) s2,
-        nvl(q.s3, 0) s3,
-        nvl(q.s4, 0) s4
+        SELECT C.CODE_VALUE ZWMJFW, C.CODE_NAME ZWMJFWMC, NVL(ZWSL, 0) sl
         FROM (SELECT CODE_VALUE, CODE_NAME
         FROM SYS_CODELIST_DETAIL
-        WHERE CODETYPE = 'CPLX'
-        AND DELETE_FLAG = 'N'
-        AND SUBSTR(CODE_VALUE, 2, 3) = '000') C
-        LEFT JOIN (SELECT CPLX,SUM(SN1+SW1) S1,SUM(SN2+SW2) S2,SUM(SN3+SW3) S3,SUM(SN4+SW4) S4
-        FROM(
-        SELECT CONCAT(SUBSTR(T2.CPLX, 0, 1), '000') CPLX,
-        (CASE WHEN T3.SNGDZW>=24 AND T3.SNGDZW &lt; 50 THEN 1 ELSE 0 END) SN1,
-        (CASE WHEN T3.SNGDZW>=50 AND T3.SNGDZW &lt; 100 THEN 1 ELSE 0 END) SN2,
-        (CASE WHEN T3.SNGDZW>=100 AND T3.SNGDZW &lt; 200 THEN 1 ELSE 0 END) SN3,
-        (CASE WHEN T3.SNGDZW>=200 THEN 1 ELSE 0 END) SN4,
-        (CASE WHEN T3.SWGDZW>=24 AND T3.SWGDZW &lt; 50 THEN 1 ELSE 0 END) SW1,
-        (CASE WHEN T3.SWGDZW>=50 AND T3.SWGDZW &lt; 100 THEN 1 ELSE 0 END) SW2,
-        (CASE WHEN T3.SWGDZW>=100 AND T3.SWGDZW &lt; 200 THEN 1 ELSE 0 END) SW3,
-        (CASE WHEN T3.SWGDZW>=200 THEN 1 ELSE 0 END) SW4
+        WHERE CODETYPE = 'ZWMJFW'
+        AND DELETE_FLAG = 'N') C
+        LEFT JOIN (SELECT ZWMJFW, COUNT(1) ZWSL
+        FROM (SELECT (CASE
+        WHEN T3.SNGDZW >= 24 AND T3.SNGDZW &lt; 50 THEN
+        '1'
+        WHEN T3.SNGDZW >= 50 AND T3.SNGDZW &lt; 100 THEN
+        '2'
+        WHEN T3.SNGDZW >= 100 AND T3.SNGDZW &lt; 200 THEN
+        '3'
+        WHEN T3.SNGDZW >= 200 THEN
+        '4'
+        ELSE
+        '9'
+        END) ZWMJFW
         FROM CFPA_QY_JBXX T1
-        INNER JOIN CFPA_QY_CPJS T2 ON T1.QYID = T2.QYID AND T2.DELETE_FLAG = 'N'
-        INNER JOIN CFPA_QY_ZWYX T3 ON T1.QYID = T3.QYID AND T3.DELETE_FLAG = 'N'
+        INNER JOIN CFPA_QY_ZWYX T3
+        ON T1.QYID = T3.QYID
+        AND T3.DELETE_FLAG = 'N'
+        AND T3.SNGDZW IS NOT NULL
         WHERE T1.DELETE_FLAG = 'N'
-        ) GROUP BY CPLX) Q
-        ON C.CODE_VALUE = Q.CPLX
+        UNION ALL
+        SELECT (CASE
+        WHEN T3.SWGDZW >= 24 AND T3.SWGDZW &lt; 50 THEN
+        '1'
+        WHEN T3.SWGDZW >= 50 AND T3.SWGDZW &lt; 100 THEN
+        '2'
+        WHEN T3.SWGDZW >= 100 AND T3.SWGDZW &lt; 200 THEN
+        '3'
+        WHEN T3.SWGDZW >= 200 THEN
+        '4'
+        ELSE
+        '9'
+        END) ZWMJFW
+        FROM CFPA_QY_JBXX T1
+        INNER JOIN CFPA_QY_ZWYX T3
+        ON T1.QYID = T3.QYID
+        AND T3.DELETE_FLAG = 'N'
+        AND T3.SWGDZW IS NOT NULL
+        WHERE T1.DELETE_FLAG = 'N')
+        GROUP BY ZWMJFW) Q
+        ON C.CODE_VALUE = Q.ZWMJFW
         ORDER BY C.CODE_VALUE
     </select>
 

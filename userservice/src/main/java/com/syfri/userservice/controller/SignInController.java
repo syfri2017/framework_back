@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
+import java.util.Map;
 
 @Api(value = "账户管理",tags = "账户管理API",description = "账户管理")
 @RestController
@@ -75,7 +76,7 @@ public class SignInController extends BaseController<AccountVO>{
 	public @ResponseBody ResultVO getMailNum(@PathVariable String mail){
 		ResultVO resultVO = ResultVO.build();
 		try{
-			if(signInService.doSearchListByMail(mail).size() == 0){
+			if(signInService.doSearchListByMail(mail.replace("_",".")).size() == 0){
 				resultVO.setResult(0);
 			}else{
 				resultVO.setResult(1);
@@ -171,6 +172,78 @@ public class SignInController extends BaseController<AccountVO>{
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(signInService.doInsertUserRoles(userVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
+	@ApiOperation(value="根据邮箱查询用户名",notes="查询")
+	@ApiImplicitParam(name="mail",value="邮箱")
+	@GetMapping("/getUsernameByMail/{mail}")
+	public @ResponseBody String getUsernameByMail(@PathVariable String mail){
+		String username = null;
+		try{
+			username = signInService.getUsernameByMail(mail.replace("_","."));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+		}
+		return username;
+	}
+
+    @ApiOperation(value="根据phone查询用户信息",notes="查询")
+    @ApiImplicitParam(name="phone",value="参数列表")
+    @GetMapping("/findByPhone/{phone}")
+    public @ResponseBody ResultVO findByPhone(@PathVariable String phone){
+        ResultVO resultVO = ResultVO.build();
+        try{
+            resultVO.setResult(signInService.findByPhone(phone));
+        }catch(Exception e){
+            logger.error("{}",e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+
+        }
+        return resultVO;
+    }
+
+    @ApiOperation(value="根据mail查询用户信息",notes="查询")
+    @ApiImplicitParam(name="mail",value="参数列表")
+    @GetMapping("/findByMail/{mail}")
+    public @ResponseBody ResultVO findByMail(@PathVariable String mail){
+        ResultVO resultVO = ResultVO.build();
+        try{
+            resultVO.setResult(signInService.findByMail(mail.replace("_",".")));
+        }catch(Exception e){
+            logger.error("{}",e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+
+        }
+        return resultVO;
+    }
+
+	@ApiOperation(value="根据unscid查询用户信息",notes="查询")
+	@ApiImplicitParam(name="map",value="参数列表")
+	@PostMapping("/findByUnscid")
+	public @ResponseBody ResultVO findByUnscid(@RequestBody Map params){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(signInService.findByUnscid(params));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+
+		}
+		return resultVO;
+	}
+
+	@ApiOperation(value="根据用户修改用户",notes="修改")
+	@ApiImplicitParam(name="vo",value="用户对象")
+	@PostMapping("/updateByVO")
+	public @ResponseBody ResultVO updateByVO(@RequestBody AccountVO accountVO){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(signInService.doUpdateAccount(accountVO));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);

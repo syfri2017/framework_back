@@ -1,6 +1,7 @@
 package com.syfri.exhibition.model.prediction;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.syfri.baseapi.model.ValueObject;
 
@@ -25,6 +26,7 @@ public class QyjsVO extends ValueObject implements Serializable{
 	private String reserve4;	//备用字段4
 
 	private String logoBase64;	//企业logo(Base64格式)
+	private List<QycpjsVO> qycpjsVOList;//企业产品介绍list
 
 	public String getUuid(){
 		return uuid;
@@ -126,5 +128,12 @@ public class QyjsVO extends ValueObject implements Serializable{
 
 	public void setLogoBase64(String logoBase64) {
 		this.logoBase64 = logoBase64;
+	}
+
+	public List<QycpjsVO> getQycpjsVOList() {
+		return qycpjsVOList;
+	}
+	public void setQycpjsVOList(List<QycpjsVO> qycpjsVOList) {
+		this.qycpjsVOList = qycpjsVOList;
 	}
 }

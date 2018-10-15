@@ -12,13 +12,13 @@ import com.syfri.userservice.model.UserVO;
 import com.syfri.userservice.service.AccountService;
 import com.syfri.userservice.service.OrganizationService;
 import com.syfri.userservice.service.SignInService;
-import com.syfri.userservice.utils.CurrentUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
 @Service("SignInService")
@@ -99,5 +99,37 @@ public class SignInServiceImpl extends BaseServiceImpl<AccountVO> implements Sig
 			accountRoleVO.setCreateName("Web registration");
 			return accountDAO.doInsertAccoutRoleInitial(accountRoleVO);
 		}
+	}
+
+	@Override
+	public String getUsernameByMail(String mail) {
+		return this.signInDAO.getUsernameByMail(mail);
+	}
+
+	@Override
+	public List<AccountVO> findByUnscid(Map params) {
+		return this.signInDAO.findByUnscid(params);
+	}
+
+	@Override
+	public List<AccountVO> findByPhone(String phone) {
+		return this.signInDAO.findByPhone(phone);
+	}
+
+	@Override
+	public List<AccountVO> findByMail(String mail) {
+		return this.signInDAO.findByMail(mail);
+	}
+
+	@Override
+	public int doUpdateAccount(AccountVO accountVO) {
+		accountVO.setAlterName("Web rearrange");
+		if(accountVO.getPassword() == null || "".equals(accountVO.getPassword())){
+			accountVO.setPassword(null);
+		}else{
+			accountVO = accountService.getPasswordEncry(accountVO);
+			//accountVO = ((AccountService) AopContext.currentProxy()).getPasswordEncry(accountVO);
+		}
+		return this.accountDAO.doUpdateByVO(accountVO);
 	}
 }

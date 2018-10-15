@@ -10,7 +10,6 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +24,9 @@ public class MyShiroRealm extends AuthorizingRealm{
 
 	@Resource
 	private AccountService accountService;
+
+	@Resource
+	private UserService userService;
 
 	@Resource
 	private RoleService roleService;
@@ -56,6 +58,10 @@ public class MyShiroRealm extends AuthorizingRealm{
 		AccountVO account = accounts.get(0);
 
 		ShiroUser shiroUser = new ShiroUser(account.getUserid(), account.getUsername(), account.getRealname());
+		UserVO userVO = userService.doFindByVO(new UserVO(account.getUserid()));
+		if(userVO != null){
+			shiroUser.setDeptid(userVO.getDeptid());
+		}
 
 		//根据用户ID获取其组织机构
 		shiroUser.setOrganizationVO(organizationService.doFindOrganizationByUserid(account.getUserid()));
