@@ -13,6 +13,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,19 +48,17 @@ public class InfoCollectRealm extends AuthorizingRealm{
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		logger.info("【MyInfocollectRealm】身份验证");
 
-		//1.把AuthenticationToken转换为InfoCollectToken
-
-		InfoCollectToken infoCollectToken = (InfoCollectToken) token;
-
-		//2.从InfoCollectToken中获取unscid
-		String unscid = infoCollectToken.getUnscid();
-		InfocollectVO infocollectVO = infoCollectService.doFindByVO(new InfocollectVO(unscid));
-
+		String username = (String) token.getPrincipal();
 		AccountVO accountVO = new AccountVO();
-		accountVO.setUsername("jxcs");
-		AccountVO account = accountService.doFindByVO(accountVO);
+		accountVO.setUsername(username);
+		List<AccountVO> accounts = accountService.doSearchListByVO(accountVO);
+		if(accounts == null){
+			return null;
+		}
+		AccountVO account = accounts.get(0);
+
 		ShiroUser shiroUser = new ShiroUser(account.getUserid(), account.getUsername(), account.getRealname());
-		shiroUser.setUnscid(unscid);
+		shiroUser.setDeptid("ZSGL");
 
 		List<String> roles = new ArrayList();
 		List<String> permissions = new ArrayList();
@@ -88,10 +87,11 @@ public class InfoCollectRealm extends AuthorizingRealm{
 		shiroUser.setResourceTrees(resourceTrees);
 
 
-		//账号判断（明文）
+		//账号判断（密文）
 		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
 				shiroUser,
-				"",
+				account.getPassword(),
+				ByteSource.Util.bytes(account.getSalt()),
 				getName()
 		);
 		Session session = SecurityUtils.getSubject().getSession();
