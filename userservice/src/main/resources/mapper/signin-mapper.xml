@@ -230,7 +230,7 @@
 		<include refid="SQL_CONTENT"/>
 		FROM SYS_ACCOUNT t
 		WHERE t.DELETE_FLAG = 'N'
-		AND q.username = #{value}
+		AND t.username = #{value}
 	</select>
 
 	<!--按mail查询用户信息-->
