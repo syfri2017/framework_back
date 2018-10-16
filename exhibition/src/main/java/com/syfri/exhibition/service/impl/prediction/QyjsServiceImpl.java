@@ -36,8 +36,9 @@ public class QyjsServiceImpl extends BaseServiceImpl<QyjsVO> implements QyjsServ
 		for(int i=0;i<qycpjsVOS.size();i++){
 			qycpjsVOS.get(i).setCjrid(vo.getCjrid());
 			qycpjsVOS.get(i).setCjrmc(vo.getCjrmc());
+			qycpjsDAO.doInsertByVO(qycpjsVOS.get(i));
 		}
-		qycpjsDAO.doBatchInsertByList(qycpjsVOS);
+		//qycpjsDAO.doBatchInsertByList(qycpjsVOS);
 		return vo;
 	}
 	//add by yushch 20181012

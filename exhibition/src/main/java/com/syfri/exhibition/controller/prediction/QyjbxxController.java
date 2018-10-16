@@ -104,7 +104,7 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 	public @ResponseBody ResultVO save(@RequestBody QyjbxxVO vo) throws Exception{
 		ResultVO resultVO = ResultVO.build();
 		try {
-			resultVO.setResult(qyjbxxService.doInsertByVO(vo));
+			resultVO.setResult(qyjbxxService.doInsertJbxxByVO(vo));
 		} catch (Exception e) {
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
@@ -200,9 +200,11 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 		ResultVO resultVO = ResultVO.build();
 		try{
 			QyjbxxVO result = qyjbxxService.doFindByVO(vo);
-			//将二进制转为Base64格式字符串
-			String photo64 = Base64ImageUtil.byteArr2String(result.getYyzz());
-			result.setYyzzBase64(photo64);
+			if(result != null){
+				//将二进制转为Base64格式字符串
+				String photo64 = Base64ImageUtil.byteArr2String(result.getYyzz());
+				result.setYyzzBase64(photo64);
+			}
 			resultVO.setResult(result);
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());

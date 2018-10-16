@@ -36,4 +36,9 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 		}
 		return sum;
 	}
+	@Override
+	public QyjbxxVO doInsertJbxxByVO(QyjbxxVO qyjbxxVO){
+		qyjbxxDAO.doInsertByVO(qyjbxxVO);
+		return qyjbxxVO;
+	}
 }
