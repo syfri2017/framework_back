@@ -11,4 +11,6 @@ public interface QyjbxxService  extends BaseService<QyjbxxVO>{
     List<QyjbxxVO> doFindZsxxByQyjbxx(QyjbxxVO qyjbxxVO);
 
     int doDeleteJbxx(List<QyjbxxVO> voList);
+    //add by yushch insert返回vo
+    QyjbxxVO doInsertJbxxByVO(QyjbxxVO qyjbxxVO);
 }
