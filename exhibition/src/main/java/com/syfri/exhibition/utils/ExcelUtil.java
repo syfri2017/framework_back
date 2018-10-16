@@ -70,7 +70,6 @@ public class ExcelUtil {
         curStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); // 实线
         curStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); // 实线
         curFont.setFontName("Times New Roman");//字体
-        curFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD); // 加粗
         curFont.setFontHeightInPoints((short) 11);//字体大小
         curStyle.setFont(curFont); // 绑定关系
 
@@ -85,7 +84,6 @@ public class ExcelUtil {
         curFirstStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); // 实线
         curFirstStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); // 实线
         curFirstFont.setFontName("Times New Roman");//字体
-        curFirstFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD); // 加粗
         curFirstFont.setFontHeightInPoints((short) 11);//字体大小
         curFirstStyle.setFont(curFirstFont); // 绑定关系
 
