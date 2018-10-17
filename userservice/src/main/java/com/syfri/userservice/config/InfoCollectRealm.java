@@ -58,7 +58,7 @@ public class InfoCollectRealm extends AuthorizingRealm{
 		AccountVO account = accounts.get(0);
 
 		ShiroUser shiroUser = new ShiroUser(account.getUserid(), account.getUsername(), account.getRealname());
-		shiroUser.setDeptid("ZSGL");
+		shiroUser.setDeptid("ZSYH");
 
 		List<String> roles = new ArrayList();
 		List<String> permissions = new ArrayList();
