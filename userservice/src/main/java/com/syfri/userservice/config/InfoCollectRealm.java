@@ -16,6 +16,7 @@ import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -52,6 +53,11 @@ public class InfoCollectRealm extends AuthorizingRealm{
 		AccountVO accountVO = new AccountVO();
 		accountVO.setUsername(username);
 		accountVO.setDeptid("ZSYH");
+		//判断是国内用户还是国外用户
+		String comfrom = ((InfoCollectToken) token).getComfrom();
+		if(!StringUtils.isEmpty(comfrom)){
+			accountVO.setUsertype(comfrom);
+		}
 		List<AccountVO> accounts = accountService.doSearchListByVO2(accountVO);
 		if(accounts == null || accounts.size() == 0){
 			return null;
