@@ -36,6 +36,8 @@ public class UserVO extends ValueObject implements Serializable{
 	private String organizationId;  //组织机构
 	private String organizationName;  //组织机构名称
 
+	private String usertype;   //用户类型
+
 	public UserVO() {
 	}
 
@@ -192,6 +194,12 @@ public class UserVO extends ValueObject implements Serializable{
 	}
 	public void setOrganizationName(String organizationName) {
 		this.organizationName = organizationName;
+	}
+	public String getUsertype() {
+		return usertype;
+	}
+	public void setUsertype(String usertype) {
+		this.usertype = usertype;
 	}
 
 	@Override

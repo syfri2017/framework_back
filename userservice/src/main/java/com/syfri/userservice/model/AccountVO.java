@@ -14,6 +14,7 @@ public class AccountVO extends ValueObject implements Serializable{
 	private String password;	//密码
 	private String salt;	//密码盐
 	private String realname;	//真实姓名
+	private String usertype;    //用户类型
 	private String deleteFlag;	//删除标志
 	private String createId;	//创建人ID
 	private String createName;	//创建人
@@ -27,6 +28,12 @@ public class AccountVO extends ValueObject implements Serializable{
 	private String deptid;    //用户表中用户类型
 
 	public AccountVO() {
+	}
+
+	public AccountVO(String username, String password, String realname) {
+		this.username = username;
+		this.password = password;
+		this.realname = realname;
 	}
 
 	public AccountVO(String userid, String username, String password, String realname) {
@@ -65,6 +72,12 @@ public class AccountVO extends ValueObject implements Serializable{
 	}
 	public void setRealname(String realname){
 		this.realname = realname;
+	}
+	public String getUsertype() {
+		return usertype;
+	}
+	public void setUsertype(String usertype) {
+		this.usertype = usertype;
 	}
 	public String getDeleteFlag(){
 		return deleteFlag;

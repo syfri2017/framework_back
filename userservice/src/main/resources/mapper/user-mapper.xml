@@ -224,6 +224,7 @@
 		<result property="username" column="username"/>
 		<result property="password" column="password"/>
 		<result property="realname" column="realname"/>
+		<result property="usertype" column="usertype"/>
 		<result property="birth" column="birth"/>
 		<result property="sex" column="sex"/>
 		<result property="deptid" column="deptid"/>
@@ -249,6 +250,7 @@
 		<include refid="SQL_CONTENT"/>
 		,a.username
 		,a.password
+		,a.usertype
 		,r.roleid
 		,r.rolename
 		,r.roleinfo

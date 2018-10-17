@@ -15,6 +15,12 @@
 		<if test="salt != null and salt != '' ">
 		 and t.salt = #{salt}
 		</if>
+		<if test="realname != null and realname != '' ">
+			and t.realname = #{realname}
+		</if>
+		<if test="usertype != null and usertype != '' ">
+			and t.usertype = #{usertype}
+		</if>
 		<if test="deleteFlag != null and deleteFlag != '' ">
 		 and t.delete_flag = #{deleteFlag}
 		</if>
@@ -45,9 +51,6 @@
 		<if test="reserve3 != null and reserve3 != '' ">
 		 and t.reserve3 = #{reserve3}
 		</if>
-		<if test="realname != null and realname != '' ">
-		 and t.realname = #{realname}
-		</if>
 	</sql>
 
 	<!--2.查询内容-->
@@ -56,6 +59,8 @@
 		t.username username,
 		t.password password,
 		t.salt salt,
+		t.realname realname,
+		t.usertype usertype,
 		t.delete_flag deleteFlag,
 		t.create_id createId,
 		t.create_name createName,
@@ -65,8 +70,7 @@
 		TO_CHAR(t.alter_time,'yyyy-MM-dd HH24:mi:ss') alterTime,
 		t.reserve1 reserve1,
 		t.reserve2 reserve2,
-		TO_CHAR(t.reserve3,'yyyy-MM-dd HH24:mi:ss') reserve3,
-		t.realname realname
+		TO_CHAR(t.reserve3,'yyyy-MM-dd HH24:mi:ss') reserve3
 	</sql>
 
 	<!--3.查询记录数-->
@@ -96,18 +100,18 @@
 		<selectKey resultType="String" order="BEFORE" keyProperty="userid">
 			SELECT SYS_GUID() AS userid FROM DUAL
 		</selectKey>
-		INSERT INTO SYS_ACCOUNT(userid,username,password,salt,delete_flag,create_id,create_name,create_time,alter_id,alter_name,alter_time,reserve1,reserve2,reserve3,realname)
-		VALUES(#{userid,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{salt,jdbcType=VARCHAR},'N',#{createId,jdbcType=VARCHAR},#{createName,jdbcType=VARCHAR},SYSDATE,#{alterId,jdbcType=VARCHAR},#{alterName,jdbcType=VARCHAR},#{alterTime,jdbcType=TIMESTAMP},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=TIMESTAMP},#{realname,jdbcType=VARCHAR})
+		INSERT INTO SYS_ACCOUNT(userid,username,password,salt,usertype,delete_flag,create_id,create_name,create_time,alter_id,alter_name,alter_time,reserve1,reserve2,reserve3,realname)
+		VALUES(#{userid,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{salt,jdbcType=VARCHAR},#{usertype,jdbcType=VARCHAR},'N',#{createId,jdbcType=VARCHAR},#{createName,jdbcType=VARCHAR},SYSDATE,#{alterId,jdbcType=VARCHAR},#{alterName,jdbcType=VARCHAR},#{alterTime,jdbcType=TIMESTAMP},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=TIMESTAMP},#{realname,jdbcType=VARCHAR})
 	 </insert>
 
 	<!--7.批量插入-->
 	<insert  id="doBatchInsertByList"  parameterType="java.util.List"> 
-		INSERT INTO SYS_ACCOUNT(userid,username,password,salt,delete_flag,create_id,create_name,create_time,alter_id,alter_name,alter_time,reserve1,reserve2,reserve3,realname)
+		INSERT INTO SYS_ACCOUNT(userid,username,password,salt,usertype,delete_flag,create_id,create_name,create_time,alter_id,alter_name,alter_time,reserve1,reserve2,reserve3,realname)
 		SELECT SYS_GUID() userid, A.* 
 		FROM ( 
 		<foreach collection="list" item="item" index="index" separator="UNION ALL" >
 		SELECT
-			#{item.userid,jdbcType=VARCHAR} userid,#{item.username,jdbcType=VARCHAR} username,#{item.password,jdbcType=VARCHAR} password,#{item.salt,jdbcType=VARCHAR} salt,'N' delete_flag,#{item.createId,jdbcType=VARCHAR} create_id,#{item.createName,jdbcType=VARCHAR} create_name,SYSDATE create_time,#{item.alterId,jdbcType=VARCHAR} alter_id,#{item.alterName,jdbcType=VARCHAR} alter_name,#{item.alterTime,jdbcType=TIMESTAMP} alter_time,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=TIMESTAMP} reserve3,#{item.realname,jdbcType=VARCHAR} realname
+			#{item.userid,jdbcType=VARCHAR} userid,#{item.username,jdbcType=VARCHAR} username,#{item.password,jdbcType=VARCHAR} password,#{item.salt,jdbcType=VARCHAR} salt,#{item.usertype,jdbcType=VARCHAR} usertype,'N' delete_flag,#{item.createId,jdbcType=VARCHAR} create_id,#{item.createName,jdbcType=VARCHAR} create_name,SYSDATE create_time,#{item.alterId,jdbcType=VARCHAR} alter_id,#{item.alterName,jdbcType=VARCHAR} alter_name,#{item.alterTime,jdbcType=TIMESTAMP} alter_time,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=TIMESTAMP} reserve3,#{item.realname,jdbcType=VARCHAR} realname
 		FROM DUAL
 		</foreach>
 		) A
@@ -126,6 +130,7 @@
 			<if test="username != null">username=#{username},</if>
 			<if test="password != null">password=#{password},</if>
 			<if test="salt != null">salt=#{salt},</if>
+			<if test="usertype != null">usertype=#{usertype},</if>
 			<if test="deleteFlag != null">delete_flag='N',</if>
 			<if test="createId != null">create_id=#{createId},</if>
 			<if test="createName != null">create_name=#{createName},</if>
@@ -143,10 +148,10 @@
 
 	<!--10.批量修改-->
 	<update id="doBatchUpdateByList"  parameterType="java.util.List">
-		INSERT INTO SYS_ACCOUNT(userid,username,password,salt,delete_flag,create_id,create_name,create_time,alter_id,alter_name,alter_time,reserve1,reserve2,reserve3,realname)
+		INSERT INTO SYS_ACCOUNT(userid,username,password,salt,usertype,delete_flag,create_id,create_name,create_time,alter_id,alter_name,alter_time,reserve1,reserve2,reserve3,realname)
 		VALUES
 		<foreach collection="list" item="item" index="index" separator="," >
-			#{item.userid,jdbcType=VARCHAR} userid,#{item.username,jdbcType=VARCHAR} username,#{item.password,jdbcType=VARCHAR} password,#{item.salt,jdbcType=VARCHAR} salt,'N' delete_flag,#{item.createId,jdbcType=VARCHAR} create_id,#{item.createName,jdbcType=VARCHAR} create_name,SYSDATE create_time,#{item.alterId,jdbcType=VARCHAR} alter_id,#{item.alterName,jdbcType=VARCHAR} alter_name,SYSDATE alter_time,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=TIMESTAMP} reserve3,#{item.realname,jdbcType=VARCHAR} realname
+			#{item.userid,jdbcType=VARCHAR} userid,#{item.username,jdbcType=VARCHAR} username,#{item.password,jdbcType=VARCHAR} password,#{item.salt,jdbcType=VARCHAR} salt,#{item.usertype,jdbcType=VARCHAR} usertype,'N' delete_flag,#{item.createId,jdbcType=VARCHAR} create_id,#{item.createName,jdbcType=VARCHAR} create_name,SYSDATE create_time,#{item.alterId,jdbcType=VARCHAR} alter_id,#{item.alterName,jdbcType=VARCHAR} alter_name,SYSDATE alter_time,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=TIMESTAMP} reserve3,#{item.realname,jdbcType=VARCHAR} realname
 		</foreach>
 		ON DUPLICATE KEY UPDATE   
 			userid = VALUES(userid),
@@ -207,7 +212,12 @@
 		FROM SYS_ACCOUNT t
 		LEFT JOIN SYS_USER u ON t.userid = u.userid AND u.delete_flag = 'N'
 		WHERE t.DELETE_FLAG = 'N' AND u.deptid = #{deptid}
-		AND t.username = #{username}
+		<if test="username != null and username != '' ">
+			AND t.username = #{username}
+		</if>
+		<if test="usertype != null and usertype != '' ">
+			AND t.usertype = #{usertype}
+		</if>
 	</select>
 
 </mapper>
