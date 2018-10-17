@@ -208,6 +208,7 @@
 		LEFT JOIN CFPA_QY_JBXX q
 		ON t.userid = q.userid
 		AND q.DELETE_FLAG = 'N'
+		AND q.shzt = '03'
 		WHERE t.DELETE_FLAG = 'N'
 		AND q.dzyx = #{value}
 	</select>
@@ -220,6 +221,7 @@
 		LEFT JOIN CFPA_QY_JBXX q
 		ON t.userid = q.userid
 		AND q.DELETE_FLAG = 'N'
+		AND q.shzt = '03'
 		WHERE t.DELETE_FLAG = 'N'
 		AND q.dzyx = #{value}
 	</select>
@@ -241,6 +243,7 @@
 		LEFT JOIN CFPA_QY_JBXX q
 		ON t.userid = q.userid
 		AND q.DELETE_FLAG = 'N'
+		AND q.shzt = '03'
 		WHERE t.DELETE_FLAG = 'N'
 		AND q.dzyx = #{value}
 	</select>
@@ -253,6 +256,7 @@
 		LEFT JOIN CFPA_QY_JBXX q
 		ON t.userid = q.userid
 		AND q.DELETE_FLAG = 'N'
+		AND q.shzt = '03'
 		LEFT JOIN CFPA_QY_KPXX q2
 		ON q.qyid = q2.qyid
 		AND q2.DELETE_FLAG = 'N'
