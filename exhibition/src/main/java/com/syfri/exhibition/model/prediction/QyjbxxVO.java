@@ -51,6 +51,8 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 
 	private String username;   //登陆账号
 	private String pkid;   //用户表主键
+	private String usertype;   //用户类型
+	private String usertypeName;   //用户类型中文
 
 	public String getQyid(){
 		return qyid;
@@ -285,19 +287,28 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
 	public String getPkid() {
 		return pkid;
 	}
-
 	public void setPkid(String pkid) {
 		this.pkid = pkid;
+	}
+	public String getUsertype() {
+		return usertype;
+	}
+	public void setUsertype(String usertype) {
+		this.usertype = usertype;
+	}
+	public String getUsertypeName() {
+		return usertypeName;
+	}
+	public void setUsertypeName(String usertypeName) {
+		this.usertypeName = usertypeName;
 	}
 
 	public String getApproveflag() {
 		return approveflag;
 	}
-
 	public void setApproveflag(String approveflag) {
 		this.approveflag = approveflag;
 	}
