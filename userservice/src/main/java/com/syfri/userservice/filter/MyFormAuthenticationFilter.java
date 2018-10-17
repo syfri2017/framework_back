@@ -57,8 +57,8 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter {
 		String username = getUsername(request);
 		String password = getPassword(request);
 		String loginType = request.getParameter("loginType");
-		String unscid = request.getParameter("unscid");
-		return new InfoCollectToken(username, password, loginType);
+		String comfrom = request.getParameter("comfrom");
+		return new InfoCollectToken(username, password, loginType, comfrom);
 		//统一社会信用代码登陆方式 by li.xue  2018/10/16 15:43
 		/**
 		if(LoginType.MYSHIRO.toString().equals(loginType)){
@@ -70,15 +70,18 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter {
 	}
 
 	//成功登陆
+	@Override
 	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
 		//登陆方式
 		String loginType = ((InfoCollectToken) token).getLoginType();
-		//loginType = "MyShiro";
 		if(LoginType.INFOCOLLECT.toString().equals(loginType)){
 			//HttpServletRequest req = (HttpServletRequest) request;
 			//req.getSession().setAttribute("loginType", "infoCollect");
 			WebUtils.getAndClearSavedRequest(request);
 			String infoCollectUrl = "/prediction/predictionAll";
+			if("ENG".equals(((InfoCollectToken) token).getComfrom())){
+				infoCollectUrl = "/prediction/predictionAll_ENG";
+			}
 			WebUtils.redirectToSavedRequest(request, response, infoCollectUrl);
 		}else{
 			issueSuccessRedirect(request, response);
