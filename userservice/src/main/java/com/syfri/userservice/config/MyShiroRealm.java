@@ -26,9 +26,6 @@ public class MyShiroRealm extends AuthorizingRealm{
 	private AccountService accountService;
 
 	@Resource
-	private UserService userService;
-
-	@Resource
 	private RoleService roleService;
 
 	@Resource
@@ -51,17 +48,14 @@ public class MyShiroRealm extends AuthorizingRealm{
 		String username = (String) token.getPrincipal();
 		AccountVO accountVO = new AccountVO();
 		accountVO.setUsername(username);
-		List<AccountVO> accounts = accountService.doSearchListByVO(accountVO);
-		if(accounts == null){
+		accountVO.setDeptid("GLYH");
+		List<AccountVO> accounts = accountService.doSearchListByVO2(accountVO);
+		if(accounts == null || accounts.size() == 0){
 			return null;
 		}
 		AccountVO account = accounts.get(0);
 
-		ShiroUser shiroUser = new ShiroUser(account.getUserid(), account.getUsername(), account.getRealname());
-		UserVO userVO = userService.doFindByVO(new UserVO(account.getUserid()));
-		if(userVO != null){
-			shiroUser.setDeptid(userVO.getDeptid());
-		}
+		ShiroUser shiroUser = new ShiroUser(account.getUserid(), account.getUsername(), account.getRealname(), "GLYH");
 
 		//根据用户ID获取其组织机构
 		shiroUser.setOrganizationVO(organizationService.doFindOrganizationByUserid(account.getUserid()));

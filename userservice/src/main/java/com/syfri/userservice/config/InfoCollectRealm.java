@@ -51,14 +51,14 @@ public class InfoCollectRealm extends AuthorizingRealm{
 		String username = (String) token.getPrincipal();
 		AccountVO accountVO = new AccountVO();
 		accountVO.setUsername(username);
-		List<AccountVO> accounts = accountService.doSearchListByVO(accountVO);
-		if(accounts == null){
+		accountVO.setDeptid("ZSYH");
+		List<AccountVO> accounts = accountService.doSearchListByVO2(accountVO);
+		if(accounts == null || accounts.size() == 0){
 			return null;
 		}
 		AccountVO account = accounts.get(0);
 
-		ShiroUser shiroUser = new ShiroUser(account.getUserid(), account.getUsername(), account.getRealname());
-		shiroUser.setDeptid("ZSYH");
+		ShiroUser shiroUser = new ShiroUser(account.getUserid(), account.getUsername(), account.getRealname(), "ZSYH");
 
 		List<String> roles = new ArrayList();
 		List<String> permissions = new ArrayList();

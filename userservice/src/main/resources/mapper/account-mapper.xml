@@ -200,4 +200,14 @@
 		<!--UPDATE SYS_ACCOUNT_ROLE t SET t.DELETE_FLAG = 'Y' WHERE USERID = #{value}-->
 	</delete>
 
+	<!--15.根据不同deptid查询用户账户 by li.xue 2018/10/17 10:11-->
+	<select id="doSearchListByVO2" parameterType="AccountVO"  resultType="AccountVO">
+		SELECT
+		<include refid="SQL_CONTENT"/>
+		FROM SYS_ACCOUNT t
+		LEFT JOIN SYS_USER u ON t.userid = u.userid AND u.delete_flag = 'N'
+		WHERE t.DELETE_FLAG = 'N' AND u.deptid = #{deptid}
+		AND t.username = #{username}
+	</select>
+
 </mapper>

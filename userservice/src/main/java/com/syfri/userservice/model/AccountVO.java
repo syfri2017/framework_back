@@ -24,6 +24,7 @@ public class AccountVO extends ValueObject implements Serializable{
 	private String reserve1;	//备用1
 	private String reserve2;	//备用2
 	private String reserve3;	//备用3
+	private String deptid;    //用户表中用户类型
 
 	public AccountVO() {
 	}
@@ -125,5 +126,10 @@ public class AccountVO extends ValueObject implements Serializable{
 	public void setReserve3(String reserve3){
 		this.reserve3 = reserve3;
 	}
-
+	public String getDeptid() {
+		return deptid;
+	}
+	public void setDeptid(String deptid) {
+		this.deptid = deptid;
+	}
 }

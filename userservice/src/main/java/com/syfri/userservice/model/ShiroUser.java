@@ -46,6 +46,13 @@ public class ShiroUser implements Serializable{
 		this.realName = realName;
 	}
 
+	public ShiroUser(String userid, String username, String realName, String deptid) {
+		this.userid = userid;
+		this.username = username;
+		this.realName = realName;
+		this.deptid = deptid;
+	}
+
 	public OrganizationVO getOrganizationVO() {
 		return organizationVO;
 	}
