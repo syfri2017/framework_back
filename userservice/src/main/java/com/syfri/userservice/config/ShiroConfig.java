@@ -199,7 +199,11 @@ public class ShiroConfig implements EnvironmentAware {
 	 */
 	@Bean("infoCollectRealm")
 	public InfoCollectRealm infoCollectRealm(){
-		return new InfoCollectRealm();
+		/*采用加密方式登陆 by li.xue 2018/10/17 8:54*/
+		//return new InfoCollectRealm();
+		InfoCollectRealm infoCollectRealm = new InfoCollectRealm();
+		infoCollectRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+		return infoCollectRealm;
 	}
 
 	/**

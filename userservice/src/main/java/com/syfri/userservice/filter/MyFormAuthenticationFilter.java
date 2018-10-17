@@ -20,6 +20,18 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter {
 	//登陆验证
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws  Exception{
+		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+		HttpSession session = httpServletRequest.getSession();
+		//取出Session中验证码
+		String code = (String) session.getAttribute("code");
+		//取出输入的验证码
+		String validateCode = httpServletRequest.getParameter("validateCode");
+		if(code!=null && validateCode!=null && !validateCode.equals(code)){
+			httpServletRequest.setAttribute("shiroLoginFailure","kaptchaValidateFailed");
+			return true;
+		}
+		//统一社会信用代码登陆方式 by li.xue  2018/10/16 15:43
+		/**
 		//登陆类型
 		String loginType = request.getParameter("loginType");
 		if(LoginType.MYSHIRO.toString().equals(loginType)){
@@ -35,6 +47,7 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter {
 			}
 			//return super.onAccessDenied(request, response);
 		}
+		 */
 		return super.onAccessDenied(request, response);
 	}
 
@@ -45,11 +58,15 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter {
 		String password = getPassword(request);
 		String loginType = request.getParameter("loginType");
 		String unscid = request.getParameter("unscid");
+		return new InfoCollectToken(username, password, loginType);
+		//统一社会信用代码登陆方式 by li.xue  2018/10/16 15:43
+		/**
 		if(LoginType.MYSHIRO.toString().equals(loginType)){
 			return new InfoCollectToken(username, password, LoginType.MYSHIRO.toString());
 		} else {
 			return new InfoCollectToken(unscid, LoginType.INFOCOLLECT.toString());
 		}
+		 */
 	}
 
 	//成功登陆

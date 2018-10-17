@@ -22,12 +22,14 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
 
 	@Override
 	public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info){
-		//信息采集免密登陆
+		//信息采集免密登陆 by li.xue 2018/10/16 17:04
+		/**
 		InfoCollectToken infoCollectToken = (InfoCollectToken) token;
 		String loginType = infoCollectToken.getLoginType();
 		if(LoginType.INFOCOLLECT.toString().equals(loginType)){
 			return true;
 		}
+		*/
 
 		//账户密码登陆
 		String username = (String) token.getPrincipal();
