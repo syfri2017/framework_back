@@ -212,4 +212,20 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 		}
 		return resultVO;
 	}
+
+	//查询当前邮箱是否被注册（用户表、基本信息表）
+    //add by yushch 20181018
+    @ApiOperation(value="根据邮箱查询用户数量",notes="查询")
+    @ApiImplicitParam(name="mail",value="邮箱")
+    @GetMapping("/getMailNum/{mail}")
+    public @ResponseBody ResultVO getMailNum(@PathVariable String mail){
+        ResultVO resultVO = ResultVO.build();
+        try{
+            resultVO.setResult(qyjbxxService.doSearchCountByMail(mail.replace("_",".")));
+        }catch(Exception e){
+            logger.error("{}",e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
 }

@@ -106,7 +106,7 @@
         </selectKey>
         INSERT INTO
         CFPA_QY_ZWYX(uuid,qyid,bzzwgs,sngdzw,swgdzw,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4)
-        VALUES(#{uuid,jdbcType=VARCHAR},#{qyid,jdbcType=VARCHAR},#{bzzwgs,jdbcType=DOUBLE},#{sngdzw,jdbcType=DOUBLE},#{swgdzw,jdbcType=DOUBLE},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},#{cjsj,jdbcType=DATE},#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+        VALUES(#{uuid,jdbcType=VARCHAR},#{qyid,jdbcType=VARCHAR},#{bzzwgs,jdbcType=DOUBLE},#{sngdzw,jdbcType=DOUBLE},#{swgdzw,jdbcType=DOUBLE},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
     </insert>
 
     <!--7.批量插入-->
@@ -149,7 +149,7 @@
             <if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>
             <if test="xgrid != null">xgrid=#{xgrid},</if>
             <if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-            <if test="xgsj != null">xgsj=TO_DATE(#{xgsj},'yyyy-MM-dd HH24:mi:ss'),</if>
+            xgsj=sysdate,
             <if test="reserve1 != null">reserve1=#{reserve1},</if>
             <if test="reserve2 != null">reserve2=#{reserve2},</if>
             <if test="reserve3 != null">reserve3=#{reserve3},</if>

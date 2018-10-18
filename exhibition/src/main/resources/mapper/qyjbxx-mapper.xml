@@ -358,4 +358,12 @@
         <include refid="SQL_CONDITION"/>
     </select>
 
+    <!--查询邮箱是否被注册过-->
+    <select id="doSearchCountByMail" parameterType="String" resultType="java.lang.Integer">
+        SELECT SUM(num) FROM (
+            SELECT COUNT(1) num FROM SYS_ACCOUNT t1 WHERE t1.DELETE_FLAG = 'N' AND t1.username = #{value}
+            UNION ALL
+            SELECT COUNT(1) num FROM CFPA_QY_JBXX t2 WHERE t2.DELETE_FLAG = 'N' AND t2.dzyx = #{value}
+        )
+    </select>
 </mapper>

@@ -41,4 +41,9 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 		qyjbxxDAO.doInsertByVO(qyjbxxVO);
 		return qyjbxxVO;
 	}
+	//add by yushch 20181018
+	@Override
+	public int doSearchCountByMail(String mail) {
+		return qyjbxxDAO.doSearchCountByMail(mail);
+	}
 }

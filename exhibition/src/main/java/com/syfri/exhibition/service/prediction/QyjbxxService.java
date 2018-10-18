@@ -13,4 +13,7 @@ public interface QyjbxxService  extends BaseService<QyjbxxVO>{
     int doDeleteJbxx(List<QyjbxxVO> voList);
     //add by yushch insert返回vo
     QyjbxxVO doInsertJbxxByVO(QyjbxxVO qyjbxxVO);
+    //查询邮箱是否被注册过（account表、jbxx表）
+    int doSearchCountByMail(String mail);
+
 }
