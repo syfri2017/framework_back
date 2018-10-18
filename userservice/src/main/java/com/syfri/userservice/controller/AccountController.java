@@ -6,6 +6,7 @@ import com.syfri.userservice.model.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -47,4 +48,18 @@ public class AccountController  extends BaseController<AccountVO>{
 		return resultVO;
 	}
 
+	@ApiOperation(value="根据用户修改用户",notes="修改")
+	@ApiImplicitParam(name="vo",value="用户对象")
+//	@RequiresPermissions("system/account:edit")
+	@PostMapping("/updateByVO")
+	public @ResponseBody ResultVO updateByVO(@RequestBody AccountVO accountVO){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(accountService.doUpdateAccountByVO(accountVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }
