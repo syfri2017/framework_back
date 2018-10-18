@@ -88,6 +88,24 @@ public class SignInController extends BaseController<AccountVO>{
 		return resultVO;
 	}
 
+	@ApiOperation(value="根据邮箱查询用户数量",notes="查询")
+	@ApiImplicitParam(name="mail",value="邮箱")
+	@GetMapping("/getMailNumENG/{mail}")
+	public @ResponseBody ResultVO getMailNumENG(@PathVariable String mail){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			if(signInService.doSearchListByMailForENG(mail.replace("_",".")).size() == 0){
+				resultVO.setResult(0);
+			}else{
+				resultVO.setResult(1);
+			}
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
+
 	/**
 	 * 发送邮箱验证码
 	 * @param mail 邮箱\

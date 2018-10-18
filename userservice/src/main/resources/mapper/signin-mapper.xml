@@ -213,6 +213,25 @@
 		AND q.dzyx = #{value}
 	</select>
 
+	<!--按邮箱查询记录-->
+	<select id="doSearchListByMailForENG" parameterType="String"  resultType="AccountVO">
+		SELECT
+		<include refid="SQL_CONTENT"/>
+		FROM SYS_ACCOUNT t
+		LEFT JOIN CFPA_QY_JBXX q
+		ON t.userid = q.userid
+		AND q.DELETE_FLAG = 'N'
+		<!--	AND q.shzt = '03' -->
+		WHERE t.DELETE_FLAG = 'N'
+		AND q.dzyx = #{value}
+		UNION ALL
+		SELECT
+		<include refid="SQL_CONTENT"/>
+		FROM SYS_ACCOUNT t
+		WHERE t.DELETE_FLAG = 'N'
+		AND t.username = #{value}
+	</select>
+
 	<!--按邮箱查询用户名-->
 	<select id="getUsernameByMail" parameterType="String"  resultType="String">
 		SELECT

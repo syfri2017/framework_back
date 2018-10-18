@@ -12,6 +12,8 @@ public interface SignInService extends BaseService<AccountVO>{
 
 	List<AccountVO> doSearchListByMail(String mail);
 
+	List<AccountVO> doSearchListByMailForENG(String mail);
+
 	UserVO doInsertUserRoles(UserVO userVO);
 
 	int doInsertAccountByVO(AccountVO accountVO);

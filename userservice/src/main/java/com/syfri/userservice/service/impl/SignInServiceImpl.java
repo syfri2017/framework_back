@@ -47,6 +47,11 @@ public class SignInServiceImpl extends BaseServiceImpl<AccountVO> implements Sig
 	}
 
 	@Override
+	public List<AccountVO> doSearchListByMailForENG(String mail) {
+		return this.signInDAO.doSearchListByMailForENG(mail);
+	}
+
+	@Override
 	public UserVO doInsertUserRoles(UserVO userVO){
 
 		//向账户表SYS_ACCOUNT插入账户信息
