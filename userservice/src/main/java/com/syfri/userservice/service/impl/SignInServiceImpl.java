@@ -50,10 +50,8 @@ public class SignInServiceImpl extends BaseServiceImpl<AccountVO> implements Sig
 	public UserVO doInsertUserRoles(UserVO userVO){
 
 		//向账户表SYS_ACCOUNT插入账户信息
-		AccountVO accountVO = new AccountVO();
-		accountVO.setUsername(userVO.getUsername());
-		accountVO.setPassword(userVO.getPassword());
-		accountVO.setRealname(userVO.getRealname());
+		AccountVO accountVO = new AccountVO(userVO.getUsername(), userVO.getPassword(), userVO.getRealname());
+		accountVO.setUsertype(userVO.getUsertype());
 		this.doInsertAccountByVO(accountVO);
 
 		//向用户表SYS_USER插入用户信息
