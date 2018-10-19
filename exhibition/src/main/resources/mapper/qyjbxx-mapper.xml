@@ -184,7 +184,9 @@
         SELECT
         <include refid="SQL_CONTENT"/>,
         c2.code_name sjztmc,
-        c4.code_name shztmc
+        c4.code_name shztmc,
+        c6.code_name yjdzshengmc,
+        c8.code_name yjdzshimc
         FROM CFPA_QY_JBXX t
         <!--数据状态-->
         Left Join SYS_CODELIST c1 on c1.CODETYPE = 'SJZT' And c1.DELETE_FLAG = 'N'
@@ -192,6 +194,12 @@
         <!--审核状态-->
         Left Join SYS_CODELIST c3 on c3.CODETYPE = 'SHZT' And c3.DELETE_FLAG = 'N'
         Left Join SYS_CODELIST_DETAIL c4 On c4.CODEID = c3.CODEID And c4.DELETE_FLAG = 'N' and t.shzt = c4.CODE_VALUE
+        <!--省-->
+        Left Join SYS_CODELIST c5 on c5.CODETYPE = 'XZQH' And c5.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c6 On c6.CODEID = c5.CODEID And c6.DELETE_FLAG = 'N' and t.yjdzsheng = c6.CODE_VALUE
+        <!--市-->
+        Left Join SYS_CODELIST c7 on c7.CODETYPE = 'XZQH' And c7.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c8 On c8.CODEID = c7.CODEID And c8.DELETE_FLAG = 'N' and t.yjdzshi = c8.CODE_VALUE
         WHERE t.DELETE_FLAG = 'N' AND t.QYID = #{value}
     </select>
 

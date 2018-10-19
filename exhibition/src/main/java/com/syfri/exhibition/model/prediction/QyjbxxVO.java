@@ -45,6 +45,8 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	private String yjdz;	//邮寄地址
 	private String sjztmc;	//数据状态名称
 	private String shztmc;	//审核状态名称
+	private String yjdzshengmc;	//邮寄地址(省）名称
+	private String yjdzshimc;	//邮寄地址(市）名称
 	private String approveflag;	//审核查询标识
 
 	private String tyshxydm;	//统一社会信用代码/纳税人识别号
@@ -269,6 +271,23 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	public void setShztmc(String shztmc) {
 		this.shztmc = shztmc;
 	}
+
+	public String getYjdzshengmc() {
+		return yjdzshengmc;
+	}
+
+	public void setYjdzshengmc(String yjdzshengmc) {
+		this.yjdzshengmc = yjdzshengmc;
+	}
+
+	public String getYjdzshimc() {
+		return yjdzshimc;
+	}
+
+	public void setYjdzshimc(String yjdzshimc) {
+		this.yjdzshimc = yjdzshimc;
+	}
+
 	public String getTyshxydm() {
 		return tyshxydm;
 	}
