@@ -240,7 +240,7 @@
 		LEFT JOIN CFPA_QY_JBXX q
 		ON t.userid = q.userid
 		AND q.DELETE_FLAG = 'N'
-		AND q.shzt = '03'
+		<!--AND q.shzt = '03'-->
 		WHERE t.DELETE_FLAG = 'N'
 		AND q.dzyx = #{value}
 	</select>
@@ -262,7 +262,7 @@
 		LEFT JOIN CFPA_QY_JBXX q
 		ON t.userid = q.userid
 		AND q.DELETE_FLAG = 'N'
-		AND q.shzt = '03'
+		<!--AND q.shzt = '03'-->
 		WHERE t.DELETE_FLAG = 'N'
 		AND q.dzyx = #{value}
 	</select>
