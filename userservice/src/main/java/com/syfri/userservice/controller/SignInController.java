@@ -50,14 +50,14 @@ public class SignInController extends BaseController<AccountVO>{
 		return this.accountService;
 	}
 
-	@ApiOperation(value="根据手机号查询用户数量",notes="查询")
-	@ApiImplicitParam(name="mobile",value="手机号")
-	@GetMapping("/getMobileNum/{mobile}")
-	public @ResponseBody ResultVO getNum(@PathVariable String mobile){
+	@ApiOperation(value="根据username查询用户数量",notes="查询")
+	@ApiImplicitParam(name="username",value="用户名")
+	@GetMapping("/getUsernameNum/{username}")
+	public @ResponseBody ResultVO getUsernameNum(@PathVariable String username){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			AccountVO accountVO = new AccountVO();
-			accountVO.setUsername(mobile);
+			accountVO.setUsername(username.replace("_","."));
 			if(accountService.doSearchListByVO(accountVO).size() == 0){
 				resultVO.setResult(0);
 			}else{
@@ -210,13 +210,13 @@ public class SignInController extends BaseController<AccountVO>{
 		return username;
 	}
 
-    @ApiOperation(value="根据phone查询用户信息",notes="查询")
-    @ApiImplicitParam(name="phone",value="参数列表")
-    @GetMapping("/findByPhone/{phone}")
-    public @ResponseBody ResultVO findByPhone(@PathVariable String phone){
+    @ApiOperation(value="username",notes="查询")
+    @ApiImplicitParam(name="username",value="参数列表")
+    @GetMapping("/findByUsername/{username}")
+    public @ResponseBody ResultVO findByUsername(@PathVariable String username){
         ResultVO resultVO = ResultVO.build();
         try{
-            resultVO.setResult(signInService.findByPhone(phone));
+            resultVO.setResult(signInService.findByUsername(username.replace("_",".")));
         }catch(Exception e){
             logger.error("{}",e.getMessage());
             resultVO.setCode(EConstants.CODE.FAILURE);

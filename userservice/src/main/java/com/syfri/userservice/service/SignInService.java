@@ -22,7 +22,7 @@ public interface SignInService extends BaseService<AccountVO>{
 
 	String getUsernameByMail(String mail);
 
-	List<AccountVO> findByPhone(String phone);
+	List<AccountVO> findByUsername(String username);
 
 	List<AccountVO> findByMail(String mail);
 

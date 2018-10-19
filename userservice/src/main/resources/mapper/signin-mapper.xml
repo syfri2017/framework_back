@@ -245,8 +245,8 @@
 		AND q.dzyx = #{value}
 	</select>
 
-	<!--按phone查询用户信息-->
-	<select id="findByPhone" parameterType="String"  resultType="AccountVO">
+	<!--按username查询用户信息-->
+	<select id="findByUsername" parameterType="String"  resultType="AccountVO">
 		SELECT
 		<include refid="SQL_CONTENT"/>
 		FROM SYS_ACCOUNT t

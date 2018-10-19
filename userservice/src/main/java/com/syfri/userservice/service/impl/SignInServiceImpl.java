@@ -115,8 +115,8 @@ public class SignInServiceImpl extends BaseServiceImpl<AccountVO> implements Sig
 	}
 
 	@Override
-	public List<AccountVO> findByPhone(String phone) {
-		return this.signInDAO.findByPhone(phone);
+	public List<AccountVO> findByUsername(String username) {
+		return this.signInDAO.findByUsername(username);
 	}
 
 	@Override

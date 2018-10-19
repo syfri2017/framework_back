@@ -15,7 +15,7 @@ public interface SignInDAO extends BaseDAO<AccountVO>{
 
 	String getUsernameByMail(String mail);
 
-	List<AccountVO> findByPhone(String phone);
+	List<AccountVO> findByUsername(String username);
 
 	List<AccountVO> findByMail(String mail);
 
