@@ -182,4 +182,11 @@ public class LoginController {
 		resultVO.setResult(menus);
 		return resultVO;
 	}
+
+	@GetMapping("/ENG/logout")
+	public String ENGlogout(){
+		Subject subject = SecurityUtils.getSubject();
+		subject.logout();
+		return "redirect:/loginENG";
+	}
 }
