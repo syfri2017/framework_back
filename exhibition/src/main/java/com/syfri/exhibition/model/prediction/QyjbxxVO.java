@@ -40,6 +40,7 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	private String reserve2;	//备用字段2
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
+	private String email;//英文版电子邮箱
 
 	private String yjdz;	//邮寄地址
 	private String sjztmc;	//数据状态名称
@@ -311,5 +312,12 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	}
 	public void setApproveflag(String approveflag) {
 		this.approveflag = approveflag;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

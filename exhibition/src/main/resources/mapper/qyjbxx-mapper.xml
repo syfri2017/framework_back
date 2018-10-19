@@ -107,6 +107,9 @@
         <if test="reserve4 != null and reserve4 != '' ">
             and t.reserve4 = #{reserve4}
         </if>
+        <if test="email != null and email != '' ">
+            and t.email = #{email}
+        </if>
     </sql>
 
     <!--2.查询内容-->
@@ -142,7 +145,8 @@
 		t.reserve1 reserve1,
 		t.reserve2 reserve2,
 		t.reserve3 reserve3,
-		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
+		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
+		t.email email
 	</sql>
 
     <!--3.查询记录数-->
@@ -267,7 +271,8 @@
             <if test="reserve1 != null">reserve1=#{reserve1},</if>
             <if test="reserve2 != null">reserve2=#{reserve2},</if>
             <if test="reserve3 != null">reserve3=#{reserve3},</if>
-            <if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+            <if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
+            <if test="email != null">email=#{email}</if>
         </set>
         WHERE QYID = #{qyid}
     </update>
@@ -275,7 +280,7 @@
     <!--10.批量修改-->
     <update id="doBatchUpdateByList" parameterType="java.util.List">
         INSERT INTO
-        CFPA_QY_JBXX(qyid,userid,zwgsmc,ywgsmc,frdb,frdbdh,yjdzsheng,yjdzshi,yjdzxx,bgdh,cz,lxr,lxrsj,wz,dzyx,yyzz,sjzt,shzt,shrid,shrmc,shsj,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4)
+        CFPA_QY_JBXX(qyid,userid,zwgsmc,ywgsmc,frdb,frdbdh,yjdzsheng,yjdzshi,yjdzxx,bgdh,cz,lxr,lxrsj,wz,dzyx,yyzz,sjzt,shzt,shrid,shrmc,shsj,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,email)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             #{item.qyid,jdbcType=VARCHAR} qyid,#{item.userid,jdbcType=VARCHAR} userid,#{item.zwgsmc,jdbcType=VARCHAR}
@@ -290,7 +295,7 @@
             cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR}
             xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR}
             reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR}
-            reserve3,#{item.reserve4,jdbcType=DATE} reserve4
+            reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.email,jdbcType=VARCHAR} email
         </foreach>
         ON DUPLICATE KEY UPDATE
         qyid = VALUES(qyid),
@@ -324,7 +329,8 @@
         reserve1 = VALUES(reserve1),
         reserve2 = VALUES(reserve2),
         reserve3 = VALUES(reserve3),
-        reserve4 = VALUES(reserve4)
+        reserve4 = VALUES(reserve4),
+        email = VALUES(email)
     </update>
 
     <!--11.根据对象查询记录-->
@@ -360,10 +366,11 @@
 
     <!--查询邮箱是否被注册过-->
     <select id="doSearchCountByMail" parameterType="String" resultType="java.lang.Integer">
-        SELECT SUM(num) FROM (
+        <!--SELECT SUM(num) FROM (
             SELECT COUNT(1) num FROM SYS_ACCOUNT t1 WHERE t1.DELETE_FLAG = 'N' AND t1.username = #{value}
             UNION ALL
             SELECT COUNT(1) num FROM CFPA_QY_JBXX t2 WHERE t2.DELETE_FLAG = 'N' AND t2.dzyx = #{value}
-        )
+        )-->
+        SELECT COUNT(1) num FROM CFPA_QY_JBXX t2 WHERE t2.DELETE_FLAG = 'N' AND t2.dzyx = #{value}
     </select>
 </mapper>

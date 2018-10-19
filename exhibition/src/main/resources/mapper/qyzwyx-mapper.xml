@@ -141,8 +141,11 @@
             <if test="uuid != null">uuid=#{uuid},</if>
             <if test="qyid != null">qyid=#{qyid},</if>
             <if test="bzzwgs != null">bzzwgs=#{bzzwgs},</if>
+            <if test="bzzwgs == null">bzzwgs=NULL ,</if>
             <if test="sngdzw != null">sngdzw=#{sngdzw},</if>
+            <if test="sngdzw == null">sngdzw=NULL ,</if>
             <if test="swgdzw != null">swgdzw=#{swgdzw},</if>
+            <if test="swgdzw == null">swgdzw=NULL ,</if>
             <if test="deleteFlag != null">delete_flag='N',</if>
             <if test="cjrid != null">cjrid=#{cjrid},</if>
             <if test="cjrmc != null">cjrmc=#{cjrmc},</if>
