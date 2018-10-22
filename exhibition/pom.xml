@@ -9,7 +9,6 @@
     <name>exhibition</name>
     <artifactId>exhibition</artifactId>
     <packaging>war</packaging>
-c
 
     <properties>
         <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
