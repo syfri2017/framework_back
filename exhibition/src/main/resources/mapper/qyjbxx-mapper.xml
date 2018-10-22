@@ -354,7 +354,6 @@
     <select id="doFindZsxxByQyjbxx" parameterType="QyjbxxVO" resultType="QyjbxxVO">
         SELECT
         s.username,
-        s.userid,
         s.usertype,
         (CASE s.usertype WHEN 'CHN' THEN '国内' WHEN 'ENG' THEN '国外' ELSE '' END) usertypeName,
         u.pkid,

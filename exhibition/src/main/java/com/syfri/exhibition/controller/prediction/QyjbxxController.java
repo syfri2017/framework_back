@@ -1,5 +1,7 @@
 package com.syfri.exhibition.controller.prediction;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import io.swagger.annotations.ApiImplicitParam;
@@ -70,7 +72,10 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
     public @ResponseBody ResultVO doFindZsxxByQyjbxx(@RequestBody QyjbxxVO qyjbxxVO){
         ResultVO resultVO = ResultVO.build();
         try{
-            resultVO.setResult(qyjbxxService.doFindZsxxByQyjbxx(qyjbxxVO));
+			PageHelper.startPage(qyjbxxVO.getPageNum(),qyjbxxVO.getPageSize());
+			List<QyjbxxVO> list = qyjbxxService.doFindZsxxByQyjbxx(qyjbxxVO);
+			PageInfo<QyjbxxVO> pageInfo = new PageInfo<>(list);
+            resultVO.setResult(pageInfo);
         }catch(Exception e){
             logger.error("{}",e.getMessage());
             resultVO.setCode(EConstants.CODE.FAILURE);
