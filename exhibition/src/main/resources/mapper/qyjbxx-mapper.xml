@@ -354,10 +354,42 @@
     <select id="doFindZsxxByQyjbxx" parameterType="QyjbxxVO" resultType="QyjbxxVO">
         SELECT
         s.username,
+        s.userid,
         s.usertype,
         (CASE s.usertype WHEN 'CHN' THEN '国内' WHEN 'ENG' THEN '国外' ELSE '' END) usertypeName,
         u.pkid,
-        <include refid="SQL_CONTENT"/>
+        t.qyid qyid,
+        t.zwgsmc zwgsmc,
+        t.ywgsmc ywgsmc,
+        t.frdb frdb,
+        t.frdbdh frdbdh,
+        t.yjdzsheng yjdzsheng,
+        t.yjdzshi yjdzshi,
+        t.yjdzxx yjdzxx,
+        t.bgdh bgdh,
+        t.cz cz,
+        t.lxr lxr,
+        t.lxrsj lxrsj,
+        t.wz wz,
+        t.dzyx dzyx,
+        t.yyzz yyzz,
+        t.sjzt sjzt,
+        t.shzt shzt,
+        t.shrid shrid,
+        t.shrmc shrmc,
+        TO_CHAR(t.shsj,'yyyy-MM-dd HH24:mi:ss') shsj,
+        t.delete_flag deleteFlag,
+        t.cjrid cjrid,
+        t.cjrmc cjrmc,
+        TO_CHAR(t.cjsj,'yyyy-MM-dd HH24:mi:ss') cjsj,
+        t.xgrid xgrid,
+        t.xgrmc xgrmc,
+        TO_CHAR(t.xgsj,'yyyy-MM-dd HH24:mi:ss') xgsj,
+        t.reserve1 reserve1,
+        t.reserve2 reserve2,
+        t.reserve3 reserve3,
+        TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
+        t.email email
         FROM SYS_ACCOUNT s
         LEFT JOIN CFPA_QY_JBXX t ON s.userid = t.userid AND t.DELETE_FLAG = 'N'
         INNER JOIN SYS_USER u ON s.userid = u.userid AND u.DELETE_FLAG = 'N' AND u.deptid = 'ZSYH'
