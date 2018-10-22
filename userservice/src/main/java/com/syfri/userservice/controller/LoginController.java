@@ -98,7 +98,7 @@ public class LoginController {
 	 * 此方法不处理登录成功的情况，由shiro进行处理
 	 */
 	@PostMapping("/login")
-	public String login(HttpServletRequest request, Map<String,Object> map) throws Exception{
+	public String login(HttpServletRequest request, String comfrom, Map<String,Object> map) throws Exception{
 		logger.info("-----POST请求方式登录-----");
 		ShiroUser user = CurrentUserUtil.getCurrentUser();
 		if(user != null){
@@ -125,7 +125,11 @@ public class LoginController {
 			//后台工程  by li.xue 2018/07/03
 			//return "/login";
 			//前台工程  by li.xue 2018/07/03
-			return "redirect:templates/login.html";
+			if("ENG".equals(comfrom)){
+				return "redirect:templates/login_ENG.html";
+			}else {
+				return "redirect:templates/login.html";
+			}
 		}
 	}
 
