@@ -1,7 +1,7 @@
 package com.syfri.userservice.config;
 
-import com.syfri.userservice.model.*;
-import com.syfri.userservice.service.*;
+import com.syfri.userservice.model.system.*;
+import com.syfri.userservice.service.system.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;

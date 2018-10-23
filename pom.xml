@@ -9,7 +9,7 @@
         <module>baseapi</module>
         <module>generator</module>
         <module>userservice</module>
-        <module>exhibition</module>
+      <!--  <module>userservice</module>-->
     </modules>
 
     <parent>

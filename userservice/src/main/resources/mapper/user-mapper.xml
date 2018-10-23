@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.syfri.userservice.dao.UserDAO">
+<mapper namespace="com.syfri.userservice.dao.system.UserDAO">
 	<!--1.查询条件-->
 	<sql id="SQL_CONDITION">
 		<if test="pkid != null and pkid != '' ">
@@ -218,7 +218,7 @@
 	<!-- 以上的方法均查询的是User单表，以下的方法是和Role表多表查询 -->
 
 	<!--12.根据用户查询用户和其角色-->
-	<resultMap id="UserRolesMap" type="com.syfri.userservice.model.UserVO">
+	<resultMap id="UserRolesMap" type="com.syfri.userservice.model.system.UserVO">
 		<id property="pkid" column="pkid"/>
 		<result property="userid" column="userid"/>
 		<result property="username" column="username"/>
@@ -238,7 +238,7 @@
 		<result property="alterTime" column="alterTime"/>
 		<result property="organizationId" column="organizationId"/>
 		<result property="organizationName" column="organizationName"/>
-		<collection property="roles" ofType="com.syfri.userservice.model.RoleVO">
+		<collection property="roles" ofType="com.syfri.userservice.model.system.RoleVO">
 			<id property="roleid" column="roleid"></id>
 			<result property="rolename" column="rolename"/>
 			<result property="roleinfo" column="roleinfo"/>

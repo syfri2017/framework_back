@@ -10,7 +10,6 @@
         <module name="baseapi" />
         <module name="demo1" />
         <module name="digitalplan" />
-        <module name="exhibition" />
         <module name="generator" />
         <module name="userservice" />
       </profile>

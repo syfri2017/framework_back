@@ -1,6 +1,6 @@
 package com.syfri.userservice.utils;
 
-import com.syfri.userservice.model.ShiroUser;
+import com.syfri.userservice.model.system.ShiroUser;
 import org.apache.shiro.SecurityUtils;
 
 /**

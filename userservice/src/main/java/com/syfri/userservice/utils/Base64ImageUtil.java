@@ -8,7 +8,7 @@ public class Base64ImageUtil {
      * <p>Title: byteArr2String</p>
      * @author dongbo
      * @date   2018年4月19日 下午3:04:47
-     * @param data
+     * @param byteArr
      * @return String
      * @throws IOException
      */

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.syfri.userservice.dao.RoleDAO">
+<mapper namespace="com.syfri.userservice.dao.system.RoleDAO">
 	<!--1.查询条件-->
 	<sql id="SQL_CONDITION">
 		<if test="roleid != null and roleid != '' ">
@@ -179,7 +179,7 @@
 	</select>
 
 	<!--13.根据角色查询角色及权限-->
-	<resultMap id="RoleResourceMap" type="com.syfri.userservice.model.RoleVO">
+	<resultMap id="RoleResourceMap" type="com.syfri.userservice.model.system.RoleVO">
 		<id property="roleid" column="roleid"/>
 		<result property="rolename" column="rolename"/>
 		<result property="roleinfo" column="roleinfo"/>
@@ -187,11 +187,11 @@
 		<result property="createTime" column="createTime"/>
 		<result property="alterName" column="alterName"/>
 		<result property="alterTime" column="alterTime"/>
-		<collection property="resources" ofType="com.syfri.userservice.model.ResourceVO">
+		<collection property="resources" ofType="com.syfri.userservice.model.system.ResourceVO">
 			<id property="resourceid" column="resourceid"/>
 			<result property="resourcename" column="resourcename"/>
 			<result property="resourceinfo" column="resourceinfo"/>
-			<!--<collection property="permissions" ofType="com.syfri.userservice.model.PermissionVO">-->
+			<!--<collection property="permissions" ofType="com.syfri.userservice.model.system.PermissionVO">-->
 				<!--<id property="permissionid" column="permissionid"/>-->
 				<!--<result property="permissionname" column="permissionname"/>-->
 			<!--</collection>-->

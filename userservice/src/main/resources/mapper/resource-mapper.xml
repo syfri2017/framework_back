@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.syfri.userservice.dao.ResourceDAO">
+<mapper namespace="com.syfri.userservice.dao.system.ResourceDAO">
 	<!--1.查询条件-->
 	<sql id="SQL_CONDITION">
 		<if test="resourceid != null and resourceid != '' ">
@@ -194,7 +194,7 @@
 	</select>
 
 	<!--12.根据资源获取其资源及权限-->
-	<resultMap id="ResourcePermissionMap" type="com.syfri.userservice.model.ResourceVO">
+	<resultMap id="ResourcePermissionMap" type="com.syfri.userservice.model.system.ResourceVO">
 		<id property="resourceid" column="resourceid"/>
 		<result property="resourcename" column="resourcename"/>
 		<result property="resourceinfo" column="resourceinfo"/>
@@ -206,7 +206,7 @@
 		<result property="createTime" column="createTime"/>
 		<result property="alterName" column="alterName"/>
 		<result property="alterTime" column="alterTime"/>
-		<collection property="permissions" ofType="com.syfri.userservice.model.PermissionVO">
+		<collection property="permissions" ofType="com.syfri.userservice.model.system.PermissionVO">
 			<id property="permissionid" column="permissionid"/>
 			<result property="permissionname" column="permissionname"/>
 			<result property="permissioninfo" column="permissioninfo"/>

@@ -1,8 +1,11 @@
 package com.syfri.userservice;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -13,5 +16,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class UserserviceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UserserviceApplication.class, args);
+	}
+
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(UserserviceApplication.class);
 	}
 }
