@@ -17,6 +17,14 @@ mail:
   system-name: 第十八届中国国际消防展展商系统  #系统名称
   team-name: 第十八届中国国际消防展组委会 #团队名称
   text:
+#---------英文邮箱验证码--------------------
+mailEng:
+  from: committee@cfpa.cn  #发送邮箱
+  subject: China Fire 2019 Verification  #邮箱标题
+  time: 1 hour            #时效
+  system-name: China Fire 2019 #系统名称
+  team-name: China Fire 2019 Committee #团队名称
+  text:
 #------------------------------------------------------------
 #spring
 spring:

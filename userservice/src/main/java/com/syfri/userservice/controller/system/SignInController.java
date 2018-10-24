@@ -6,6 +6,7 @@ import com.syfri.baseapi.controller.BaseController;
 import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import com.syfri.baseapi.utils.MathUtil;
+import com.syfri.userservice.config.properties.MailEngProperties;
 import com.syfri.userservice.config.properties.MailProperties;
 import com.syfri.userservice.config.properties.MsgProperties;
 import com.syfri.userservice.model.system.AccountVO;
@@ -37,7 +38,8 @@ public class SignInController extends BaseController<AccountVO>{
 	private JavaMailSender jms;
 	@Autowired
 	private MailProperties mp;
-
+	@Autowired
+	private MailEngProperties mpEng;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -124,6 +126,42 @@ public class SignInController extends BaseController<AccountVO>{
 				helper.setSubject(mp.getSubject());
 				String randomStr = MathUtil.getCode(6);
 				helper.setText(String.format(mp.getText(), randomStr), true);
+				jms.send(message);
+				resultVO.setCode(EConstants.CODE.SUCCESS);
+				//生成的随机数(可以去掉)
+				resultVO.setMsg(randomStr.toString());
+				System.out.println("html格式邮件发送成功");
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("html格式邮件发送失败");
+				resultVO.setCode(EConstants.CODE.FAILURE);
+				return resultVO;
+			}
+		}else{
+			resultVO.setCode(EConstants.CODE.FAILURE);
+			resultVO.setMsg("获取邮箱失败");
+		}
+		return resultVO;
+	}
+
+	/**
+	 * 发送英文邮箱验证码
+	 * @param mail 邮箱\
+	 * @return
+	 */
+	@GetMapping("/sendMailEng")
+	public Object sendMailEng(String mail){
+		ResultVO resultVO = ResultVO.build();
+		if(!(mail.equals("")||null == mail)) {
+			MimeMessage message = jms.createMimeMessage();
+			try {
+				//true表示需要创建一个multipart message
+				MimeMessageHelper helper = new MimeMessageHelper(message, true);
+				helper.setFrom(mpEng.getFrom());
+				helper.setTo(mail);
+				helper.setSubject(mpEng.getSubject());
+				String randomStr = MathUtil.getCode(6);
+				helper.setText(String.format(mpEng.getText(), randomStr), true);
 				jms.send(message);
 				resultVO.setCode(EConstants.CODE.SUCCESS);
 				//生成的随机数(可以去掉)

@@ -14,9 +14,9 @@ import java.util.Date;
  * @date 2018-01-9 9:23
  */
 @Configuration
-@ConfigurationProperties(prefix = MailProperties.MAIL_PREFIX)
-public class MailProperties {
-    public static final String MAIL_PREFIX = "mail";
+@ConfigurationProperties(prefix = MailEngProperties.MAIL_PREFIX)
+public class MailEngProperties {
+    public static final String MAIL_PREFIX = "mailEng";
     private String from;
     private String subject;
 	private String time;
@@ -25,25 +25,27 @@ public class MailProperties {
 	private String text ;
 
 	public String getText() {
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy年MM月dd日");
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		StringBuffer sb=new StringBuffer("<html><body>")
-				.append("<h3>亲爱的展商用户：</h3>")
+				.append("<h3>Dear Exhibitors:</h3>")
 				.append("<br><br>")
-				.append("您好！感谢您使用")
+				.append("Welcome to ")
 				.append(systemName)
-				.append("，您正在进行邮箱验证，您本次的验证码为：<br>")
+				.append("!Now you are verifying this email address as your username for China Fire 2019 ExhibitorSystem")
+				.append(",and here is your verification code:<br>")
 				.append("<span style=\"font-size:18px;color:#f90\">%s</span>")
 				.append("<span style=\"margin:0;padding:0;margin-left:10px;line-height:30px;")
 				.append("font-size:14px;color:#979797;font-family:'宋体',arial,sans-serif\">")
-				.append("(为了保障您帐号的安全性，请在")
+				.append("(Please enter this code on your registration page in")
 				.append(time)
-				.append("内完成验证。)</span><br><br>")
-				.append("第十八届中国国际消防展将于2019年10月16-19日在北京顺义区新国展举行，欢迎您的莅临。</span><br><br>")
+				.append("after you receive this email.)</span><br><br>")
+				.append("China Fire 2019 will be held on October16-19, 2019 at China International Exhibition Center (New Hall)")
+				.append(", located at Shunyi District, Beijing, P. R. China. We are looking forward to your visit.</span><br><br>")
 				.append(teamName)
 				.append("<br>")
 				.append(sdf.format(new Date()))
 				.append("<br><br>")
-				.append("此邮件为自动发送，无需回复。")
+				.append("No Replies to this Automatic Email!")
 				.append("</body>")
 				.append("</html>");
 		text=sb.toString();
