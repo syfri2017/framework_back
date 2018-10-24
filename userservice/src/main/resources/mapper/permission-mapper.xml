@@ -10,7 +10,7 @@
 		 and t.permissionname = #{permissionname}
 		</if>
 		<if test="permissioninfo != null and permissioninfo != '' ">
-		 and t.permissioninfo = #{permissioninfo}
+		 and t.permissioninfo LIKE concat(concat('%',#{permissioninfo}),'%')
 		</if>
 		<if test="createId != null and createId != '' ">
 		 and t.create_id = #{createId}
@@ -22,7 +22,7 @@
 			and t.create_time &gt;= to_date(#{createTimeBegin},'yyyy-MM-dd')
 		</if>
 		<if test="createTimeEnd != null and createTimeEnd != '' ">
-			and t.create_time &lt;= to_date(#{createTimeEnd},'yyyy-MM-dd')
+			and t.create_time &lt;= to_date(#{createTimeEnd},'yyyy-MM-dd')+1
 		</if>
 		<if test="alterId != null and alterId != '' ">
 		 and t.alter_id = #{alterId}
