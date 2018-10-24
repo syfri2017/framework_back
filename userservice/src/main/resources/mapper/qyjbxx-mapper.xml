@@ -408,7 +408,10 @@
         <if test="usertype != null and usertype != '' ">
             and s.usertype = #{usertype}
         </if>
-        <include refid="SQL_CONDITION"/>
+        <if test="zwgsmc != null and zwgsmc != '' ">
+            and (t.zwgsmc LIKE concat(concat('%',#{zwgsmc}),'%') and s.usertype = 'CHN')
+            or (t.ywgsmc LIKE concat(concat('%',#{zwgsmc}),'%') and s.usertype = 'ENG')
+        </if>
     </select>
 
     <!--查询邮箱是否被注册过-->
