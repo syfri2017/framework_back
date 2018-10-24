@@ -10,10 +10,10 @@
             and t.userid = #{userid}
         </if>
         <if test="zwgsmc != null and zwgsmc != '' ">
-            and t.zwgsmc LIKE concat(concat('%',#{zwgsmc}),'%')
+            and t.zwgsmc LIKE concat(concat('%',#{zwgsmc}),'%') ESCAPE '\'
         </if>
         <if test="ywgsmc != null and ywgsmc != '' ">
-            and t.ywgsmc LIKE concat(concat('%',#{ywgsmc}),'%')
+            and t.ywgsmc LIKE concat(concat('%',#{ywgsmc}),'%') ESCAPE '\'
         </if>
         <if test="frdb != null and frdb != '' ">
             and t.frdb = #{frdb}
@@ -407,14 +407,14 @@
         INNER JOIN SYS_USER u ON s.userid = u.userid AND u.DELETE_FLAG = 'N' AND u.deptid = 'ZSYH'
         WHERE s.DELETE_FLAG = 'N'
         <if test="username != null and username != '' ">
-            and s.username LIKE concat(concat('%',#{username}),'%')
+            and s.username LIKE concat(concat('%',#{username}),'%') ESCAPE '\'
         </if>
         <if test="usertype != null and usertype != '' ">
             and s.usertype = #{usertype}
         </if>
         <if test="zwgsmc != null and zwgsmc != '' ">
-            and (t.zwgsmc LIKE concat(concat('%',#{zwgsmc}),'%') and s.usertype = 'CHN')
-            or (t.ywgsmc LIKE concat(concat('%',#{zwgsmc}),'%') and s.usertype = 'ENG')
+            and (t.zwgsmc LIKE concat(concat('%',#{zwgsmc}),'%') ESCAPE '\' and s.usertype = 'CHN')
+            or (t.ywgsmc LIKE concat(concat('%',#{zwgsmc}),'%') ESCAPE '\' and s.usertype = 'ENG')
         </if>
     </select>
 
