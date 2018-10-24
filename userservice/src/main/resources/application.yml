@@ -11,7 +11,7 @@ msg:
   templId: 77405
 #---------邮箱验证码--------------------
 mail:
-  from: 1106612528@qq.com  #发送邮箱
+  from: committee@cfpa.cn  #发送邮箱
   subject: 展会邮箱验证码 #邮箱标题
   time: 1小时             #时效
   system-name: 展会系统  #系统名称
@@ -39,11 +39,13 @@ spring:
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
   mail:
     default-encoding: UTF-8
-    host: smtp.qq.com #QQ邮箱SMTP服务器
+    host: smtp.ym.163.com #邮箱SMTP服务器   QQ邮箱smtp.qq.com  网易个人免费smtp.163.com 网易企业邮箱smtp.ym.163.com
     port: 25 #端口
     protocol: smtp
-    username: 1106612528@qq.com
-    password: xjeolnetxnuljbee #QQ邮箱生成授权码  QQ邮箱-设置-账户- POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV服务 - 开启服务
+    username: committee@cfpa.cn
+    password: fe123456
+#---------- 163邮箱生成授权码：
+#---------- QQ邮箱生成授权码：  QQ邮箱-设置-账户- POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV服务 - 开启服务
   mybatis:
     mapperLocations: classpath:mapper/*-mapper.xml
     typeAliasesPackage: com.syfri.userservice
