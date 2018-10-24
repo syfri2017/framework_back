@@ -27,8 +27,11 @@
 		<if test="createName != null and createName != '' ">
 		 and t.create_name = #{createName}
 		</if>
-		<if test="createTime != null and createTime != '' ">
-		 and t.create_time = #{createTime}
+		<if test="createTimeBegin != null and createTimeBegin != '' ">
+			and t.create_time &gt;= to_date(#{createTimeBegin},'yyyy-MM-dd')
+		</if>
+		<if test="createTimeEnd != null and createTimeEnd != '' ">
+			and t.create_time &lt;= to_date(#{createTimeEnd},'yyyy-MM-dd')+1
 		</if>
 		<if test="alterId != null and alterId != '' ">
 		 and t.alter_id = #{alterId}
