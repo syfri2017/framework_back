@@ -43,9 +43,7 @@ spring:
     port: 25 #端口
     protocol: smtp
     username: committee@cfpa.cn
-    password: fe123456
-#---------- 163邮箱生成授权码：
-#---------- QQ邮箱生成授权码：  QQ邮箱-设置-账户- POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV服务 - 开启服务
+    password: fe123456   #---------- QQ邮箱生成授权码： QQ邮箱-设置-账户- POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV服务 - 开启服务
   mybatis:
     mapperLocations: classpath:mapper/*-mapper.xml
     typeAliasesPackage: com.syfri.userservice
