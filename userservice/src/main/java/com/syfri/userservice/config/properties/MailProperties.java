@@ -17,16 +17,17 @@ import java.util.Date;
 @ConfigurationProperties(prefix = MailProperties.MAIL_PREFIX)
 public class MailProperties {
     public static final String MAIL_PREFIX = "mail";
-    private String from = "1106612528@qq.com";
-    private String subject = "展会邮箱验证码";
-	private String time = "1小时" ;
-	private String systemName = "展会系统";
+    private String from;
+    private String subject;
+	private String time;
+	private String systemName;
+	private String teamName;
 	private String text ;
 
 	public String getText() {
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy年MM月dd日");
 		StringBuffer sb=new StringBuffer("<html><body>")
-				.append("<h3>亲爱的用户：</h3>")
+				.append("<h3>亲爱的展商用户：</h3>")
 				.append("<br><br>")
 				.append("您好！感谢您使用")
 				.append(systemName)
@@ -37,8 +38,9 @@ public class MailProperties {
 				.append("(为了保障您帐号的安全性，请在")
 				.append(time)
 				.append("内完成验证。)</span><br><br>")
-				.append(systemName)
-				.append("团队<br>")
+				.append("第十八届中国国际消防展将于2019年10月16-19日在北京顺义区新国展举行，欢迎您的莅临。</span><br><br>")
+				.append(teamName)
+				.append("<br>")
 				.append(sdf.format(new Date()))
 				.append("</body>")
 				.append("</html>");
@@ -64,6 +66,14 @@ public class MailProperties {
 
 	public void setSystemName(String systemName) {
 		this.systemName = systemName;
+	}
+
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
 	}
 
 	public String getFrom() {

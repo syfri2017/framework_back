@@ -14,7 +14,8 @@ mail:
   from: committee@cfpa.cn  #发送邮箱
   subject: 展会邮箱验证码 #邮箱标题
   time: 1小时             #时效
-  system-name: 展会系统  #系统名称
+  system-name: 第十八届中国国际消防展展商系统  #系统名称
+  team-name: 第十八届中国国际消防展组委会 #团队名称
   text:
 #------------------------------------------------------------
 #spring
