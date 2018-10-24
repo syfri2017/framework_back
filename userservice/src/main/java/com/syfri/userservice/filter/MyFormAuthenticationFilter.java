@@ -22,13 +22,20 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter {
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws  Exception{
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpSession session = httpServletRequest.getSession();
-		//取出Session中验证码
-		String code = (String) session.getAttribute("code");
-		//取出输入的验证码
-		String validateCode = httpServletRequest.getParameter("validateCode");
-		if(code!=null && validateCode!=null && !validateCode.equals(code)){
-			httpServletRequest.setAttribute("shiroLoginFailure","kaptchaValidateFailed");
-			return true;
+
+		//管理员登录不验证验证码，直接通过
+		String loginType = request.getParameter("loginType");
+		if(LoginType.MYSHIRO.toString().equals(loginType)){
+
+		}else{
+			//取出Session中验证码
+			String code = (String) session.getAttribute("code");
+			//取出输入的验证码
+			String validateCode = httpServletRequest.getParameter("validateCode");
+			if(code!=null && validateCode!=null && !validateCode.equals(code)){
+				httpServletRequest.setAttribute("shiroLoginFailure","kaptchaValidateFailed");
+				return true;
+			}
 		}
 		//统一社会信用代码登陆方式 by li.xue  2018/10/16 15:43
 		/**
