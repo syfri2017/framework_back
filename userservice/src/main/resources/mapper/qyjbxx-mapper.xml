@@ -180,6 +180,10 @@
             Left Join CFPA_QY_KPXX k on t.qyid = k.qyid And k.DELETE_FLAG = 'N'
         </if>
         WHERE t.DELETE_FLAG = 'N'
+        <if test="gsmc != null and gsmc != '' ">
+            and (t.zwgsmc LIKE concat(concat('%',#{gsmc}),'%') and s.usertype = 'CHN')
+            or (t.ywgsmc LIKE concat(concat('%',#{gsmc}),'%') and s.usertype = 'ENG')
+        </if>
         <include refid="SQL_CONDITION"/>
     </select>
 
