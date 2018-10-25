@@ -196,10 +196,13 @@
         c6.code_name yjdzshengmc,
         c8.code_name yjdzshimc,
         s.username username,
-        s.usertype usertype
+        s.usertype usertype,
+        k.tyshxydm
         FROM CFPA_QY_JBXX t
         <!--账户-->
         Left Join SYS_ACCOUNT s on s.userid = t.userid AND s.DELETE_FLAG = 'N'
+        <!--统一社会信用代码-->
+        Left Join CFPA_QY_KPXX k on t.qyid = k.qyid AND k.DELETE_FLAG = 'N'
         <!--数据状态-->
         Left Join SYS_CODELIST c1 on c1.CODETYPE = 'SJZT' And c1.DELETE_FLAG = 'N'
         Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and t.sjzt = c2.CODE_VALUE
