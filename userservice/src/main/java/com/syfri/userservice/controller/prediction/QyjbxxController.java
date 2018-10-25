@@ -169,18 +169,19 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 				Graphics2D g2 = bi.createGraphics();
 				g2.drawImage(image, 0, 0, image.getWidth(null), image.getHeight(null), null);
 				//颜色
-				Color color=new Color(255,0,0);
+				Color color=new Color(120,120,120);
 				g2.setColor(color);
-				g2.setFont(new Font("宋体", Font.BOLD, 20));
+				//字体大小为图片宽的1/15
+				g2.setFont(new Font("宋体", Font.BOLD, image.getWidth(null)/15));
 				//透明度
 				float alpha = 0.5f;
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP,
 						alpha));
-				String text = "仅用于第十八届国际消防展信息比对";
-				//调整图片位置
-				g2.drawString(text, 0, image.getHeight(null)/2);
+				int degree = 40;
+				g2.rotate(Math.toRadians(degree));//设置水印旋转
+				String text = "仅供十八届消防展审核";
+				g2.drawString(text, 30,30);
 				g2.dispose();
-
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				ImageIO.write( bi, "jpg", bos );
 				bos.flush();
