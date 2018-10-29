@@ -66,10 +66,15 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
   redis:
-      host: 10.119.119.233
-      port: 6379
-      expire: 1800
-      timeout: 0
+    host: 10.119.119.233
+    port: 6379
+    expire: 1800
+    timeout: 0
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
 #------------------------------------------------------------
 #pagehelper分页插件设置
 pagehelper:
@@ -96,6 +101,7 @@ spring:
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: oracle.jdbc.OracleDriver
       url: jdbc:oracle:thin:@10.119.119.232:1521/XFXHDB
+#      url: jdbc:oracle:thin:@localhost:1521/orcl
       username: XFXHZH
       password: XFXHZH
 #      url: jdbc:oracle:thin:@localhost:1521/orcl
