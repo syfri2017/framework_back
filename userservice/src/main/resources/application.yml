@@ -5,15 +5,22 @@ server:
 msg:
   validate-path: pvalidate #手机短信验证码认证请求的路径（未启用）
   send-path: send #手机短信验证码认证请求的路径
-  appId: 1400063133
-  appKey: 37c7d27d8a4c6d5231eb68003ef09d1e
-  signId: 35509
-  templId: 77405
+  #消防所
+#  appId: 1400063133
+#  appKey: 37c7d27d8a4c6d5231eb68003ef09d1e
+#  signId: 35509
+#  templId: 77405
+  #消防协会
+  appId: 1400156787
+  appKey: 37a3ead5782373b2435a4aad3a85c5de
+  signId: 176690
+  templId: 218876
+
 #---------邮箱验证码--------------------
 mail:
   from: committee@cfpa.cn  #发送邮箱
   subject: 展会邮箱验证码 #邮箱标题
-  time: 1小时             #时效
+  time: 1小时            #时效
   system-name: 第十八届中国国际消防展展商系统  #系统名称
   team-name: 第十八届中国国际消防展组委会 #团队名称
   text:

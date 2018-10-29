@@ -13,12 +13,12 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = MsgProperties.PMSG_PREFIX)
 public class MsgProperties {
     public static final String PMSG_PREFIX = "msg";
-    private String validatePath = "pvalidate";
-    private String sendPath = "send";
-    private Integer appId = 1400063133;
-    private String appKey = "37c7d27d8a4c6d5231eb68003ef09d1e";
-    private Integer signId = 35509;
-    private Integer templId = 77405;
+    private String validatePath;
+    private String sendPath;
+    private Integer appId;
+    private String appKey;
+    private Integer signId;
+    private Integer templId;
     
     
 	public String getValidatePath() {
