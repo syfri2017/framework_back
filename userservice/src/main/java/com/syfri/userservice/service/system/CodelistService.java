@@ -66,4 +66,7 @@ public interface CodelistService  extends BaseService<com.syfri.userservice.mode
 
 	//查询公司主营产品 by yushch
 	List<com.syfri.userservice.model.system.CodelistTree> doFindZycptree(String codetype);
+
+	//查询邮寄地址 by yushch 20181029
+	List<com.syfri.userservice.model.system.CodelistTree> doFindYjdz();
 }

@@ -521,4 +521,49 @@ public class CodelistServiceImpl extends BaseServiceImpl<CodelistVO> implements 
 		}
 		return codelistTrees;
 	}
+	//add by yushch 20181029 邮寄地址省市 （行政区划代码集）
+	@Override
+	public List<CodelistTree> doFindYjdz() {
+		// 目的树
+		List<CodelistTree> codelistTrees = new ArrayList<>();
+		// 源数据
+		List<CodelistDetailVO> codelistDetailVOs = codelistDAO.doFindCodelistByType("XZQH");
+		if (codelistDetailVOs != null && codelistDetailVOs.size() > 0) {
+			for (CodelistDetailVO codelistDetailVO : codelistDetailVOs) {
+				// 选出第一级类别
+				if (codelistDetailVO.getCodeValue().endsWith("0000")) {
+					CodelistTree tree = new CodelistTree();
+					tree.setCodeName(codelistDetailVO.getCodeName());
+					tree.setCodeValue(codelistDetailVO.getCodeValue());
+					List<CodelistTree> children = new ArrayList();
+					String arr1 = "110000,120000,310000,500000";
+					if(arr1.indexOf(codelistDetailVO.getCodeValue()) != -1){
+						//直辖市跨过第二级选取第三级
+						for (CodelistDetailVO codelistDetailVO2 : codelistDetailVOs) {
+							if (codelistDetailVO2.getCodeValue().startsWith(codelistDetailVO.getCodeValue().substring(0,2))&&!codelistDetailVO2.equals(codelistDetailVO)&&!codelistDetailVO2.getCodeValue().endsWith("00")){
+								CodelistTree tree2 = new CodelistTree();
+								tree2.setCodeName(codelistDetailVO2.getCodeName());
+								tree2.setCodeValue(codelistDetailVO2.getCodeValue());
+								children.add(tree2);
+							}
+						}
+					}else{
+						//第二级别
+						for (CodelistDetailVO codelistDetailVO2 : codelistDetailVOs) {
+							if (codelistDetailVO2.getCodeValue().startsWith(codelistDetailVO.getCodeValue().substring(0,2))&&!codelistDetailVO2.equals(codelistDetailVO)&&codelistDetailVO2.getCodeValue().endsWith("00")){
+								CodelistTree tree2 = new CodelistTree();
+								tree2.setCodeName(codelistDetailVO2.getCodeName());
+								tree2.setCodeValue(codelistDetailVO2.getCodeValue());
+								children.add(tree2);
+							}
+						}
+					}
+					if(!children.isEmpty() )
+						tree.setChildren(children);
+					codelistTrees.add(tree);
+				}
+			}
+		}
+		return codelistTrees;
+	}
 }

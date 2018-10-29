@@ -476,4 +476,20 @@ public class CodelistController  extends BaseController<CodelistVO>{
 		}
 		return resultVO;
 	}
+
+	//by yushch 20181029
+	//行政区划 到市级，直辖市到区级去掉市辖区、县
+	@ApiOperation(value="查询邮寄地址省市",notes="查询")
+	@ApiImplicitParam(name="codetype",value="代码类型")
+	@RequestMapping("/getYjdz")
+	public @ResponseBody ResultVO getYjdz(){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(codelistService.doFindYjdz());
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }
