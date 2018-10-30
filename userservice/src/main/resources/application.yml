@@ -14,7 +14,7 @@ msg:
   appId: 1400156787
   appKey: 37a3ead5782373b2435a4aad3a85c5de
   signId: 176690
-  templId: 218876
+  templId: 218933
 
 #---------邮箱验证码--------------------
 mail:
@@ -79,7 +79,7 @@ spring:
     timeout: 0
   http:
     multipart:
-      max-file-size: 10MB
+      max-file-size: 20MB
       max-request-size: 100MB
 
 #------------------------------------------------------------
