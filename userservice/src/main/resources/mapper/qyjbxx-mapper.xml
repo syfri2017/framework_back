@@ -299,7 +299,7 @@
             <if test="reserve2 != null">reserve2=#{reserve2},</if>
             <if test="reserve3 != null">reserve3=#{reserve3},</if>
             <if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
-            <if test="email != null">email=#{email}</if>
+            <if test="email != null">email=#{email},</if>
             <if test="yyzzgs != null">yyzzgs=#{yyzzgs}</if>
         </set>
         WHERE QYID = #{qyid}
