@@ -41,6 +41,7 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
 	private String email;//英文版电子邮箱
+	private String yyzzgs;//营业执照格式
 
 	private String gsmc;	//公司名称（查询用）
 	private String yjdz;	//邮寄地址
@@ -347,5 +348,11 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getYyzzgs() {
+		return yyzzgs;
+	}
+	public void setYyzzgs(String yyzzgs) {
+		this.yyzzgs = yyzzgs;
 	}
 }

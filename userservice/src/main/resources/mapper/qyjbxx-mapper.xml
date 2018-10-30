@@ -110,6 +110,9 @@
         <if test="email != null and email != '' ">
             and t.email = #{email}
         </if>
+        <if test="yyzzgs != null and yyzzgs != '' ">
+            and t.yyzzgs = #{yyzzgs}
+        </if>
     </sql>
 
     <!--2.查询内容-->
@@ -146,7 +149,8 @@
 		t.reserve2 reserve2,
 		t.reserve3 reserve3,
 		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
-		t.email email
+		t.email email,
+		t.yyzzgs yyzzgs
 	</sql>
 
     <!--3.查询记录数-->
@@ -224,14 +228,14 @@
             SELECT SYS_GUID() AS qyid FROM DUAL
         </selectKey>
         INSERT INTO
-        CFPA_QY_JBXX(qyid,userid,zwgsmc,ywgsmc,frdb,frdbdh,yjdzsheng,yjdzshi,yjdzxx,bgdh,cz,lxr,lxrsj,wz,dzyx,yyzz,sjzt,shzt,shrid,shrmc,shsj,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,email)
-        VALUES(#{qyid,jdbcType=VARCHAR},#{userid,jdbcType=VARCHAR},#{zwgsmc,jdbcType=VARCHAR},#{ywgsmc,jdbcType=VARCHAR},#{frdb,jdbcType=VARCHAR},#{frdbdh,jdbcType=VARCHAR},#{yjdzsheng,jdbcType=VARCHAR},#{yjdzshi,jdbcType=VARCHAR},#{yjdzxx,jdbcType=VARCHAR},#{bgdh,jdbcType=VARCHAR},#{cz,jdbcType=VARCHAR},#{lxr,jdbcType=VARCHAR},#{lxrsj,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{dzyx,jdbcType=VARCHAR},#{yyzz,jdbcType=VARCHAR},#{sjzt,jdbcType=VARCHAR},#{shzt,jdbcType=VARCHAR},#{shrid,jdbcType=VARCHAR},#{shrmc,jdbcType=VARCHAR},#{shsj,jdbcType=DATE},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{email,jdbcType=DATE})
+        CFPA_QY_JBXX(qyid,userid,zwgsmc,ywgsmc,frdb,frdbdh,yjdzsheng,yjdzshi,yjdzxx,bgdh,cz,lxr,lxrsj,wz,dzyx,yyzz,sjzt,shzt,shrid,shrmc,shsj,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,email,yyzzgs)
+        VALUES(#{qyid,jdbcType=VARCHAR},#{userid,jdbcType=VARCHAR},#{zwgsmc,jdbcType=VARCHAR},#{ywgsmc,jdbcType=VARCHAR},#{frdb,jdbcType=VARCHAR},#{frdbdh,jdbcType=VARCHAR},#{yjdzsheng,jdbcType=VARCHAR},#{yjdzshi,jdbcType=VARCHAR},#{yjdzxx,jdbcType=VARCHAR},#{bgdh,jdbcType=VARCHAR},#{cz,jdbcType=VARCHAR},#{lxr,jdbcType=VARCHAR},#{lxrsj,jdbcType=VARCHAR},#{wz,jdbcType=VARCHAR},#{dzyx,jdbcType=VARCHAR},#{yyzz,jdbcType=VARCHAR},#{sjzt,jdbcType=VARCHAR},#{shzt,jdbcType=VARCHAR},#{shrid,jdbcType=VARCHAR},#{shrmc,jdbcType=VARCHAR},#{shsj,jdbcType=DATE},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{email,jdbcType=VARCHAR},#{yyzzgs,jdbcType=VARCHAR})
     </insert>
 
     <!--7.批量插入-->
     <insert id="doBatchInsertByList" parameterType="java.util.List">
         INSERT INTO
-        CFPA_QY_JBXX(qyid,userid,zwgsmc,ywgsmc,frdb,frdbdh,yjdzsheng,yjdzshi,yjdzxx,bgdh,cz,lxr,lxrsj,wz,dzyx,yyzz,sjzt,shzt,shrid,shrmc,shsj,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4)
+        CFPA_QY_JBXX(qyid,userid,zwgsmc,ywgsmc,frdb,frdbdh,yjdzsheng,yjdzshi,yjdzxx,bgdh,cz,lxr,lxrsj,wz,dzyx,yyzz,sjzt,shzt,shrid,shrmc,shsj,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,email,yyzzgs)
         SELECT SYS_GUID() qyid, A.*
         FROM (
         <foreach collection="list" item="item" index="index" separator="UNION ALL">
@@ -248,7 +252,7 @@
             cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR}
             xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR}
             reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR}
-            reserve3,#{item.reserve4,jdbcType=DATE} reserve4
+            reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.email,jdbcType=VARCHAR} email,#{item.yyzzgs,jdbcType=VARCHAR} yyzzgs
             FROM DUAL
         </foreach>
         ) A
@@ -296,6 +300,7 @@
             <if test="reserve3 != null">reserve3=#{reserve3},</if>
             <if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
             <if test="email != null">email=#{email}</if>
+            <if test="yyzzgs != null">yyzzgs=#{yyzzgs}</if>
         </set>
         WHERE QYID = #{qyid}
     </update>
@@ -303,7 +308,7 @@
     <!--10.批量修改-->
     <update id="doBatchUpdateByList" parameterType="java.util.List">
         INSERT INTO
-        CFPA_QY_JBXX(qyid,userid,zwgsmc,ywgsmc,frdb,frdbdh,yjdzsheng,yjdzshi,yjdzxx,bgdh,cz,lxr,lxrsj,wz,dzyx,yyzz,sjzt,shzt,shrid,shrmc,shsj,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,email)
+        CFPA_QY_JBXX(qyid,userid,zwgsmc,ywgsmc,frdb,frdbdh,yjdzsheng,yjdzshi,yjdzxx,bgdh,cz,lxr,lxrsj,wz,dzyx,yyzz,sjzt,shzt,shrid,shrmc,shsj,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,email,yyzzgs)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             #{item.qyid,jdbcType=VARCHAR} qyid,#{item.userid,jdbcType=VARCHAR} userid,#{item.zwgsmc,jdbcType=VARCHAR}
@@ -318,7 +323,7 @@
             cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR}
             xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR}
             reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR}
-            reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.email,jdbcType=VARCHAR} email
+            reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.email,jdbcType=VARCHAR} email,#{item.yyzzgs,jdbcType=VARCHAR} yyzzgs
         </foreach>
         ON DUPLICATE KEY UPDATE
         qyid = VALUES(qyid),
@@ -353,7 +358,8 @@
         reserve2 = VALUES(reserve2),
         reserve3 = VALUES(reserve3),
         reserve4 = VALUES(reserve4),
-        email = VALUES(email)
+        email = VALUES(email),
+        yyzzgs = VALUES(yyzzgs)
     </update>
 
     <!--11.根据对象查询记录-->
@@ -412,7 +418,8 @@
         t.reserve2 reserve2,
         t.reserve3 reserve3,
         TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
-        t.email email
+        t.email email,
+        t.yyzzgs yyzzgs
         FROM SYS_ACCOUNT s
         LEFT JOIN CFPA_QY_JBXX t ON s.userid = t.userid AND t.DELETE_FLAG = 'N'
         INNER JOIN SYS_USER u ON s.userid = u.userid AND u.DELETE_FLAG = 'N' AND u.deptid = 'ZSYH'
