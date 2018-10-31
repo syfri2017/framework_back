@@ -76,7 +76,7 @@ public class QyjsController extends BaseController<QyjsVO> {
     }
 
     @ApiOperation(value="根据VO更新",notes="更新")
-    @ApiImplicitParam(name="vo",value = "九小场所")
+    @ApiImplicitParam(name="vo",value = "企业产品信息")
     @PostMapping("/doUpdateQyCpByVO")
     public @ResponseBody ResultVO doUpdateQyCpByVO(@RequestBody QyjsVO vo) throws Exception{
         ResultVO resultVO = ResultVO.build();
