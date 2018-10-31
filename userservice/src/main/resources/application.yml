@@ -32,6 +32,11 @@ mailEng:
   system-name: China Fire 2019 #系统名称
   team-name: China Fire 2019 Committee #团队名称
   text:
+#---------产品图片--------------------------
+qycpjs:
+  savePath: D://xfxh//upload//
+  fileServerUrl: http://10.119.119.222:80
+  vueServerUrl: http://10.119.119.222:80
 #------------------------------------------------------------
 #spring
 spring:
