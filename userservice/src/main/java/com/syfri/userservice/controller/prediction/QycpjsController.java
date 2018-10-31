@@ -105,4 +105,19 @@ public class QycpjsController extends BaseController<QycpjsVO> {
         }
         return qycpjsVO;
     }
+    @RequestMapping(value = "/delPic")
+    public boolean deleteSrc(@RequestBody List<String> list) {
+        // 文件上传固定的路径
+        StringBuffer relativePath = new StringBuffer(cpjsProperties.getSavePath());
+        for(int i=0;i<list.size();i++){
+            String path =relativePath + list.get(i);
+            //删除文件
+            File deletefile = new File(path);
+            if(deletefile.exists()&&deletefile.isFile()) {
+                deletefile.delete();
+            }
+        }
+
+        return true;
+    }
 }
