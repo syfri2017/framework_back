@@ -85,19 +85,22 @@ public class QycpjsController extends BaseController<QycpjsVO> {
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             String zzsj = sdf.format(date);
+            String suffixName = fileName.substring(fileName.lastIndexOf("."));
+            //图片重命名eg. cp20181031152840.JPG
+            String fileName_new = "cp"+zzsj+suffixName;
             StringBuffer new_folder = new StringBuffer();
-            new_folder = new StringBuffer(qycpjsVO.getQyid()).append("/").append("pictures").append("/").append(zzsj).append("/");
+            new_folder = new StringBuffer(qycpjsVO.getQyid()).append("/");
 
-            String folderName = relativePath.append("cpjs").append("/").append(new_folder).toString();
+            String folderName = relativePath.append(new_folder).toString();
             //创建文件夹
             File dir = new File(folderName);
             if (!dir.exists()) {
                 dir.mkdirs();
             }
             //数据库要存的数据
-            String dbPath = new_folder.append(fileName).toString();
+            String dbPath = new_folder.append(fileName_new).toString();
             //文件全路径
-            StringBuffer allPath = new StringBuffer(folderName).append(fileName);
+            StringBuffer allPath = new StringBuffer(folderName).append(fileName_new);
             FileOutputStream fos = null;
             try {
                 fos = new FileOutputStream(allPath.toString());
