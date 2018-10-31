@@ -37,30 +37,6 @@ public class QycpjsController extends BaseController<QycpjsVO> {
     @Autowired
     private CpjsProperties cpjsProperties;
 
-    /**
-     * @Description: 根据企业id获取产品信息
-     * @Author: rliu
-     * @Date: 2018/10/9 10:35
-     */
-    @ApiOperation(value = "根据企业id获取产品信息", notes = "vo")
-    @RequestMapping("/doFindCpxxById")
-    public @ResponseBody ResultVO doFindCpxxById(@RequestBody QycpjsVO qycpjsVO) {
-        ResultVO resultVO = ResultVO.build();
-        try {
-            List<QycpjsVO> result = qycpjsService.doSearchListByVO(qycpjsVO);
-            for(QycpjsVO vo:result) {
-                //将二进制转为Base64格式字符串
-                String photo64 = Base64ImageUtil.byteArr2String(vo.getCptp());
-                vo.setCptpBase64(photo64);
-            }
-            resultVO.setResult(result);
-        } catch (Exception e) {
-            logger.error("{}", e.getMessage());
-            resultVO.setCode(EConstants.CODE.FAILURE);
-        }
-        return resultVO;
-    }
-
     @RequestMapping(value = "/upload")
     public QycpjsVO upload(HttpServletRequest request, QycpjsVO qycpjsVO) {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
