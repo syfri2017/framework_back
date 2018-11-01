@@ -41,7 +41,6 @@ public class QycpjsController extends BaseController<QycpjsVO> {
     public QycpjsVO upload(HttpServletRequest request, QycpjsVO qycpjsVO) {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         Iterator<String> iterator = multipartRequest.getFileNames();
-
         while (iterator.hasNext()) {
             MultipartFile multipartFile = multipartRequest.getFile(iterator.next());
             // 获取文件名
@@ -56,8 +55,6 @@ public class QycpjsController extends BaseController<QycpjsVO> {
             }
             // 文件上传固定的路径
             StringBuffer relativePath = new StringBuffer(cpjsProperties.getSavePath());
-            //新建的文件夹名称（预案UUID/预案创建时间）
-
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             String zzsj = sdf.format(date);

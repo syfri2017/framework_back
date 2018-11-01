@@ -27,6 +27,7 @@ public class QyjsVO extends ValueObject implements Serializable{
 
 	private String logoBase64;	//企业logo(Base64格式)
 	private List<QycpjsVO> qycpjsVOList;//企业产品介绍list
+	private String src;	//企业logosrc
 
 	public String getUuid(){
 		return uuid;
@@ -135,5 +136,11 @@ public class QyjsVO extends ValueObject implements Serializable{
 	}
 	public void setQycpjsVOList(List<QycpjsVO> qycpjsVOList) {
 		this.qycpjsVOList = qycpjsVOList;
+	}
+	public String getSrc() {
+		return src;
+	}
+	public void setSrc(String src) {
+		this.src = src;
 	}
 }
