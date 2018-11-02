@@ -20,6 +20,6 @@ public interface QyjbxxService  extends BaseService<QyjbxxVO>{
     //上传图片
     QyjbxxVO uploadPics(MultipartFile multipartFile,QyjbxxVO vo,String fileName);
     //上传pdf
-    int uploadPdfs(MultipartFile multipartFile,QyjbxxVO vo);
-    String savenew(MultipartFile file);
+    QyjbxxVO uploadPdfs(MultipartFile multipartFile,QyjbxxVO vo,String fileName);
+    String pdf2image(String fileAddress,String savePath,String type);
 }

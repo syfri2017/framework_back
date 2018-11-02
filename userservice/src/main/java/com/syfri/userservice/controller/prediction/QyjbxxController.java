@@ -159,9 +159,9 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 			if ("".equals(multipartFile.getOriginalFilename())) throw new RuntimeException("文件为空");
 			String fileName = multipartFile.getOriginalFilename();
 			String fileTyle = fileName.substring(fileName.lastIndexOf("."), fileName.length());
-			if (fileTyle == "pdf" || fileTyle == "PDF") {
-				vo.setYyzzgs("pdf");
-				qyjbxxService.uploadPdfs(multipartFile,vo);
+			if (fileTyle.equals(".pdf") || fileTyle.equals(".PDF")) {
+				vo.setYyzzgs(".pdf");
+				vo = qyjbxxService.uploadPdfs(multipartFile,vo,fileName);
 			} else {
 				vo = qyjbxxService.uploadPics(multipartFile,vo,fileName);
 			}
