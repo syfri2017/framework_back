@@ -8,6 +8,7 @@ import com.itextpdf.text.pdf.*;
 import com.syfri.baseapi.controller.BaseController;
 import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
+import com.syfri.userservice.config.properties.CpjsProperties;
 import com.syfri.userservice.model.prediction.QyjbxxVO;
 import com.syfri.userservice.service.prediction.QyjbxxService;
 import com.syfri.userservice.utils.Base64ImageUtil;
@@ -39,6 +40,9 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 	public QyjbxxService getBaseService() {
 		return this.qyjbxxService;
 	}
+
+	@Autowired
+	private CpjsProperties cpjsProperties;
 
 	/**
 	 * @Description: 根据企业id获取企业信息
@@ -146,9 +150,8 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 	//上传图片并加水印 by yushch
 	@RequestMapping(value = "/upload")
 	@ResponseBody
-	public Map<String, Object> uploadAttachment(HttpServletRequest request, QyjbxxVO vo)
+	public QyjbxxVO uploadAttachment(HttpServletRequest request, QyjbxxVO vo)
 			throws UnsupportedEncodingException {
-		Map<String, Object> result = new HashMap<String, Object>();
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		Iterator<String> iterator = multipartRequest.getFileNames();
 		while (iterator.hasNext()) {
@@ -160,10 +163,10 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 				vo.setYyzzgs("pdf");
 				qyjbxxService.uploadPdfs(multipartFile,vo);
 			} else {
-				qyjbxxService.uploadPics(multipartFile,vo);
+				vo = qyjbxxService.uploadPics(multipartFile,vo,fileName);
 			}
 		}
-			return result;
+			return vo;
 
 	}
 
@@ -202,6 +205,43 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
         }
         return resultVO;
     }
+    //新建基本信息时营业执照存在根目录下，插入基本信息时移动图片到qyid文件夹下
+	//add by yushch 20181102
+	@RequestMapping(value = "/movePic")
+	public QyjbxxVO movePic(@RequestBody QyjbxxVO vo) {
+		// 文件上传固定的路径
+		StringBuffer relativePath = new StringBuffer(cpjsProperties.getSavePath());
+		StringBuffer new_folder = new StringBuffer();
+		new_folder = new StringBuffer(vo.getQyid()).append("/");
+		String folderName = relativePath.toString() + new_folder;
+		//创建文件夹
+		File dir = new File(folderName);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		File file= new File(relativePath + vo.getSrc());
+		String destinationFloderUrl = new StringBuffer(folderName).append(vo.getSrc()).toString();
+		//检查源文件是否合法
+		if(file.isFile() &&file.exists()){
+			String destinationFile = destinationFloderUrl;
+			if(!file.renameTo(new File(destinationFile)))
+			{
+				this.logger.error("移动文件失败！");
+				return vo;
+			}
+		}else{
+			this.logger.error("要备份的文件路径不正确，移动失败！");
+			return vo;
+		}
+		String dbPath = new_folder.append(vo.getSrc()).toString();
+		vo.setSrc(dbPath);
+		qyjbxxService.doUpdateByVO(vo);
+		return vo;
+	}
+
+
+
+
     /**********************************************************************************************
 	//上传pdf并加水印 by huangrui
 	@RequestMapping(value = "/uploadPdf")

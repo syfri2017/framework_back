@@ -18,7 +18,7 @@ public interface QyjbxxService  extends BaseService<QyjbxxVO>{
     int doSearchCountByMail(String mail);
 
     //上传图片
-    int uploadPics(MultipartFile multipartFile,QyjbxxVO vo);
+    QyjbxxVO uploadPics(MultipartFile multipartFile,QyjbxxVO vo,String fileName);
     //上传pdf
     int uploadPdfs(MultipartFile multipartFile,QyjbxxVO vo);
     String savenew(MultipartFile file);

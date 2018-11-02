@@ -3,6 +3,8 @@ package com.syfri.userservice.service.impl.prediction;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.*;
+import com.jfinal.template.ext.directive.Str;
+import com.syfri.userservice.config.properties.CpjsProperties;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -28,6 +32,9 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 
 	@Autowired
 	private QyjbxxDAO qyjbxxDAO;
+
+	@Autowired
+	private CpjsProperties cpjsProperties;
 
 	@Override
 	public QyjbxxDAO getBaseDAO() {
@@ -61,7 +68,7 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 	}
 
 	@Override
-	public int uploadPics(MultipartFile multipartFile, QyjbxxVO vo) {
+	public QyjbxxVO uploadPics(MultipartFile multipartFile, QyjbxxVO vo,String fileName) {
 		try {
 			InputStream fis = null;
 			fis = multipartFile.getInputStream();
@@ -84,17 +91,35 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 			String text = "仅供十八届消防展审核";
 			g2.drawString(text, 0, image.getHeight(null) / 2);
 			g2.dispose();
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			ImageIO.write(bi, "jpg", bos);
-			bos.flush();
+			// 文件上传固定的路径
+			StringBuffer relativePath = new StringBuffer(cpjsProperties.getSavePath());
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			String zzsj = sdf.format(date);
+			String suffixName = fileName.substring(fileName.lastIndexOf("."));
+			//图片重命名eg. yyzz20181031152840.JPG
+			String fileName_new = "yyzz" + zzsj + suffixName;
+			StringBuffer new_folder = new StringBuffer();
+			new_folder = new StringBuffer(vo.getQyid()).append("/");
+			String folderName = relativePath.append(new_folder).toString();
+			//创建文件夹
+			File dir = new File(folderName);
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+			//数据库要存的数据
+			String dbPath = new_folder.append(fileName_new).toString();
+			//文件全路径
+			StringBuffer allPath = new StringBuffer(folderName).append(fileName_new);
+			FileOutputStream out = new FileOutputStream(allPath.toString());
+			ImageIO.write(bi, "jpg", out);
+			out.close();
 			fis.close();
-			bos.close();
-			byte[] buffer = bos.toByteArray();
-			vo.setYyzz(buffer);
+			vo.setSrc(dbPath);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return qyjbxxDAO.doUpdateByVO(vo);
+		return vo;
 	}
 	@Override
 	public int uploadPdfs(MultipartFile multipartFile, QyjbxxVO vo) {
