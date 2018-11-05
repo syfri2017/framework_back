@@ -159,7 +159,7 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 			if ("".equals(multipartFile.getOriginalFilename())) throw new RuntimeException("文件为空");
 			String fileName = multipartFile.getOriginalFilename();
 			String fileTyle = fileName.substring(fileName.lastIndexOf("."), fileName.length());
-			if (fileTyle.equals(".pdf") || fileTyle.equals(".PDF")) {
+			if (fileTyle.toLowerCase().equals(".pdf")) {
 				vo.setYyzzgs(".pdf");
 				vo = qyjbxxService.uploadPdfs(multipartFile,vo,fileName);
 			} else {
@@ -232,6 +232,24 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 		}else{
 			this.logger.error("要备份的文件路径不正确，移动失败！");
 			return vo;
+		}
+		if(vo.getYyzzgs().equals(".pdf")){
+			String name = vo.getSrc() .substring(0,vo.getSrc() .lastIndexOf("."));
+			String pdfSrc = name + ".pdf";
+			File pdfFile= new File(relativePath + pdfSrc);
+			String destinationFloderUrl2 = new StringBuffer(folderName).append(pdfSrc).toString();
+			//检查源文件是否合法
+			if(pdfFile.isFile() &&pdfFile.exists()){
+				String destinationFile2 = destinationFloderUrl2;
+				if(!pdfFile.renameTo(new File(destinationFile2)))
+				{
+					this.logger.error("移动文件失败！");
+					return vo;
+				}
+			}else{
+				this.logger.error("要备份的文件路径不正确，移动失败！");
+				return vo;
+			}
 		}
 		String dbPath = new_folder.append(vo.getSrc()).toString();
 		vo.setSrc(dbPath);
