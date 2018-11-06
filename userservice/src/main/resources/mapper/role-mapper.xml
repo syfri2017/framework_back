@@ -242,4 +242,9 @@
 	<select id="doFindAll" resultType="RoleVO">
 		SELECT DISTINCT roleid,rolename,roleinfo FROM sys_role WHERE delete_flag = 'N'
 	</select>
+
+	<!--15.修改角色时先删除角色的权限（中间表）-->
+	<delete id="doDeleteRoleResource" parameterType="RoleResourceVO">
+		DELETE FROM SYS_ROLE_RESOURCE WHERE ROLEID = #{roleid} AND RESOURCEID = #{resourceid}
+	</delete>
 </mapper>
