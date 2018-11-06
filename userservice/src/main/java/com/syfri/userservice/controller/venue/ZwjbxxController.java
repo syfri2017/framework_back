@@ -66,9 +66,10 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 				//添加企业名称
 				if(zwjbxxVO.getQyid()!=null&&!"".equals(zwjbxxVO.getQyid())){
 					QyjbxxVO qyjbxx=qyjbxxService.doFindById(zwjbxxVO.getQyid());
-					zwjbxxVO.setQymc(qyjbxx.getZwgsmc());
+					if(qyjbxx!=null){
+						zwjbxxVO.setQymc(qyjbxx.getZwgsmc());
+					}
 				}
-
 			}
 			resultVO.setResult(pis);
 		} catch (Exception e) {

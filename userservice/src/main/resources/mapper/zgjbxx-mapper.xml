@@ -13,7 +13,7 @@
 		 and t.zgzwhb = #{zgzwhb}
 		</if>
 		<if test="zgmc != null and zgmc != '' ">
-			and t.zgmc LIKE concat(concat('%',#{zgmc}),'%') ESCAPE '\'
+			and t.zgmc LIKE concat(concat('%',upper(#{zgmc})),'%') ESCAPE '\'
 		</if>
 		<if test="zgtpdz != null and zgtpdz != '' ">
 		 and t.zgtpdz = #{zgtpdz}
@@ -100,6 +100,7 @@
 		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
 		FROM CFPA_ZG_JBXX t  WHERE t.DELETE_FLAG = 'N' 
 			<include refid="SQL_CONDITION"/>
+		ORDER BY T.ZGMC
 	</select>
 
 	<!--5.根据ID查询记录-->
@@ -115,8 +116,8 @@
 		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
 			SELECT SYS_GUID() AS uuid FROM DUAL
 		</selectKey>
-		INSERT INTO CFPA_ZG_JBXX(uuid,zgtp,zgzwhb,zgmc,zgtpdz,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4)
-		VALUES(#{uuid,jdbcType=VARCHAR},#{zgtp,jdbcType=VARCHAR},#{item.zgzwhbtp,jdbcType=VARCHAR} ,#{zgzwhb,jdbcType=VARCHAR},#{zgmc,jdbcType=VARCHAR},#{zgtpdz,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},#{cjsj,jdbcType=DATE},#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+		INSERT INTO CFPA_ZG_JBXX(uuid,zgtp,zgzwhbtp,zgzwhb,zgmc,zgtpdz,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{zgtp,jdbcType=VARCHAR},#{zgzwhbtp,jdbcType=VARCHAR} ,#{zgzwhb,jdbcType=VARCHAR},#{zgmc,jdbcType=VARCHAR},#{zgtpdz,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},SYSDATE,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
 	 </insert>
 
 	<!--7.批量插入-->
@@ -195,6 +196,7 @@
 		FROM CFPA_ZG_JBXX t 
 		WHERE t.DELETE_FLAG = 'N' 
 		<include refid="SQL_CONDITION"/>
+		ORDER BY T.ZGMC
 	</select>
 	<!--只查询画布-->
 	<select id="doSearchHbListByVO" parameterType="ZgjbxxVO"  resultType="ZgjbxxVO">
@@ -217,6 +219,7 @@
 		FROM CFPA_ZG_JBXX t
 		WHERE t.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
+		ORDER BY T.ZGMC
 	</select>
 
 	<!--只查询数据-->
@@ -239,6 +242,7 @@
 		FROM CFPA_ZG_JBXX t
 		WHERE t.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
+		ORDER BY T.ZGMC
 	</select>
 
 </mapper>

@@ -145,6 +145,7 @@
 			and  t.reserve1 is not null
 		</if>
 			<include refid="SQL_CONDITION"/>
+		ORDER BY T.CJSJ
 	</select>
 
 	<!--5.根据ID查询记录-->
@@ -162,7 +163,7 @@
 			SELECT SYS_GUID() AS uuid FROM DUAL
 		</selectKey>
 		INSERT INTO CFPA_ZW_JBXX(uuid,zwh,zwlb,zwmj,zwzt,qyid,zwkd,zwcd,zwmc,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,zgid,bhzh,bhzt,bhzc,bhzs,mczt,mczh,mczc,mczs)
-		VALUES(#{uuid,jdbcType=VARCHAR},#{zwh,jdbcType=VARCHAR},#{zwlb,jdbcType=VARCHAR},#{zwmj,jdbcType=DOUBLE},#{zwzt,jdbcType=VARCHAR},#{qyid,jdbcType=VARCHAR},#{zwkd,jdbcType=DOUBLE},#{zwcd,jdbcType=DOUBLE},#{zwmc,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},#{cjsj,jdbcType=DATE},#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{zgid,jdbcType=VARCHAR},#{bhzh,jdbcType=VARCHAR},#{bhzt,jdbcType=VARCHAR},#{bhzc,jdbcType=VARCHAR},#{bhzs,jdbcType=VARCHAR},#{mczt,jdbcType=VARCHAR},#{mczh,jdbcType=VARCHAR},#{mczc,jdbcType=VARCHAR},#{mczs,jdbcType=VARCHAR})
+		VALUES(#{uuid,jdbcType=VARCHAR},#{zwh,jdbcType=VARCHAR},#{zwlb,jdbcType=VARCHAR},#{zwmj,jdbcType=DOUBLE},#{zwzt,jdbcType=VARCHAR},#{qyid,jdbcType=VARCHAR},#{zwkd,jdbcType=DOUBLE},#{zwcd,jdbcType=DOUBLE},#{zwmc,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},SYSDATE,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{zgid,jdbcType=VARCHAR},#{bhzh,jdbcType=VARCHAR},#{bhzt,jdbcType=VARCHAR},#{bhzc,jdbcType=VARCHAR},#{bhzs,jdbcType=VARCHAR},#{mczt,jdbcType=VARCHAR},#{mczh,jdbcType=VARCHAR},#{mczc,jdbcType=VARCHAR},#{mczs,jdbcType=VARCHAR})
 	 </insert>
 
 	<!--7.批量插入-->
