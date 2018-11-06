@@ -22,6 +22,14 @@ public class RoleResourceVO extends ValueObject implements Serializable{
 	private String reserve2;	//备用2
 	private String reserve3;	//备用3
 
+	public RoleResourceVO() {
+	}
+
+	public RoleResourceVO(String roleid, String resourceid) {
+		this.roleid = roleid;
+		this.resourceid = resourceid;
+	}
+
 	public String getPkid(){
 		return pkid;
 	}

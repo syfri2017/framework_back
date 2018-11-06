@@ -73,6 +73,12 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleVO> implements RoleServ
 		roleDAO.doDeleteRoleResources(roleid);
 		((RoleService)AopContext.currentProxy()).insertRoleResourcesBatch(roleid, roleVO.getResources());
 
+		//删除展商角色下的系统管理、用户管理
+		if("fireexpo".equals(roleVO.getRolename())){
+			roleDAO.doDeleteRoleResource(new RoleResourceVO("E63F67D1D4504C6EB26472C3106AE47C", "1"));
+			roleDAO.doDeleteRoleResource(new RoleResourceVO("E63F67D1D4504C6EB26472C3106AE47C", "17"));
+		}
+
 		return roleVO;
 	}
 
