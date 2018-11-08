@@ -221,6 +221,29 @@
 		<include refid="SQL_CONDITION"/>
 		ORDER BY T.ZGMC
 	</select>
+	<!--只查询画布图片-->
+	<select id="doSearchHbTpListByVO" parameterType="ZgjbxxVO"  resultType="ZgjbxxVO">
+		SELECT
+		t.uuid uuid,
+		t.zgzwhbtp zgzwhbtp,
+		t.zgmc zgmc,
+		t.zgtpdz zgtpdz,
+		t.delete_flag deleteFlag,
+		t.cjrid cjrid,
+		t.cjrmc cjrmc,
+		TO_CHAR(t.cjsj,'yyyy-MM-dd HH24:mi:ss') cjsj,
+		t.xgrid xgrid,
+		t.xgrmc xgrmc,
+		TO_CHAR(t.xgsj,'yyyy-MM-dd HH24:mi:ss') xgsj,
+		t.reserve1 reserve1,
+		t.reserve2 reserve2,
+		t.reserve3 reserve3,
+		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
+		FROM CFPA_ZG_JBXX t
+		WHERE t.DELETE_FLAG = 'N'
+		<include refid="SQL_CONDITION"/>
+		ORDER BY T.ZGMC
+	</select>
 
 	<!--只查询数据-->
 	<select id="doSearchDataListByVO" parameterType="ZgjbxxVO"  resultType="ZgjbxxVO">

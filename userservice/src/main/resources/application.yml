@@ -32,6 +32,15 @@ mailEng:
   system-name: China Fire 2019 #系统名称
   team-name: China Fire 2019 Committee #团队名称
   text:
+  #---------邮箱发送导出图片--------------------
+mailExp:
+  from: committee@cfpa.cn  #发送邮箱
+  subject: 第十八届中国国际消防展展商系统s%展馆导出图片 #邮箱标题
+  time: 1小时            #时效
+  system-name: 第十八届中国国际消防展展商系统  #系统名称
+  team-name: 第十八届中国国际消防展组委会 #团队名称
+  text:
+  pic-name: s%展馆图片.png
 #---------产品图片--------------------------
 qycpjs:
   savePath: D://xfxh//upload//
@@ -112,7 +121,7 @@ spring:
     datasource:
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: oracle.jdbc.OracleDriver
-      url: jdbc:oracle:thin:@10.119.119.232:1521/XFXHDB
+      url: jdbc:oracle:thin:@127.0.0.1:1521/XFXHDB
 #      url: jdbc:oracle:thin:@localhost:1521/orcl
       username: XFXHZH
       password: XFXHZH

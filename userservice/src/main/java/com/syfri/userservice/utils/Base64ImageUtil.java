@@ -1,6 +1,10 @@
 package com.syfri.userservice.utils;
 import org.apache.tomcat.util.codec.binary.Base64;
-import java.io.IOException;
+import org.springframework.util.ResourceUtils;
+import sun.misc.BASE64Decoder;
+
+import java.io.*;
+
 
 public class Base64ImageUtil {
     /**
@@ -22,4 +26,35 @@ public class Base64ImageUtil {
         }
         return stringBase64;
     }
+
+    /**
+     * 将Base64位编码的图片进行解码，并保存到指定目录
+     *
+     * @param base64
+     *            base64编码的图片信息
+     * @return
+     */
+    public static File decodeBase64ToImage(String base64, String imgName, String path) {
+        BASE64Decoder decoder = new BASE64Decoder();
+
+        try {
+            if(path==null){
+                File sfile1 = ResourceUtils.getFile("classpath:temp");
+                path = sfile1.toPath().toString();
+            }
+            File refile=new File(path + imgName);
+            FileOutputStream write = new FileOutputStream(refile);
+            byte[] decoderBytes = decoder.decodeBuffer(base64);
+            write.write(decoderBytes);
+            write.close();
+            return refile;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static File decodeBase64ToImage(String base64, String imgName) {
+        return decodeBase64ToImage(base64,null,null);
+    }
+
 }

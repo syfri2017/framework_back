@@ -36,6 +36,7 @@ public class ZgjbxxVO extends ValueObject implements Serializable{
 	}
 
 	public void setZgzwhbtp(byte[] zgzwhbtp) {
+		//this.zgzwhbtp=zgzwhbtp;
 		if(zgzwhbtp !=null){
 			this.zgzwhbtpStr= new String(zgzwhbtp);
 		}
@@ -46,7 +47,7 @@ public class ZgjbxxVO extends ValueObject implements Serializable{
 	}
 
 	public void setZgzwhbtpStr(String zgzwhbtpStr)  throws Exception{
-
+		//this.zgzwhbtpStr = zgzwhbtpStr;
 		if(this.zgzwhbtp==null){
 			this.zgzwhbtp=zgzwhbtpStr.getBytes("UTF-8");
 		}else{
