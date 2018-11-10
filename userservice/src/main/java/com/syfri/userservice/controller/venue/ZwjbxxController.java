@@ -125,4 +125,25 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 
 		return 	resultVO;
 	}
+	/**
+	 * 选展位
+	 * @param vo
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("doUpdateByVO")
+	public @ResponseBody ResultVO doUpdateByVO(@RequestBody ZwjbxxVO vo,QyjbxxVO qy) throws Exception{
+		ResultVO resultVO = ResultVO.build();
+		try {
+			if(vo.getUuid()!=null&&!"".equals(vo.getUuid())){
+				QyjbxxVO qvo=qyjbxxService.doFindByVO(qy);
+				vo.setQyid(qvo.getQyid());
+				zwjbxxService.doUpdateByVO(vo);
+			}
+		} catch (Exception e) {
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return 	resultVO;
+	}
 }

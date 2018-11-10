@@ -8,6 +8,7 @@ import com.syfri.userservice.config.properties.MailProperties;
 import com.syfri.userservice.model.prediction.QyjbxxVO;
 import com.syfri.userservice.service.prediction.QyjbxxService;
 import com.syfri.userservice.utils.Base64ImageUtil;
+import com.syfri.userservice.utils.ShiroKit;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,24 +32,23 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 	private ZgjbxxService zgjbxxService;
 	@Autowired
 	private QyjbxxService qyjbxxService;
-
 	@Override
 	public ZgjbxxService getBaseService() {
 		return this.zgjbxxService;
 	}
-
 	@Autowired
 	private JavaMailSender jms;
 	@Autowired
 	private MailExportProperties mp;
 
 	@RequestMapping("doExportTp")
-	public Object doExportTp( String qyid
+	public Object doExportTp( QyjbxxVO qy
 			,ZgjbxxVO vo){
 		if(vo!=null) {
+			qy.setUserid(ShiroKit.getUser().getUserid());
 			ResultVO resultVO = ResultVO.build();
 			List<ZgjbxxVO> ss = zgjbxxService.doSearchHbTpListByVO(vo);
-			QyjbxxVO qvo=qyjbxxService.doFindById(qyid);
+			QyjbxxVO qvo=qyjbxxService.doFindByVO(qy);
 			if(ss.size()>1){
 				ZgjbxxVO evo=ss.get(0);
 				MimeMessage message = jms.createMimeMessage();
@@ -56,7 +56,7 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 					//true表示需要创建一个multipart message
 					MimeMessageHelper helper = new MimeMessageHelper(message, true);
 					helper.setFrom(mp.getFrom());
-					helper.setTo(qvo.getEmail());
+					helper.setTo(qvo.getDzyx());
 					helper.setSubject(mp.getSubject().replace("s%",evo.getZgmc()));
 					helper.setText(mp.getText(), true);
 					String zgzwstr=evo.getZgzwhbtpStr();
@@ -119,7 +119,6 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
 		}
-
 		return 	resultVO;
 	}
 	/**
@@ -156,7 +155,8 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 		ResultVO resultVO = ResultVO.build();
 		try {
 			if(vo.getUuid()!=null&&!"".equals(vo.getUuid())){
-
+				vo.setXgrid(ShiroKit.getUser().getUserid());
+				vo.setXgrmc(ShiroKit.getUser().getUsername());
 				zgjbxxService.doUpdateByVO(vo);
 			}
 		} catch (Exception e) {
