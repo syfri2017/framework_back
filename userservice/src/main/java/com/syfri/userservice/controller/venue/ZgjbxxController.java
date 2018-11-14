@@ -8,7 +8,7 @@ import com.syfri.userservice.config.properties.MailProperties;
 import com.syfri.userservice.model.prediction.QyjbxxVO;
 import com.syfri.userservice.service.prediction.QyjbxxService;
 import com.syfri.userservice.utils.Base64ImageUtil;
-import com.syfri.userservice.utils.ShiroKit;
+import com.syfri.userservice.utils.CurrentUserUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 	public Object doExportTp( QyjbxxVO qy
 			,ZgjbxxVO vo){
 		if(vo!=null) {
-			qy.setUserid(ShiroKit.getUser().getUserid());
+			qy.setUserid(CurrentUserUtil.getCurrentUserId());
 			ResultVO resultVO = ResultVO.build();
 			List<ZgjbxxVO> ss = zgjbxxService.doSearchHbTpListByVO(vo);
 			QyjbxxVO qvo=qyjbxxService.doFindByVO(qy);
@@ -155,8 +155,8 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 		ResultVO resultVO = ResultVO.build();
 		try {
 			if(vo.getUuid()!=null&&!"".equals(vo.getUuid())){
-				vo.setXgrid(ShiroKit.getUser().getUserid());
-				vo.setXgrmc(ShiroKit.getUser().getUsername());
+				vo.setXgrid(CurrentUserUtil.getCurrentUserId());
+				vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
 				zgjbxxService.doUpdateByVO(vo);
 			}
 		} catch (Exception e) {

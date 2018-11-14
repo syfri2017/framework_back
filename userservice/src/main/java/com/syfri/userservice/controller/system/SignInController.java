@@ -122,6 +122,7 @@ public class SignInController extends BaseController<AccountVO>{
 				//true表示需要创建一个multipart message
 				MimeMessageHelper helper = new MimeMessageHelper(message, true);
 				helper.setFrom(mp.getFrom());
+				helper.setCc(mp.getFrom());
 				helper.setTo(mail);
 				helper.setSubject(mp.getSubject());
 				String randomStr = MathUtil.getCode(6);
@@ -158,6 +159,7 @@ public class SignInController extends BaseController<AccountVO>{
 				//true表示需要创建一个multipart message
 				MimeMessageHelper helper = new MimeMessageHelper(message, true);
 				helper.setFrom(mpEng.getFrom());
+				helper.setCc(mpEng.getFrom());
 				helper.setTo(mail);
 				helper.setSubject(mpEng.getSubject());
 				String randomStr = MathUtil.getCode(6);
