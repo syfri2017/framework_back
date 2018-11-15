@@ -289,4 +289,15 @@
         ORDER BY C.CODE_VALUE
     </select>
 
+    <!--按企业id删除-->
+    <update id="doDeleteByVO" parameterType="QyzwyxVO">
+        UPDATE CFPA_QY_ZWYX
+        <set>
+            delete_flag='Y',
+            <if test="xgrid != null">xgrid=#{xgrid},</if>
+            <if test="xgrmc != null">xgrmc=#{xgrmc},</if>
+            xgsj=sysdate
+        </set>
+        WHERE QYID = #{qyid}
+    </update>
 </mapper>
