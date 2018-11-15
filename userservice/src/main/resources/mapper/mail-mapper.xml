@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syfri.userservice.dao.system.MailDAO">
+	<!--1.查询条件-->
+	<sql id="SQL_CONDITION">
+		<if test="uuid != null and uuid != '' ">
+		 and t.uuid = #{uuid}
+		</if>
+		<if test="username != null and username != '' ">
+		 and t.username = #{username}
+		</if>
+		<if test="password != null and password != '' ">
+		 and t.password = #{password}
+		</if>
+		<if test="encoding != null and encoding != '' ">
+		 and t.encoding = #{encoding}
+		</if>
+		<if test="host != null and host != '' ">
+		 and t.host = #{host}
+		</if>
+		<if test="port != null and port != '' ">
+		 and t.port = #{port}
+		</if>
+		<if test="protocol != null and protocol != '' ">
+		 and t.protocol = #{protocol}
+		</if>
+		<if test="state != null and state != '' ">
+		 and t.state = #{state}
+		</if>
+		<if test="term != null and term != '' ">
+		 and t.term = #{term}
+		</if>
+		<if test="deleteFlag != null and deleteFlag != '' ">
+		 and t.delete_flag = #{deleteFlag}
+		</if>
+		<if test="createId != null and createId != '' ">
+		 and t.create_id = #{createId}
+		</if>
+		<if test="createName != null and createName != '' ">
+		 and t.create_name = #{createName}
+		</if>
+		<if test="createTime != null and createTime != '' ">
+		 and t.create_time = #{createTime}
+		</if>
+		<if test="alterId != null and alterId != '' ">
+		 and t.alter_id = #{alterId}
+		</if>
+		<if test="alterName != null and alterName != '' ">
+		 and t.alter_name = #{alterName}
+		</if>
+		<if test="alterTime != null and alterTime != '' ">
+		 and t.alter_time = #{alterTime}
+		</if>
+		<if test="reserve1 != null and reserve1 != '' ">
+		 and t.reserve1 = #{reserve1}
+		</if>
+		<if test="reserve2 != null and reserve2 != '' ">
+		 and t.reserve2 = #{reserve2}
+		</if>
+		<if test="reserve3 != null and reserve3 != '' ">
+		 and t.reserve3 = #{reserve3}
+		</if>
+	</sql>
+
+	<!--2.查询内容-->
+	<sql id="SQL_CONTENT">
+		t.uuid uuid,
+		t.username username,
+		t.password password,
+		t.encoding encoding,
+		t.host host,
+		t.port port,
+		t.protocol protocol,
+		t.state state,
+		TO_CHAR(t.term,'yyyy-MM-dd HH24:mi:ss') term,
+		t.delete_flag deleteFlag,
+		t.create_id createId,
+		t.create_name createName,
+		TO_CHAR(t.create_time,'yyyy-MM-dd HH24:mi:ss') createTime,
+		t.alter_id alterId,
+		t.alter_name alterName,
+		TO_CHAR(t.alter_time,'yyyy-MM-dd HH24:mi:ss') alterTime,
+		t.reserve1 reserve1,
+		t.reserve2 reserve2,
+		TO_CHAR(t.reserve3,'yyyy-MM-dd HH24:mi:ss') reserve3
+	</sql>
+
+	<!--3.查询记录数-->
+	<select id="doSearchCount" parameterType="MailVO" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM SYS_CONFIG_MAIL t WHERE 1=1 AND DELETE_FLAG = 'N'
+		<include refid="SQL_CONDITION"/>
+	</select>
+
+	<!--4.按条件查询记录-->
+	<select id="doSearchListByVO" parameterType="MailVO"  resultType="MailVO"> 
+		SELECT 
+			<include refid="SQL_CONTENT"/>
+		FROM SYS_CONFIG_MAIL t  WHERE t.DELETE_FLAG = 'N' 
+			<include refid="SQL_CONDITION"/>
+	</select>
+
+	<!--5.根据ID查询记录-->
+	<select id="doFindById" parameterType="MailVO"  resultType="MailVO">  
+		SELECT 
+		<include refid="SQL_CONTENT"/>
+		FROM SYS_CONFIG_MAIL t 
+		WHERE t.DELETE_FLAG = 'N' AND  t.uuid = #{value} 
+	</select>
+
+	<!--6.按照VO插入-->
+	<insert  id="doInsertByVO"  parameterType="MailVO"> 
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
+		</selectKey>
+		INSERT INTO SYS_CONFIG_MAIL(uuid,username,password,encoding,host,port,protocol,state,term,delete_flag,create_id,create_name,create_time,alter_id,alter_name,alter_time,reserve1,reserve2,reserve3)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{encoding,jdbcType=VARCHAR},#{host,jdbcType=VARCHAR},#{port,jdbcType=DOUBLE},#{protocol,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{term,jdbcType=DATE},'N',#{createId,jdbcType=VARCHAR},#{createName,jdbcType=VARCHAR},SYSDATE,#{alterId,jdbcType=VARCHAR},#{alterName,jdbcType=VARCHAR},SYSDATE,#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=DATE})
+	 </insert>
+
+	<!--7.批量插入-->
+	<insert  id="doBatchInsertByList"  parameterType="java.util.List"> 
+		INSERT INTO SYS_CONFIG_MAIL(uuid,username,password,encoding,host,port,protocol,state,term,delete_flag,create_id,create_name,create_time,alter_id,alter_name,alter_time,reserve1,reserve2,reserve3)
+		SELECT SYS_GUID() uuid, A.* 
+		FROM ( 
+		<foreach collection="list" item="item" index="index" separator="UNION ALL" >
+		SELECT
+			#{item.uuid,jdbcType=VARCHAR} uuid,#{item.username,jdbcType=VARCHAR} username,#{item.password,jdbcType=VARCHAR} password,#{item.encoding,jdbcType=VARCHAR} encoding,#{item.host,jdbcType=VARCHAR} host,#{item.port,jdbcType=DOUBLE} port,#{item.protocol,jdbcType=VARCHAR} protocol,#{item.state,jdbcType=VARCHAR} state,#{item.term,jdbcType=DATE} term,'N' delete_flag,#{item.createId,jdbcType=VARCHAR} create_id,#{item.createName,jdbcType=VARCHAR} create_name,SYSDATE create_time,#{item.alterId,jdbcType=VARCHAR} alter_id,#{item.alterName,jdbcType=VARCHAR} alter_name,SYSDATE alter_time,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=DATE} reserve3
+		FROM DUAL
+		</foreach>
+		) A
+	</insert>
+
+	<!--8.按主键逻辑删除-->
+	<update id="doDeleteById"  parameterType="String"> 
+		UPDATE  SYS_CONFIG_MAIL t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.uuid = #{value} 
+	</update>
+
+	<!--9.按复合条件逻辑更新-->
+	<update  id="doUpdateByVO"  parameterType="MailVO"> 
+		UPDATE   SYS_CONFIG_MAIL  
+		<set>
+			<if test="uuid != null">uuid=#{uuid},</if>
+			<if test="username != null">username=#{username},</if>
+			<if test="password != null">password=#{password},</if>
+			<if test="encoding != null">encoding=#{encoding},</if>
+			<if test="host != null">host=#{host},</if>
+			<if test="port != null">port=#{port},</if>
+			<if test="protocol != null">protocol=#{protocol},</if>
+			<if test="state != null">state=#{state},</if>
+			<if test="term != null">term=TO_DATE(#{term},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="createId != null">create_id=#{createId},</if>
+			<if test="createName != null">create_name=#{createName},</if>
+			<if test="createTime != null">create_time=TO_DATE(#{createTime},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="alterId != null">alter_id=#{alterId},</if>
+			<if test="alterName != null">alter_name=#{alterName},</if>
+			<if test="alterTime != null">alter_time=TO_DATE(TO_CHAR(SYSDATE,'yyyy-MM-dd HH24:mi:ss'),'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="reserve1 != null">reserve1=#{reserve1},</if>
+			<if test="reserve2 != null">reserve2=#{reserve2},</if>
+			<if test="reserve3 != null">reserve3=TO_DATE(#{reserve3},'yyyy-MM-dd HH24:mi:ss')</if>
+		</set>
+		WHERE  uuid = #{uuid}
+	</update>
+
+	<!--10.批量修改-->
+	<update id="doBatchUpdateByList"  parameterType="java.util.List">
+		INSERT INTO SYS_CONFIG_MAIL(uuid,username,password,encoding,host,port,protocol,state,term,delete_flag,create_id,create_name,create_time,alter_id,alter_name,alter_time,reserve1,reserve2,reserve3)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator="," >
+			#{item.uuid,jdbcType=VARCHAR} uuid,#{item.username,jdbcType=VARCHAR} username,#{item.password,jdbcType=VARCHAR} password,#{item.encoding,jdbcType=VARCHAR} encoding,#{item.host,jdbcType=VARCHAR} host,#{item.port,jdbcType=DOUBLE} port,#{item.protocol,jdbcType=VARCHAR} protocol,#{item.state,jdbcType=VARCHAR} state,#{item.term,jdbcType=DATE} term,'N' delete_flag,#{item.createId,jdbcType=VARCHAR} create_id,#{item.createName,jdbcType=VARCHAR} create_name,SYSDATE create_time,#{item.alterId,jdbcType=VARCHAR} alter_id,#{item.alterName,jdbcType=VARCHAR} alter_name,SYSDATE alter_time,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=DATE} reserve3
+		</foreach>
+		ON DUPLICATE KEY UPDATE   
+			uuid = VALUES(uuid),
+			username = VALUES(username),
+			password = VALUES(password),
+			encoding = VALUES(encoding),
+			host = VALUES(host),
+			port = VALUES(port),
+			protocol = VALUES(protocol),
+			state = VALUES(state),
+			term = VALUES(term),
+			delete_flag = VALUES(delete_flag),
+			create_id = VALUES(create_id),
+			create_name = VALUES(create_name),
+			create_time = VALUES(create_time),
+			alter_id = VALUES(alter_id),
+			alter_name = VALUES(alter_name),
+			alter_time = VALUES(alter_time),
+			reserve1 = VALUES(reserve1),
+			reserve2 = VALUES(reserve2),
+			reserve3 = VALUES(reserve3)
+	</update>
+
+	<!--11.根据对象查询记录-->
+	<select id="doFindByVO" parameterType="MailVO"  resultType="MailVO">  
+		SELECT 
+		<include refid="SQL_CONTENT"/>
+		FROM SYS_CONFIG_MAIL t 
+		WHERE t.DELETE_FLAG = 'N' 
+		<include refid="SQL_CONDITION"/>
+	</select>
+	<!--12.查询当前可用邮箱-->
+	<select id="doSearchAbleListByVO" parameterType="MailVO"  resultType="MailVO">
+		select <include refid="SQL_CONTENT"/>
+			from SYS_CONFIG_MAIL t
+			WHERE  (STATE='Y' OR  TERM &lt; trunc(sysdate))
+			AND t.DELETE_FLAG = 'N' order by t.create_time
+	</select>
+</mapper>

@@ -2,6 +2,7 @@ package com.syfri.userservice.controller.system;
 
 import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
+import com.sun.mail.smtp.SMTPTransport;
 import com.syfri.baseapi.controller.BaseController;
 import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
@@ -10,7 +11,9 @@ import com.syfri.userservice.config.properties.MailEngProperties;
 import com.syfri.userservice.config.properties.MailProperties;
 import com.syfri.userservice.config.properties.MsgProperties;
 import com.syfri.userservice.model.system.AccountVO;
+import com.syfri.userservice.model.system.MailVO;
 import com.syfri.userservice.model.system.UserVO;
+import com.syfri.userservice.service.impl.system.MailServiceImpl;
 import com.syfri.userservice.service.system.AccountService;
 import com.syfri.userservice.service.system.SignInService;
 import com.syfri.userservice.service.system.UserService;
@@ -20,6 +23,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +39,7 @@ public class SignInController extends BaseController<AccountVO>{
 	@Autowired
 	private MsgProperties pMsgProperties;
 	@Autowired
-	private JavaMailSender jms;
+	private JavaMailSenderImpl jms;
 	@Autowired
 	private MailProperties mp;
 	@Autowired
@@ -46,7 +50,8 @@ public class SignInController extends BaseController<AccountVO>{
 	private AccountService accountService;
 	@Autowired
 	private SignInService signInService;
-
+	@Autowired
+	private MailServiceImpl mailServiceImpl;
 	@Override
 	public AccountService getBaseService() {
 		return this.accountService;
@@ -116,13 +121,22 @@ public class SignInController extends BaseController<AccountVO>{
 	@GetMapping("/sendMail")
 	public Object sendMail(String mail){
 		ResultVO resultVO = ResultVO.build();
+		MailVO mv=new MailVO();
 		if(!(mail.equals("")||null == mail)) {
+			try {
+				//获取可用邮箱
+				mv=mailServiceImpl.setJavaMailSender(jms);
+			} catch (Exception e) {
+				e.printStackTrace();
+				resultVO.setMsg(e.getMessage());
+				return resultVO;
+			}
 			MimeMessage message = jms.createMimeMessage();
 			try {
 				//true表示需要创建一个multipart message
 				MimeMessageHelper helper = new MimeMessageHelper(message, true);
-				helper.setFrom(mp.getFrom());
-				helper.setCc(mp.getFrom());
+				helper.setFrom(mv.getUsername());
+				helper.setCc(mv.getUsername());
 				helper.setTo(mail);
 				helper.setSubject(mp.getSubject());
 				String randomStr = MathUtil.getCode(6);
@@ -136,6 +150,9 @@ public class SignInController extends BaseController<AccountVO>{
 				e.printStackTrace();
 				System.out.println("html格式邮件发送失败");
 				resultVO.setCode(EConstants.CODE.FAILURE);
+				if(e.getMessage().contains("com.sun.mail.smtp")){
+					mailServiceImpl.doDisAbleMail(mv);
+				}
 				return resultVO;
 			}
 		}else{
@@ -153,13 +170,21 @@ public class SignInController extends BaseController<AccountVO>{
 	@GetMapping("/sendMailEng")
 	public Object sendMailEng(String mail){
 		ResultVO resultVO = ResultVO.build();
+		MailVO mv=new MailVO();
 		if(!(mail.equals("")||null == mail)) {
+			try {
+				mv=mailServiceImpl.setJavaMailSender(jms);
+			} catch (Exception e) {
+				e.printStackTrace();
+				resultVO.setMsg(e.getMessage());
+				return resultVO;
+			}
 			MimeMessage message = jms.createMimeMessage();
 			try {
 				//true表示需要创建一个multipart message
 				MimeMessageHelper helper = new MimeMessageHelper(message, true);
-				helper.setFrom(mpEng.getFrom());
-				helper.setCc(mpEng.getFrom());
+				helper.setFrom(mv.getUsername());
+				helper.setCc(mv.getUsername());
 				helper.setTo(mail);
 				helper.setSubject(mpEng.getSubject());
 				String randomStr = MathUtil.getCode(6);
@@ -170,6 +195,10 @@ public class SignInController extends BaseController<AccountVO>{
 				resultVO.setMsg(randomStr.toString());
 				System.out.println("html格式邮件发送成功");
 			} catch (Exception e) {
+				//判断是邮件异常，今天停止邮箱
+				if(e.getMessage().contains("com.sun.mail.smtp")){
+					mailServiceImpl.doDisAbleMail(mv);
+				}
 				e.printStackTrace();
 				System.out.println("html格式邮件发送失败");
 				resultVO.setCode(EConstants.CODE.FAILURE);

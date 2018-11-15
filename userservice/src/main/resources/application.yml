@@ -18,7 +18,7 @@ msg:
 
 #---------邮箱验证码--------------------
 mail:
-  from: committee@cfpa.cn  #发送邮箱
+  from: committee@cfpa.cn  #发送邮箱  必须与springt.mail.username相同
   subject: 展会邮箱验证码 #邮箱标题
   time: 1小时            #时效
   system-name: 第十八届中国国际消防展展商系统  #系统名称
@@ -26,7 +26,7 @@ mail:
   text:
 #---------英文邮箱验证码--------------------
 mailEng:
-  from: committee@cfpa.cn  #发送邮箱
+  from: committee@cfpa.cn  #发送邮箱 必须与springt.mail.username相同
   subject: China Fire 2019 Verification  #邮箱标题
   time: 1 hour            #时效
   system-name: China Fire 2019 #系统名称
@@ -34,7 +34,7 @@ mailEng:
   text:
   #---------邮箱发送导出图片--------------------
 mailExp:
-  from: committee@cfpa.cn  #发送邮箱
+  from: committee@cfpa.cn  #发送邮箱 必须与springt.mail.username相同
   subject: 第十八届中国国际消防展展商系统s%展馆导出图片 #邮箱标题
   time: 1小时            #时效
   system-name: 第十八届中国国际消防展展商系统  #系统名称
