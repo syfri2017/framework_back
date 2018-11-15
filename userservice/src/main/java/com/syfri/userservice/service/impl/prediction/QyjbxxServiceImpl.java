@@ -193,7 +193,7 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 			}
 			stamper.close();
 			String fileAddress = allPath.toString();
-			String savePath = folderName+"\\"+"yyzz" + zzsj;
+			String savePath = folderName+"/"+"yyzz" + zzsj;
 			((QyjbxxService) AopContext.currentProxy()).pdf2image(fileAddress,savePath,"jpg");
 			String dbPath = new_folder + "yyzz" + zzsj +".jpg";
 			vo.setSrc(dbPath);
