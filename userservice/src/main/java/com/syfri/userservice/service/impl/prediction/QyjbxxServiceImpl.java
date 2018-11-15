@@ -13,7 +13,17 @@ import org.springframework.stereotype.Service;
 
 import com.syfri.baseapi.service.impl.BaseServiceImpl;
 import com.syfri.userservice.dao.prediction.QyjbxxDAO;
+import com.syfri.userservice.dao.prediction.QyzwyxDAO;
+import com.syfri.userservice.dao.prediction.QycpjsDAO;
+import com.syfri.userservice.dao.prediction.QyjsDAO;
+import com.syfri.userservice.dao.prediction.QykpxxDAO;
+import com.syfri.userservice.dao.prediction.QywjdcDAO;
 import com.syfri.userservice.model.prediction.QyjbxxVO;
+import com.syfri.userservice.model.prediction.QyzwyxVO;
+import com.syfri.userservice.model.prediction.QycpjsVO;
+import com.syfri.userservice.model.prediction.QyjsVO;
+import com.syfri.userservice.model.prediction.QykpxxVO;
+import com.syfri.userservice.model.prediction.QywjdcVO;
 import com.syfri.userservice.service.prediction.QyjbxxService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +44,16 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 
 	@Autowired
 	private QyjbxxDAO qyjbxxDAO;
+	@Autowired
+	private QykpxxDAO qykpxxDAO;
+	@Autowired
+	private QycpjsDAO qycpjsDAO;
+	@Autowired
+	private QyjsDAO qyjsDAO;
+	@Autowired
+	private QywjdcDAO qywjdcDAO;
+	@Autowired
+	private QyzwyxDAO qyzwyxDAO;
 
 	@Autowired
 	private CpjsProperties cpjsProperties;
@@ -52,6 +72,37 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 	public int doDeleteJbxx(List<QyjbxxVO> voList) {
 		int sum = 0;
 		for (QyjbxxVO vo : voList) {
+			//开票信息删除
+			QykpxxVO kpxxVo = new QykpxxVO();
+			kpxxVo.setQyid(vo.getQyid());
+			kpxxVo.setXgrid(vo.getXgrid());
+			kpxxVo.setXgrmc(vo.getXgrmc());
+			qykpxxDAO.doDeleteByVO(kpxxVo);
+			//问卷调查删除
+			QywjdcVO wjdcVO = new QywjdcVO();
+			wjdcVO.setQyid(vo.getQyid());
+			wjdcVO.setXgrid(vo.getXgrid());
+			wjdcVO.setXgrmc(vo.getXgrmc());
+			qywjdcDAO.doDeleteByVO(wjdcVO);
+			//企业介绍删除
+			QyjsVO jsVO = new QyjsVO();
+			jsVO.setQyid(vo.getQyid());
+			jsVO.setXgrid(vo.getXgrid());
+			jsVO.setXgrmc(vo.getXgrmc());
+			qyjsDAO.doDeleteByVO(jsVO);
+			//产品介绍删除
+			QycpjsVO cpjsVO = new QycpjsVO();
+			cpjsVO.setQyid(vo.getQyid());
+			cpjsVO.setXgrid(vo.getXgrid());
+			cpjsVO.setXgrmc(vo.getXgrmc());
+			qycpjsDAO.doDeleteByVO(cpjsVO);
+			//展位意向删除
+			QyzwyxVO zwyxVO = new QyzwyxVO();
+			zwyxVO.setQyid(vo.getQyid());
+			zwyxVO.setXgrid(vo.getXgrid());
+			zwyxVO.setXgrmc(vo.getXgrmc());
+			qyzwyxDAO.doDeleteByVO(zwyxVO);
+			//基本信息删除
 			sum = sum + qyjbxxDAO.doUpdateByVO(vo);
 		}
 		return sum;

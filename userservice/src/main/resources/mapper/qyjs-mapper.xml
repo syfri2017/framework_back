@@ -180,4 +180,16 @@
 		<include refid="SQL_CONDITION"/>
 	</select>
 
+	<!--按企业id删除-->
+	<update id="doDeleteByVO" parameterType="QyjsVO">
+		UPDATE CFPA_QY_JS
+		<set>
+			delete_flag='Y',
+			<if test="xgrid != null">xgrid=#{xgrid},</if>
+			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
+			xgsj=sysdate
+		</set>
+		WHERE QYID = #{qyid}
+	</update>
+
 </mapper>
