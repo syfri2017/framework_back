@@ -35,7 +35,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("signin")
 public class SignInController extends BaseController<AccountVO>{
-
 	@Autowired
 	private MsgProperties pMsgProperties;
 	@Autowired
