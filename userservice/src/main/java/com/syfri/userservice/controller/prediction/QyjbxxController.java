@@ -197,7 +197,6 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
     @GetMapping("/getMailNum/{mail:.+}")
     public @ResponseBody ResultVO getMailNum(@PathVariable String mail){
         ResultVO resultVO = ResultVO.build();
-		logger.info("--------------------------------------------------邮箱传参------------------"+mail);
         try{
             resultVO.setResult(qyjbxxService.doSearchCountByMail(mail));
         }catch(Exception e){
