@@ -194,12 +194,12 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
     //add by yushch 20181018
     @ApiOperation(value="根据邮箱查询用户数量",notes="查询")
     @ApiImplicitParam(name="mail",value="邮箱")
-    @GetMapping("/getMailNum/{mail}")
+    @GetMapping("/getMailNum/{mail:.+}")
     public @ResponseBody ResultVO getMailNum(@PathVariable String mail){
         ResultVO resultVO = ResultVO.build();
 		logger.info("--------------------------------------------------邮箱传参------------------"+mail);
         try{
-            resultVO.setResult(qyjbxxService.doSearchCountByMail(mail.replace("_",".")));
+            resultVO.setResult(qyjbxxService.doSearchCountByMail(mail));
         }catch(Exception e){
             logger.error("{}",e.getMessage());
             resultVO.setCode(EConstants.CODE.FAILURE);
