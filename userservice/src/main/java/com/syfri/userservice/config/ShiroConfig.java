@@ -56,7 +56,7 @@ public class ShiroConfig implements EnvironmentAware {
 		sessionManager.setSessionValidationSchedulerEnabled(false);
 		sessionManager.setSessionIdUrlRewritingEnabled(false);
 		//设置session失效时间30min
-		sessionManager.setGlobalSessionTimeout(60*60*1000);
+		sessionManager.setGlobalSessionTimeout(120*60*1000);
 		//Redis会话管理
 //		sessionManager.setSessionDAO(redisSessionDAO());
 		return sessionManager;
