@@ -395,7 +395,7 @@ public class TestController extends BaseController<UserVO>{
 	@ResponseBody
 	@RequiresPermissions("role:delete")
 	public void deleteRole(){
-		roleService.doDeleteRole("A1AEACA6D7DD4131A8D7F9ADF1A5DAB0");
+//		roleService.doDeleteRole("A1AEACA6D7DD4131A8D7F9ADF1A5DAB0");
 	}
 
 	//19
