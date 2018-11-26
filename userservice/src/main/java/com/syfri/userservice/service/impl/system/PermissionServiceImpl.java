@@ -57,8 +57,15 @@ public class PermissionServiceImpl extends BaseServiceImpl<PermissionVO> impleme
 	}
 
 	/*--删除：权限.--*/
-	public void doDeletePermission(String permissionid){
-		permissionDAO.doDeleteById(permissionid);
+	public int doDeletePermissions(List<PermissionVO> list){
+		int num = 0;
+		for(PermissionVO vo : list){
+			String permissionid = vo.getPermissionid();
+			//删除权限表
+			permissionDAO.doDeleteById(permissionid);
+			num++;
+		}
+		return num;
 	}
 
 	/*--获取所有的权限.--*/
