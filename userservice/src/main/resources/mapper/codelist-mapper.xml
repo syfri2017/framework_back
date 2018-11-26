@@ -173,16 +173,16 @@
 		<include refid="SQL_CONTENT"/>
 		FROM SYS_CODELIST t  WHERE t.DELETE_FLAG = 'N'
 		<if test="codetype != null and codetype != '' ">
-			and t.codetype LIKE concat(concat('%',#{codetype}),'%')
+			and t.codetype LIKE concat(concat('%',#{codetype}),'%') ESCAPE '\'
 		</if>
 		<if test="codetypeName != null and codetypeName != '' ">
-			and t.codetype_name LIKE concat(concat('%',#{codetypeName}),'%')
+			and t.codetype_name LIKE concat(concat('%',#{codetypeName}),'%') ESCAPE '\'
 		</if>
 		<if test="createTimeBegin != null and createTimeBegin != '' ">
 			and t.create_time &gt;= to_date(#{createTimeBegin},'yyyy-MM-dd')
 		</if>
 		<if test="createTimeEnd != null and createTimeEnd != '' ">
-			and t.create_time &lt;= to_date(#{createTimeEnd},'yyyy-MM-dd')
+			and t.create_time &lt;= to_date(#{createTimeEnd},'yyyy-MM-dd') + 1
 		</if>
 		ORDER BY nvl(t.alter_time,t.create_time) DESC
 	</select>
@@ -194,6 +194,9 @@
 		t.alter_id alterId,t.alter_name alterName,TO_CHAR(t.alter_time,'yyyy-MM-dd HH24:mi:ss') alterTime
 		FROM SYS_CODELIST_DETAIL t
 		WHERE delete_flag = 'N'
+		<if test="pkid != null and pkid !='' ">
+			and t.pkid = #{pkid}
+		</if>
 	   	<if test="codeid != null and codeid !='' ">
 			and t.codeid = #{codeid}
 		</if>
@@ -216,7 +219,7 @@
 	</insert>
 	<!--14.从表修改-->
 	<update  id="doUpdateCodelistDetail"  parameterType="CodelistdetailVO">
-		UPDATE   SYS_CODELIST_DETAIL
+		UPDATE SYS_CODELIST_DETAIL
 		<set>
 			<if test="pkid != null">pkid=#{pkid},</if>
 			<if test="codeValue != null">code_value=#{codeValue},</if>
@@ -226,7 +229,7 @@
 			<if test="remark != null">remark=#{remark},</if>
 			<if test="alterId != null">alter_id=#{alterId},</if>
 			<if test="alterName != null">alter_name=#{alterName},</if>
-			<if test="alterTime != null">alter_time=TO_DATE(TO_CHAR(SYSDATE,'yyyy-MM-dd HH24:mi:ss'),'yyyy-MM-dd HH24:mi:ss')</if>
+			alter_time=TO_DATE(TO_CHAR(SYSDATE,'yyyy-MM-dd HH24:mi:ss'),'yyyy-MM-dd HH24:mi:ss')
 		</set>
 		WHERE  PKID = #{pkid}
 	</update>
