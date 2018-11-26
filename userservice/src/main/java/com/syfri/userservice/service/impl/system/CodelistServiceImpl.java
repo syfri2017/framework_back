@@ -114,6 +114,12 @@ public class CodelistServiceImpl extends BaseServiceImpl<CodelistVO> implements 
 		return num;
 	}
 
+	/*--查询从表数量 by li.xue 2018/11/26.--*/
+	@Override
+	public int doFindByCodelistDetailNum(CodelistDetailVO codelistDetailVO){
+		return codelistDAO.doFindByCodelistDetailNum(codelistDetailVO);
+	}
+
 	/*--根据代码类型查询代码集.--*/
 	@Override
 	public List<CodelistDetailVO> doFindCodelistByType(String codetype){

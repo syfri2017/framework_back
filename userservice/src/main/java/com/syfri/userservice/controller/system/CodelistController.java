@@ -269,11 +269,7 @@ public class CodelistController  extends BaseController<CodelistVO>{
 			CodelistDetailVO codelistDetailVO = new CodelistDetailVO();
 			codelistDetailVO.setCodeValue(codevalue);
 			codelistDetailVO.setCodeid(codeid);
-				if(codelistService.doFindCodelistDetail(codelistDetailVO).size() == 0){
-				resultVO.setResult(0);
-			}else{
-				resultVO.setResult(1);
-			}
+			resultVO.setResult(codelistService.doFindByCodelistDetailNum(codelistDetailVO));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);

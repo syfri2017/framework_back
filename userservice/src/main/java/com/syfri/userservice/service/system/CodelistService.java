@@ -34,6 +34,9 @@ public interface CodelistService  extends BaseService<com.syfri.userservice.mode
 	/*--删除从表：根据主键删除.--*/
 	int doDeleteCodelistDetail(List<com.syfri.userservice.model.system.CodelistDetailVO> list);
 
+	/*--查询从表数量 by li.xue 2018/11/26.--*/
+	int doFindByCodelistDetailNum(CodelistDetailVO codelistDetailVO);
+
 	/*--根据代码类型查询代码集.--*/
 	List<com.syfri.userservice.model.system.CodelistDetailVO> doFindCodelistByType(String codetype);
 
