@@ -8,6 +8,7 @@ import com.syfri.userservice.model.prediction.QyjbxxVO;
 import com.syfri.userservice.model.venue.ZgjbxxVO;
 import com.syfri.userservice.service.prediction.QyjbxxService;
 import com.syfri.userservice.service.venue.ZgjbxxService;
+import com.syfri.userservice.utils.CurrentUserUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,18 +133,36 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 	 * @throws Exception
 	 */
 	@PostMapping("doUpdateByVO")
-	public @ResponseBody ResultVO doUpdateByVO(@RequestBody ZwjbxxVO vo,QyjbxxVO qy) throws Exception{
+	public @ResponseBody ResultVO doUpdateByVO(@RequestBody ZwjbxxVO vo) throws Exception{
 		ResultVO resultVO = ResultVO.build();
 		try {
 			if(vo.getUuid()!=null&&!"".equals(vo.getUuid())){
+				String userId=CurrentUserUtil.getCurrentUserId();
+				QyjbxxVO qy =new QyjbxxVO();
+				qy.setUserid(userId);
 				QyjbxxVO qvo=qyjbxxService.doFindByVO(qy);
-				vo.setQyid(qvo.getQyid());
-				zwjbxxService.doUpdateByVO(vo);
+				if(qvo.getQyid()!=null&&!"".equals(qvo.getQyid())){
+					ZwjbxxVO dbzw=zwjbxxService.doFindById(vo.getUuid());
+					if(dbzw.getZwzt()!=null&&"normal".equals(dbzw.getZwzt())){
+						vo.setQyid(qvo.getQyid());
+						vo.setZwzt("bespoke");
+						zwjbxxService.doUpdateByVO(vo);
+						ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
+						resultVO.setResult(newdbzw);
+						resultVO.setMsg("success");
+					}else{
+						resultVO.setResult(dbzw);
+						resultVO.setMsg("展位已经被预定，请重新选择！");
+					}
+				}
 			}
 		} catch (Exception e) {
 			logger.error("{}",e.getMessage());
+			resultVO.setMsg("选择展位失败！");
 			resultVO.setCode(EConstants.CODE.FAILURE);
 		}
 		return 	resultVO;
 	}
+
+
 }
