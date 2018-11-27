@@ -268,5 +268,21 @@
 		WHERE t.DELETE_FLAG = 'N' 
 		<include refid="SQL_CONDITION"/>
 	</select>
-
+	<!--4.按条件查询记录-->
+	<select id="doSearchListQyByVO" parameterType="ZwjbxxVO"  resultType="ZwjbxxVO">
+		SELECT
+		<include refid="SQL_CONTENT"/> ,q.zwgsmc as qymc
+		FROM CFPA_ZW_JBXX t
+		left join CFPA_QY_JBXX q
+		on t.qyid = q.qyid and q.DELETE_FLAG = 'N'
+		WHERE t.DELETE_FLAG = 'N'
+		<if test="zgid == null or zgid == '' ">
+			and  t.reserve1 is not null
+		</if>
+		<if test="qymc != null and qymc != '' ">
+			and q.zwgsmc LIKE concat(concat('%',#{qymc}),'%') ESCAPE '\'
+		</if>
+		<include refid="SQL_CONDITION"/>
+		ORDER BY T.CJSJ
+	</select>
 </mapper>
