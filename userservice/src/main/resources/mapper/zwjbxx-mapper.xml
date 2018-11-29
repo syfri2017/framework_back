@@ -9,6 +9,9 @@
 		<if test="zwlb != null and zwlb != '' ">
 		 and t.zwlb = #{zwlb}
 		</if>
+		<if test="cklx != null and cklx != '' ">
+			and t.cklx = #{cklx}
+		</if>
 		<if test="zwmj != null and zwmj != '' ">
 		 and t.zwmj = #{zwmj}
 		</if>
@@ -98,6 +101,7 @@
 		t.uuid uuid,
 		t.zwh zwh,
 		t.zwlb zwlb,
+		t.cklx cklx,
 		t.zwmj zwmj,
 		t.zwzt zwzt,
 		t.qyid qyid,
@@ -150,11 +154,15 @@
 
 	<!--5.根据ID查询记录-->
 	<select id="doFindById" parameterType="ZwjbxxVO"  resultType="ZwjbxxVO">  
-		SELECT 
-		<include refid="SQL_CONTENT"/>
-		FROM CFPA_ZW_JBXX t 
-		WHERE t.DELETE_FLAG = 'N' AND  t.UUID = #{value}
-
+		SELECT
+		<include refid="SQL_CONTENT"/> ,
+		(CASE sa.usertype WHEN 'CHN' THEN q.zwgsmc WHEN 'ENG' THEN q.ywgsmc ELSE '' END) qymc
+		FROM CFPA_ZW_JBXX t
+		left join CFPA_QY_JBXX q
+		on t.qyid = q.qyid and q.DELETE_FLAG = 'N'
+		left join sys_account sa
+		on sa.userid = q.userid and sa.DELETE_FLAG = 'N'
+		WHERE t.DELETE_FLAG = 'N'  t.UUID = #{value}
 	</select>
 
 	<!--6.按照VO插入-->
@@ -162,18 +170,18 @@
 		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
 			SELECT SYS_GUID() AS uuid FROM DUAL
 		</selectKey>
-		INSERT INTO CFPA_ZW_JBXX(uuid,zwh,zwlb,zwmj,zwzt,qyid,zwkd,zwcd,zwmc,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,zgid,bhzh,bhzt,bhzc,bhzs,mczt,mczh,mczc,mczs)
-		VALUES(#{uuid,jdbcType=VARCHAR},#{zwh,jdbcType=VARCHAR},#{zwlb,jdbcType=VARCHAR},#{zwmj,jdbcType=DOUBLE},#{zwzt,jdbcType=VARCHAR},#{qyid,jdbcType=VARCHAR},#{zwkd,jdbcType=DOUBLE},#{zwcd,jdbcType=DOUBLE},#{zwmc,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},SYSDATE,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{zgid,jdbcType=VARCHAR},#{bhzh,jdbcType=VARCHAR},#{bhzt,jdbcType=VARCHAR},#{bhzc,jdbcType=VARCHAR},#{bhzs,jdbcType=VARCHAR},#{mczt,jdbcType=VARCHAR},#{mczh,jdbcType=VARCHAR},#{mczc,jdbcType=VARCHAR},#{mczs,jdbcType=VARCHAR})
+		INSERT INTO CFPA_ZW_JBXX(uuid,zwh,zwlb,cklx,zwmj,zwzt,qyid,zwkd,zwcd,zwmc,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,zgid,bhzh,bhzt,bhzc,bhzs,mczt,mczh,mczc,mczs)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{zwh,jdbcType=VARCHAR},#{zwlb,jdbcType=VARCHAR},#{cklx,jdbcType=VARCHAR},#{zwmj,jdbcType=DOUBLE},#{zwzt,jdbcType=VARCHAR},#{qyid,jdbcType=VARCHAR},#{zwkd,jdbcType=DOUBLE},#{zwcd,jdbcType=DOUBLE},#{zwmc,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},SYSDATE,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{zgid,jdbcType=VARCHAR},#{bhzh,jdbcType=VARCHAR},#{bhzt,jdbcType=VARCHAR},#{bhzc,jdbcType=VARCHAR},#{bhzs,jdbcType=VARCHAR},#{mczt,jdbcType=VARCHAR},#{mczh,jdbcType=VARCHAR},#{mczc,jdbcType=VARCHAR},#{mczs,jdbcType=VARCHAR})
 	 </insert>
 
 	<!--7.批量插入-->
 	<insert  id="doBatchInsertByList"  parameterType="java.util.List"> 
-		INSERT INTO CFPA_ZW_JBXX(uuid,zwh,zwlb,zwmj,zwzt,qyid,zwkd,zwcd,zwmc,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,zgid,bhzh,bhzt,bhzc,bhzs,mczt,mczh,mczc,mczs)
+		INSERT INTO CFPA_ZW_JBXX(uuid,zwh,zwlb,cklx,zwmj,zwzt,qyid,zwkd,zwcd,zwmc,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,zgid,bhzh,bhzt,bhzc,bhzs,mczt,mczh,mczc,mczs)
 		SELECT SYS_GUID() uuid, A.* 
 		FROM ( 
 		<foreach collection="list" item="item" index="index" separator="UNION ALL" >
 		SELECT
-			#{item.uuid,jdbcType=VARCHAR} uuid,#{item.zwh,jdbcType=VARCHAR} zwh,#{item.zwlb,jdbcType=VARCHAR} zwlb,#{item.zwmj,jdbcType=DOUBLE} zwmj,#{item.zwzt,jdbcType=VARCHAR} zwzt,#{item.qyid,jdbcType=VARCHAR} qyid,#{item.zwkd,jdbcType=DOUBLE} zwkd,#{item.zwcd,jdbcType=DOUBLE} zwcd,#{item.zwmc,jdbcType=VARCHAR} zwmc,'N' delete_flag,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.zgid,jdbcType=VARCHAR} zgid,#{item.bhzh,jdbcType=VARCHAR} bhzh,#{item.bhzt,jdbcType=VARCHAR} bhzt,#{item.bhzc,jdbcType=VARCHAR} bhzc,#{item.bhzs,jdbcType=VARCHAR} bhzs,#{item.mczt,jdbcType=VARCHAR} mczt,#{item.mczh,jdbcType=VARCHAR} mczh,#{item.mczc,jdbcType=VARCHAR} mczc,#{item.mczs,jdbcType=VARCHAR} mczs
+			#{item.uuid,jdbcType=VARCHAR} uuid,#{item.zwh,jdbcType=VARCHAR} zwh,#{item.zwlb,jdbcType=VARCHAR} zwlb,#{item.cklx,jdbcType=VARCHAR} cklx,#{item.zwmj,jdbcType=DOUBLE} zwmj,#{item.zwzt,jdbcType=VARCHAR} zwzt,#{item.qyid,jdbcType=VARCHAR} qyid,#{item.zwkd,jdbcType=DOUBLE} zwkd,#{item.zwcd,jdbcType=DOUBLE} zwcd,#{item.zwmc,jdbcType=VARCHAR} zwmc,'N' delete_flag,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.zgid,jdbcType=VARCHAR} zgid,#{item.bhzh,jdbcType=VARCHAR} bhzh,#{item.bhzt,jdbcType=VARCHAR} bhzt,#{item.bhzc,jdbcType=VARCHAR} bhzc,#{item.bhzs,jdbcType=VARCHAR} bhzs,#{item.mczt,jdbcType=VARCHAR} mczt,#{item.mczh,jdbcType=VARCHAR} mczh,#{item.mczc,jdbcType=VARCHAR} mczc,#{item.mczs,jdbcType=VARCHAR} mczs
 		FROM DUAL
 		</foreach>
 		) A
@@ -192,6 +200,7 @@
 			<if test="uuid != null">uuid=#{uuid},</if>
 			<if test="zwh != null">zwh=#{zwh},</if>
 			<if test="zwlb != null">zwlb=#{zwlb},</if>
+			<if test="cklx != null">cklx=#{cklx},</if>
 			<if test="zwmj != null">zwmj=#{zwmj},</if>
 			<if test="zwzt != null">zwzt=#{zwzt},</if>
 			<if test="qyid != null">qyid=#{qyid},</if>
@@ -223,15 +232,16 @@
 
 	<!--10.批量修改-->
 	<update id="doBatchUpdateByList"  parameterType="java.util.List">
-		INSERT INTO CFPA_ZW_JBXX(uuid,zwh,zwlb,zwmj,zwzt,qyid,zwkd,zwcd,zwmc,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,zgid,bhzh,bhzt,bhzc,bhzs,mczt,mczh,mczc,mczs)
+		INSERT INTO CFPA_ZW_JBXX(uuid,zwh,zwlb,cklx,zwmj,zwzt,qyid,zwkd,zwcd,zwmc,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,zgid,bhzh,bhzt,bhzc,bhzs,mczt,mczh,mczc,mczs)
 		VALUES
 		<foreach collection="list" item="item" index="index" separator="," >
-			#{item.uuid,jdbcType=VARCHAR} uuid,#{item.zwh,jdbcType=VARCHAR} zwh,#{item.zwlb,jdbcType=VARCHAR} zwlb,#{item.zwmj,jdbcType=DOUBLE} zwmj,#{item.zwzt,jdbcType=VARCHAR} zwzt,#{item.qyid,jdbcType=VARCHAR} qyid,#{item.zwkd,jdbcType=DOUBLE} zwkd,#{item.zwcd,jdbcType=DOUBLE} zwcd,#{item.zwmc,jdbcType=VARCHAR} zwmc,'N' delete_flag,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.zgid,jdbcType=VARCHAR} zgid,#{item.bhzh,jdbcType=VARCHAR} bhzh,#{item.bhzt,jdbcType=VARCHAR} bhzt,#{item.bhzc,jdbcType=VARCHAR} bhzc,#{item.bhzs,jdbcType=VARCHAR} bhzs,#{item.mczt,jdbcType=VARCHAR} mczt,#{item.mczh,jdbcType=VARCHAR} mczh,#{item.mczc,jdbcType=VARCHAR} mczc,#{item.mczs,jdbcType=VARCHAR} mczs
+			#{item.uuid,jdbcType=VARCHAR} uuid,#{item.zwh,jdbcType=VARCHAR} zwh,#{item.zwlb,jdbcType=VARCHAR} zwlb,#{item.cklx,jdbcType=VARCHAR} cklx,#{item.zwmj,jdbcType=DOUBLE} zwmj,#{item.zwzt,jdbcType=VARCHAR} zwzt,#{item.qyid,jdbcType=VARCHAR} qyid,#{item.zwkd,jdbcType=DOUBLE} zwkd,#{item.zwcd,jdbcType=DOUBLE} zwcd,#{item.zwmc,jdbcType=VARCHAR} zwmc,'N' delete_flag,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.zgid,jdbcType=VARCHAR} zgid,#{item.bhzh,jdbcType=VARCHAR} bhzh,#{item.bhzt,jdbcType=VARCHAR} bhzt,#{item.bhzc,jdbcType=VARCHAR} bhzc,#{item.bhzs,jdbcType=VARCHAR} bhzs,#{item.mczt,jdbcType=VARCHAR} mczt,#{item.mczh,jdbcType=VARCHAR} mczh,#{item.mczc,jdbcType=VARCHAR} mczc,#{item.mczs,jdbcType=VARCHAR} mczs
 		</foreach>
 		ON DUPLICATE KEY UPDATE   
 			uuid = VALUES(uuid),
 			zwh = VALUES(zwh),
 			zwlb = VALUES(zwlb),
+			cklx = VALUES(cklx),
 			zwmj = VALUES(zwmj),
 			zwzt = VALUES(zwzt),
 			qyid = VALUES(qyid),
@@ -271,16 +281,20 @@
 	<!--4.按条件查询记录-->
 	<select id="doSearchListQyByVO" parameterType="ZwjbxxVO"  resultType="ZwjbxxVO">
 		SELECT
-		<include refid="SQL_CONTENT"/> ,q.zwgsmc as qymc
+		<include refid="SQL_CONTENT"/> ,
+		(CASE sa.usertype WHEN 'CHN' THEN q.zwgsmc WHEN 'ENG' THEN q.ywgsmc ELSE '' END) qymc
 		FROM CFPA_ZW_JBXX t
 		left join CFPA_QY_JBXX q
 		on t.qyid = q.qyid and q.DELETE_FLAG = 'N'
+		left join sys_account sa
+		on sa.userid = q.userid and sa.DELETE_FLAG = 'N'
 		WHERE t.DELETE_FLAG = 'N'
 		<if test="zgid == null or zgid == '' ">
 			and  t.reserve1 is not null
 		</if>
 		<if test="qymc != null and qymc != '' ">
-			and q.zwgsmc LIKE concat(concat('%',#{qymc}),'%') ESCAPE '\'
+			and (q.zwgsmc LIKE concat(concat('%',#{qymc}),'%') ESCAPE '\' and sa.usertype = 'CHN')
+			or (q.ywgsmc LIKE concat(concat('%',#{qymc}),'%') ESCAPE '\' and sa.usertype = 'ENG')
 		</if>
 		<include refid="SQL_CONDITION"/>
 		ORDER BY T.CJSJ
