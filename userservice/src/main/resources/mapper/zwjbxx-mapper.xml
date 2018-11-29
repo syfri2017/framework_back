@@ -142,7 +142,7 @@
 
 	<!--4.按条件查询记录-->
 	<select id="doSearchListByVO" parameterType="ZwjbxxVO"  resultType="ZwjbxxVO"> 
-		SELECT 
+		SELECT
 			<include refid="SQL_CONTENT"/>
 		FROM CFPA_ZW_JBXX t  WHERE t.DELETE_FLAG = 'N'
 		<if test="zgid == null or zgid == '' ">

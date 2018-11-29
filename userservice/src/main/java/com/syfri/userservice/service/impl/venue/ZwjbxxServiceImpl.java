@@ -32,4 +32,8 @@ public class ZwjbxxServiceImpl extends BaseServiceImpl<ZwjbxxVO> implements Zwjb
 		PageInfo<ZwjbxxVO> page = new PageInfo<ZwjbxxVO>(list);
 		return page;
 	}
+
+	public List doSearchListQyByVO(ZwjbxxVO vo) {
+		return zwjbxxDAO.doSearchListQyByVO(vo);
+	}
 }

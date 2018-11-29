@@ -37,12 +37,17 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		return this.zwjbxxService;
 	}
 
+	/**
+	 * 获取所有企业信息包含企业名称
+	 * @param vo
+	 * @return
+	 */
 	@PostMapping("doSearchListByVO")
 	public @ResponseBody
 	ResultVO doSearchListByVO(@RequestBody ZwjbxxVO vo ) {
 		ResultVO resultVO = ResultVO.build();
 		try {
-			resultVO.setResult(zwjbxxService.doSearchListByVO(vo));
+			resultVO.setResult(zwjbxxService.doSearchListQyByVO(vo));
 		} catch (Exception e) {
 			logger.error("{}",e.getMessage());
 		}
