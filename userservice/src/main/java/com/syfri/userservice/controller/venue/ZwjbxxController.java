@@ -160,9 +160,10 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 				}
 			}
 		} catch (Exception e) {
-			logger.error("{}",e.getMessage());
+			e.printStackTrace();
 			resultVO.setMsg("选择展位失败！");
 			resultVO.setCode(EConstants.CODE.FAILURE);
+			return 	resultVO;
 		}
 		return 	resultVO;
 	}

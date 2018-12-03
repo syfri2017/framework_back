@@ -162,7 +162,7 @@
 		on t.qyid = q.qyid and q.DELETE_FLAG = 'N'
 		left join sys_account sa
 		on sa.userid = q.userid and sa.DELETE_FLAG = 'N'
-		WHERE t.DELETE_FLAG = 'N'  t.UUID = #{value}
+		WHERE t.DELETE_FLAG = 'N' and  t.UUID = #{value}
 	</select>
 
 	<!--6.按照VO插入-->
