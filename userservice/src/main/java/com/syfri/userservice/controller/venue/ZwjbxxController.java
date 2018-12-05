@@ -8,10 +8,12 @@ import com.syfri.userservice.model.prediction.QyjbxxVO;
 import com.syfri.userservice.model.venue.ZgjbxxVO;
 import com.syfri.userservice.service.prediction.QyjbxxService;
 import com.syfri.userservice.service.venue.ZgjbxxService;
+import com.syfri.userservice.utils.CurrentUserUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.syfri.userservice.model.venue.ZwjbxxVO;
@@ -35,12 +37,17 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		return this.zwjbxxService;
 	}
 
+	/**
+	 * 获取所有企业信息包含企业名称
+	 * @param vo
+	 * @return
+	 */
 	@PostMapping("doSearchListByVO")
 	public @ResponseBody
 	ResultVO doSearchListByVO(@RequestBody ZwjbxxVO vo ) {
 		ResultVO resultVO = ResultVO.build();
 		try {
-			resultVO.setResult(zwjbxxService.doSearchListByVO(vo));
+			resultVO.setResult(zwjbxxService.doSearchListQyByVO(vo));
 		} catch (Exception e) {
 			logger.error("{}",e.getMessage());
 		}
@@ -58,18 +65,11 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 	ResultVO doSearchListQyByVO(@RequestBody ZwjbxxVO vo ) {
 		ResultVO resultVO = ResultVO.build();
 		try {
-			PageInfo<ZwjbxxVO> pis= zwjbxxService.doSearchPage(vo);
+			PageInfo<ZwjbxxVO> pis= zwjbxxService.doSearchQyPage(vo);
 			List<ZwjbxxVO> zwjbxxVOs=pis.getList();
 			for(ZwjbxxVO zwjbxxVO:zwjbxxVOs){
 				//匹配展位状态代码名称
 				zwjbxxVO.setZwztmc(zwzt2Mc(zwjbxxVO.getZwzt()));
-				//添加企业名称
-				if(zwjbxxVO.getQyid()!=null&&!"".equals(zwjbxxVO.getQyid())){
-					QyjbxxVO qyjbxx=qyjbxxService.doFindById(zwjbxxVO.getQyid());
-					if(qyjbxx!=null){
-						zwjbxxVO.setQymc(qyjbxx.getZwgsmc());
-					}
-				}
 			}
 			resultVO.setResult(pis);
 		} catch (Exception e) {
@@ -132,18 +132,41 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 	 * @throws Exception
 	 */
 	@PostMapping("doUpdateByVO")
-	public @ResponseBody ResultVO doUpdateByVO(@RequestBody ZwjbxxVO vo,QyjbxxVO qy) throws Exception{
+	@Transactional
+	public @ResponseBody ResultVO doUpdateByVO(@RequestBody ZwjbxxVO vo) throws Exception{
 		ResultVO resultVO = ResultVO.build();
 		try {
+			//判断前台是否传过来UUID值
 			if(vo.getUuid()!=null&&!"".equals(vo.getUuid())){
+				String userId=CurrentUserUtil.getCurrentUserId();
+				QyjbxxVO qy =new QyjbxxVO();
+				qy.setUserid(userId);
 				QyjbxxVO qvo=qyjbxxService.doFindByVO(qy);
-				vo.setQyid(qvo.getQyid());
-				zwjbxxService.doUpdateByVO(vo);
+				//判断是否存在企业信息
+				if(qvo.getQyid()!=null&&!"".equals(qvo.getQyid())){
+					ZwjbxxVO dbzw=zwjbxxService.doFindById(vo.getUuid());
+					//判断是否展位是未预定状态
+					if(dbzw.getZwzt()!=null&&"normal".equals(dbzw.getZwzt())){
+						vo.setQyid(qvo.getQyid());
+						vo.setZwzt("bespoke");
+						zwjbxxService.doUpdateByVO(vo);
+						ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
+						resultVO.setResult(newdbzw);
+						resultVO.setMsg("success");
+					}else{
+						resultVO.setResult(dbzw);
+						resultVO.setMsg("展位已经被预定，请重新选择！");
+					}
+				}
 			}
 		} catch (Exception e) {
-			logger.error("{}",e.getMessage());
+			e.printStackTrace();
+			resultVO.setMsg("选择展位失败！");
 			resultVO.setCode(EConstants.CODE.FAILURE);
+			return 	resultVO;
 		}
 		return 	resultVO;
 	}
+
+
 }

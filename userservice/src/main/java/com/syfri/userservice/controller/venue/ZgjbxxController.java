@@ -6,6 +6,8 @@ import com.syfri.baseapi.utils.MathUtil;
 import com.syfri.userservice.config.properties.MailExportProperties;
 import com.syfri.userservice.config.properties.MailProperties;
 import com.syfri.userservice.model.prediction.QyjbxxVO;
+import com.syfri.userservice.model.system.MailVO;
+import com.syfri.userservice.service.impl.system.MailServiceImpl;
 import com.syfri.userservice.service.prediction.QyjbxxService;
 import com.syfri.userservice.utils.Base64ImageUtil;
 import com.syfri.userservice.utils.CurrentUserUtil;
@@ -14,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,32 +40,48 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 		return this.zgjbxxService;
 	}
 	@Autowired
-	private JavaMailSender jms;
+	private JavaMailSenderImpl jms;
 	@Autowired
 	private MailExportProperties mp;
+	@Autowired
+	private MailServiceImpl mailServiceImpl;
 
 	@RequestMapping("doExportTp")
-	public Object doExportTp( QyjbxxVO qy
-			,ZgjbxxVO vo){
+	public @ResponseBody Object doExportTp(@RequestBody ZgjbxxVO vo
+			){
 		if(vo!=null) {
+			QyjbxxVO qy=new QyjbxxVO();
 			qy.setUserid(CurrentUserUtil.getCurrentUserId());
 			ResultVO resultVO = ResultVO.build();
 			List<ZgjbxxVO> ss = zgjbxxService.doSearchHbTpListByVO(vo);
 			QyjbxxVO qvo=qyjbxxService.doFindByVO(qy);
-			if(ss.size()>1){
+			if(ss.size()>0){
 				ZgjbxxVO evo=ss.get(0);
+				String zgzwstr=evo.getZgzwhbtpStr();
+				if(zgzwstr==null){
+					resultVO.setMsg("画布为空！");
+					return resultVO;
+				}
+				if(zgzwstr!=null&&zgzwstr.startsWith("data:image/png;base64,")){
+					zgzwstr=zgzwstr.replace("data:image/png;base64,","");
+				}
 				MimeMessage message = jms.createMimeMessage();
+				MailVO mv=new MailVO();
+				try {
+					//获取可用邮箱
+					mv=mailServiceImpl.setJavaMailSender(jms);
+				} catch (Exception e) {
+					e.printStackTrace();
+					resultVO.setMsg(e.getMessage());
+					return resultVO;
+				}
 				try {
 					//true表示需要创建一个multipart message
 					MimeMessageHelper helper = new MimeMessageHelper(message, true);
-					helper.setFrom(mp.getFrom());
+					helper.setFrom(mv.getUsername());
 					helper.setTo(qvo.getDzyx());
 					helper.setSubject(mp.getSubject().replace("s%",evo.getZgmc()));
 					helper.setText(mp.getText(), true);
-					String zgzwstr=evo.getZgzwhbtpStr();
-					if(zgzwstr.startsWith("data:image/png;base64,")){
-						zgzwstr.replace("data:image/png;base64,","");
-					}
 					helper.addAttachment(mp.getPicName().replace("s%",evo.getZgmc())
 							, Base64ImageUtil.decodeBase64ToImage(zgzwstr,evo.getUuid()));
 					jms.send(message);

@@ -10,7 +10,8 @@ public class ZwjbxxVO extends ValueObject implements Serializable{
 
 	private String uuid;	//主键
 	private String zwh;	//展位号
-	private String zwlb;	//展位类别
+	private String zwlb;	//展位类别,展位类型
+	private String cklx;	//出口类型
 	private String zwmj;	//展位面积
 	private String zwzt;	//展位状态(0未交费，1已预订，2已缴费，3其他)
 	private String qyid;	//企业ID
@@ -37,8 +38,16 @@ public class ZwjbxxVO extends ValueObject implements Serializable{
 	private String mczh;	//名称字体
 	private String mczc;	//名称字粗
 	private String mczs;	//名称字色
-	private String qymc;	//名称字色
+	private String qymc;	//企业名称
 	private String zwztmc; //展位状态
+
+	public String getCklx() {
+		return cklx;
+	}
+
+	public void setCklx(String cklx) {
+		this.cklx = cklx;
+	}
 
 	public String getZwztmc() {
 		return zwztmc;
