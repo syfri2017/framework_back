@@ -38,6 +38,29 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 	}
 
 	/**
+	 *获取当前用户选择展位信息
+	 * @return
+	 */
+	@PostMapping("getSelectedPos")
+	public @ResponseBody
+	ResultVO getSelectedPos() {
+		ResultVO resultVO = ResultVO.build();
+		try {
+			QyjbxxVO qy=new QyjbxxVO();
+			qy.setUserid(CurrentUserUtil.getCurrentUserId());
+			QyjbxxVO qvo=qyjbxxService.doFindByVO(qy);
+			if(qvo!=null&&qvo.getQyid()!=null){
+				ZwjbxxVO vo=new ZwjbxxVO();
+				vo.setQyid(qvo.getQyid());
+				List<ZwjbxxVO> dvo=zwjbxxService.doSearchListByVO(vo);
+				resultVO.setResult(dvo);
+			}
+		} catch (Exception e) {
+			logger.error("{}",e.getMessage());
+		}
+		return resultVO;
+	}
+	/**
 	 * 获取所有企业信息包含企业名称
 	 * @param vo
 	 * @return
