@@ -205,4 +205,25 @@
 			WHERE  (STATE='Y' OR  TERM &lt; trunc(sysdate))
 			AND t.DELETE_FLAG = 'N' order by t.create_time
 	</select>
+
+	<!--13.查询邮箱表格数据-->
+	<select id="doFindMail" parameterType="MailVO" resultType="MailVO">
+	   SELECT
+	   <!--<include refid="SQL_CONTENT"/>-->
+		t.uuid uuid,
+		t.username username,
+		t.password password,
+		t.encoding encoding,
+		t.host host,
+		t.port port,
+		t.protocol protocol,
+		TO_CHAR(t.term,'yyyy-MM-dd HH24:mi:ss') term
+		FROM SYS_CONFIG_MAIL t
+		WHERE t.DELETE_FLAG = 'N'
+	   <include refid="SQL_CONDITION"/>
+		ORDER BY t.username
+	</select>
+
+
+
 </mapper>
