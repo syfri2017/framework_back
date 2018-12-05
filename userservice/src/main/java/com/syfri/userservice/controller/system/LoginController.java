@@ -7,7 +7,10 @@ import com.syfri.userservice.utils.ImageCodeUtil;
 import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.subject.Subject;
+import org.crazycake.shiro.RedisSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +26,7 @@ import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Api(value = "登录",tags = "登录API",description = "登录")
 @Controller
@@ -37,14 +37,8 @@ public class LoginController {
 	@Autowired
 	protected Environment environment;
 
-//	@ModelAttribute
-//	public void Model(Model model){
-//		if (environment.containsProperty("server.context-path")) {
-//			model.addAttribute("contextPath", environment.getProperty("server.context-path"));
-//		}else{
-//			model.addAttribute("contextPath", "/");
-//		}
-//	}
+	@Autowired
+	private RedisSessionDAO redisSessionDAO;
 
 	@RequestMapping("/home")
 	public String bigscreen(Model model, @RequestParam(value="index", required = false) String index){
@@ -68,31 +62,6 @@ public class LoginController {
 		}
 		return "/login";
 	}
-
-	/**
-	@PostMapping("/login2")
-	public @ResponseBody String login(HttpServletRequest request, @RequestBody AccountVO vo){
-		logger.info("-----POST请求方式登录-----");
-		Subject currentUser = SecurityUtils.getSubject();
-		//测试当前用户是否被验证
-		if(!currentUser.isAuthenticated()){
-			UsernamePasswordToken token = new UsernamePasswordToken(vo.getUsername(), vo.getPassword());
-			String code = (String)request.getSession().getAttribute("code");
-			if(code != null && code.equals(vo.getValidateCode())){
-				try{
-					currentUser.login(token);
-				}catch(AuthenticationException e){
-					System.out.println("登录失败--->" + e.getMessage());
-					return "falseDLZH";
-				}
-			}else{
-				return "falseYZM";
-			}
-		}
-		return "success";
-	}
-	*/
-
 
 	/**
 	 * 此方法不处理登录成功的情况，由shiro进行处理
@@ -192,5 +161,25 @@ public class LoginController {
 		Subject subject = SecurityUtils.getSubject();
 		subject.logout();
 		return "redirect:/loginENG";
+	}
+
+	/**
+	 * 查看Session是否有效
+	 * by li.xue 2018/12/4 9:38
+	 */
+	@GetMapping("/getSession")
+	public @ResponseBody String getSession(HttpServletRequest request){
+		String sessionId = request.getSession().getId();
+		Session session;
+		try{
+			session = redisSessionDAO.readSession(sessionId);
+			Collection collection = session.getAttributeKeys();
+			if(collection.size() == 0){
+				return "0";
+			}
+		}catch(UnknownSessionException e){
+			return "0";
+		}
+		return "1";
 	}
 }

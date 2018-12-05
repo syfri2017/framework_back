@@ -9,4 +9,8 @@ import java.util.List;
 public interface MailDAO extends BaseDAO<MailVO>{
     //查询当前可用邮箱
     public List<MailVO> doSearchAbleListByVO(MailVO vo);
+
+    /*查询邮箱表格数据*/
+    List<MailVO> doFindMail(MailVO mailVO);
+
 }
