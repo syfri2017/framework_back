@@ -89,13 +89,14 @@ spring:
   redis:
     host: 10.119.119.233
     port: 6379
-    expire: 1800
+    expire: 7200000
     timeout: 0
   http:
     multipart:
       max-file-size: 20MB
       max-request-size: 100MB
-
+  session:
+    timeout: 7200000
 #------------------------------------------------------------
 #pagehelper分页插件设置
 pagehelper:
