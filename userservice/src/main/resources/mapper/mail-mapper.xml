@@ -7,7 +7,7 @@
 		 and t.uuid = #{uuid}
 		</if>
 		<if test="username != null and username != '' ">
-		 and t.username = #{username}
+		 and t.username LIKE concat(concat('%',#{username}),'%') ESCAPE '\'
 		</if>
 		<if test="password != null and password != '' ">
 		 and t.password = #{password}
