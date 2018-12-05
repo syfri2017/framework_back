@@ -1,6 +1,7 @@
 package com.syfri.userservice.service.impl.system;
 
 import com.syfri.userservice.utils.CurrentUserUtil;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,31 @@ public class MailServiceImpl extends BaseServiceImpl<MailVO> implements MailServ
 		return mailDAO;
 	}
 
+	/*--查询：邮箱表格数据--*/
+	@Override
+	public List<MailVO> doFindMail(MailVO mailVO){ return mailDAO.doFindMail(mailVO); }
+
+	/*-- 删除：邮箱表格数据 --*/
+	@Override
+	public int doDeleteMail(List<MailVO> list){
+		int num = 0;
+		for(MailVO vo: list){
+			String mailid = vo.getUuid();
+			//删除邮件数据表
+			mailDAO.doDeleteById(mailid);
+			num++;
+		}
+		return num;
+	}
+
+	/*--新增：邮箱表格数据--*/
+	public MailVO doInsertMail(MailVO mailVO){
+		mailVO.setCreateId(CurrentUserUtil.getCurrentUserId());
+		mailVO.setCreateName(CurrentUserUtil.getCurrentUserName());
+		mailDAO.doInsertByVO(mailVO);
+		return mailVO;
+	}
+
 	@Override
 	public MailVO setJavaMailSender(JavaMailSenderImpl javaMailSender) throws Exception{
 		List<MailVO> mvos=mailDAO.doSearchAbleListByVO(null);
@@ -43,6 +69,7 @@ public class MailServiceImpl extends BaseServiceImpl<MailVO> implements MailServ
 			throw new RuntimeException("当前无可用邮箱！请联系管理员！");
 		}
 	}
+
 	public void doDisAbleMail(MailVO mailVO){
 		if(mailVO!=null&& mailVO.getUuid()!=null&& mailVO.getUuid().length()>0){
 			mailVO.setStatue("N");
