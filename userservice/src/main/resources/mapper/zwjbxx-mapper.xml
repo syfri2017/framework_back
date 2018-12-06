@@ -278,7 +278,7 @@
 		WHERE t.DELETE_FLAG = 'N' 
 		<include refid="SQL_CONDITION"/>
 	</select>
-	<!--4.按条件查询记录-->
+	<!--12.按条件查询记录-->
 	<select id="doSearchListQyByVO" parameterType="ZwjbxxVO"  resultType="ZwjbxxVO">
 		SELECT
 		<include refid="SQL_CONTENT"/> ,
@@ -293,8 +293,8 @@
 			and  t.reserve1 is not null
 		</if>
 		<if test="qymc != null and qymc != '' ">
-			and (q.zwgsmc LIKE concat(concat('%',#{qymc}),'%') ESCAPE '\' and sa.usertype = 'CHN')
-			or (q.ywgsmc LIKE concat(concat('%',#{qymc}),'%') ESCAPE '\' and sa.usertype = 'ENG')
+			and ((q.zwgsmc LIKE concat(concat('%',#{qymc}),'%') ESCAPE '\' and sa.usertype = 'CHN')
+			or (q.ywgsmc LIKE concat(concat('%',#{qymc}),'%') ESCAPE '\' and sa.usertype = 'ENG'))
 		</if>
 		<include refid="SQL_CONDITION"/>
 		ORDER BY T.CJSJ
