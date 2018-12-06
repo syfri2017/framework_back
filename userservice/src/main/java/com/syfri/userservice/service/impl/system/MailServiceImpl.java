@@ -46,10 +46,20 @@ public class MailServiceImpl extends BaseServiceImpl<MailVO> implements MailServ
 	}
 
 	/*--新增：邮箱表格数据--*/
+	@Override
 	public MailVO doInsertMail(MailVO mailVO){
 		mailVO.setCreateId(CurrentUserUtil.getCurrentUserId());
 		mailVO.setCreateName(CurrentUserUtil.getCurrentUserName());
 		mailDAO.doInsertByVO(mailVO);
+		return mailVO;
+	}
+
+	/*--修改：修改邮箱表格数据--*/
+	@Override
+	public MailVO doUpdateMail(MailVO mailVO){
+		mailVO.setAlterId(CurrentUserUtil.getCurrentUserId());
+		mailVO.setAlterName(CurrentUserUtil.getCurrentUserName());
+		mailDAO.doUpdateByVO(mailVO);
 		return mailVO;
 	}
 
