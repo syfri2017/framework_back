@@ -13,4 +13,6 @@ public interface MailDAO extends BaseDAO<MailVO>{
     /*查询邮箱表格数据*/
     List<MailVO> doFindMail(MailVO mailVO);
 
+
+
 }
