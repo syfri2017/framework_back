@@ -28,7 +28,7 @@ public class MailController  extends BaseController<MailVO>{
 	}
 
 	/**
-	 * 邮箱表格数据获取
+	 * 邮箱表格数据查询
 	 */
 	@ApiOperation(value="邮箱表格数据",notes="列表信息")
 	@ApiImplicitParam(name="vo",value="邮箱")
@@ -85,4 +85,24 @@ public class MailController  extends BaseController<MailVO>{
 		return resultVO;
 
 	}
+
+	/**
+	 * 修改邮箱表格数据
+	 * **/
+	@ApiOperation(value="修改邮箱表格数据",notes="修改")
+	@ApiImplicitParam(name="vo",value="邮箱")
+	@RequiresPermissions("system/mail:edit")
+	@PostMapping("/updateByVO")
+	public @ResponseBody ResultVO updataByVO(@RequestBody MailVO mailVO){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(mailService.doUpdateMail(mailVO));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+
+		return resultVO;
+	}
+
 }
