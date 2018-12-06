@@ -19,4 +19,8 @@ public interface MailService  extends BaseService<MailVO>{
     /*--新增：新增邮箱表格数据--*/
     MailVO doInsertMail(MailVO mailVO);
 
+    /*--修改：修改邮箱表格数据 --*/
+    MailVO doUpdateMail(MailVO mailVO);
+
+
 }
