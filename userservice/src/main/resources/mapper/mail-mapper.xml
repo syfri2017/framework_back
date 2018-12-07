@@ -221,7 +221,7 @@
 		FROM SYS_CONFIG_MAIL t
 		WHERE t.DELETE_FLAG = 'N'
 	   <include refid="SQL_CONDITION"/>
-		ORDER BY t.username
+		ORDER BY t.create_time,t.alter_time
 	</select>
 
 
