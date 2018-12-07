@@ -34,8 +34,8 @@ public class ZwjbxxVO extends ValueObject implements Serializable{
 	private String bhzt;	//编号字体
 	private String bhzc;	//编号字粗
 	private String bhzs;	//编号字色
-	private String mczt;	//名称字号
-	private String mczh;	//名称字体
+	private String mczt;	//名称字体
+	private String mczh;	//名称字号
 	private String mczc;	//名称字粗
 	private String mczs;	//名称字色
 	private String qymc;	//企业名称
