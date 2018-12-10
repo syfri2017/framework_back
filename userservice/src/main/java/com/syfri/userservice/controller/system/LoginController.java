@@ -1,6 +1,8 @@
 package com.syfri.userservice.controller.system;
 
 import com.syfri.baseapi.model.ResultVO;
+import com.syfri.userservice.config.InfoCollectToken;
+import com.syfri.userservice.config.LoginType;
 import com.syfri.userservice.model.system.*;
 import com.syfri.userservice.utils.CurrentUserUtil;
 import com.syfri.userservice.utils.ImageCodeUtil;
@@ -61,6 +63,64 @@ public class LoginController {
 			return "redirect:/index";
 		}
 		return "/login";
+	}
+
+	@PostMapping("/login3")
+	public @ResponseBody Map<String,Object> login3(HttpServletRequest request,@RequestBody Map<String,Object> map){
+		logger.info("-----POST请求方式登录333-----");
+		Subject subject = SecurityUtils.getSubject();
+		//测试当前用户是否被验证
+		int code;
+		String msg;
+		String messages;
+		Map<String,Object> data = new HashMap();
+		Map<String,Object> result = new HashMap();
+		if (!subject.isAuthenticated()) {
+			String validateCode = (String)request.getSession().getAttribute("validateCode");
+			if (LoginType.MYSHIRO.toString().equals(map.get("loginType")) && validateCode != null && !validateCode.equals(map.get("validateCode"))){
+				code = 400;
+				msg = "kaptchaValidateFailed --> 验证码错误";
+				messages = "kaptcha";
+			}else {
+				InfoCollectToken token;
+				token = new InfoCollectToken((String)map.get("username"), (String)map.get("password"), (String)map.get("loginType"));
+				try {
+					subject.login(token);
+					code = 0;
+					msg = "登陆成功";
+					messages = "success";
+					ShiroUser user = CurrentUserUtil.getCurrentUser();
+					data.put("uuid",user.getUserid());
+					data.put("name",user.getUsername());
+					data.put("token", subject.getSession().getId());
+				} catch (UnknownAccountException e) {
+					code = 400;
+					msg = "UnknownAccountException --> 账号不存在";
+					messages = "unknown";
+				} catch (IncorrectCredentialsException e) {
+					code = 400;
+					msg = "IncorrectCredentialsException --> 密码不正确";
+					messages = "incorrect";
+				} catch (ExcessiveAttemptsException e) {
+					code = 400;
+					msg = "ExcessiveAttemptsException --> 密码输入错误次数超过5次";
+					messages = "excessive";
+				}
+			}
+		}else{
+			code = 0;
+			msg = "Session有效";
+			messages = "session";
+			ShiroUser user = CurrentUserUtil.getCurrentUser();
+			data.put("uuid",user.getUserid());
+			data.put("name",user.getUsername());
+			data.put("token", subject.getSession().getId());
+		}
+		logger.info(msg);
+		result.put("code",code);
+		result.put("msg", msg);
+		result.put("data",data);
+		return result;
 	}
 
 	/**
