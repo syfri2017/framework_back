@@ -191,5 +191,32 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		return 	resultVO;
 	}
 
-
+	/**
+	 * 取消展位选择
+	 * @param vo
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("doCancelByVO")
+	@Transactional
+	public @ResponseBody ResultVO doCancelByVO(@RequestBody ZwjbxxVO vo) throws Exception{
+		ResultVO resultVO = ResultVO.build();
+		try {
+			//判断前台是否传过来UUID值
+			if(vo.getUuid()!=null&&!"".equals(vo.getUuid())){
+				vo.setQyid("");
+				vo.setZwzt("normal");
+				zwjbxxService.doUpdateByVO(vo);
+				ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
+				resultVO.setResult(newdbzw);
+				resultVO.setMsg("success");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultVO.setMsg("选择展位失败！");
+			resultVO.setCode(EConstants.CODE.FAILURE);
+			return 	resultVO;
+		}
+		return 	resultVO;
+	}
 }
