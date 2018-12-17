@@ -7,8 +7,10 @@ import com.syfri.userservice.config.properties.MailExportProperties;
 import com.syfri.userservice.config.properties.MailProperties;
 import com.syfri.userservice.model.prediction.QyjbxxVO;
 import com.syfri.userservice.model.system.MailVO;
+import com.syfri.userservice.model.venue.ZwjbxxVO;
 import com.syfri.userservice.service.impl.system.MailServiceImpl;
 import com.syfri.userservice.service.prediction.QyjbxxService;
+import com.syfri.userservice.service.venue.ZwjbxxService;
 import com.syfri.userservice.utils.Base64ImageUtil;
 import com.syfri.userservice.utils.CurrentUserUtil;
 import io.swagger.annotations.ApiImplicitParam;
@@ -33,6 +35,8 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 
 	@Autowired
 	private ZgjbxxService zgjbxxService;
+	@Autowired
+	private ZwjbxxService zwjbxxService;
 	@Autowired
 	private QyjbxxService qyjbxxService;
 	@Override
@@ -133,6 +137,7 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 	public @ResponseBody ResultVO doInsertByVO(@RequestBody ZgjbxxVO vo) throws Exception{
 		ResultVO resultVO = ResultVO.build();
 		try {
+			//插入展馆数据
 			zgjbxxService.doInsertByVO(vo);
 		} catch (Exception e) {
 			logger.error("{}",e.getMessage());
@@ -155,6 +160,10 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 			for(ZgjbxxVO vo :voList){
 				vo.setDeleteFlag("Y");
 				sum = sum + zgjbxxService.doUpdateByVO(vo);
+				//删除展位
+				ZwjbxxVO zw=new ZwjbxxVO();
+				zw.setZgid(vo.getUuid());
+				zwjbxxService.doDeleteByVO(zw);
 			}
 			resultVO.setResult(sum);
 		} catch (Exception e) {

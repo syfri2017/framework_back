@@ -133,11 +133,13 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		try {
 			if(zwjbxxVOs.size()>0){
 				for(ZwjbxxVO vo : zwjbxxVOs){
+					//删除展位
+					ZwjbxxVO zw=new ZwjbxxVO();
+					zw.setZgid(vo.getZgid());
+					zwjbxxService.doDeleteByVO(zw);
 					if(vo.getUuid()!=null&&!vo.getUuid().equals("")){
-						zwjbxxService.doDeleteById(vo.getUuid());
 						vo.setUuid(null);
 					}
-
 					zwjbxxService.doInsertByVO(vo);
 				}
 			}

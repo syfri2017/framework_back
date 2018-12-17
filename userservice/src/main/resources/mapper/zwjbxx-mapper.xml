@@ -299,4 +299,14 @@
 		<include refid="SQL_CONDITION"/>
 		ORDER BY T.CJSJ
 	</select>
+	<!--9.按复合条件逻辑更新-->
+	<update  id="doDeleteByVO"  parameterType="ZwjbxxVO">
+		UPDATE   CFPA_ZW_JBXX T
+		SET
+			xgsj=sysdate,
+			delete_flag='Y'
+		WHERE t.DELETE_FLAG = 'N'
+		<include refid="SQL_CONDITION"/>
+	</update>
+
 </mapper>

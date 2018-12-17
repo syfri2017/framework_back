@@ -50,7 +50,7 @@ qycpjs:
 #spring
 spring:
   profiles:
-    active: dev
+    active: localhost
   druid:
     #配置druid连接池
     datasource:
@@ -87,7 +87,7 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
   redis:
-    host: 10.119.119.233
+    host: localhost
     port: 6379
     expire: 7200000
     timeout: 0
@@ -142,6 +142,21 @@ spring:
       username: XFXHZH
       password: XFXHZH
 
+
+  ##########################################################
+  ###################  正式环境的profile  ###################
+  ##########################################################
+---
+spring:
+  profiles: localhost
+  druid:
+    #配置druid连接池
+    datasource:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: oracle.jdbc.OracleDriver
+      url: jdbc:oracle:thin:@localhost:1521/XFXHDB
+      username: XFXHZH
+      password: XFXHZH
 #------------------------------------------------------------
 #swagger:
 #  title: springboot
