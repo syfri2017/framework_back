@@ -129,7 +129,7 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
             title=str;
             fileName = "统计分析-按产品类型统计" + System.currentTimeMillis() + ".xls";
             sheetName = "按产品类型统计";
-            content = new String[6][4];
+            content = new String[7][4];
             for (int i = 0; i < list.size(); i++) {
                 content[i] = new String[title.length];
                 QyzwyxVO obj = list.get(i);
