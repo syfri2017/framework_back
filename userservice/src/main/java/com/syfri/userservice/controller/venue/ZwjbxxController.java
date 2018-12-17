@@ -132,11 +132,11 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		ResultVO resultVO = ResultVO.build();
 		try {
 			if(zwjbxxVOs.size()>0){
+				//删除展位
+				ZwjbxxVO zw=new ZwjbxxVO();
+				zw.setZgid(zwjbxxVOs.get(0).getZgid());
+				zwjbxxService.doDeleteByVO(zw);
 				for(ZwjbxxVO vo : zwjbxxVOs){
-					//删除展位
-					ZwjbxxVO zw=new ZwjbxxVO();
-					zw.setZgid(vo.getZgid());
-					zwjbxxService.doDeleteByVO(zw);
 					if(vo.getUuid()!=null&&!vo.getUuid().equals("")){
 						vo.setUuid(null);
 					}

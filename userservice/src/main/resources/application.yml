@@ -50,7 +50,7 @@ qycpjs:
 #spring
 spring:
   profiles:
-    active: localhost
+    active: dev
   druid:
     #配置druid连接池
     datasource:
@@ -87,7 +87,7 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
   redis:
-    host: localhost
+    host: 10.119.119.233
     port: 6379
     expire: 7200000
     timeout: 0
