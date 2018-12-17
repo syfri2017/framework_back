@@ -69,6 +69,11 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 				if(zgzwstr!=null&&zgzwstr.startsWith("data:image/png;base64,")){
 					zgzwstr=zgzwstr.replace("data:image/png;base64,","");
 				}
+				ZwjbxxVO zwvo=new ZwjbxxVO();
+				zwvo.setQyid(qvo.getQyid());
+				//当前展商所选展位信息
+				List<ZwjbxxVO> dvo=zwjbxxService.doSearchListByVO(zwvo);
+
 				MimeMessage message = jms.createMimeMessage();
 				MailVO mv=new MailVO();
 				try {
