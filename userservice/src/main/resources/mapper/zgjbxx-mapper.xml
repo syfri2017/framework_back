@@ -143,7 +143,6 @@
 		UPDATE   CFPA_ZG_JBXX  
 		<set>
 			xgsj=sysdate,
-			<if test="uuid != null">uuid=#{uuid},</if>
 			<if test="zgtp != null">zgtp=#{zgtp},</if>
 			<if test="zgzwhb != null">zgzwhb=#{zgzwhb},</if>
 			<if test="zgzwhbtp != null">zgzwhbtp=#{zgzwhbtp},</if>
