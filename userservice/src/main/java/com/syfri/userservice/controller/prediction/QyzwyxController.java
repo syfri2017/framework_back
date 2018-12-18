@@ -144,7 +144,7 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
             title=str;
             fileName = "统计分析-按光地展位面积统计" + System.currentTimeMillis() + ".xls";
             sheetName = "按光地展位面积统计";
-            content = new String[5][2];
+            content = new String[6][2];
             for (int i = 0; i < list.size(); i++) {
                 content[i] = new String[title.length];
                 QyzwyxVO obj = list.get(i);
