@@ -572,4 +572,9 @@ public class CodelistServiceImpl extends BaseServiceImpl<CodelistVO> implements 
 		}
 		return codelistTrees;
 	}
+
+	/*--查询产品类型大类.--*/
+	public List<CodelistDetailVO> doFindCplxSelect(String codetype){
+		return codelistDAO.doFindCplxSelect(codetype);
+	}
 }

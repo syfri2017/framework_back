@@ -290,4 +290,12 @@
 		</if>
 		ORDER BY code_value
 	</select>
+
+	<!--查询产品类型大类-->
+	<select id="doFindCplxSelect" resultType="CodelistDetailVO" parameterType="String">
+		SELECT code_value codeValue,code_name codeName
+		FROM SYS_CODELIST_DETAIL t  WHERE t.DELETE_FLAG = 'N'
+		AND codeid = (SELECT codeid FROM SYS_CODELIST c WHERE c.DELETE_FLAG = 'N' AND codetype=#{value}) and SUBSTR(t.code_value,2,3)='000'
+		ORDER BY code_value
+	</select>
 </mapper>

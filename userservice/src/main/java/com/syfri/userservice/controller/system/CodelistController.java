@@ -488,4 +488,21 @@ public class CodelistController  extends BaseController<CodelistVO>{
 		}
 		return resultVO;
 	}
+
+	/**
+	 * 查询产品类型大类
+	 */
+	@ApiOperation(value="查询产品类型大类",notes="查询")
+	@ApiImplicitParam(name="codetype",value="代码类型")
+	@GetMapping("/getCplxSelect/{codetype}")
+	public @ResponseBody ResultVO getCplxSelect(@PathVariable String codetype){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(codelistService.doFindCplxSelect(codetype));
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }

@@ -2,6 +2,7 @@ package com.syfri.userservice.service.system;
 
 import com.syfri.baseapi.service.BaseService;
 import com.syfri.userservice.model.system.*;
+import com.syfri.userservice.model.system.CodelistVO;
 
 import java.util.List;
 
@@ -72,4 +73,7 @@ public interface CodelistService  extends BaseService<com.syfri.userservice.mode
 
 	//查询邮寄地址 by yushch 20181029
 	List<com.syfri.userservice.model.system.CodelistTree> doFindYjdz();
+
+	/*--查询产品类型大类.--*/
+	List<CodelistDetailVO> doFindCplxSelect(String codetype);
 }

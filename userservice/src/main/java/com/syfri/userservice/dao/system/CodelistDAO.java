@@ -42,4 +42,7 @@ public interface CodelistDAO extends BaseDAO<CodelistVO>{
 	List<CodelistDetailVO> doFindXzqhCodelist(String codetype);
 
 	List<CodelistDetailVO> doFindXzqhByDm(CodelistDetailVO codelistDetailVO);
+
+	/*--查询产品类型大类.--*/
+	List<CodelistDetailVO> doFindCplxSelect(String codetype);
 }
