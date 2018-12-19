@@ -14,8 +14,10 @@ import com.syfri.userservice.model.venue.ZgjbxxVO;
 import com.syfri.userservice.service.prediction.QyjbxxService;
 import com.syfri.userservice.service.venue.ZgjbxxService;
 import com.syfri.userservice.utils.CurrentUserUtil;
+import com.syfri.userservice.utils.ExcelUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +27,11 @@ import com.syfri.userservice.model.venue.ZwjbxxVO;
 import com.syfri.userservice.service.venue.ZwjbxxService;
 import com.syfri.baseapi.controller.BaseController;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 @RestController
@@ -245,5 +251,85 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 			return 	resultVO;
 		}
 		return 	resultVO;
+	}
+
+	@ApiOperation(value = "导出展位基本信息", notes = "导出")
+	@RequestMapping(value = "/doExport/{param}", method = RequestMethod.GET)
+	public void doExport(HttpServletRequest request, HttpServletResponse response, @PathVariable String param) {
+		//解析param zwh&zwzt&qymc&zwlb&cklx
+		String[] params = param.split("&");
+		ZwjbxxVO vo = new ZwjbxxVO();
+		vo.setZwh(params[0].substring(params[0].indexOf("=")+1));
+		vo.setZwzt(params[1].substring(params[1].indexOf("=")+1));
+		vo.setQymc(params[2].substring(params[2].indexOf("=")+1));
+		vo.setZwlb(params[3].substring(params[3].indexOf("=")+1));
+		vo.setCklx(params[4].substring(params[4].indexOf("=")+1));
+
+		//excel标题
+		String[] title = {};
+		//excel文件名
+		String fileName = "";
+		//sheet名
+		String sheetName = "";
+		//数据内容
+		String[][] content = null;
+		//获取数据
+		List<ZwjbxxVO> list = zwjbxxService.doSearchListQyByVO(vo);
+		String[] str = {"展位号","公司名称","展位面积(m²)","展位类型","出口类型","联系人名称","联系人电话","联系地址"};
+		title=str;
+		fileName = "展位管理" + System.currentTimeMillis() + ".xls";
+		sheetName = "展位管理";
+		int size = list.size();
+		content = new String[size][8];
+		for (int i = 0; i < list.size(); i++) {
+			content[i] = new String[title.length];
+			ZwjbxxVO obj = list.get(i);
+			content[i][0] = obj.getZwh();
+			content[i][1] = obj.getQymc();
+			content[i][2] = obj.getZwmj();
+			content[i][3] = obj.getZwlb();
+			content[i][4] = obj.getCklx();
+			content[i][5] = obj.getLxr();
+			content[i][6] = obj.getLxrsj();
+			content[i][7] = obj.getYjdzxx();
+		}
+
+		//创建HSSFWorkbook
+		HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
+
+		BufferedInputStream bis = null;
+		try {
+			wb.write(response.getOutputStream());
+			response.addHeader("Cache-Control", "no-cache");
+			//response.setCharacterEncoding("UTF-8");
+			response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+			String ua = request.getHeader("user-agent");
+			ua = ua == null ? null : ua.toLowerCase();
+			if (ua != null && (ua.indexOf("firefox") > 0 || ua.indexOf("safari") > 0)) {
+				try {
+					fileName = new String(fileName.getBytes(), "ISO8859-1");
+					response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					fileName = URLEncoder.encode(fileName, "utf-8");
+					response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (bis != null) {
+				try {
+					bis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }
