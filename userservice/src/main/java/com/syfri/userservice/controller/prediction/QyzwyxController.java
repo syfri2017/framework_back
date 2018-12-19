@@ -282,7 +282,7 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
 
         BufferedInputStream bis = null;
         try {
-            wb.write(response.getOutputStream());
+
             response.addHeader("Cache-Control", "no-cache");
             //response.setCharacterEncoding("UTF-8");
             response.setContentType("application/vnd.ms-excel;charset=UTF-8");
@@ -303,6 +303,7 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
                     e.printStackTrace();
                 }
             }
+            wb.write(response.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
