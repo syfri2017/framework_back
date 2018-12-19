@@ -7,7 +7,7 @@
 		 and t.uuid = #{uuid}
 		</if>
 		<if test="zwlb != null and zwlb != '' ">
-		 and t.zwlb = #{zwlb}
+		 and t.zwlb LIKE concat(concat('%',#{zwlb}),'%') ESCAPE '\'
 		</if>
 		<if test="cklx != null and cklx != '' ">
 			and t.cklx = #{cklx}
