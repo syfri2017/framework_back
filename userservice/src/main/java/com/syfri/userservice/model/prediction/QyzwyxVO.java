@@ -30,6 +30,11 @@ public class QyzwyxVO extends ValueObject implements Serializable{
 	private String zwmjfwmc;//展位面积范围名称
 	private String sl;//展位面积范围数量
 
+	private String zwgsmc;	//中文公司名称
+	private String ywgsmc;	//英文公司名称
+	private String lxr;	//联系人
+	private String lxrsj;	//联系人手机
+
 	private String reserve1;	//备用字段1
 	private String reserve2;	//备用字段2
 	private String reserve3;	//备用字段3
@@ -62,6 +67,9 @@ public class QyzwyxVO extends ValueObject implements Serializable{
 
 	private String cplx;	//产品类型
 	private String cplxmc;	//产品类名称
+
+	private String codeValue;	//代码值
+	private String codeName;	//代码名称
 
 	private String czqysl;	//参展企业数量
 
@@ -237,5 +245,53 @@ public class QyzwyxVO extends ValueObject implements Serializable{
 
 	public void setCzqysl(String czqysl) {
 		this.czqysl = czqysl;
+	}
+
+	public String getZwgsmc() {
+		return zwgsmc;
+	}
+
+	public void setZwgsmc(String zwgsmc) {
+		this.zwgsmc = zwgsmc;
+	}
+
+	public String getYwgsmc() {
+		return ywgsmc;
+	}
+
+	public void setYwgsmc(String ywgsmc) {
+		this.ywgsmc = ywgsmc;
+	}
+
+	public String getLxr() {
+		return lxr;
+	}
+
+	public void setLxr(String lxr) {
+		this.lxr = lxr;
+	}
+
+	public String getLxrsj() {
+		return lxrsj;
+	}
+
+	public void setLxrsj(String lxrsj) {
+		this.lxrsj = lxrsj;
+	}
+
+	public String getCodeValue() {
+		return codeValue;
+	}
+
+	public void setCodeValue(String codeValue) {
+		this.codeValue = codeValue;
+	}
+
+	public String getCodeName() {
+		return codeName;
+	}
+
+	public void setCodeName(String codeName) {
+		this.codeName = codeName;
 	}
 }

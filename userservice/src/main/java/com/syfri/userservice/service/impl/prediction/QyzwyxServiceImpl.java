@@ -51,5 +51,7 @@ public class QyzwyxServiceImpl extends BaseServiceImpl<QyzwyxVO> implements Qyzw
 		return qyzwyxDAO.dofindtjfxsj(qyzwyxVO);
 	}
 
-
+	public List<QyzwyxVO> doFindQyzwyxByCplx(QyzwyxVO qyzwyxVO){
+		return qyzwyxDAO.doFindQyzwyxByCplx(qyzwyxVO);
+	}
 }

@@ -205,7 +205,7 @@
 
     <!--12.统计分析 -->
     <select id="dofindtjfx" parameterType="QyzwyxVO" resultType="QyzwyxVO">
-      SELECT C.CODE_NAME cplxmc,
+      SELECT C.CODE_NAME cplxmc,C.CODE_VALUE cplx,
            NVL(Q.CZQYSL, 0) czqysl,
            NVL(Q.BZZWGS, 0) bwzwgssl,
            NVL(Q.GDZWMJ, 0) gdzwmj
@@ -300,4 +300,35 @@
         </set>
         WHERE QYID = #{qyid}
     </update>
+
+    <select id="doFindQyzwyxByCplx" parameterType="QyzwyxVO" resultType="QyzwyxVO">
+        SELECT TT1.QYID,
+                TT1.Zwgsmc,
+                TT1.Ywgsmc,
+                TT1.Lxr,
+                TT1.Lxrsj,
+                TT1.CPLX,
+                TT1.codeValue,
+                TT1.codeName,
+                TT2.BZZWGS,
+                TT2.SNGDZW,
+                TT2.SWGDZW
+        FROM ( SELECT DISTINCT T1.QYID,
+                                 T1.Zwgsmc,
+                                 T1.Ywgsmc,
+                                 T1.Lxr,
+                                 T1.Lxrsj,
+                                 CONCAT(SUBSTR(T2.CPLX, 0, 1),'000') CPLX,
+                                 T3.CODE_NAME codeName,
+                                 T3.CODE_VALUE codeValue
+                FROM CFPA_QY_JBXX T1
+                INNER JOIN CFPA_QY_CPJS T2 ON T1.QYID = T2.QYID AND T2.DELETE_FLAG = 'N'
+                INNER JOIN SYS_CODELIST_DETAIL T3 ON T2.Cplx = T3.CODE_VALUE AND T3.CODETYPE = 'CPLX' AND T3.DELETE_FLAG = 'N'
+                WHERE T1.DELETE_FLAG = 'N') TT1
+        LEFT JOIN CFPA_QY_ZWYX TT2 ON TT1.QYID = TT2.QYID AND TT2.DELETE_FLAG = 'N'
+        <if test="cplx != null and cplx != '' ">
+            where TT1.CPLX =#{cplx}
+        </if>
+        order by TT1.Zwgsmc desc
+    </select>
 </mapper>

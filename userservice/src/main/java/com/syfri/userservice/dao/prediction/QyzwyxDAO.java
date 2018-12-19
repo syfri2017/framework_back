@@ -13,4 +13,6 @@ public interface QyzwyxDAO extends BaseDAO<QyzwyxVO>{
     List<QyzwyxVO> dofindtjfxsj(QyzwyxVO qyzwyxVO);
 
     int doDeleteByVO(QyzwyxVO vo);//按企业id删除
+
+    List<QyzwyxVO> doFindQyzwyxByCplx(QyzwyxVO qyzwyxVO);
 }
