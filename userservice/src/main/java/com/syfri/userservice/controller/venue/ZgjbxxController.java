@@ -72,7 +72,13 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 				ZwjbxxVO zwvo=new ZwjbxxVO();
 				zwvo.setQyid(qvo.getQyid());
 				//当前展商所选展位信息
-				List<ZwjbxxVO> dvo=zwjbxxService.doSearchListByVO(zwvo);
+				List<ZwjbxxVO> dvos=zwjbxxService.doSearchListByVO(zwvo);
+				String yxzgxx="";
+				for(ZwjbxxVO dvo:dvos){
+					ZgjbxxVO zgdb=zgjbxxService.doFindById(dvo.getZgid());
+					yxzgxx+="展馆<span style='color:red'>"+zgdb.getZgmc()+"</span>的展位<span style='color:red'>"
+							+dvo.getZwh()+"</span>,";
+				}
 
 				MimeMessage message = jms.createMimeMessage();
 				MailVO mv=new MailVO();
@@ -90,7 +96,8 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 					helper.setFrom(mv.getUsername());
 					helper.setTo(qvo.getDzyx());
 					helper.setSubject(mp.getSubject().replace("s%",evo.getZgmc()));
-					helper.setText(mp.getText(), true);
+					helper.setText(mp.getText().replace("{1}",yxzgxx)
+							.replace("{2}","<span style='color:red'>"+evo.getZgmc()+"</span>"), true);
 					helper.addAttachment(mp.getPicName().replace("s%",evo.getZgmc())
 							, Base64ImageUtil.decodeBase64ToImage(zgzwstr,evo.getUuid()));
 					jms.send(message);

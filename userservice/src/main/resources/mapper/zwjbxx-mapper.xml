@@ -282,12 +282,21 @@
 	<select id="doSearchListQyByVO" parameterType="ZwjbxxVO"  resultType="ZwjbxxVO">
 		SELECT
 		<include refid="SQL_CONTENT"/> ,
-		(CASE sa.usertype WHEN 'CHN' THEN q.zwgsmc WHEN 'ENG' THEN q.ywgsmc ELSE '' END) qymc
+		(CASE sa.usertype WHEN 'CHN' THEN q.zwgsmc WHEN 'ENG' THEN q.ywgsmc ELSE '' END) qymc,
+		q.lxr,
+		q.lxrsj,
+		c2.code_name||c4.code_name||q.yjdzxx yjdzxx
 		FROM CFPA_ZW_JBXX t
 		left join CFPA_QY_JBXX q
 		on t.qyid = q.qyid and q.DELETE_FLAG = 'N'
 		left join sys_account sa
 		on sa.userid = q.userid and sa.DELETE_FLAG = 'N'
+		<!--省-->
+		Left Join SYS_CODELIST c1 on c1.CODETYPE = 'XZQH' And c1.DELETE_FLAG = 'N'
+		Left Join SYS_CODELIST_DETAIL c2 On c2.CODEID = c1.CODEID And c2.DELETE_FLAG = 'N' and q.yjdzsheng = c2.CODE_VALUE
+		<!--市-->
+		Left Join SYS_CODELIST c3 on c3.CODETYPE = 'XZQH' And c3.DELETE_FLAG = 'N'
+		Left Join SYS_CODELIST_DETAIL c4 On c4.CODEID = c3.CODEID And c4.DELETE_FLAG = 'N' and q.yjdzshi = c4.CODE_VALUE
 		WHERE t.DELETE_FLAG = 'N'
 		<if test="zgid == null or zgid == '' ">
 			and  t.reserve1 is not null

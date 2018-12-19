@@ -40,6 +40,9 @@ public class ZwjbxxVO extends ValueObject implements Serializable{
 	private String mczs;	//名称字色
 	private String qymc;	//企业名称
 	private String zwztmc; //展位状态
+	private String lxr; //联系人
+	private String lxrsj; //联系人手机
+	private String yjdzxx; //邮寄地址详细
 
 	public String getCklx() {
 		return cklx;
@@ -238,5 +241,24 @@ public class ZwjbxxVO extends ValueObject implements Serializable{
 	}
 	public void setMczs(String mczs){
 		this.mczs = mczs;
+	}
+
+	public String getLxr() {
+		return lxr;
+	}
+	public void setLxr(String lxr) {
+		this.lxr = lxr;
+	}
+	public String getLxrsj() {
+		return lxrsj;
+	}
+	public void setLxrsj(String lxrsj) {
+		this.lxrsj = lxrsj;
+	}
+	public String getYjdzxx() {
+		return yjdzxx;
+	}
+	public void setYjdzxx(String yjdzxx) {
+		this.yjdzxx = yjdzxx;
 	}
 }

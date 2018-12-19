@@ -1,8 +1,13 @@
 package com.syfri.userservice.controller.venue;
 
 import com.github.pagehelper.PageInfo;
+import com.github.qcloudsms.SmsSingleSender;
+import com.github.qcloudsms.SmsSingleSenderResult;
 import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
+import com.syfri.baseapi.utils.MathUtil;
+import com.syfri.userservice.config.properties.BoothMsgProperties;
+import com.syfri.userservice.config.properties.MsgProperties;
 import com.syfri.userservice.controller.prediction.QyjbxxController;
 import com.syfri.userservice.model.prediction.QyjbxxVO;
 import com.syfri.userservice.model.venue.ZgjbxxVO;
@@ -20,6 +25,7 @@ import com.syfri.userservice.model.venue.ZwjbxxVO;
 import com.syfri.userservice.service.venue.ZwjbxxService;
 import com.syfri.baseapi.controller.BaseController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,6 +38,8 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 	private QyjbxxService qyjbxxService;
 	@Autowired
 	private ZgjbxxService zgjbxxService;
+	@Autowired
+	private BoothMsgProperties boothMsgProperties;
 	@Override
 	public ZwjbxxService getBaseService() {
 		return this.zwjbxxService;
@@ -176,6 +184,23 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 						vo.setZwzt("bespoke");
 						zwjbxxService.doUpdateByVO(vo);
 						ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
+//						String phone=qvo.getLxrsj();
+//						if(!(phone.equals("")||null == phone)) {
+//							//假设短信模板 id 为 123，模板内容为：测试短信，{1}，{2}，{3}，上学。
+//							SmsSingleSender sender;
+//							try {
+//								sender = new SmsSingleSender(boothMsgProperties.getAppId(), boothMsgProperties.getAppKey());
+//								ArrayList<String> params = new ArrayList<String>();
+//								params.add(newdbzw.getZwh());
+//								SmsSingleSenderResult result = sender.sendWithParam("86", phone, boothMsgProperties.getTemplId(), params, "", "", "");
+//								if (result.result == 0) {
+//									resultVO.setCode(EConstants.CODE.SUCCESS);
+//								}
+//							} catch (Exception e) {
+//								e.printStackTrace();
+//
+//							}
+//						}
 						resultVO.setResult(newdbzw);
 						resultVO.setMsg("success");
 					}else{
