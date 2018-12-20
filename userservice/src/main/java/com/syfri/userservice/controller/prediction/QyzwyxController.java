@@ -226,8 +226,8 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
         //数据内容
         String[][] content = null;
         Map<String, String[][]> allcontent = null;
-        String[] str = {"中文公司名称", "英文公司名称","联系人","联系人手机", "产品类型","标准展位数量(个）", "室内光地展位面积(m²)", "室外光地展位面积(m²)"};
-        fileName = "统计分析-按产品类型统计企业展位意向" + System.currentTimeMillis() + ".xls";
+        String[] str = {"中文公司名称", "英文公司名称","联系人","联系人手机", "产品类型","标准展位数量(个)", "室内光地展位面积(m²)", "室外光地展位面积(m²)"};
+        fileName = "统计分析-按产品类型统计-详情" + System.currentTimeMillis() + ".xls";
         title = str;
 
         HSSFWorkbook wb = new HSSFWorkbook();

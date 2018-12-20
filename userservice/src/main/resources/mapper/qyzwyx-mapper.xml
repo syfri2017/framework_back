@@ -274,19 +274,15 @@
                 TT1.Lxr,
                 TT1.Lxrsj,
                 TT1.CPLX,
-                TT1.codeValue,
-                TT1.codeName,
-                TT2.BZZWGS,
-                TT2.SNGDZW,
-                TT2.SWGDZW
+                NVL(TT2.BZZWGS,0) BZZWGS,
+                NVL(TT2.SNGDZW,0) SNGDZW,
+                NVL(TT2.SWGDZW,0) SWGDZW
         FROM ( SELECT DISTINCT T1.QYID,
                                  T1.Zwgsmc,
                                  T1.Ywgsmc,
                                  T1.Lxr,
                                  T1.Lxrsj,
-                                 CONCAT(SUBSTR(T2.CPLX, 0, 1),'000') CPLX,
-                                 T3.CODE_NAME codeName,
-                                 T3.CODE_VALUE codeValue
+                                 CONCAT(SUBSTR(T2.CPLX, 0, 1),'000') CPLX
                 FROM CFPA_QY_JBXX T1
                 INNER JOIN CFPA_QY_CPJS T2 ON T1.QYID = T2.QYID AND T2.DELETE_FLAG = 'N'
                 INNER JOIN SYS_CODELIST_DETAIL T3 ON T2.Cplx = T3.CODE_VALUE AND T3.CODETYPE = 'CPLX' AND T3.DELETE_FLAG = 'N'
