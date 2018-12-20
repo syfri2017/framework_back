@@ -255,16 +255,14 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 
 	@ApiOperation(value = "导出展位基本信息", notes = "导出")
 	@RequestMapping(value = "/doExport/{param}", method = RequestMethod.GET)
-	public void doExport(HttpServletRequest request, HttpServletResponse response, @PathVariable String param) {
+	public void doExport(HttpServletRequest request, HttpServletResponse response, @PathVariable String [] param) {
 		//解析param zwh&zwzt&qymc&zwlb&cklx
-		String[] params = param.split("&");
 		ZwjbxxVO vo = new ZwjbxxVO();
-		vo.setZwh(params[0].substring(params[0].indexOf("=")+1));
-		vo.setZwzt(params[1].substring(params[1].indexOf("=")+1));
-		vo.setQymc(params[2].substring(params[2].indexOf("=")+1));
-		vo.setZwlb(params[3].substring(params[3].indexOf("=")+1));
-		vo.setCklx(params[4].substring(params[4].indexOf("=")+1));
-
+		vo.setZwh(param[0]);
+		vo.setZwzt(param[1]);
+		vo.setQymc(param[2]);
+		vo.setZwlb(param[3]);
+		vo.setCklx(param[4]);
 		//excel标题
 		String[] title = {};
 		//excel文件名
@@ -299,7 +297,6 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 
 		BufferedInputStream bis = null;
 		try {
-			wb.write(response.getOutputStream());
 			response.addHeader("Cache-Control", "no-cache");
 			//response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/vnd.ms-excel;charset=UTF-8");
@@ -320,6 +317,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 					e.printStackTrace();
 				}
 			}
+			wb.write(response.getOutputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
