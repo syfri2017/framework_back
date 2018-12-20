@@ -273,12 +273,16 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		String[][] content = null;
 		//获取数据
 		List<ZwjbxxVO> list = zwjbxxService.doSearchListQyByVO(vo);
-		String[] str = {"展位号","公司名称","展位面积(m²)","展位类型","出口类型","联系人名称","联系人电话","联系地址"};
+        for(ZwjbxxVO zwjbxxVO:list){
+            //匹配展位状态代码名称
+            zwjbxxVO.setZwztmc(zwzt2Mc(zwjbxxVO.getZwzt()));
+        }
+		String[] str = {"展位号","公司名称","展位面积(m²)","展位类型","出口类型","展位状态","联系人名称","联系人电话","联系地址"};
 		title=str;
 		fileName = "展位管理" + System.currentTimeMillis() + ".xls";
 		sheetName = "展位管理";
 		int size = list.size();
-		content = new String[size][8];
+		content = new String[size][9];
 		for (int i = 0; i < list.size(); i++) {
 			content[i] = new String[title.length];
 			ZwjbxxVO obj = list.get(i);
@@ -287,9 +291,10 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 			content[i][2] = obj.getZwmj();
 			content[i][3] = obj.getZwlb();
 			content[i][4] = obj.getCklx();
-			content[i][5] = obj.getLxr();
-			content[i][6] = obj.getLxrsj();
-			content[i][7] = obj.getYjdzxx();
+            content[i][5] = obj.getZwztmc();
+			content[i][6] = obj.getLxr();
+			content[i][7] = obj.getLxrsj();
+			content[i][8] = obj.getYjdzxx();
 		}
 
 		//创建HSSFWorkbook
