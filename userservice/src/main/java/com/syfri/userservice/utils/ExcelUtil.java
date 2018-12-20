@@ -98,7 +98,7 @@ public class ExcelUtil {
                 }else{
                     row.getCell(j).setCellStyle(curStyle);
                 }
-                sheet.autoSizeColumn((short) j);//自动调整列宽
+//                sheet.autoSizeColumn((short) j);//自动调整列宽
             }
         }
         return wb;

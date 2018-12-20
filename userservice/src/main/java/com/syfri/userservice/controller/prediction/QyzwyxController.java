@@ -123,7 +123,8 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
         String sheetName = "";
         //数据内容
         String[][] content = null;
-
+        //创建HSSFWorkbook
+        HSSFWorkbook wb = new HSSFWorkbook();
         //获取数据
         QyzwyxVO vo = new QyzwyxVO();
         List<QyzwyxVO> list = null;
@@ -133,7 +134,7 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
             title = str;
             fileName = "统计分析-按产品类型统计" + System.currentTimeMillis() + ".xls";
             sheetName = "按产品类型统计";
-            content = new String[7][4];
+            content = new String[list.size()][4];
             for (int i = 0; i < list.size(); i++) {
                 content[i] = new String[title.length];
                 QyzwyxVO obj = list.get(i);
@@ -142,27 +143,40 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
                 content[i][2] = obj.getBwzwgssl();
                 content[i][3] = obj.getGdzwmj();
             }
+            wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
+            //调整列宽
+            for (int i = 0; i < wb.getNumberOfSheets(); i++) {
+                wb.getSheetAt(i).setColumnWidth(0, 256 * 45);
+                wb.getSheetAt(i).setColumnWidth(1, 256 * 35);
+                wb.getSheetAt(i).setColumnWidth(2, 256 * 35);
+                wb.getSheetAt(i).setColumnWidth(3, 256 * 35);
+            }
         } else if (type.equals("gdzwmj")) {
             list = qyzwyxService.dofindtjfxsj(vo);
             String[] str = {"展位面积范围", "展位数量"};
             title = str;
             fileName = "统计分析-按光地展位面积统计" + System.currentTimeMillis() + ".xls";
             sheetName = "按光地展位面积统计";
-            content = new String[6][2];
+            content = new String[list.size()][2];
             for (int i = 0; i < list.size(); i++) {
                 content[i] = new String[title.length];
                 QyzwyxVO obj = list.get(i);
                 content[i][0] = obj.getZwmjfwmc();
                 content[i][1] = obj.getSl();
             }
+            wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
+            //调整列宽
+            for (int i = 0; i < wb.getNumberOfSheets(); i++) {
+                wb.getSheetAt(i).setColumnWidth(0, 256 * 35);
+                wb.getSheetAt(i).setColumnWidth(1, 256 * 35);
+            }
         }
 
         //创建HSSFWorkbook
-        HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
+//        HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
 
         BufferedInputStream bis = null;
         try {
-            wb.write(response.getOutputStream());
             response.addHeader("Cache-Control", "no-cache");
             //response.setCharacterEncoding("UTF-8");
             response.setContentType("application/vnd.ms-excel;charset=UTF-8");
@@ -183,6 +197,7 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
                     e.printStackTrace();
                 }
             }
+            wb.write(response.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -225,20 +240,19 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
         String sheetName = "";
         //数据内容
         String[][] content = null;
-        Map<String, String[][]> allcontent = null;
-        String[] str = {"中文公司名称", "英文公司名称","联系人","联系人手机", "产品类型","标准展位数量(个)", "室内光地展位面积(m²)", "室外光地展位面积(m²)"};
+        String[] str = {"中文公司名称", "英文公司名称", "联系人", "联系人手机", "标准展位数量(个)", "室内光地展位面积(m²)", "室外光地展位面积(m²)"};
         fileName = "统计分析-按产品类型统计-详情" + System.currentTimeMillis() + ".xls";
         title = str;
 
         HSSFWorkbook wb = new HSSFWorkbook();
         //获取数据
-        List<QyzwyxVO> list = new ArrayList<>();
+        List<QyzwyxVO> list = null;
 
         QyzwyxVO vo = new QyzwyxVO();
         for (String cplx : type) {
             vo.setCplx(cplx);
             list = qyzwyxService.doFindQyzwyxByCplx(vo);
-            if(list.size()>0){
+            if (list.size() > 0) {
                 switch (cplx) {
                     case "1000":
                         sheetName = "消防车辆及相关产品";
@@ -262,7 +276,7 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
                         sheetName = "其他";
                         break;
                 }
-                content = new String[list.size()][8];
+                content = new String[list.size()][7];
                 for (int i = 0; i < list.size(); i++) {
                     content[i] = new String[str.length];
                     QyzwyxVO obj = list.get(i);
@@ -270,19 +284,27 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
                     content[i][1] = obj.getYwgsmc() == null ? "" : obj.getYwgsmc();
                     content[i][2] = obj.getLxr() == null ? "" : obj.getLxr();
                     content[i][3] = obj.getLxrsj() == null ? "" : obj.getLxrsj();
-                    content[i][4] = obj.getCodeName() == null ? "" : obj.getCodeName();
-                    content[i][5] = obj.getBzzwgs() == null ? "" : obj.getBzzwgs();
-                    content[i][6] = obj.getSngdzw() == null ? "" : obj.getSngdzw();
-                    content[i][7] = obj.getSwgdzw() == null ? "" : obj.getSwgdzw();
+                    content[i][4] = obj.getBzzwgs() == null ? "" : obj.getBzzwgs();
+                    content[i][5] = obj.getSngdzw() == null ? "" : obj.getSngdzw();
+                    content[i][6] = obj.getSwgdzw() == null ? "" : obj.getSwgdzw();
                 }
                 //创建HSSFWorkbook
-                wb = ExcelUtil.getHSSFWorkbook(sheetName,title, content, wb);
+                wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, wb);
             }
+        }
+        //调整列宽
+        for (int i = 0; i < wb.getNumberOfSheets(); i++) {
+            wb.getSheetAt(i).setColumnWidth(0, 256 * 45);
+            wb.getSheetAt(i).setColumnWidth(1, 256 * 45);
+            wb.getSheetAt(i).setColumnWidth(2, 256 * 13);
+            wb.getSheetAt(i).setColumnWidth(3, 256 * 18);
+            wb.getSheetAt(i).setColumnWidth(4, 256 * 25);
+            wb.getSheetAt(i).setColumnWidth(5, 256 * 30);
+            wb.getSheetAt(i).setColumnWidth(6, 256 * 30);
         }
 
         BufferedInputStream bis = null;
         try {
-
             response.addHeader("Cache-Control", "no-cache");
             //response.setCharacterEncoding("UTF-8");
             response.setContentType("application/vnd.ms-excel;charset=UTF-8");
