@@ -15,6 +15,14 @@ msg:
   appKey: 37a3ead5782373b2435a4aad3a85c5de
   signId: 176690
   templId: 218933
+#---------选择展位通知短信模板--------------------
+bmsg:
+  validate-path: bvalidate #认证请求的路径（未启用）
+  send-path: sendBooth #认证请求的路径
+  appId: 1400170177
+  appKey: 3625687406d61b3bdacefb019440f511
+  signId: 185916
+  templId: 250316
 
 #---------邮箱验证码--------------------
 mail:
@@ -122,7 +130,7 @@ spring:
     datasource:
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: oracle.jdbc.OracleDriver
-      url: jdbc:oracle:thin:@10.119.119.232:1521/XFXHDB
+      url: jdbc:oracle:thin:@10.119.119.205:1521/XFXHDB
 #      url: jdbc:oracle:thin:@localhost:1521/orcl
       username: XFXHZH
       password: XFXHZH
