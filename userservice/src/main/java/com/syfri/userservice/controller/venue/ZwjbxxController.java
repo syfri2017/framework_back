@@ -31,8 +31,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.net.URLEncoder;
 
 @RestController
 @RequestMapping("zwjbxx")
@@ -50,7 +53,24 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 	public ZwjbxxService getBaseService() {
 		return this.zwjbxxService;
 	}
-
+	@PostMapping("isInternal")
+	public @ResponseBody
+	boolean isInternal() {
+		QyjbxxVO qy=new QyjbxxVO();
+		qy.setUserid(CurrentUserUtil.getCurrentUserId());
+		QyjbxxVO qvo=qyjbxxService.doFindByVO(qy);
+		if(qvo!=null&&qvo.getReserve3()!=null){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	@PostMapping("getNow")
+	public @ResponseBody
+	String getNow() {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return sdf.format(new Date());
+	}
 	/**
 	 *获取当前用户选择展位信息
 	 * @return
@@ -190,23 +210,25 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 						vo.setZwzt("bespoke");
 						zwjbxxService.doUpdateByVO(vo);
 						ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
-//						String phone=qvo.getLxrsj();
-//						if(!(phone.equals("")||null == phone)) {
-//							//假设短信模板 id 为 123，模板内容为：测试短信，{1}，{2}，{3}，上学。
-//							SmsSingleSender sender;
-//							try {
-//								sender = new SmsSingleSender(boothMsgProperties.getAppId(), boothMsgProperties.getAppKey());
-//								ArrayList<String> params = new ArrayList<String>();
-//								params.add(newdbzw.getZwh());
-//								SmsSingleSenderResult result = sender.sendWithParam("86", phone, boothMsgProperties.getTemplId(), params, "", "", "");
-//								if (result.result == 0) {
-//									resultVO.setCode(EConstants.CODE.SUCCESS);
-//								}
-//							} catch (Exception e) {
-//								e.printStackTrace();
-//
-//							}
-//						}
+						String phone=qvo.getLxrsj();
+						//发短信开始
+						if(!(phone.equals("")||null == phone)) {
+							SmsSingleSender sender;
+							try {
+								sender = new SmsSingleSender(boothMsgProperties.getAppId(), boothMsgProperties.getAppKey());
+								ArrayList<String> params = new ArrayList<String>();
+								params.add(newdbzw.getZwh());
+								params.add(newdbzw.getZwmj());
+								SmsSingleSenderResult result = sender.sendWithParam("86", phone, boothMsgProperties.getTemplId(), params, "", "", "");
+								if (result.result == 0) {
+									resultVO.setCode(EConstants.CODE.SUCCESS);
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+
+							}
+						}
+						//发短信结束
 						resultVO.setResult(newdbzw);
 						resultVO.setMsg("success");
 					}else{
@@ -252,7 +274,6 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		}
 		return 	resultVO;
 	}
-
 	@ApiOperation(value = "导出展位基本信息", notes = "导出")
 	@RequestMapping(value = "/doExport/{param}", method = RequestMethod.GET)
 	public void doExport(HttpServletRequest request, HttpServletResponse response, @PathVariable String [] param) {
@@ -273,10 +294,10 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		String[][] content = null;
 		//获取数据
 		List<ZwjbxxVO> list = zwjbxxService.doSearchListQyByVO(vo);
-        for(ZwjbxxVO zwjbxxVO:list){
-            //匹配展位状态代码名称
-            zwjbxxVO.setZwztmc(zwzt2Mc(zwjbxxVO.getZwzt()));
-        }
+		for(ZwjbxxVO zwjbxxVO:list){
+			//匹配展位状态代码名称
+			zwjbxxVO.setZwztmc(zwzt2Mc(zwjbxxVO.getZwzt()));
+		}
 		String[] str = {"展位号","公司名称","展位面积(m²)","展位类型","出口类型","展位状态","联系人名称","联系人电话","联系地址"};
 		title=str;
 		fileName = "展位管理" + System.currentTimeMillis() + ".xls";
@@ -291,7 +312,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 			content[i][2] = obj.getZwmj();
 			content[i][3] = obj.getZwlb();
 			content[i][4] = obj.getCklx();
-            content[i][5] = obj.getZwztmc();
+			content[i][5] = obj.getZwztmc();
 			content[i][6] = obj.getLxr();
 			content[i][7] = obj.getLxrsj();
 			content[i][8] = obj.getYjdzxx();
