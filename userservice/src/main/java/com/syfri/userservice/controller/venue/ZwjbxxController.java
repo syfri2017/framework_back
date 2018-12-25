@@ -284,6 +284,40 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		vo.setQymc(param[2]);
 		vo.setZwlb(param[3]);
 		vo.setCklx(param[4]);
+
+		//excel标题
+		String[] title = {"展位号","公司名称","展位面积(m²)","展位类型","出口类型","展位状态","联系人名称","联系人电话","联系地址"};
+		//excel文件名
+		String fileName = "展位管理" + System.currentTimeMillis() + ".xls";
+		//sheet名
+		String sheetName = "展位管理";
+
+		//获取数据
+		List<ZwjbxxVO> dataList = zwjbxxService.doSearchListQyByVO(vo);
+		List<String[]> list = new ArrayList<>();
+		for (int i = 0; i < dataList.size(); i++) {
+			ZwjbxxVO obj = dataList.get(i);
+			String[] content = new String[title.length];
+			content[0] = obj.getZwh();
+			content[1] = obj.getQymc();
+			content[2] = obj.getZwmj();
+			content[3] = obj.getZwlb();
+			content[4] = obj.getCklx();
+			content[5] = obj.getZwztmc();
+			content[6] = obj.getLxr();
+			content[7] = obj.getLxrsj();
+			content[8] = obj.getYjdzxx();
+			list.add(content);
+		}
+		this.doExportExcel(request, response, fileName, sheetName, title, list);
+		/**
+		//解析param zwh&zwzt&qymc&zwlb&cklx
+		ZwjbxxVO vo = new ZwjbxxVO();
+		vo.setZwh(param[0]);
+		vo.setZwzt(param[1]);
+		vo.setQymc(param[2]);
+		vo.setZwlb(param[3]);
+		vo.setCklx(param[4]);
 		//excel标题
 		String[] title = {};
 		//excel文件名
@@ -355,5 +389,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 				}
 			}
 		}
+
+		 **/
 	}
 }
