@@ -5,8 +5,15 @@ import com.github.pagehelper.PageInfo;
 import com.syfri.baseapi.dao.BaseDAO;
 import com.syfri.baseapi.model.ValueObject;
 import com.syfri.baseapi.service.BaseService;
+import com.syfri.baseapi.utils.ExcelUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -129,5 +136,47 @@ public abstract class BaseServiceImpl<T extends ValueObject> implements BaseServ
 		List<T> list = this.getBaseDAO().doSearchListByMap(map);
 		PageInfo<T> page = new PageInfo<T>(list);
 		return page;
+	}
+
+	/*导出EXCEL by li.xue 2018/12/25.*/
+	@Override
+	public void doExportExcel(HttpServletRequest request, HttpServletResponse response, String fileName, String sheetName, String[] title, List<String[]> list){
+		//创建HSSFWorkbook
+		HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, list, null);
+
+		BufferedInputStream bis = null;
+		try {
+			response.addHeader("Cache-Control", "no-cache");
+			//response.setCharacterEncoding("UTF-8");
+			response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+			String ua = request.getHeader("user-agent");
+			ua = ua == null ? null : ua.toLowerCase();
+			if (ua != null && (ua.indexOf("firefox") > 0 || ua.indexOf("safari") > 0)) {
+				try {
+					fileName = new String(fileName.getBytes(), "ISO8859-1");
+					response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					fileName = URLEncoder.encode(fileName, "utf-8");
+					response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			wb.write(response.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (bis != null) {
+				try {
+					bis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }

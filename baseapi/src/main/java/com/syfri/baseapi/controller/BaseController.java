@@ -12,10 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * 基础Controller
@@ -185,8 +188,12 @@ public abstract class BaseController<T extends ValueObject> {
 	//打印初始化
 	public void doPrintInit(){}
 
-	//导出EXCEL
-	public void doExportExcel(){}
+	@ApiOperation(value="导出EXCEL",notes="注意事项")
+	@ApiImplicitParam(name="list",value = "查询结果List")
+	@PostMapping("export")
+	public void doExportExcel(HttpServletRequest request, HttpServletResponse response,  String fileName, String sheetName, String[] title, List<String[]> list){
+		this.getBaseService().doExportExcel(request, response, fileName, sheetName, title, list);
+	}
 
 	//打印
 	public void doPrint(){}

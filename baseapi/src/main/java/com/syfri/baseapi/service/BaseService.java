@@ -3,6 +3,8 @@ package com.syfri.baseapi.service;
 import com.github.pagehelper.PageInfo;
 import com.syfri.baseapi.model.ValueObject;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -60,5 +62,6 @@ public interface BaseService<T extends ValueObject> {
 
 	public PageInfo<T> doSearchPage(Map<String, Object> map, String orderStr, int pageNum, int pageSize);
 
-
+	/*导出EXCEL by li.xue 2018/12/25.*/
+	public void doExportExcel(HttpServletRequest request, HttpServletResponse response, String fileName, String sheetName, String[] title, List<String[]> list);
 }
