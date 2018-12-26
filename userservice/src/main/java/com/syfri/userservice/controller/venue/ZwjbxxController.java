@@ -174,6 +174,8 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 					if(vo.getUuid()!=null&&!vo.getUuid().equals("")){
 						vo.setUuid(null);
 					}
+					vo.setCjrid(CurrentUserUtil.getCurrentUserId());
+					vo.setCjrmc(CurrentUserUtil.getCurrentUserName());
 					zwjbxxService.doInsertByVO(vo);
 				}
 			}
