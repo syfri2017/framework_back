@@ -67,7 +67,11 @@ public class SignInServiceImpl extends BaseServiceImpl<AccountVO> implements Sig
 		//向中间表中插入账户角色情况
 		if("ZSYH".equals(userVO.getDeptid())){
 			List<RoleVO> roles = new ArrayList<>();
-			roles.add(new RoleVO("5E2EE48C361A4BBB825C4A2E8330102F"));
+			if("ENG".equals(userVO.getUsertype())){
+				roles.add(new RoleVO("8EA749A9ACB84A3490EBF8E31AC3C621"));
+			}else{
+				roles.add(new RoleVO("5E2EE48C361A4BBB825C4A2E8330102F"));
+			}
 			userVO.setRoles(roles);
 		}
 		this.doInsertAccountRolesBatch(accountVO.getUserid(), userVO.getRoles());
