@@ -74,12 +74,17 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 				//当前展商所选展位信息
 				List<ZwjbxxVO> dvos=zwjbxxService.doSearchListByVO(zwvo);
 				String yxzgxx="";
+				if(dvos.size()>0) {
+					yxzgxx = "您已选择";
+				}
 				for(ZwjbxxVO dvo:dvos){
 					ZgjbxxVO zgdb=zgjbxxService.doFindById(dvo.getZgid());
 					yxzgxx+="展馆<span style='color:red'>"+zgdb.getZgmc()+"</span>的展位<span style='color:red'>"
 							+dvo.getZwh()+"</span>,";
 				}
-
+				if(dvos.size()>0) {
+					yxzgxx += "<br><br>";
+				}
 				MimeMessage message = jms.createMimeMessage();
 				MailVO mv=new MailVO();
 				try {

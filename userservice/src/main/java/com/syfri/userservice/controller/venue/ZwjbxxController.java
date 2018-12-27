@@ -159,6 +159,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 	 * @return
 	 * @throws Exception
 	 */
+	@Transactional(rollbackFor = {Exception.class, RuntimeException.class})
 	@ApiOperation(value="根据VO保存",notes="注意事项")
 	@ApiImplicitParam(name="vo",value = "业务实体")
 	@PostMapping("doInsertByVO")
