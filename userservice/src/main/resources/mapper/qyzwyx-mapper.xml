@@ -273,7 +273,6 @@
                 TT1.Ywgsmc,
                 TT1.Lxr,
                 TT1.Lxrsj,
-                TT1.CPLX,
                 NVL(TT2.BZZWGS,0) BZZWGS,
                 NVL(TT2.SNGDZW,0) SNGDZW,
                 NVL(TT2.SWGDZW,0) SWGDZW
@@ -281,16 +280,20 @@
                                  T1.Zwgsmc,
                                  T1.Ywgsmc,
                                  T1.Lxr,
-                                 T1.Lxrsj,
-                                 CONCAT(SUBSTR(T2.CPLX, 0, 1),'000') CPLX
+                                 T1.Lxrsj
                 FROM CFPA_QY_JBXX T1
                 INNER JOIN CFPA_QY_CPJS T2 ON T1.QYID = T2.QYID AND T2.DELETE_FLAG = 'N'
                 INNER JOIN SYS_CODELIST_DETAIL T3 ON T2.Cplx = T3.CODE_VALUE AND T3.CODETYPE = 'CPLX' AND T3.DELETE_FLAG = 'N'
-                WHERE T1.DELETE_FLAG = 'N') TT1
+                WHERE T1.DELETE_FLAG = 'N'
+                <if test="cplx != null and cplx != '' "> and CONCAT(SUBSTR(T2.CPLX, 0, 1),'000')=#{cplx} </if>
+              ) TT1
         LEFT JOIN CFPA_QY_ZWYX TT2 ON TT1.QYID = TT2.QYID AND TT2.DELETE_FLAG = 'N'
-        <if test="cplx != null and cplx != '' ">
-            where TT1.CPLX =#{cplx}
-        </if>
+        <if test='zwmjfw =="1"'> where (TT2.SNGDZW &gt;= 24 and TT2.SNGDZW &lt;= 59 ) or (TT2.SWGDZW &gt;= 24 and TT2.SWGDZW &lt;= 59)</if>
+        <if test='zwmjfw =="2"'> where (TT2.SNGDZW &gt;= 60 and TT2.SNGDZW &lt;= 99 ) or (TT2.SWGDZW &gt;= 60 and TT2.SWGDZW &lt;= 99)</if>
+        <if test='zwmjfw =="3"'> where (TT2.SNGDZW &gt;= 100 and TT2.SNGDZW &lt;= 149 ) or (TT2.SWGDZW &gt;= 100 and TT2.SWGDZW &lt;= 149)</if>
+        <if test='zwmjfw =="4"'> where (TT2.SNGDZW &gt;= 150 and TT2.SNGDZW &lt;= 199 ) or (TT2.SWGDZW &gt;= 150 and TT2.SWGDZW &lt;= 199)</if>
+        <if test='zwmjfw =="5"'> where TT2.SNGDZW &gt;= 200 or TT2.SWGDZW &gt;= 200</if>
+        <if test='zwmjfw =="9"'> where TT2.SNGDZW  &lt; 24 or TT2.SWGDZW  &lt; 24</if>
         order by TT1.Zwgsmc desc
     </select>
 </mapper>
