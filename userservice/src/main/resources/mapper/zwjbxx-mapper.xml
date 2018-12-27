@@ -306,7 +306,7 @@
 			or (q.ywgsmc LIKE concat(concat('%',#{qymc}),'%') ESCAPE '\' and sa.usertype = 'ENG'))
 		</if>
 		<include refid="SQL_CONDITION"/>
-		ORDER BY T.CJSJ
+		ORDER BY T.zwh
 	</select>
 	<!--9.按复合条件逻辑更新-->
 	<update  id="doDeleteByVO"  parameterType="ZwjbxxVO">
