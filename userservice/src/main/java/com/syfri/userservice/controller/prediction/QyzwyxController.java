@@ -112,103 +112,54 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
         return resultVO;
     }
 
-    @ApiOperation(value = "按产品类型统计分析图表数据导出", notes = "修改")
-    @RequestMapping(value = "/doExportTjfx/{type}", method = RequestMethod.GET)
-    public void download(HttpServletRequest request, HttpServletResponse response, @PathVariable String type) {
+    //add by rliu 20181228
+    @ApiOperation(value = "按产品类型统计分析图表数据导出", notes = "导出")
+    @RequestMapping(value = "/doExportTjfxByCplx", method = RequestMethod.GET)
+    public void doExportTjfxByCplx(HttpServletRequest request, HttpServletResponse response) {
         //excel标题
-        String[] title = {};
+        String[] title = {"产品类型", "参展企业数量", "标准展位数量", "光地展位面积(m²)"};
         //excel文件名
-        String fileName = "";
+        String fileName = "统计分析-按产品类型统计" + System.currentTimeMillis() + ".xls";
         //sheet名
-        String sheetName = "";
-        //数据内容
-        String[][] content = null;
-        //创建HSSFWorkbook
-        HSSFWorkbook wb = new HSSFWorkbook();
+        String sheetName = "统计分析-按产品类型统计";
+
         //获取数据
-        QyzwyxVO vo = new QyzwyxVO();
-        List<QyzwyxVO> list = null;
-        if (type.equals("cplx")) {
-            list = qyzwyxService.dofindtjfx(vo);
-            String[] str = {"产品类型", "参展企业数量", "标准展位数量", "光地展位面积(m²)"};
-            title = str;
-            fileName = "统计分析-按产品类型统计" + System.currentTimeMillis() + ".xls";
-            sheetName = "按产品类型统计";
-            content = new String[list.size()][4];
-            for (int i = 0; i < list.size(); i++) {
-                content[i] = new String[title.length];
-                QyzwyxVO obj = list.get(i);
-                content[i][0] = obj.getCplxmc();
-                content[i][1] = obj.getCzqysl();
-                content[i][2] = obj.getBwzwgssl();
-                content[i][3] = obj.getGdzwmj();
-            }
-            wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
-            //调整列宽
-            for (int i = 0; i < wb.getNumberOfSheets(); i++) {
-                wb.getSheetAt(i).setColumnWidth(0, 256 * 45);
-                wb.getSheetAt(i).setColumnWidth(1, 256 * 35);
-                wb.getSheetAt(i).setColumnWidth(2, 256 * 35);
-                wb.getSheetAt(i).setColumnWidth(3, 256 * 35);
-            }
-        } else if (type.equals("gdzwmj")) {
-            list = qyzwyxService.dofindtjfxsj(vo);
-            String[] str = {"展位面积范围", "展位数量"};
-            title = str;
-            fileName = "统计分析-按光地展位面积统计" + System.currentTimeMillis() + ".xls";
-            sheetName = "按光地展位面积统计";
-            content = new String[list.size()][2];
-            for (int i = 0; i < list.size(); i++) {
-                content[i] = new String[title.length];
-                QyzwyxVO obj = list.get(i);
-                content[i][0] = obj.getZwmjfwmc();
-                content[i][1] = obj.getSl();
-            }
-            wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
-            //调整列宽
-            for (int i = 0; i < wb.getNumberOfSheets(); i++) {
-                wb.getSheetAt(i).setColumnWidth(0, 256 * 35);
-                wb.getSheetAt(i).setColumnWidth(1, 256 * 35);
-            }
+        List<QyzwyxVO> dataList = qyzwyxService.dofindtjfx(new QyzwyxVO());
+        List<String[]> list = new ArrayList<>();
+        for (int i = 0; i < dataList.size(); i++) {
+            QyzwyxVO obj = dataList.get(i);
+            String[] content = new String[title.length];
+            content[0] = obj.getCplxmc();
+            content[1] = obj.getCzqysl();
+            content[2] = obj.getBwzwgssl();
+            content[3] = obj.getGdzwmj();
+            list.add(content);
         }
+        this.doExportExcel(request, response, fileName, sheetName, title, list);
+    }
 
-        //创建HSSFWorkbook
-//        HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
+    //add by rliu 20181228
+    @ApiOperation(value = "按展地面积范围统计分析图表数据导出", notes = "导出")
+    @RequestMapping(value = "/doExportTjfxByZwmjfw", method = RequestMethod.GET)
+    public void doExportTjfxByZwmjfw(HttpServletRequest request, HttpServletResponse response) {
+        //excel标题
+        String[] title = {"展位面积范围", "展位数量"};
+        //excel文件名
+        String fileName = "统计分析-按光地展位面积统计" + System.currentTimeMillis() + ".xls";
+        //sheet名
+        String sheetName = "统计分析-按光地展位面积统计";
 
-        BufferedInputStream bis = null;
-        try {
-            response.addHeader("Cache-Control", "no-cache");
-            //response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/vnd.ms-excel;charset=UTF-8");
-            String ua = request.getHeader("user-agent");
-            ua = ua == null ? null : ua.toLowerCase();
-            if (ua != null && (ua.indexOf("firefox") > 0 || ua.indexOf("safari") > 0)) {
-                try {
-                    fileName = new String(fileName.getBytes(), "ISO8859-1");
-                    response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    fileName = URLEncoder.encode(fileName, "utf-8");
-                    response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            wb.write(response.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (bis != null) {
-                try {
-                    bis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        //获取数据
+        List<QyzwyxVO> dataList = qyzwyxService.dofindtjfxsj(new QyzwyxVO());
+        List<String[]> list = new ArrayList<>();
+        for (int i = 0; i < dataList.size(); i++) {
+            QyzwyxVO obj = dataList.get(i);
+            String[] content = new String[title.length];
+            content[0] = obj.getZwmjfwmc();
+            content[1] = obj.getSl();
+            list.add(content);
         }
+        this.doExportExcel(request, response, fileName, sheetName, title, list);
     }
 
     @ApiOperation(value = "产品类型下企业信息", notes = "查询")
