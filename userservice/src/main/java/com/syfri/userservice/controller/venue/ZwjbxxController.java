@@ -276,6 +276,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 			if(vo.getUuid()!=null&&!"".equals(vo.getUuid())){
 				vo.setQyid("");
 				vo.setZwzt("normal");
+				vo.setReserve2("");
 				zwjbxxService.doUpdateByVO(vo);
 				ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
 				resultVO.setResult(newdbzw);
