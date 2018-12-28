@@ -10,6 +10,7 @@ import com.syfri.userservice.config.properties.BoothMsgProperties;
 import com.syfri.userservice.config.properties.MsgProperties;
 import com.syfri.userservice.controller.prediction.QyjbxxController;
 import com.syfri.userservice.model.prediction.QyjbxxVO;
+import com.syfri.userservice.model.venue.ZgZwsVO;
 import com.syfri.userservice.model.venue.ZgjbxxVO;
 import com.syfri.userservice.service.prediction.QyjbxxService;
 import com.syfri.userservice.service.venue.ZgjbxxService;
@@ -155,7 +156,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 
 	/**
 	 * 使用先删除后插入的方式修改
-	 * @param zwjbxxVOs
+	 * @param
 	 * @return
 	 * @throws Exception
 	 */
@@ -163,9 +164,12 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 	@ApiOperation(value="根据VO保存",notes="注意事项")
 	@ApiImplicitParam(name="vo",value = "业务实体")
 	@PostMapping("doInsertByVO")
-	public @ResponseBody ResultVO doInsertByVO(@RequestBody List<ZwjbxxVO> zwjbxxVOs)throws Exception{
+	public @ResponseBody ResultVO doInsertByVO(@RequestBody ZgZwsVO zgZwsVO)throws Exception{
 		ResultVO resultVO = ResultVO.build();
+		List<ZwjbxxVO> zwjbxxVOs=zgZwsVO.getZwjbxxVOs();
+		ZgjbxxVO gvo=zgZwsVO.getZgjbxxVO();
 		try {
+			//保存展位信息
 			if(zwjbxxVOs.size()>0){
 				//删除展位
 				ZwjbxxVO zw=new ZwjbxxVO();
@@ -179,6 +183,14 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 					vo.setCjrmc(CurrentUserUtil.getCurrentUserName());
 					zwjbxxService.doInsertByVO(vo);
 				}
+			}
+			//保存展馆信息
+			if(gvo.getUuid()!=null&&!"".equals(gvo.getUuid())){
+				gvo.setXgrid(CurrentUserUtil.getCurrentUserId());
+				gvo.setXgrmc(CurrentUserUtil.getCurrentUserName());
+				gvo.setXgrid(CurrentUserUtil.getCurrentUserId());
+				gvo.setXgrmc(CurrentUserUtil.getCurrentUserName());
+				zgjbxxService.doUpdateByVO(gvo);
 			}
 		} catch (Exception e) {
 			logger.error("{}",e.getMessage());
