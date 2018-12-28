@@ -110,7 +110,7 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 	}
 
 	//add by rliu 20181227
-	@ApiOperation(value = "导出展位基本信息", notes = "导出")
+	@ApiOperation(value = "展会报名管理导出", notes = "导出")
 	@RequestMapping(value = "/doExportJbxx/{param}", method = RequestMethod.GET)
 	public void doExport(HttpServletRequest request, HttpServletResponse response, @PathVariable String [] param) {
 		//解析param zwh&zwzt&qymc&zwlb&cklx
@@ -122,9 +122,9 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 		//excel标题
 		String[] title = {"公司名称", "联系人", "联系人手机", "数据状态", "审核状态"};
 		//excel文件名
-		String fileName = "报名管理" + System.currentTimeMillis() + ".xls";
+		String fileName = "展会报名管理导出" + System.currentTimeMillis() + ".xls";
 		//sheet名
-		String sheetName = "报名管理";
+		String sheetName = "展会报名管理";
 
 		//获取数据
 		List<QyjbxxVO> dataList = qyjbxxService.doSearchListByVO(vo);
