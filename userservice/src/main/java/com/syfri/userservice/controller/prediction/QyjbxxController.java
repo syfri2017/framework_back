@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -106,6 +107,43 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 			resultVO.setCode(EConstants.CODE.FAILURE);
 		}
 		return resultVO;
+	}
+
+	//add by rliu 20181227
+	@ApiOperation(value = "导出展位基本信息", notes = "导出")
+	@RequestMapping(value = "/doExportJbxx/{param}", method = RequestMethod.GET)
+	public void doExport(HttpServletRequest request, HttpServletResponse response, @PathVariable String [] param) {
+		//解析param zwh&zwzt&qymc&zwlb&cklx
+		QyjbxxVO vo = new QyjbxxVO();
+		vo.setGsmc(param[0]);
+		vo.setSjzt(param[1]);
+		vo.setShzt(param[2]);
+
+		//excel标题
+		String[] title = {"公司名称", "联系人", "联系人手机", "数据状态", "审核状态"};
+		//excel文件名
+		String fileName = "报名管理" + System.currentTimeMillis() + ".xls";
+		//sheet名
+		String sheetName = "报名管理";
+
+		//获取数据
+		List<QyjbxxVO> dataList = qyjbxxService.doSearchListByVO(vo);
+		List<String[]> list = new ArrayList<>();
+		for (int i = 0; i < dataList.size(); i++) {
+			QyjbxxVO obj = dataList.get(i);
+			String[] content = new String[title.length];
+			if(obj.getUsertype().equals("ENG")){
+				content[0] = obj.getYwgsmc();
+			}else{
+				content[0] = obj.getZwgsmc();
+			}
+			content[1] = obj.getLxr();
+			content[2] = obj.getLxrsj();
+			content[3] = obj.getSjztmc();
+			content[4] = obj.getShztmc();
+			list.add(content);
+		}
+		this.doExportExcel(request, response, fileName, sheetName, title, list);
 	}
 
 	//add by yushch 20181010
