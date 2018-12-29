@@ -308,7 +308,7 @@
 		<include refid="SQL_CONDITION"/>
 		ORDER BY T.zwh
 	</select>
-	<!--9.按复合条件逻辑更新-->
+	<!--13.按复合条件逻辑更新-->
 	<update  id="doDeleteByVO"  parameterType="ZwjbxxVO">
 		UPDATE   CFPA_ZW_JBXX T
 		SET
@@ -317,5 +317,27 @@
 		WHERE t.DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
 	</update>
+
+	<!--14.企业选择的展位数量从大到小进行排序  by li.xue 2018/12/29-->
+	<select id="doFindQyZwNumDesc" parameterType="ZwjbxxVO" resultType="ZwjbxxVO">
+		WITH TEMP_ZW AS(
+  			SELECT QYID, ZWH FROM CFPA_ZW_JBXX WHERE DELETE_FLAG = 'N' AND QYID IS NOT NULL
+			<if test="zgList != null and zgList.size() > 0">
+				AND SUBSTR(ZWH,1,2) IN
+				<foreach collection="zgList" item="item" index="index" open="(" separator=", " close=")">
+					#{item}
+				</foreach>
+			</if>
+		)
+		SELECT A.QYID, A.GSMC, A.LXR, A.LXRSJ, A.ZWNUM, WMSYS.WM_CONCAT(B.ZWH) ZWH
+		FROM (
+  			SELECT T1.QYID, NVL(T2.ZWGSMC,T2.YWGSMC) GSMC, T2.LXR, T2.LXRSJ, COUNT(1) ZWNUM
+  			FROM TEMP_ZW T1 INNER JOIN CFPA_QY_JBXX T2 ON T1.QYID = T2.QYID AND T2.DELETE_FLAG = 'N'
+  			GROUP BY T1.QYID, NVL(T2.ZWGSMC,T2.YWGSMC), T2.LXR, T2.LXRSJ
+		) A
+		INNER JOIN TEMP_ZW B ON A.QYID = B.QYID
+		GROUP BY A.QYID, A.GSMC,A.LXR,A.LXRSJ,A.ZWNUM
+		ORDER BY ZWNUM DESC
+	</select>
 
 </mapper>

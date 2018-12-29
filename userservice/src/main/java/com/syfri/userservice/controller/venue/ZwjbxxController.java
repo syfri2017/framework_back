@@ -1,5 +1,6 @@
 package com.syfri.userservice.controller.venue;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
@@ -407,5 +408,25 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		}
 
 		 **/
+	}
+
+	/**
+	 * 企业选择的展位数量从大到小进行排序 by li.xue 2018/12/29
+	 * @param zwjbxxVO
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("doFindQyZwNumDesc")
+	public @ResponseBody ResultVO doFindQyZwNumDesc(@RequestBody ZwjbxxVO zwjbxxVO){
+		ResultVO resultVO = ResultVO.build();
+		try {
+			PageHelper.startPage(zwjbxxVO.getPageNum(), zwjbxxVO.getPageSize());
+			List<ZwjbxxVO> list= zwjbxxService.doFindQyZwNumDesc(zwjbxxVO);
+			PageInfo<ZwjbxxVO> pageInfo = new PageInfo<>(list);
+			resultVO.setResult(pageInfo);
+		} catch (Exception e) {
+			logger.error("{}",e.getMessage());
+		}
+		return resultVO;
 	}
 }
