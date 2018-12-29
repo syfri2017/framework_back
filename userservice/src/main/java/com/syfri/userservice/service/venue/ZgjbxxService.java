@@ -9,4 +9,5 @@ public interface ZgjbxxService  extends BaseService<ZgjbxxVO>{
     public List<ZgjbxxVO> doSearchHbListByVO(ZgjbxxVO vo);
     public List<ZgjbxxVO> doSearchHbTpListByVO(ZgjbxxVO vo);
     public List<ZgjbxxVO> doSearchDataListByVO(ZgjbxxVO vo);
+    public List<ZgjbxxVO> doSearchZgmc();
 }

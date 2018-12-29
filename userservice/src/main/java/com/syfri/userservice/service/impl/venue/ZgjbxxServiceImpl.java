@@ -32,4 +32,7 @@ public class ZgjbxxServiceImpl extends BaseServiceImpl<ZgjbxxVO> implements Zgjb
 	public List<ZgjbxxVO> doSearchDataListByVO(ZgjbxxVO vo){
 		return zgjbxxDAO.doSearchDataListByVO(vo);
 	}
+	public List<ZgjbxxVO> doSearchZgmc(){
+		return zgjbxxDAO.doSearchZgmc();
+	}
 }
