@@ -1,6 +1,7 @@
 package com.syfri.userservice.model.venue;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.syfri.baseapi.model.ValueObject;
 
@@ -46,7 +47,7 @@ public class ZwjbxxVO extends ValueObject implements Serializable{
 
 	private String gsmc;   //公司名称
 	private String zwnum;   //公司已选展位数量
-	private String zgList;   //展馆List
+	private List<String> zgList;   //展馆List
 
 	public String getCklx() {
 		return cklx;
@@ -278,10 +279,10 @@ public class ZwjbxxVO extends ValueObject implements Serializable{
 	public void setZwnum(String zwnum) {
 		this.zwnum = zwnum;
 	}
-	public String getZgList() {
-		return zgList;
-	}
-	public void setZgList(String zgList) {
-		this.zgList = zgList;
-	}
+    public List<String> getZgList() {
+        return zgList;
+    }
+    public void setZgList(List<String> zgList) {
+        this.zgList = zgList;
+    }
 }
