@@ -154,6 +154,8 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 	public @ResponseBody ResultVO doInsertByVO(@RequestBody ZgjbxxVO vo) throws Exception{
 		ResultVO resultVO = ResultVO.build();
 		try {
+			vo.setCjrid(CurrentUserUtil.getCurrentUserId());
+			vo.setCjrmc(CurrentUserUtil.getCurrentUserName());
 			//插入展馆数据
 			zgjbxxService.doInsertByVO(vo);
 		} catch (Exception e) {
@@ -176,6 +178,8 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 			int sum = 0;
 			for(ZgjbxxVO vo :voList){
 				vo.setDeleteFlag("Y");
+				vo.setXgrid(CurrentUserUtil.getCurrentUserId());
+				vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
 				sum = sum + zgjbxxService.doUpdateByVO(vo);
 				//删除展位
 				ZwjbxxVO zw=new ZwjbxxVO();
