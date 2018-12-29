@@ -188,8 +188,6 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 			if(gvo.getUuid()!=null&&!"".equals(gvo.getUuid())){
 				gvo.setXgrid(CurrentUserUtil.getCurrentUserId());
 				gvo.setXgrmc(CurrentUserUtil.getCurrentUserName());
-				gvo.setXgrid(CurrentUserUtil.getCurrentUserId());
-				gvo.setXgrmc(CurrentUserUtil.getCurrentUserName());
 				zgjbxxService.doUpdateByVO(gvo);
 			}
 		} catch (Exception e) {
@@ -223,6 +221,8 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 					if(dbzw.getZwzt()!=null&&"normal".equals(dbzw.getZwzt())){
 						vo.setQyid(qvo.getQyid());
 						vo.setZwzt("bespoke");
+						vo.setXgrid(CurrentUserUtil.getCurrentUserId());
+						vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
 						zwjbxxService.doUpdateByVO(vo);
 						ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
 						String phone=qvo.getLxrsj();
@@ -277,6 +277,8 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 				vo.setQyid("");
 				vo.setZwzt("normal");
 				vo.setReserve2("");
+				vo.setXgrid(CurrentUserUtil.getCurrentUserId());
+				vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
 				zwjbxxService.doUpdateByVO(vo);
 				ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
 				resultVO.setResult(newdbzw);
