@@ -4,6 +4,7 @@ import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import com.syfri.userservice.config.properties.CpjsProperties;
 import com.syfri.userservice.utils.Base64ImageUtil;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -116,5 +117,46 @@ public class QycpjsController extends BaseController<QycpjsVO> {
         }
 
         return true;
+    }
+    //根据uuid修改产品信息 add by yushch 20181229
+    @ApiOperation(value = "根据id更新基本信息", notes = "修改")
+    @PostMapping("/doUpdateByVO")
+    public @ResponseBody ResultVO doUpdateByVO(@RequestBody QycpjsVO vo) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(qycpjsService.doUpdateByVO(vo));
+        } catch (Exception e) {
+            logger.error("{}", e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
+    //根据uuid删除产品信息 add by yushch 20181229
+    @ApiOperation(value = "根据id更新基本信息", notes = "删除")
+    @PostMapping("/doDeleteCpxx")
+    public @ResponseBody ResultVO doDeleteJbxx(@RequestBody QycpjsVO vo) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(qycpjsService.doDeleteById(vo.getUuid()));
+        } catch (Exception e) {
+            logger.error("{}", e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+        return resultVO;
+    }
+    //插入vo add by yushch 20190102
+    @ApiOperation(value="根据VO保存",notes="注意事项")
+    @ApiImplicitParam(name="vo",value = "业务实体")
+    @PostMapping("/doInsertCpxx")
+    public @ResponseBody ResultVO doInsertByVO(@RequestBody QycpjsVO vo) throws Exception{
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(qycpjsService.doInsertByVO(vo));
+        } catch (Exception e) {
+            logger.error("{}",e.getMessage());
+            resultVO.setCode(EConstants.CODE.FAILURE);
+        }
+
+        return 	resultVO;
     }
 }
