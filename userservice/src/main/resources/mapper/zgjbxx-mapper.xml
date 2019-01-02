@@ -267,4 +267,11 @@
 		ORDER BY T.ZGMC
 	</select>
 
+	<select id="doSearchZgmc" resultType="ZgjbxxVO">
+		SELECT
+		t.uuid uuid,
+		t.zgmc zgmc
+		FROM CFPA_ZG_JBXX t  WHERE t.DELETE_FLAG = 'N'
+		ORDER BY T.ZGMC
+	</select>
 </mapper>

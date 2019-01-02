@@ -214,4 +214,19 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 		}
 		return 	resultVO;
 	}
+	/**
+	 * 获取全部展馆名称 add by yushch 20181229
+	 */
+	@ApiOperation(value="获取全部展馆名称",notes="查询")
+	@GetMapping("getZgmc")
+	public @ResponseBody ResultVO getZgmc(){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			resultVO.setResult(zgjbxxService.doSearchZgmc());
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 }

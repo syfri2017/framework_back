@@ -36,4 +36,10 @@ public class ZwjbxxServiceImpl extends BaseServiceImpl<ZwjbxxVO> implements Zwjb
 	public List doSearchListQyByVO(ZwjbxxVO vo) {
 		return zwjbxxDAO.doSearchListQyByVO(vo);
 	}
+
+	/*--企业选择的展位数量从大到小进行排序  by li.xue 2018/12/29.--*/
+	@Override
+	public List<ZwjbxxVO> doFindQyZwNumDesc(ZwjbxxVO zwjbxxVO){
+		return zwjbxxDAO.doFindQyZwNumDesc(zwjbxxVO);
+	}
 }
