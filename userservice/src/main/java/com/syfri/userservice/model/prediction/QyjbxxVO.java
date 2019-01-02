@@ -60,6 +60,9 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	private String usertype;   //用户类型
 	private String usertypeName;   //用户类型中文
 
+	private String qrzt;   //确认状态
+	private String qrsj;	//确认时间
+
 	public String getQyid(){
 		return qyid;
 	}
@@ -361,5 +364,21 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	}
 	public void setSrc(String src) {
 		this.src = src;
+	}
+
+	public String getQrzt() {
+		return qrzt;
+	}
+
+	public void setQrzt(String qrzt) {
+		this.qrzt = qrzt;
+	}
+
+	public String getQrsj() {
+		return qrsj;
+	}
+
+	public void setQrsj(String qrsj) {
+		this.qrsj = qrsj;
 	}
 }

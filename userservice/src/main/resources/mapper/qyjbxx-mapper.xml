@@ -148,6 +148,8 @@
 		t.xgrid xgrid,
 		t.xgrmc xgrmc,
 		TO_CHAR(t.xgsj,'yyyy-MM-dd HH24:mi:ss') xgsj,
+		t.qrzt qrzt,
+		TO_CHAR(t.qrsj,'yyyy-MM-dd HH24:mi:ss') qrsj,
 		t.reserve1 reserve1,
 		t.reserve2 reserve2,
 		t.reserve3 reserve3,
@@ -299,6 +301,8 @@
             <if test="xgrid != null">xgrid=#{xgrid},</if>
             <if test="xgrmc != null">xgrmc=#{xgrmc},</if>
             xgsj=sysdate,
+            <if test="qrzt != null">qrzt=#{qrzt},</if>
+            qrsj=sysdate,
             <if test="reserve1 != null">reserve1=#{reserve1},</if>
             <if test="reserve2 != null">reserve2=#{reserve2},</if>
             <if test="reserve3 != null">reserve3=#{reserve3},</if>
