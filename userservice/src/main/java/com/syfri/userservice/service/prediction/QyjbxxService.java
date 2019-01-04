@@ -22,4 +22,6 @@ public interface QyjbxxService  extends BaseService<QyjbxxVO>{
     //上传pdf
     QyjbxxVO uploadPdfs(MultipartFile multipartFile,QyjbxxVO vo,String fileName);
     String pdf2image(String fileAddress,String savePath,String type);
+    //统计分析查询是否信息确认
+    List<QyjbxxVO> ifConfirmedTjfx(QyjbxxVO qyjbxxVO);
 }

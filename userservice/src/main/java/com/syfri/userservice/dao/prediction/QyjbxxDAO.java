@@ -11,4 +11,6 @@ public interface QyjbxxDAO extends BaseDAO<QyjbxxVO>{
     List<QyjbxxVO> doFindZsxxByQyjbxx(QyjbxxVO qyjbxxVO);
     //查询邮箱是否被注册（account、jbxx）by yushch 20181018
     int doSearchCountByMail(String mail);
+    //统计分析查询是否信息确认
+    List<QyjbxxVO> ifConfirmedTjfx(QyjbxxVO qyjbxxVO);
 }

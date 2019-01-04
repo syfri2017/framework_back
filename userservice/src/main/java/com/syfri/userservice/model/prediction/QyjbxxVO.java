@@ -1,6 +1,7 @@
 package com.syfri.userservice.model.prediction;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import com.syfri.baseapi.model.ValueObject;
 
@@ -59,6 +60,14 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	private String pkid;   //用户表主键
 	private String usertype;   //用户类型
 	private String usertypeName;   //用户类型中文
+
+	private String qrzt;   //确认状态
+	private String qrsj;	//确认时间
+	private String qrztmc; //确认状态名称
+	private String qrztsl; //确认状态数量
+	private BigDecimal qrztpercent; //确认状态比重
+	private String qrsj_start;
+	private String qrsj_end;
 
 	public String getQyid(){
 		return qyid;
@@ -361,5 +370,61 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	}
 	public void setSrc(String src) {
 		this.src = src;
+	}
+
+	public String getQrzt() {
+		return qrzt;
+	}
+
+	public void setQrzt(String qrzt) {
+		this.qrzt = qrzt;
+	}
+
+	public String getQrsj() {
+		return qrsj;
+	}
+
+	public void setQrsj(String qrsj) {
+		this.qrsj = qrsj;
+	}
+
+	public String getQrztmc() {
+		return qrztmc;
+	}
+
+	public void setQrztmc(String qrztmc) {
+		this.qrztmc = qrztmc;
+	}
+
+	public String getQrztsl() {
+		return qrztsl;
+	}
+
+	public void setQrztsl(String qrztsl) {
+		this.qrztsl = qrztsl;
+	}
+
+	public BigDecimal getQrztpercent() {
+		return qrztpercent;
+	}
+
+	public void setQrztpercent(BigDecimal qrztpercent) {
+		this.qrztpercent = qrztpercent;
+	}
+
+	public String getQrsj_start() {
+		return qrsj_start;
+	}
+
+	public void setQrsj_start(String qrsj_start) {
+		this.qrsj_start = qrsj_start;
+	}
+
+	public String getQrsj_end() {
+		return qrsj_end;
+	}
+
+	public void setQrsj_end(String qrsj_end) {
+		this.qrsj_end = qrsj_end;
 	}
 }
