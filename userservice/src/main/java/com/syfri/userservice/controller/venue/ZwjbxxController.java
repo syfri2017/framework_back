@@ -13,8 +13,11 @@ import com.syfri.userservice.controller.prediction.QyjbxxController;
 import com.syfri.userservice.model.prediction.QyjbxxVO;
 import com.syfri.userservice.model.venue.ZgZwsVO;
 import com.syfri.userservice.model.venue.ZgjbxxVO;
+import com.syfri.userservice.service.impl.venue.ZwlogServiceImpl;
 import com.syfri.userservice.service.prediction.QyjbxxService;
 import com.syfri.userservice.service.venue.ZgjbxxService;
+import com.syfri.userservice.service.venue.ZwlogService;
+import com.syfri.userservice.service.venue.ZwsmsService;
 import com.syfri.userservice.utils.CurrentUserUtil;
 import com.syfri.userservice.utils.ExcelUtil;
 import io.swagger.annotations.ApiImplicitParam;
@@ -45,6 +48,10 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 
 	@Autowired
 	private ZwjbxxService zwjbxxService;
+	@Autowired
+	private ZwlogService zwlogService;
+	@Autowired
+	private ZwsmsService zwsmsService;
 	@Autowired
 	private QyjbxxService qyjbxxService;
 	@Autowired
@@ -183,6 +190,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 					vo.setCjrid(CurrentUserUtil.getCurrentUserId());
 					vo.setCjrmc(CurrentUserUtil.getCurrentUserName());
 					zwjbxxService.doInsertByVO(vo);
+					zwlogService.createZwlog(null,vo, ZwlogServiceImpl.INSERT,"doInsertByVO");
 				}
 			}
 			//保存展馆信息
@@ -205,7 +213,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 	 * @throws Exception
 	 */
 	@PostMapping("doUpdateByVO")
-	@Transactional
+	@Transactional(rollbackFor = {Exception.class, RuntimeException.class})
 	public @ResponseBody ResultVO doUpdateByVO(@RequestBody ZwjbxxVO vo) throws Exception{
 		ResultVO resultVO = ResultVO.build();
 		try {
@@ -236,6 +244,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 								params.add(newdbzw.getZwh());
 								params.add(newdbzw.getZwmj());
 								SmsSingleSenderResult result = sender.sendWithParam("86", phone, boothMsgProperties.getTemplId(), params, "", "", "");
+								zwsmsService.createZwsmslog(CurrentUserUtil.getCurrentUser(),newdbzw,qvo,result);
 								if (result.result == 0) {
 									resultVO.setCode(EConstants.CODE.SUCCESS);
 								}
@@ -247,6 +256,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 						//发短信结束
 						resultVO.setResult(newdbzw);
 						resultVO.setMsg("success");
+						zwlogService.createZwlog(dbzw,newdbzw, ZwlogServiceImpl.UPDATE,"doUpdateByVO");
 					}else{
 						resultVO.setResult(dbzw);
 						resultVO.setMsg("展位已经被预定，请重新选择！");
@@ -261,7 +271,48 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		}
 		return 	resultVO;
 	}
-
+	/**
+	 * 指定展位
+	 * @param vo
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("doAssign")
+	@Transactional
+	public @ResponseBody ResultVO doAssign(@RequestBody ZwjbxxVO vo) throws Exception{
+		ResultVO resultVO = ResultVO.build();
+		try {
+			//判断前台是否传过来UUID值
+			if(vo.getUuid()!=null&&!"".equals(vo.getUuid())){
+				QyjbxxVO qvo = new QyjbxxVO();
+				if(vo.getQyid()!=null&&!"".equals(vo.getQyid())){
+					QyjbxxVO qy =new QyjbxxVO();
+					qy.setQyid(vo.getQyid());
+					qvo=qyjbxxService.doFindByVO(qy);
+					//判断是否存在企业信息
+					if(qvo.getQyid()!=null&&!"".equals(qvo.getQyid())){
+						ZwjbxxVO dbzw=zwjbxxService.doFindById(vo.getUuid());
+						//判断是否展位是未预定状态
+						vo.setQyid(qvo.getQyid());
+						vo.setZwzt("bespoke");
+						vo.setXgrid(CurrentUserUtil.getCurrentUserId());
+						vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
+						zwjbxxService.doUpdateByVO(vo);
+						ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
+						resultVO.setResult(newdbzw);
+						resultVO.setMsg("success");
+						zwlogService.createZwlog(dbzw,newdbzw, ZwlogServiceImpl.UPDATE,"doAssign");
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultVO.setMsg("指定展位失败！");
+			resultVO.setCode(EConstants.CODE.FAILURE);
+			return 	resultVO;
+		}
+		return 	resultVO;
+	}
 	/**
 	 * 取消展位选择
 	 * @param vo
@@ -284,6 +335,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 				ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
 				resultVO.setResult(newdbzw);
 				resultVO.setMsg("success");
+				zwlogService.createZwlog(null,newdbzw, ZwlogServiceImpl.UPDATE,"doCancelByVO");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

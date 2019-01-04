@@ -1,0 +1,54 @@
+package com.syfri.userservice.service.impl.venue;
+
+import com.syfri.userservice.model.system.ShiroUser;
+import com.syfri.userservice.model.venue.ZwjbxxVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.syfri.baseapi.service.impl.BaseServiceImpl;
+import com.syfri.userservice.dao.venue.ZwlogDAO;
+import com.syfri.userservice.model.venue.ZwlogVO;
+import com.syfri.userservice.service.venue.ZwlogService;
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional(rollbackFor = {Exception.class, RuntimeException.class})
+@Service("zwlogService")
+public class ZwlogServiceImpl extends BaseServiceImpl<ZwlogVO> implements ZwlogService {
+
+	public static final String INSERT = "INSERT";
+	public static final String UPDATE = "UPDATE";
+
+	@Autowired
+	private ZwlogDAO zwlogDAO;
+
+	@Override
+	public ZwlogDAO getBaseDAO() {
+		return zwlogDAO;
+	}
+	@Override
+	public void createZwlog(ZwjbxxVO o, ZwjbxxVO n, String czlx, String ffmc) {
+		ZwlogVO vo=new ZwlogVO();
+		vo.setCzlx(czlx);
+		vo.setFfmc(ffmc);
+		if(o!=null){
+			vo.setYqyid(o.getQyid());
+		}
+		if(n!=null){
+			if(czlx.equals(ZwlogServiceImpl.INSERT)){
+				vo.setCzrid(n.getCjrid());
+				vo.setCzrmc(n.getCjrmc());
+				vo.setCzsj(n.getCjsj());
+			}
+			if(czlx.equals(ZwlogServiceImpl.UPDATE)){
+				vo.setCzrid(n.getXgrid());
+				vo.setCzrmc(n.getXgrmc());
+				vo.setCzsj(n.getXgsj());
+			}
+
+			vo.setQyid(n.getQyid());
+			vo.setZwuuid(n.getUuid());
+			vo.setZwh(n.getZwh());
+		}
+		zwlogDAO.doInsertByVO(vo);
+	}
+}
