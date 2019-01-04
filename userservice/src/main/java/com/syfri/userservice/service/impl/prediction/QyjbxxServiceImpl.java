@@ -289,4 +289,8 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 		}
 		return null;
 	}
+
+	public List<QyjbxxVO> ifConfirmedTjfx(QyjbxxVO qyjbxxVO){
+		return qyjbxxDAO.ifConfirmedTjfx(qyjbxxVO);
+	}
 }

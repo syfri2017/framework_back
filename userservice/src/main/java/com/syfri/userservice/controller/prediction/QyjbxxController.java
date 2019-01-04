@@ -295,6 +295,24 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 		return vo;
 	}
 
+	/**
+	 * @Description: 统计分析查询是否信息确认
+	 * @Author: rliu
+	 * @Date: 2019/1/4 10:35
+	 */
+	@ApiOperation(value="统计分析查询是否信息确认",notes="vo")
+	@RequestMapping("/ifConfirmedTjfx")
+	public @ResponseBody ResultVO ifConfirmedTjfx(@RequestBody QyjbxxVO vo){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			List<QyjbxxVO> result = qyjbxxService.ifConfirmedTjfx(vo);
+			resultVO.setResult(result);
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 
 
 

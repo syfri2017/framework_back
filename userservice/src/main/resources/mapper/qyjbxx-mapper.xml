@@ -456,4 +456,33 @@
         )-->
         SELECT COUNT(1) num FROM CFPA_QY_JBXX t2 WHERE t2.DELETE_FLAG = 'N' AND t2.dzyx = #{value}
     </select>
+
+    <!--是否信息确认统计分析-->
+    <select id="ifConfirmedTjfx" parameterType="QyjbxxVO" resultType="QyjbxxVO">
+        select '未确认' as qrztmc,
+                (t1.total - t2.qrztsl) as qrztsl,
+                round((t1.total - t2.qrztsl) / t1.total,4)*100 as qrztpercent
+        from (select count(*) as total from CFPA_QY_JBXX t where t.delete_flag = 'N') t1,
+              (select count(*) as qrztsl from CFPA_QY_JBXX t where t.qrzt = 'Y' and t.delete_flag = 'N'
+              <if test="qrsj_start != null and qrsj_start != '' ">
+                    and t.qrsj &gt; to_date(#{qrsj_start},'yyyy/mm/dd HH24:Mi:SS')
+              </if>
+              <if test="qrsj_end != null and qrsj_end != '' ">
+                  and t.qrsj &lt; to_date(#{qrsj_end},'yyyy/mm/dd HH24:Mi:SS')
+              </if>
+              ) t2
+        union
+        select '已确认' as qrztmc,
+                t2.qrztsl as qrztsl,
+                round(t2.qrztsl / t1.total,4)*100 as qrztpercent
+        from (select count(*) as total from CFPA_QY_JBXX t where t.delete_flag = 'N') t1,
+              (select count(*) as qrztsl from CFPA_QY_JBXX t where t.qrzt = 'Y' and t.delete_flag = 'N'
+              <if test="qrsj_start != null and qrsj_start != '' ">
+                  and t.qrsj &gt; to_date(#{qrsj_start},'yyyy/mm/dd HH24:Mi:SS')
+              </if>
+              <if test="qrsj_end != null and qrsj_end != '' ">
+                  and t.qrsj &lt; to_date(#{qrsj_end},'yyyy/mm/dd HH24:Mi:SS')
+              </if>
+              ) t2
+    </select>
 </mapper>
