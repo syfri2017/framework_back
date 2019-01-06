@@ -1,6 +1,7 @@
 package com.syfri.userservice.model.venue;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.syfri.baseapi.model.ValueObject;
 
@@ -20,13 +21,13 @@ public class ZwlogVO extends ValueObject implements Serializable{
 	private String czlx;	//操作类型
 	private String czrid;	//操作人ID
 	private String czrmc;	//操作人姓名
-	private String czsj;	//操作时间
-	private String rzsj;	//日志时间
+	private Date czsj;	//操作时间
+	private Date rzsj;	//日志时间
 	private String ffmc;	//方法名称
 	private String deleteFlag;	//删除标志
 	private String xgrid;	//修改人ID
 	private String xgrmc;	//修改人姓名
-	private String xgsj;	//修改时间
+	private Date xgsj;	//修改时间
 
 	public String getUuid(){
 		return uuid;
@@ -100,16 +101,16 @@ public class ZwlogVO extends ValueObject implements Serializable{
 	public void setCzrmc(String czrmc){
 		this.czrmc = czrmc;
 	}
-	public String getCzsj(){
+	public Date getCzsj(){
 		return czsj;
 	}
-	public void setCzsj(String czsj){
+	public void setCzsj(Date czsj){
 		this.czsj = czsj;
 	}
-	public String getRzsj(){
+	public Date getRzsj(){
 		return rzsj;
 	}
-	public void setRzsj(String rzsj){
+	public void setRzsj(Date rzsj){
 		this.rzsj = rzsj;
 	}
 	public String getFfmc(){
@@ -136,10 +137,10 @@ public class ZwlogVO extends ValueObject implements Serializable{
 	public void setXgrmc(String xgrmc){
 		this.xgrmc = xgrmc;
 	}
-	public String getXgsj(){
+	public Date getXgsj(){
 		return xgsj;
 	}
-	public void setXgsj(String xgsj){
+	public void setXgsj(Date xgsj){
 		this.xgsj = xgsj;
 	}
 }

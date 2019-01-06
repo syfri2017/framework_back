@@ -11,6 +11,9 @@ import com.syfri.userservice.model.venue.ZwlogVO;
 import com.syfri.userservice.service.venue.ZwlogService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
 @Service("zwlogService")
 public class ZwlogServiceImpl extends BaseServiceImpl<ZwlogVO> implements ZwlogService {
@@ -27,28 +30,39 @@ public class ZwlogServiceImpl extends BaseServiceImpl<ZwlogVO> implements ZwlogS
 	}
 	@Override
 	public void createZwlog(ZwjbxxVO o, ZwjbxxVO n, String czlx, String ffmc) {
-		ZwlogVO vo=new ZwlogVO();
-		vo.setCzlx(czlx);
-		vo.setFfmc(ffmc);
-		if(o!=null){
-			vo.setYqyid(o.getQyid());
-		}
-		if(n!=null){
-			if(czlx.equals(ZwlogServiceImpl.INSERT)){
-				vo.setCzrid(n.getCjrid());
-				vo.setCzrmc(n.getCjrmc());
-				vo.setCzsj(n.getCjsj());
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			ZwlogVO vo=new ZwlogVO();
+			vo.setCzlx(czlx);
+			vo.setFfmc(ffmc);
+			if(o!=null){
+				vo.setYqyid(o.getQyid());
 			}
-			if(czlx.equals(ZwlogServiceImpl.UPDATE)){
-				vo.setCzrid(n.getXgrid());
-				vo.setCzrmc(n.getXgrmc());
-				vo.setCzsj(n.getXgsj());
-			}
+			if(n!=null){
+				if(czlx.equals(ZwlogServiceImpl.INSERT)){
+					vo.setCzrid(n.getCjrid());
+					vo.setCzrmc(n.getCjrmc());
+					if(n.getCjsj()!=null){
+						vo.setCzsj(sdf.parse(n.getCjsj()));
+					}else{
+						vo.setCzsj(new Date());
+					}
+				}
+				if(czlx.equals(ZwlogServiceImpl.UPDATE)){
+					vo.setCzrid(n.getXgrid());
+					vo.setCzrmc(n.getXgrmc());
+					if(n.getXgsj()!=null){
+						vo.setCzsj(sdf.parse(n.getXgsj()));
+					}
+				}
 
-			vo.setQyid(n.getQyid());
-			vo.setZwuuid(n.getUuid());
-			vo.setZwh(n.getZwh());
+				vo.setQyid(n.getQyid());
+				vo.setZwuuid(n.getUuid());
+				vo.setZwh(n.getZwh());
+			}
+			zwlogDAO.doInsertByVO(vo);
+		}catch (Exception e){
+			e.printStackTrace();
 		}
-		zwlogDAO.doInsertByVO(vo);
 	}
 }

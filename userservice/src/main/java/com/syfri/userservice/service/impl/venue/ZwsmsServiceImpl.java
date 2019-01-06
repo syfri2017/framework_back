@@ -14,6 +14,8 @@ import com.syfri.userservice.model.venue.ZwsmsVO;
 import com.syfri.userservice.service.venue.ZwsmsService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
 @Service("zwsmsService")
 public class ZwsmsServiceImpl extends BaseServiceImpl<ZwsmsVO> implements ZwsmsService {
@@ -37,6 +39,7 @@ public class ZwsmsServiceImpl extends BaseServiceImpl<ZwsmsVO> implements ZwsmsS
 		zs.setFee(result.fee+"");
 		zs.setExt(result.ext);
 		zs.setResult(result.result+"");
+		zs.setFssj(new Date());
 		zwsmsDAO.doInsertByVO(zs);
 	}
 }

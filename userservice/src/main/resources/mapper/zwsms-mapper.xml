@@ -124,22 +124,22 @@
 		SELECT 
 		<include refid="SQL_CONTENT"/>
 		FROM CFPA_ZW_SMS t 
-		WHERE t.DELETE_FLAG = 'N' AND  t.PKID = #{value} 
+		WHERE t.DELETE_FLAG = 'N' AND  t.uuid = #{value} 
 	</select>
 
 	<!--6.按照VO插入-->
 	<insert  id="doInsertByVO"  parameterType="ZwsmsVO"> 
-		<selectKey resultType="String" order="BEFORE" keyProperty="pkid">
-			SELECT SYS_GUID() AS pkid FROM DUAL
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
 		</selectKey>
 		INSERT INTO CFPA_ZW_SMS(uuid,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,zt,errmsg,ext,sid,fee,result,fssj,fscs,sjhm,qyid,zwh,zwuuid,delete_flag)
-		VALUES(#{uuid,jdbcType=VARCHAR},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},#{cjsj,jdbcType=DATE},#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{zt,jdbcType=VARCHAR},#{errmsg,jdbcType=VARCHAR},#{ext,jdbcType=VARCHAR},#{sid,jdbcType=VARCHAR},#{fee,jdbcType=VARCHAR},#{result,jdbcType=VARCHAR},#{fssj,jdbcType=DATE},#{fscs,jdbcType=VARCHAR},#{sjhm,jdbcType=VARCHAR},#{qyid,jdbcType=VARCHAR},#{zwh,jdbcType=VARCHAR},#{zwuuid,jdbcType=VARCHAR},'N')
+		VALUES(#{uuid,jdbcType=VARCHAR},#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},SYSDATE,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=TIMESTAMP},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=TIMESTAMP},#{zt,jdbcType=VARCHAR},#{errmsg,jdbcType=VARCHAR},#{ext,jdbcType=VARCHAR},#{sid,jdbcType=VARCHAR},#{fee,jdbcType=VARCHAR},#{result,jdbcType=VARCHAR},#{fssj,jdbcType=TIMESTAMP},#{fscs,jdbcType=VARCHAR},#{sjhm,jdbcType=VARCHAR},#{qyid,jdbcType=VARCHAR},#{zwh,jdbcType=VARCHAR},#{zwuuid,jdbcType=VARCHAR},'N')
 	 </insert>
 
 	<!--7.批量插入-->
 	<insert  id="doBatchInsertByList"  parameterType="java.util.List"> 
 		INSERT INTO CFPA_ZW_SMS(uuid,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,zt,errmsg,ext,sid,fee,result,fssj,fscs,sjhm,qyid,zwh,zwuuid,delete_flag)
-		SELECT SYS_GUID() pkid, A.* 
+		SELECT SYS_GUID() uuid, A.* 
 		FROM ( 
 		<foreach collection="list" item="item" index="index" separator="UNION ALL" >
 		SELECT
@@ -151,7 +151,7 @@
 
 	<!--8.按主键逻辑删除-->
 	<update id="doDeleteById"  parameterType="String"> 
-		UPDATE  CFPA_ZW_SMS t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.PKID = #{value} 
+		UPDATE  CFPA_ZW_SMS t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.uuid = #{value} 
 	</update>
 
 	<!--9.按复合条件逻辑更新-->
@@ -165,6 +165,7 @@
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
 			<if test="xgsj != null">xgsj=TO_DATE(#{xgsj},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="xgsj != null">SYSDATE,</if>
 			<if test="reserve1 != null">reserve1=#{reserve1},</if>
 			<if test="reserve2 != null">reserve2=#{reserve2},</if>
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
@@ -183,7 +184,7 @@
 			<if test="zwuuid != null">zwuuid=#{zwuuid},</if>
 			<if test="deleteFlag != null">delete_flag='N'</if>
 		</set>
-		WHERE  PKID = #{pkid}
+		WHERE  uuid = #{uuid}
 	</update>
 
 	<!--10.批量修改-->

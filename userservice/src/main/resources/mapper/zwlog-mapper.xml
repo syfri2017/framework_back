@@ -104,22 +104,22 @@
 		SELECT 
 		<include refid="SQL_CONTENT"/>
 		FROM CFPA_ZW_LOG t 
-		WHERE t.DELETE_FLAG = 'N' AND  t.PKID = #{value} 
+		WHERE t.DELETE_FLAG = 'N' AND  t.uuid = #{value} 
 	</select>
 
 	<!--6.按照VO插入-->
 	<insert  id="doInsertByVO"  parameterType="ZwlogVO"> 
-		<selectKey resultType="String" order="BEFORE" keyProperty="pkid">
-			SELECT SYS_GUID() AS pkid FROM DUAL
+		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
+			SELECT SYS_GUID() AS uuid FROM DUAL
 		</selectKey>
 		INSERT INTO CFPA_ZW_LOG(uuid,reserve1,reserve2,reserve3,reserve4,yqyid,zwuuid,zwh,qyid,czlx,czrid,czrmc,czsj,rzsj,ffmc,delete_flag,xgrid,xgrmc,xgsj)
-		VALUES(#{uuid,jdbcType=VARCHAR},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{yqyid,jdbcType=VARCHAR},#{zwuuid,jdbcType=VARCHAR},#{zwh,jdbcType=VARCHAR},#{qyid,jdbcType=VARCHAR},#{czlx,jdbcType=VARCHAR},#{czrid,jdbcType=VARCHAR},#{czrmc,jdbcType=VARCHAR},#{czsj,jdbcType=DATE},#{rzsj,jdbcType=DATE},#{ffmc,jdbcType=VARCHAR},'N',#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE})
+		VALUES(#{uuid,jdbcType=VARCHAR},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=TIMESTAMP},#{yqyid,jdbcType=VARCHAR},#{zwuuid,jdbcType=VARCHAR},#{zwh,jdbcType=VARCHAR},#{qyid,jdbcType=VARCHAR},#{czlx,jdbcType=VARCHAR},#{czrid,jdbcType=VARCHAR},#{czrmc,jdbcType=VARCHAR},#{czsj,jdbcType=TIMESTAMP},SYSDATE,#{ffmc,jdbcType=VARCHAR},'N',#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=TIMESTAMP})
 	 </insert>
 
 	<!--7.批量插入-->
 	<insert  id="doBatchInsertByList"  parameterType="java.util.List"> 
 		INSERT INTO CFPA_ZW_LOG(uuid,reserve1,reserve2,reserve3,reserve4,yqyid,zwuuid,zwh,qyid,czlx,czrid,czrmc,czsj,rzsj,ffmc,delete_flag,xgrid,xgrmc,xgsj)
-		SELECT SYS_GUID() pkid, A.* 
+		SELECT SYS_GUID() uuid, A.* 
 		FROM ( 
 		<foreach collection="list" item="item" index="index" separator="UNION ALL" >
 		SELECT
@@ -131,7 +131,7 @@
 
 	<!--8.按主键逻辑删除-->
 	<update id="doDeleteById"  parameterType="String"> 
-		UPDATE  CFPA_ZW_LOG t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.PKID = #{value} 
+		UPDATE  CFPA_ZW_LOG t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.uuid = #{value} 
 	</update>
 
 	<!--9.按复合条件逻辑更新-->
@@ -156,9 +156,10 @@
 			<if test="deleteFlag != null">delete_flag='N',</if>
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=TO_DATE(#{xgsj},'yyyy-MM-dd HH24:mi:ss')</if>
+			<if test="xgsj != null">xgsj=TO_DATE(#{xgsj},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="xgsj == null">xgsj=SYSDATE</if>
 		</set>
-		WHERE  PKID = #{pkid}
+		WHERE  uuid = #{uuid}
 	</update>
 
 	<!--10.批量修改-->

@@ -1,6 +1,7 @@
 package com.syfri.userservice.model.venue;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.syfri.baseapi.model.ValueObject;
 
@@ -11,10 +12,10 @@ public class ZwsmsVO extends ValueObject implements Serializable{
 	private String uuid;	//主健
 	private String cjrid;	//创建人ID
 	private String cjrmc;	//创建人名称
-	private String cjsj;	//创建时间
+	private Date cjsj;	//创建时间
 	private String xgrid;	//修改人ID
 	private String xgrmc;	//修改人姓名
-	private String xgsj;	//修改时间
+	private Date xgsj;	//修改时间
 	private String reserve1;	//备用字段1
 	private String reserve2;	//备用字段2
 	private String reserve3;	//备用字段3
@@ -25,7 +26,7 @@ public class ZwsmsVO extends ValueObject implements Serializable{
 	private String sid;	//本次发送标识
 	private String fee;	//短信计费的条数
 	private String result;	//错误码，0
-	private String fssj;	//发送时间
+	private Date fssj;	//发送时间
 	private String fscs;	//发送次数
 	private String sjhm;	//手机号码
 	private String qyid;	//企业ID
@@ -67,10 +68,10 @@ public class ZwsmsVO extends ValueObject implements Serializable{
 	public void setCjrmc(String cjrmc){
 		this.cjrmc = cjrmc;
 	}
-	public String getCjsj(){
+	public Date getCjsj(){
 		return cjsj;
 	}
-	public void setCjsj(String cjsj){
+	public void setCjsj(Date cjsj){
 		this.cjsj = cjsj;
 	}
 	public String getXgrid(){
@@ -85,10 +86,10 @@ public class ZwsmsVO extends ValueObject implements Serializable{
 	public void setXgrmc(String xgrmc){
 		this.xgrmc = xgrmc;
 	}
-	public String getXgsj(){
+	public Date getXgsj(){
 		return xgsj;
 	}
-	public void setXgsj(String xgsj){
+	public void setXgsj(Date xgsj){
 		this.xgsj = xgsj;
 	}
 	public String getReserve1(){
@@ -151,10 +152,10 @@ public class ZwsmsVO extends ValueObject implements Serializable{
 	public void setResult(String result){
 		this.result = result;
 	}
-	public String getFssj(){
+	public Date getFssj(){
 		return fssj;
 	}
-	public void setFssj(String fssj){
+	public void setFssj(Date fssj){
 		this.fssj = fssj;
 	}
 	public String getFscs(){
