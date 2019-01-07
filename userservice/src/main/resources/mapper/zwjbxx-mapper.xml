@@ -306,7 +306,8 @@
 			or (q.ywgsmc LIKE concat(concat('%',#{qymc}),'%') ESCAPE '\' and sa.usertype = 'ENG'))
 		</if>
 		<include refid="SQL_CONDITION"/>
-		ORDER BY T.zwh
+		ORDER BY substr(t.zwh,1,4) asc,
+		to_number(TRANSLATE (replace(t.zwh,'-',''),'0123456789'||replace(t.zwh,'-',''),'0123456789')) asc
 	</select>
 	<!--13.按复合条件逻辑更新-->
 	<update  id="doDeleteByVO"  parameterType="ZwjbxxVO">
