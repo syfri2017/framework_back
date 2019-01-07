@@ -290,7 +290,13 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 		return null;
 	}
 
+	//统计分析查询是否信息确认  add by rliu 2019/1/4 10:35
 	public List<QyjbxxVO> ifConfirmedTjfx(QyjbxxVO qyjbxxVO){
 		return qyjbxxDAO.ifConfirmedTjfx(qyjbxxVO);
+	}
+
+	//统计分析查询是否信息确认_详情  add by rliu 2019/1/7 10:35
+	public List<QyjbxxVO> ifConfirmedTjfxDetail(QyjbxxVO qyjbxxVO){
+		return qyjbxxDAO.ifConfirmedTjfxDetail(qyjbxxVO);
 	}
 }

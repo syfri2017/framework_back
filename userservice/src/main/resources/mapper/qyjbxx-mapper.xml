@@ -460,6 +460,7 @@
     <!--是否信息确认统计分析-->
     <select id="ifConfirmedTjfx" parameterType="QyjbxxVO" resultType="QyjbxxVO">
         select '未确认' as qrztmc,
+                '0' as qrzt,
                 (t1.total - t2.qrztsl) as qrztsl,
                 round((t1.total - t2.qrztsl) / t1.total,4)*100 as qrztpercent
         from (select count(*) as total from CFPA_QY_JBXX t where t.delete_flag = 'N') t1,
@@ -473,6 +474,7 @@
               ) t2
         union
         select '已确认' as qrztmc,
+                '1' as qrzt,
                 t2.qrztsl as qrztsl,
                 round(t2.qrztsl / t1.total,4)*100 as qrztpercent
         from (select count(*) as total from CFPA_QY_JBXX t where t.delete_flag = 'N') t1,
@@ -484,5 +486,32 @@
                   and t.qrsj &lt; to_date(#{qrsj_end},'yyyy/mm/dd HH24:Mi:SS')
               </if>
               ) t2
+    </select>
+
+    <!--是否信息确认统计分析（详情）-->
+    <select id="ifConfirmedTjfxDetail" parameterType="QyjbxxVO" resultType="QyjbxxVO">
+        SELECT t.qyid, t.userid, t.zwgsmc, t.ywgsmc, t.lxr, t.lxrsj, t.qrzt, TO_CHAR(t.qrsj,'yyyy-MM-dd HH24:mi:ss') qrsj, s.username username, s.usertype usertype
+        FROM CFPA_QY_JBXX t
+        <!--账户-->
+        Left Join SYS_ACCOUNT s on s.userid = t.userid AND s.DELETE_FLAG = 'N'
+        WHERE t.DELETE_FLAG = 'N'
+        <if test='qrzt =="1"'>
+            and t.qrzt ='Y'
+            <if test="qrsj_start != null and qrsj_start != '' ">
+                and t.qrsj &gt; to_date(#{qrsj_start},'yyyy/mm/dd HH24:Mi:SS')
+            </if>
+            <if test="qrsj_end != null and qrsj_end != '' ">
+                and t.qrsj &lt; to_date(#{qrsj_end},'yyyy/mm/dd HH24:Mi:SS')
+            </if>
+        </if>
+        <if test='qrzt =="0"'>
+            and t.qrzt is null
+            <if test="qrsj_start != null and qrsj_start != '' ">
+                or t.qrsj &lt; to_date(#{qrsj_start},'yyyy/mm/dd HH24:Mi:SS')
+            </if>
+            <if test="qrsj_end != null and qrsj_end != '' ">
+                or t.qrsj &gt; to_date(#{qrsj_end},'yyyy/mm/dd HH24:Mi:SS')
+            </if>
+        </if>
     </select>
 </mapper>

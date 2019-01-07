@@ -314,6 +314,26 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 		return resultVO;
 	}
 
+	/**
+	 * @Description: 统计分析查询是否信息确认_详情
+	 * @Author: rliu
+	 * @Date: 2019/1/7 10:35
+	 */
+	@ApiOperation(value="统计分析查询是否信息确认_详情",notes="列表")
+	@RequestMapping("/ifConfirmedTjfxDetail")
+	public @ResponseBody ResultVO ifConfirmedTjfxDetail(@RequestBody QyjbxxVO qyjbxxVO){
+		ResultVO resultVO = ResultVO.build();
+		try{
+			PageHelper.startPage(qyjbxxVO.getPageNum(),qyjbxxVO.getPageSize());
+			List<QyjbxxVO> list = qyjbxxService.ifConfirmedTjfxDetail(qyjbxxVO);
+			PageInfo<QyjbxxVO> pageInfo = new PageInfo<>(list);
+			resultVO.setResult(pageInfo);
+		}catch(Exception e){
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return resultVO;
+	}
 
 
     /**********************************************************************************************

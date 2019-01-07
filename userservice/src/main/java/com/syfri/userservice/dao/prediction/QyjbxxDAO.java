@@ -13,4 +13,6 @@ public interface QyjbxxDAO extends BaseDAO<QyjbxxVO>{
     int doSearchCountByMail(String mail);
     //统计分析查询是否信息确认
     List<QyjbxxVO> ifConfirmedTjfx(QyjbxxVO qyjbxxVO);
+    //统计分析查询是否信息确认_详情
+    List<QyjbxxVO> ifConfirmedTjfxDetail(QyjbxxVO qyjbxxVO);
 }
