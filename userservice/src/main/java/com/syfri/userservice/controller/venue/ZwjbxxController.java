@@ -486,4 +486,40 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		}
 		return resultVO;
 	}
+
+	//add by yushch 分析页面导出功能
+	@ApiOperation(value = "导出展位分析", notes = "导出")
+	@RequestMapping(value = "/doExporTanalysis/{param}", method = RequestMethod.GET)
+	public void doExporTanalysis(HttpServletRequest request, HttpServletResponse response, @PathVariable String [] param) {
+		//解析param
+		List<String> zgList = new ArrayList<>();
+		for(int i=0;i<param.length;i++){
+			zgList.add(param[i]);
+		}
+		ZwjbxxVO zwjbxxVO = new ZwjbxxVO();
+		zwjbxxVO.setZgList(zgList);
+
+		//excel标题
+		String[] title = {"公司名称","联系人","联系人电话","展位数量","展位号"};
+		//excel文件名
+		String fileName = "展位分析" + System.currentTimeMillis() + ".xls";
+		//sheet名
+		String sheetName = "展位分析";
+
+		//获取数据
+		List<ZwjbxxVO> dataList = zwjbxxService.doFindQyZwNumDesc(zwjbxxVO);
+		List<String[]> list = new ArrayList<>();
+		for (int i = 0; i < dataList.size(); i++) {
+			ZwjbxxVO obj = dataList.get(i);
+			String[] content = new String[title.length];
+			content[0] = obj.getGsmc();
+			content[1] = obj.getLxr();
+			content[2] = obj.getLxrsj();
+			content[3] = obj.getZwnum();
+			content[4] = obj.getZwh();
+			list.add(content);
+		}
+		this.doExportExcel(request, response, fileName, sheetName, title, list);
+
+	}
 }
