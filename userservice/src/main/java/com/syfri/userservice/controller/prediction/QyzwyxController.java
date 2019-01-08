@@ -118,6 +118,8 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
     public void doExportTjfxByCplx(HttpServletRequest request, HttpServletResponse response) {
         //excel标题
         String[] title = {"产品类型", "参展企业数量", "标准展位数量", "光地展位面积(m²)"};
+        //columns列
+        String[] columns = {"cplxmc","czqysl","bwzwgssl","gdzwmj"};
         //excel文件名
         String fileName = "统计分析-按产品类型统计" + System.currentTimeMillis() + ".xls";
         //sheet名
@@ -125,17 +127,7 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
 
         //获取数据
         List<QyzwyxVO> dataList = qyzwyxService.dofindtjfx(new QyzwyxVO());
-        List<String[]> list = new ArrayList<>();
-        for (int i = 0; i < dataList.size(); i++) {
-            QyzwyxVO obj = dataList.get(i);
-            String[] content = new String[title.length];
-            content[0] = obj.getCplxmc();
-            content[1] = obj.getCzqysl();
-            content[2] = obj.getBwzwgssl();
-            content[3] = obj.getGdzwmj();
-            list.add(content);
-        }
-        this.doExportExcel(request, response, fileName, sheetName, title, list);
+        this.doExportExcel(request, response, fileName, sheetName, title, columns, dataList);
     }
 
     //add by rliu 20181228
@@ -144,6 +136,8 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
     public void doExportTjfxByZwmjfw(HttpServletRequest request, HttpServletResponse response) {
         //excel标题
         String[] title = {"展位面积范围", "展位数量"};
+        //columns列
+        String[] columns = {"zwmjfwmc","sl"};
         //excel文件名
         String fileName = "统计分析-按光地展位面积统计" + System.currentTimeMillis() + ".xls";
         //sheet名
@@ -151,15 +145,7 @@ public class QyzwyxController extends BaseController<QyzwyxVO> {
 
         //获取数据
         List<QyzwyxVO> dataList = qyzwyxService.dofindtjfxsj(new QyzwyxVO());
-        List<String[]> list = new ArrayList<>();
-        for (int i = 0; i < dataList.size(); i++) {
-            QyzwyxVO obj = dataList.get(i);
-            String[] content = new String[title.length];
-            content[0] = obj.getZwmjfwmc();
-            content[1] = obj.getSl();
-            list.add(content);
-        }
-        this.doExportExcel(request, response, fileName, sheetName, title, list);
+        this.doExportExcel(request, response, fileName, sheetName, title, columns, dataList);
     }
 
     @ApiOperation(value = "产品类型下企业信息", notes = "查询")

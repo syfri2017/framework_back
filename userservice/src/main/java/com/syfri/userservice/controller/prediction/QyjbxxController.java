@@ -121,6 +121,8 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 
 		//excel标题
 		String[] title = {"公司名称", "联系人", "联系人手机", "数据状态", "审核状态"};
+		//columns标题
+		String[] columns = {"zwgsmc", "lxr", "lxrsj", "sjztmc", "shztmc"};
 		//excel文件名
 		String fileName = "展会报名管理导出" + System.currentTimeMillis() + ".xls";
 		//sheet名
@@ -128,22 +130,12 @@ public class QyjbxxController  extends BaseController<QyjbxxVO>{
 
 		//获取数据
 		List<QyjbxxVO> dataList = qyjbxxService.doSearchListByVO(vo);
-		List<String[]> list = new ArrayList<>();
 		for (int i = 0; i < dataList.size(); i++) {
-			QyjbxxVO obj = dataList.get(i);
-			String[] content = new String[title.length];
-			if(obj.getUsertype().equals("ENG")){
-				content[0] = obj.getYwgsmc();
-			}else{
-				content[0] = obj.getZwgsmc();
+			if("ENG".equals(dataList.get(i).getUsertype())){
+				dataList.get(i).setZwgsmc(dataList.get(i).getYwgsmc());
 			}
-			content[1] = obj.getLxr();
-			content[2] = obj.getLxrsj();
-			content[3] = obj.getSjztmc();
-			content[4] = obj.getShztmc();
-			list.add(content);
 		}
-		this.doExportExcel(request, response, fileName, sheetName, title, list);
+		this.doExportExcel(request, response, fileName, sheetName, title, columns, dataList);
 	}
 
 	//add by yushch 20181010
