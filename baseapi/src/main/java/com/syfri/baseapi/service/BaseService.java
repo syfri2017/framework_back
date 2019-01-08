@@ -63,5 +63,5 @@ public interface BaseService<T extends ValueObject> {
 	public PageInfo<T> doSearchPage(Map<String, Object> map, String orderStr, int pageNum, int pageSize);
 
 	/*导出EXCEL by li.xue 2018/12/25.*/
-	public void doExportExcel(HttpServletRequest request, HttpServletResponse response, String fileName, String sheetName, String[] title, List<String[]> list);
+	public void doExportExcel(HttpServletRequest request, HttpServletResponse response, String fileName, String sheetName, String[] title, String[] columns, List<T> list);
 }

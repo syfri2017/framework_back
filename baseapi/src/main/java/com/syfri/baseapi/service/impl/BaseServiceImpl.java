@@ -140,9 +140,10 @@ public abstract class BaseServiceImpl<T extends ValueObject> implements BaseServ
 
 	/*导出EXCEL by li.xue 2018/12/25.*/
 	@Override
-	public void doExportExcel(HttpServletRequest request, HttpServletResponse response, String fileName, String sheetName, String[] title, List<String[]> list){
+	public void doExportExcel(HttpServletRequest request, HttpServletResponse response, String fileName, String sheetName, String[] title, String[] columns, List<T> list){
 		//创建HSSFWorkbook
-		HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, list, null);
+		ExcelUtil<T> excelUtil = new ExcelUtil<>();
+		HSSFWorkbook wb = excelUtil.getHSSFWorkbook(sheetName, title, columns, list, null);
 
 		BufferedInputStream bis = null;
 		try {

@@ -1,7 +1,10 @@
 package com.syfri.baseapi.utils;
 
+import com.syfri.baseapi.model.ValueObject;
 import org.apache.poi.hssf.usermodel.*;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -10,7 +13,7 @@ import java.util.List;
  * @Modified By:
  * @Date: 2018/10/15 14:25
  */
-public class ExcelUtil {
+public class ExcelUtil<T extends ValueObject> {
     /**
      * 导出Excel
      *
@@ -20,7 +23,7 @@ public class ExcelUtil {
      * @param wb        HSSFWorkbook对象
      * @return
      */
-    public static HSSFWorkbook getHSSFWorkbook(String sheetName, String[] title, List<String[]> list, HSSFWorkbook wb) {
+    public HSSFWorkbook getHSSFWorkbook(String sheetName, String[] title, String[] columns, List<T> list, HSSFWorkbook wb) {
 
         // 第一步，创建一个HSSFWorkbook，对应一个Excel文件
         if (wb == null) {
@@ -89,20 +92,40 @@ public class ExcelUtil {
         curFirstFont.setFontHeightInPoints((short) 11);//字体大小
         curFirstStyle.setFont(curFirstFont); // 绑定关系
 
-        //创建内容
-        for (int i = 0; i < list.size(); i++) {
-            row = sheet.createRow(i + 1);
-            for (int j = 0; j < list.get(i).length; j++) {
+        int rowNum = 0;
+        for (T t : list) {
+            rowNum++;
+            row = sheet.createRow(rowNum);
+            for (int j = 0; j < columns.length; j++) {
+                String getMethodName = "get" + columns[j].substring(0,1).toUpperCase() + columns[j].substring(1);
                 //将内容按顺序赋给对应的列对象
-                row.createCell(j).setCellValue(list.get(i)[j]);
-                if(j==0){//第一列左对齐
+                Class clazz = t.getClass();
+                Method getMethod;
+                try {
+                    getMethod = clazz.getMethod(getMethodName, new Class[]{} );
+                    Object value = getMethod.invoke(t, new Object[]{});
+                    row.createCell(j).setCellValue(null != value ? value.toString() : "");
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+                if(j == 0){//第一列左对齐
                     row.getCell(j).setCellStyle(curFirstStyle);
                 }else{
                     row.getCell(j).setCellStyle(curStyle);
                 }
-                sheet.autoSizeColumn((short) j);//自动调整列宽
             }
         }
+
+        //自动调整列宽
+        for(int k = 0; k < columns.length; k++){
+            sheet.autoSizeColumn((short) k);
+        }
+
         return wb;
     }
 
