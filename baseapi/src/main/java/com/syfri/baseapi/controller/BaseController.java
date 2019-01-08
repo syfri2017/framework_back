@@ -191,8 +191,8 @@ public abstract class BaseController<T extends ValueObject> {
 	@ApiOperation(value="导出EXCEL",notes="注意事项")
 	@ApiImplicitParam(name="list",value = "查询结果List")
 	@PostMapping("export")
-	public void doExportExcel(HttpServletRequest request, HttpServletResponse response,  String fileName, String sheetName, String[] title, List<String[]> list){
-		this.getBaseService().doExportExcel(request, response, fileName, sheetName, title, list);
+	public void doExportExcel(HttpServletRequest request, HttpServletResponse response,  String fileName, String sheetName, String[] title, String[] columns, List<T> list){
+		this.getBaseService().doExportExcel(request, response, fileName, sheetName, title, columns, list);
 	}
 
 	//打印
