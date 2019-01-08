@@ -361,6 +361,8 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 
 		//excel标题
 		String[] title = {"展位号","公司名称","展位面积(m²)","展位类型","出口类型","展位状态","联系人名称","联系人电话","联系地址"};
+		//columns列
+		String[] columns = {"zwh","qymc","zwmj","zwlb","cklx","zwztmc","lxr","lxrsj","yjdzxx"};
 		//excel文件名
 		String fileName = "展位管理" + System.currentTimeMillis() + ".xls";
 		//sheet名
@@ -368,103 +370,11 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 
 		//获取数据
 		List<ZwjbxxVO> dataList = zwjbxxService.doSearchListQyByVO(vo);
-		List<String[]> list = new ArrayList<>();
-		for (int i = 0; i < dataList.size(); i++) {
-			ZwjbxxVO obj = dataList.get(i);
-			String[] content = new String[title.length];
-			content[0] = obj.getZwh();
-			content[1] = obj.getQymc();
-			content[2] = obj.getZwmj();
-			content[3] = obj.getZwlb();
-			content[4] = obj.getCklx();
-			content[5] = obj.getZwztmc();
-			content[6] = obj.getLxr();
-			content[7] = obj.getLxrsj();
-			content[8] = obj.getYjdzxx();
-			list.add(content);
-		}
-		this.doExportExcel(request, response, fileName, sheetName, title, list);
-		/**
-		//解析param zwh&zwzt&qymc&zwlb&cklx
-		ZwjbxxVO vo = new ZwjbxxVO();
-		vo.setZwh(param[0]);
-		vo.setZwzt(param[1]);
-		vo.setQymc(param[2]);
-		vo.setZwlb(param[3]);
-		vo.setCklx(param[4]);
-		//excel标题
-		String[] title = {};
-		//excel文件名
-		String fileName = "";
-		//sheet名
-		String sheetName = "";
-		//数据内容
-		String[][] content = null;
-		//获取数据
-		List<ZwjbxxVO> list = zwjbxxService.doSearchListQyByVO(vo);
-		for(ZwjbxxVO zwjbxxVO:list){
+		for(ZwjbxxVO zwjbxxVO : dataList){
 			//匹配展位状态代码名称
 			zwjbxxVO.setZwztmc(zwzt2Mc(zwjbxxVO.getZwzt()));
 		}
-		String[] str = {"展位号","公司名称","展位面积(m²)","展位类型","出口类型","展位状态","联系人名称","联系人电话","联系地址"};
-		title=str;
-		fileName = "展位管理" + System.currentTimeMillis() + ".xls";
-		sheetName = "展位管理";
-		int size = list.size();
-		content = new String[size][9];
-		for (int i = 0; i < list.size(); i++) {
-			content[i] = new String[title.length];
-			ZwjbxxVO obj = list.get(i);
-			content[i][0] = obj.getZwh();
-			content[i][1] = obj.getQymc();
-			content[i][2] = obj.getZwmj();
-			content[i][3] = obj.getZwlb();
-			content[i][4] = obj.getCklx();
-			content[i][5] = obj.getZwztmc();
-			content[i][6] = obj.getLxr();
-			content[i][7] = obj.getLxrsj();
-			content[i][8] = obj.getYjdzxx();
-		}
-
-		//创建HSSFWorkbook
-		HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
-
-		BufferedInputStream bis = null;
-		try {
-			response.addHeader("Cache-Control", "no-cache");
-			//response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/vnd.ms-excel;charset=UTF-8");
-			String ua = request.getHeader("user-agent");
-			ua = ua == null ? null : ua.toLowerCase();
-			if (ua != null && (ua.indexOf("firefox") > 0 || ua.indexOf("safari") > 0)) {
-				try {
-					fileName = new String(fileName.getBytes(), "ISO8859-1");
-					response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else {
-				try {
-					fileName = URLEncoder.encode(fileName, "utf-8");
-					response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			wb.write(response.getOutputStream());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (bis != null) {
-				try {
-					bis.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-		 **/
+		this.doExportExcel(request, response, fileName, sheetName, title, columns, dataList);
 	}
 
 	/**
@@ -501,6 +411,8 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 
 		//excel标题
 		String[] title = {"公司名称","联系人","联系人电话","展位数量","展位号"};
+		//columns列
+		String[] columns = {"gsmc","lxr","lxrsj","zwnum","zwh"};
 		//excel文件名
 		String fileName = "展位分析" + System.currentTimeMillis() + ".xls";
 		//sheet名
@@ -508,18 +420,6 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 
 		//获取数据
 		List<ZwjbxxVO> dataList = zwjbxxService.doFindQyZwNumDesc(zwjbxxVO);
-		List<String[]> list = new ArrayList<>();
-		for (int i = 0; i < dataList.size(); i++) {
-			ZwjbxxVO obj = dataList.get(i);
-			String[] content = new String[title.length];
-			content[0] = obj.getGsmc();
-			content[1] = obj.getLxr();
-			content[2] = obj.getLxrsj();
-			content[3] = obj.getZwnum();
-			content[4] = obj.getZwh();
-			list.add(content);
-		}
-		this.doExportExcel(request, response, fileName, sheetName, title, list);
-
+		this.doExportExcel(request, response, fileName, sheetName, title, columns, dataList);
 	}
 }
