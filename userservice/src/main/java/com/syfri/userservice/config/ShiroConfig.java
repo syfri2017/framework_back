@@ -175,6 +175,11 @@ public class ShiroConfig implements EnvironmentAware {
 
 		filterMap.put("/shiro", "anon");
 		filterMap.put("/test/**", "anon");
+		//打开展位查看功能
+		filterMap.put("/zwjbxx/doSearchListByVO", "anon");
+		filterMap.put("/zgjbxx/doSearchHbListByVO", "anon");
+		filterMap.put("/zgjbxx/doSearchDataListByVO", "anon");
+
 		filterMap.put("/signin/**", "anon");
 		filterMap.put("/getSession", "anon");
 
