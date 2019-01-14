@@ -309,7 +309,8 @@
             <if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
             <if test="email != null">email=#{email},</if>
             <if test="yyzzgs != null">yyzzgs=#{yyzzgs},</if>
-            <if test="src != null">src=#{src}</if>
+            <if test="src != null">src=#{src},</if>
+            <if test="cygsmc != null">cygsmc=#{cygsmc}</if>
         </set>
         WHERE QYID = #{qyid}
     </update>

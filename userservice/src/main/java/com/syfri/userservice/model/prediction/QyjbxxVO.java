@@ -69,6 +69,8 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	private String qrsj_start;
 	private String qrsj_end;
 
+	private String cygsmc;		//曾用公司名称
+
 	public String getQyid(){
 		return qyid;
 	}
@@ -426,5 +428,11 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 
 	public void setQrsj_end(String qrsj_end) {
 		this.qrsj_end = qrsj_end;
+	}
+	public String getCygsmc() {
+		return cygsmc;
+	}
+	public void setCygsmc(String cygsmc) {
+		this.cygsmc = cygsmc;
 	}
 }
