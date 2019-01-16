@@ -24,6 +24,7 @@ public class ZwflxxVO extends ValueObject implements Serializable{
 	private String reserve2;	//备用字段2
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
+	private String fljgEng;	//分类价格(美元)
 
 	private String zwflmc;	//展位分类名称
 	private String kkflmc;	//开口分类名称
@@ -123,6 +124,14 @@ public class ZwflxxVO extends ValueObject implements Serializable{
 	}
 	public void setReserve4(String reserve4){
 		this.reserve4 = reserve4;
+	}
+
+	public String getFljgEng() {
+		return fljgEng;
+	}
+
+	public void setFljgEng(String fljgEng) {
+		this.fljgEng = fljgEng;
 	}
 
 	public String getZwflmc() {

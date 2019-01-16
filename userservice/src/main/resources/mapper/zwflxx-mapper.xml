@@ -51,6 +51,9 @@
 		<if test="reserve4 != null and reserve4 != '' ">
 		 and t.reserve4 = #{reserve4}
 		</if>
+		<if test="fljgEng != null and fljgEng != '' ">
+			and t.fljg_eng = #{fljgEng}
+		</if>
 	</sql>
 
 	<!--2.查询内容-->
@@ -70,7 +73,8 @@
 		t.reserve1 reserve1,
 		t.reserve2 reserve2,
 		t.reserve3 reserve3,
-		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
+		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
+		t.fljg_eng fljgEng
 	</sql>
 
 	<!--3.查询记录数-->
@@ -109,8 +113,8 @@
 		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
 			SELECT SYS_GUID() AS uuid FROM DUAL
 		</selectKey>
-		INSERT INTO CFPA_ZW_FLXX(uuid,zwfl,kkfl,flmj,fljg,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4)
-		VALUES(#{uuid,jdbcType=VARCHAR},#{zwfl,jdbcType=VARCHAR},#{kkfl,jdbcType=VARCHAR},#{flmj,jdbcType=DOUBLE},#{fljg,jdbcType=DOUBLE},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+		INSERT INTO CFPA_ZW_FLXX(uuid,zwfl,kkfl,flmj,fljg,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,fljg_eng)
+		VALUES(#{uuid,jdbcType=VARCHAR},#{zwfl,jdbcType=VARCHAR},#{kkfl,jdbcType=VARCHAR},#{flmj,jdbcType=DOUBLE},#{fljg,jdbcType=DOUBLE},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{fljgEng,jdbcType=DOUBLE})
 	 </insert>
 
 	<!--7.批量插入-->
@@ -150,7 +154,8 @@
 			<if test="reserve1 != null">reserve1=#{reserve1},</if>
 			<if test="reserve2 != null">reserve2=#{reserve2},</if>
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
-			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
+			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
+			<if test="fljgEng != null">fljg_eng=#{fljgEng}</if>
 		</set>
 		WHERE  UUID = #{uuid}
 	</update>
