@@ -42,4 +42,19 @@ public class ZwjbxxServiceImpl extends BaseServiceImpl<ZwjbxxVO> implements Zwjb
 	public List<ZwjbxxVO> doFindQyZwNumDesc(ZwjbxxVO zwjbxxVO){
 		return zwjbxxDAO.doFindQyZwNumDesc(zwjbxxVO);
 	}
+	//查询企业选择的展位list及价格信息 add by yushch 20190116
+	@Override
+	public List<ZwjbxxVO> doFindZwAndJgByVo(ZwjbxxVO zwjbxxVO){
+		if(zwjbxxVO.getZwlb().equals("标准展位")){
+			//查询企业选择的标准展位及价格信息
+			return zwjbxxDAO.doFindBzzwAndJgByVo(zwjbxxVO);
+		}else{
+			//查询企业选择的室内光地展位及价格信息
+			List<ZwjbxxVO> list = zwjbxxDAO.doFindSngdzwAndJgByVo(zwjbxxVO);
+			//查询企业选择的OD展位及价格信息
+			list.addAll(zwjbxxDAO.doFindOdAndJgByVo(zwjbxxVO));
+			return list;
+		}
+
+	}
 }

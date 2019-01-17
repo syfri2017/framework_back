@@ -49,6 +49,9 @@ public class ZwjbxxVO extends ValueObject implements Serializable{
 	private String zwnum;   //公司已选展位数量
 	private List<String> zgList;   //展馆List
 
+	private String zwjg;	//展位价格
+	private String zwjg_eng;	//展位价格_eng
+
 	public String getCklx() {
 		return cklx;
 	}
@@ -285,4 +288,17 @@ public class ZwjbxxVO extends ValueObject implements Serializable{
     public void setZgList(List<String> zgList) {
         this.zgList = zgList;
     }
+
+	public String getZwjg() {
+		return zwjg;
+	}
+	public void setZwjg(String zwjg) {
+		this.zwjg = zwjg;
+	}
+	public String getZwjg_eng() {
+		return zwjg_eng;
+	}
+	public void setZwjg_eng(String zwjg_eng) {
+		this.zwjg_eng = zwjg_eng;
+	}
 }

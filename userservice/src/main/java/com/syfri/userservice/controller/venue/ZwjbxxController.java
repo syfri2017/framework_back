@@ -422,4 +422,19 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		List<ZwjbxxVO> dataList = zwjbxxService.doFindQyZwNumDesc(zwjbxxVO);
 		this.doExportExcel(request, response, fileName, sheetName, title, columns, dataList);
 	}
+	/**
+	 * 获取当前企业选择的展位信息及价格信息
+	 * by yushch 2019/1/16
+	 */
+	@PostMapping("doFindZwAndJgByVo")
+	public @ResponseBody ResultVO doFindZwAndJgByVo(@RequestBody ZwjbxxVO zwjbxxVO){
+		ResultVO resultVO = ResultVO.build();
+		try {
+			List<ZwjbxxVO> list= zwjbxxService.doFindZwAndJgByVo(zwjbxxVO);
+			resultVO.setResult(list);
+		} catch (Exception e) {
+			logger.error("{}",e.getMessage());
+		}
+		return resultVO;
+	}
 }
