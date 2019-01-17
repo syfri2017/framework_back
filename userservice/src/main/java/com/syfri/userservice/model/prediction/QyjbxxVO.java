@@ -70,6 +70,7 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	private String qrsj_end;
 
 	private String cygsmc;		//曾用公司名称
+	private String gsjc;		//公司简称
 
 	public String getQyid(){
 		return qyid;
@@ -434,5 +435,13 @@ public class QyjbxxVO extends ValueObject implements Serializable{
 	}
 	public void setCygsmc(String cygsmc) {
 		this.cygsmc = cygsmc;
+	}
+
+	public String getGsjc() {
+		return gsjc;
+	}
+
+	public void setGsjc(String gsjc) {
+		this.gsjc = gsjc;
 	}
 }

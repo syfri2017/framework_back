@@ -156,7 +156,8 @@
 		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
 		t.email email,
 		t.yyzzgs yyzzgs,
-		t.src src
+		t.src src,
+		t.gsjc gsjc
 	</sql>
 
     <!--3.查询记录数-->
@@ -302,7 +303,7 @@
             <if test="xgrmc != null">xgrmc=#{xgrmc},</if>
             xgsj=sysdate,
             <if test="qrzt != null">qrzt=#{qrzt},</if>
-            qrsj=sysdate,
+            <if test="qrzt != null">qrsj=sysdate,</if>
             <if test="reserve1 != null">reserve1=#{reserve1},</if>
             <if test="reserve2 != null">reserve2=#{reserve2},</if>
             <if test="reserve3 != null">reserve3=#{reserve3},</if>
@@ -310,7 +311,8 @@
             <if test="email != null">email=#{email},</if>
             <if test="yyzzgs != null">yyzzgs=#{yyzzgs},</if>
             <if test="src != null">src=#{src},</if>
-            <if test="cygsmc != null">cygsmc=#{cygsmc}</if>
+            <if test="cygsmc != null">cygsmc=#{cygsmc},</if>
+            <if test="gsjc != null">gsjc=#{gsjc}</if>
         </set>
         WHERE QYID = #{qyid}
     </update>
