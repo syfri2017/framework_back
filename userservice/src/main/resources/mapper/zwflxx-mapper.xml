@@ -98,6 +98,7 @@
 		Left Join SYS_CODELIST_DETAIL c4 On c4.CODEID = c3.CODEID And c4.DELETE_FLAG = 'N' and t.kkfl = c4.CODE_VALUE
 		WHERE t.DELETE_FLAG = 'N'
 			<include refid="SQL_CONDITION"/>
+		order by zwfl asc,kkfl asc
 	</select>
 
 	<!--5.根据ID查询记录-->
