@@ -58,12 +58,12 @@ public class SignInController extends BaseController<AccountVO>{
 
 	@ApiOperation(value="根据username查询用户数量",notes="查询")
 	@ApiImplicitParam(name="username",value="用户名")
-	@GetMapping("/getUsernameNum/{username}")
+	@GetMapping("/getUsernameNum/{username}/staitc")
 	public @ResponseBody ResultVO getUsernameNum(@PathVariable String username){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			AccountVO accountVO = new AccountVO();
-			accountVO.setUsername(username.replace("_","."));
+			accountVO.setUsername(username);
 			if(accountService.doSearchListByVO(accountVO).size() == 0){
 				resultVO.setResult(0);
 			}else{
@@ -78,11 +78,11 @@ public class SignInController extends BaseController<AccountVO>{
 
 	@ApiOperation(value="根据邮箱查询用户数量",notes="查询")
 	@ApiImplicitParam(name="mail",value="邮箱")
-	@GetMapping("/getMailNum/{mail}")
+	@GetMapping("/getMailNum/{mail}/static")
 	public @ResponseBody ResultVO getMailNum(@PathVariable String mail){
 		ResultVO resultVO = ResultVO.build();
 		try{
-			if(signInService.doSearchListByMail(mail.replace("_",".")).size() == 0){
+			if(signInService.doSearchListByMail(mail).size() == 0){
 				resultVO.setResult(0);
 			}else{
 				resultVO.setResult(1);
@@ -96,11 +96,11 @@ public class SignInController extends BaseController<AccountVO>{
 
 	@ApiOperation(value="根据邮箱查询用户数量",notes="查询")
 	@ApiImplicitParam(name="mail",value="邮箱")
-	@GetMapping("/getMailNumENG/{mail}")
+	@GetMapping("/getMailNumENG/{mail}/static")
 	public @ResponseBody ResultVO getMailNumENG(@PathVariable String mail){
 		ResultVO resultVO = ResultVO.build();
 		try{
-			if(signInService.doSearchListByMailForENG(mail.replace("_",".")).size() == 0){
+			if(signInService.doSearchListByMailForENG(mail).size() == 0){
 				resultVO.setResult(0);
 			}else{
 				resultVO.setResult(1);
@@ -267,11 +267,11 @@ public class SignInController extends BaseController<AccountVO>{
 
 	@ApiOperation(value="根据邮箱查询用户名",notes="查询")
 	@ApiImplicitParam(name="mail",value="邮箱")
-	@GetMapping("/getUsernameByMail/{mail}")
+	@GetMapping("/getUsernameByMail/{mail}/static")
 	public @ResponseBody String getUsernameByMail(@PathVariable String mail){
 		String username = null;
 		try{
-			username = signInService.getUsernameByMail(mail.replace("_","."));
+			username = signInService.getUsernameByMail(mail);
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 		}
@@ -280,11 +280,11 @@ public class SignInController extends BaseController<AccountVO>{
 
     @ApiOperation(value="username",notes="查询")
     @ApiImplicitParam(name="username",value="参数列表")
-    @GetMapping("/findByUsername/{username}")
+    @GetMapping("/findByUsername/{username}/static")
     public @ResponseBody ResultVO findByUsername(@PathVariable String username){
         ResultVO resultVO = ResultVO.build();
         try{
-            resultVO.setResult(signInService.findByUsername(username.replace("_",".")));
+            resultVO.setResult(signInService.findByUsername(username));
         }catch(Exception e){
             logger.error("{}",e.getMessage());
             resultVO.setCode(EConstants.CODE.FAILURE);
@@ -295,11 +295,11 @@ public class SignInController extends BaseController<AccountVO>{
 
     @ApiOperation(value="根据mail查询用户信息",notes="查询")
     @ApiImplicitParam(name="mail",value="参数列表")
-    @GetMapping("/findByMail/{mail}")
+    @GetMapping("/findByMail/{mail}/static")
     public @ResponseBody ResultVO findByMail(@PathVariable String mail){
         ResultVO resultVO = ResultVO.build();
         try{
-            resultVO.setResult(signInService.findByMail(mail.replace("_",".")));
+            resultVO.setResult(signInService.findByMail(mail));
         }catch(Exception e){
             logger.error("{}",e.getMessage());
             resultVO.setCode(EConstants.CODE.FAILURE);
