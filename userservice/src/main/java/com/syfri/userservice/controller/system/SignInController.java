@@ -58,7 +58,7 @@ public class SignInController extends BaseController<AccountVO>{
 
 	@ApiOperation(value="根据username查询用户数量",notes="查询")
 	@ApiImplicitParam(name="username",value="用户名")
-	@GetMapping("/getUsernameNum/{username}/staitc")
+	@GetMapping("/getUsernameNum/{username}/static")
 	public @ResponseBody ResultVO getUsernameNum(@PathVariable String username){
 		ResultVO resultVO = ResultVO.build();
 		try{
