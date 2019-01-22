@@ -156,7 +156,7 @@
 	<select id="doFindById" parameterType="ZwjbxxVO"  resultType="ZwjbxxVO">  
 		SELECT
 		<include refid="SQL_CONTENT"/> ,
-		(CASE sa.usertype WHEN 'CHN' THEN q.zwgsmc WHEN 'ENG' THEN q.ywgsmc ELSE '' END) qymc
+		(CASE sa.usertype WHEN 'CHN' THEN q.zwgsmc WHEN 'ENG' THEN q.ywgsmc ELSE '' END) qymc, q.gsjc
 		FROM CFPA_ZW_JBXX t
 		left join CFPA_QY_JBXX q
 		on t.qyid = q.qyid and q.DELETE_FLAG = 'N'
@@ -282,7 +282,7 @@
 	<select id="doSearchListQyByVO" parameterType="ZwjbxxVO"  resultType="ZwjbxxVO">
 		SELECT
 		<include refid="SQL_CONTENT"/> ,
-		(CASE sa.usertype WHEN 'CHN' THEN q.zwgsmc WHEN 'ENG' THEN q.ywgsmc ELSE '' END) qymc,
+		(CASE sa.usertype WHEN 'CHN' THEN q.zwgsmc WHEN 'ENG' THEN q.ywgsmc ELSE '' END) qymc, q.gsjc,
 		q.lxr,
 		q.lxrsj,
 		c2.code_name||c4.code_name||q.yjdzxx yjdzxx
