@@ -65,4 +65,8 @@ public class ZwlogServiceImpl extends BaseServiceImpl<ZwlogVO> implements ZwlogS
 			e.printStackTrace();
 		}
 	}
+
+	public int doDeleteByRzsj(ZwlogVO vo){
+		return zwlogDAO.doDeleteByRzsj(vo);
+	}
 }

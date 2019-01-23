@@ -25,7 +25,7 @@
 		 and t.zwuuid = #{zwuuid}
 		</if>
 		<if test="zwh != null and zwh != '' ">
-		 and t.zwh = #{zwh}
+		 and t.zwh LIKE concat(concat('%',#{zwh}),'%') ESCAPE '\'
 		</if>
 		<if test="qyid != null and qyid != '' ">
 		 and t.qyid = #{qyid}
@@ -92,11 +92,22 @@
 	</select>
 
 	<!--4.按条件查询记录-->
-	<select id="doSearchListByVO" parameterType="ZwlogVO"  resultType="ZwlogVO"> 
-		SELECT 
-			<include refid="SQL_CONTENT"/>
-		FROM CFPA_ZW_LOG t  WHERE t.DELETE_FLAG = 'N' 
+	<select id="doSearchListByVO" parameterType="ZwlogVO"  resultType="ZwlogVO">
+		SELECT
+		<include refid="SQL_CONTENT"/>,
+		DECODE(t1.usertype,'ENG',t1.ywgsmc,t1.zwgsmc) qymc,
+		TO_CHAR(t.czsj,'yyyy-MM-dd HH24:mi:ss') czsjStr,
+		TO_CHAR(t.rzsj,'yyyy-MM-dd HH24:mi:ss') rzsjStr
+		FROM CFPA_ZW_LOG t
+		left join (select a.qyid, a.zwgsmc, a.ywgsmc, s.usertype from CFPA_QY_JBXX a
+					Left Join SYS_ACCOUNT s on s.userid = a.userid AND s.DELETE_FLAG = 'N') t1
+		on t1.qyid = t.qyid
+		WHERE t.DELETE_FLAG = 'N'
+		<if test="qymc != null and qymc != '' ">
+		and DECODE(t1.usertype, 'ENG', t1.ywgsmc, t1.zwgsmc) LIKE concat(concat('%',#{qymc}),'%') ESCAPE '\'
+		</if>
 			<include refid="SQL_CONDITION"/>
+		order by t.rzsj DESC
 	</select>
 
 	<!--5.根据ID查询记录-->
@@ -200,4 +211,16 @@
 		<include refid="SQL_CONDITION"/>
 	</select>
 
+	<!--按日志时间清空日志-->
+	<update  id="doDeleteByRzsj"  parameterType="ZwlogVO">
+		UPDATE   CFPA_ZW_LOG
+		<set>
+			delete_flag='Y',
+			xgsj=SYSDATE,
+			<if test="xgrid != null">xgrid=#{xgrid},</if>
+			<if test="xgrmc != null">xgrmc=#{xgrmc}</if>
+		</set>
+		WHERE rzsj &gt; to_date(#{rzsj_begin},'yyyy/mm/dd HH24:Mi:SS')
+		and rzsj &lt; to_date(#{rzsj_end},'yyyy/mm/dd HH24:Mi:SS')
+	</update>
 </mapper>

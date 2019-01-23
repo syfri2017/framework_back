@@ -8,4 +8,6 @@ import com.syfri.userservice.model.venue.ZwlogVO;
 public interface ZwlogService  extends BaseService<ZwlogVO>{
 
     public void createZwlog(ZwjbxxVO o, ZwjbxxVO n, String czlx, String ffmc);
+
+    int doDeleteByRzsj(ZwlogVO vo);
 }

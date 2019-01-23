@@ -29,6 +29,12 @@ public class ZwlogVO extends ValueObject implements Serializable{
 	private String xgrmc;	//修改人姓名
 	private Date xgsj;	//修改时间
 
+	private String rzsj_begin;	//日志时间开始时间
+	private String rzsj_end;	//日志时间结束时间
+	private String qymc;	//企业名称
+	private String czsjStr;	//操作时间
+	private String rzsjStr;	//日志时间
+
 	public String getUuid(){
 		return uuid;
 	}
@@ -142,5 +148,45 @@ public class ZwlogVO extends ValueObject implements Serializable{
 	}
 	public void setXgsj(Date xgsj){
 		this.xgsj = xgsj;
+	}
+
+	public String getRzsj_begin() {
+		return rzsj_begin;
+	}
+
+	public void setRzsj_begin(String rzsj_begin) {
+		this.rzsj_begin = rzsj_begin;
+	}
+
+	public String getRzsj_end() {
+		return rzsj_end;
+	}
+
+	public void setRzsj_end(String rzsj_end) {
+		this.rzsj_end = rzsj_end;
+	}
+
+	public String getQymc() {
+		return qymc;
+	}
+
+	public void setQymc(String qymc) {
+		this.qymc = qymc;
+	}
+
+	public String getCzsjStr() {
+		return czsjStr;
+	}
+
+	public void setCzsjStr(String czsjStr) {
+		this.czsjStr = czsjStr;
+	}
+
+	public String getRzsjStr() {
+		return rzsjStr;
+	}
+
+	public void setRzsjStr(String rzsjStr) {
+		this.rzsjStr = rzsjStr;
 	}
 }
