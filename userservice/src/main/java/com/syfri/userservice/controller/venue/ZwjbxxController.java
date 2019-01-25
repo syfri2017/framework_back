@@ -11,13 +11,10 @@ import com.syfri.userservice.config.properties.BoothMsgProperties;
 import com.syfri.userservice.config.properties.MsgProperties;
 import com.syfri.userservice.controller.prediction.QyjbxxController;
 import com.syfri.userservice.model.prediction.QyjbxxVO;
-import com.syfri.userservice.model.venue.ZgZwsVO;
-import com.syfri.userservice.model.venue.ZgjbxxVO;
+import com.syfri.userservice.model.venue.*;
 import com.syfri.userservice.service.impl.venue.ZwlogServiceImpl;
 import com.syfri.userservice.service.prediction.QyjbxxService;
-import com.syfri.userservice.service.venue.ZgjbxxService;
-import com.syfri.userservice.service.venue.ZwlogService;
-import com.syfri.userservice.service.venue.ZwsmsService;
+import com.syfri.userservice.service.venue.*;
 import com.syfri.userservice.utils.CurrentUserUtil;
 import com.syfri.userservice.utils.ExcelUtil;
 import io.swagger.annotations.ApiImplicitParam;
@@ -28,8 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import com.syfri.userservice.model.venue.ZwjbxxVO;
-import com.syfri.userservice.service.venue.ZwjbxxService;
 import com.syfri.baseapi.controller.BaseController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,6 +53,8 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 	private ZgjbxxService zgjbxxService;
 	@Autowired
 	private BoothMsgProperties boothMsgProperties;
+	@Autowired
+	private ZwmkService zwmkService;
 	@Override
 	public ZwjbxxService getBaseService() {
 		return this.zwjbxxService;
@@ -206,6 +203,88 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 
 		return 	resultVO;
 	}
+
+	/**
+	 * 使用先删除后插入的方式修改
+	 * @param
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional(rollbackFor = {Exception.class, RuntimeException.class})
+	@ApiOperation(value="根据VO保存",notes="注意事项")
+	@ApiImplicitParam(name="vo",value = "业务实体")
+	@PostMapping("doSaveByVO")
+	public @ResponseBody ResultVO doSaveByVO(@RequestBody ZwZwmkVO zwZwmkVO)throws Exception{
+		ResultVO resultVO = ResultVO.build();
+		try {
+			if(zwZwmkVO.getZwjbxxVO()!=null&&zwZwmkVO.getZwmkVO()!=null){
+				//保存展位信息
+				ZwjbxxVO vo=zwZwmkVO.getZwjbxxVO();
+				ZwmkVO vo1=zwZwmkVO.getZwmkVO();
+				ZwjbxxVO zw=zwjbxxService.doFindById(vo.getUuid());
+				ZwmkVO s=new ZwmkVO();
+				s.setShapeUuid(vo1.getShapeUuid());
+				ZwmkVO mk=zwmkService.doFindByVO(s);
+				//保存展位模块信息
+				if(zw!=null&&mk!=null){
+					vo.setXgrid(CurrentUserUtil.getCurrentUserId());
+					vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
+					vo1.setXgrid(CurrentUserUtil.getCurrentUserId());
+					vo1.setXgrmc(CurrentUserUtil.getCurrentUserName());
+					zwmkService.doUpdateByVO(vo1);
+					zwjbxxService.doUpdateByVO(vo);
+					zwlogService.createZwlog(zw,vo, ZwlogServiceImpl.UPDATE,"doSaveByVO");
+				}else{
+					vo.setCjrid(CurrentUserUtil.getCurrentUserId());
+					vo.setCjrmc(CurrentUserUtil.getCurrentUserName());
+					vo1.setCjrid(CurrentUserUtil.getCurrentUserId());
+					vo1.setCjrmc(CurrentUserUtil.getCurrentUserName());
+					vo.setUuid(null);
+					vo1.setUuid(null);
+					zwmkService.doInsertByVO(vo1);
+					zwjbxxService.doInsertByVO(vo);
+					zwlogService.createZwlog(null,vo, ZwlogServiceImpl.INSERT,"doSaveByVO");
+				}
+				resultVO.setResult(vo);
+			}
+		} catch (Exception e) {
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+
+		return 	resultVO;
+	}
+	@Transactional(rollbackFor = {Exception.class, RuntimeException.class})
+	@ApiOperation(value="根据VO删除",notes="注意事项")
+	@ApiImplicitParam(name="vo",value = "业务实体")
+	@PostMapping("doDelByVO")
+	public @ResponseBody ResultVO doDelByVO(@RequestBody ZwZwmkVO zwZwmkVO)throws Exception{
+		ResultVO resultVO = ResultVO.build();
+		try {
+
+			if(zwZwmkVO.getZwjbxxVO()!=null&&zwZwmkVO.getZwmkVO()!=null){
+				//删除展位信息
+				ZwjbxxVO vo=zwZwmkVO.getZwjbxxVO();
+				vo.setXgrid(CurrentUserUtil.getCurrentUserId());
+				vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
+				vo.setDeleteFlag("Y");
+				//删除展位模块
+				ZwmkVO vo1=zwZwmkVO.getZwmkVO();
+				vo1.setXgrid(CurrentUserUtil.getCurrentUserId());
+				vo1.setXgrmc(CurrentUserUtil.getCurrentUserName());
+				vo1.setDeleteFlag("Y");
+				zwmkService.doUpdateByVO(vo1);
+				zwjbxxService.doUpdateByVO(vo);
+				zwlogService.createZwlog(null,vo, ZwlogServiceImpl.UPDATE,"doDelByVO");
+			}
+		} catch (Exception e) {
+			logger.error("{}",e.getMessage());
+			resultVO.setCode(EConstants.CODE.FAILURE);
+		}
+		return 	resultVO;
+	}
+
+
 	/**
 	 * 选展位
 	 * @param vo

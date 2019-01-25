@@ -7,14 +7,18 @@ import com.syfri.userservice.config.properties.MailExportProperties;
 import com.syfri.userservice.config.properties.MailProperties;
 import com.syfri.userservice.model.prediction.QyjbxxVO;
 import com.syfri.userservice.model.system.MailVO;
+import com.syfri.userservice.model.venue.ZgZwmksVO;
 import com.syfri.userservice.model.venue.ZwjbxxVO;
+import com.syfri.userservice.model.venue.ZwmkVO;
 import com.syfri.userservice.service.impl.system.MailServiceImpl;
 import com.syfri.userservice.service.prediction.QyjbxxService;
 import com.syfri.userservice.service.venue.ZwjbxxService;
+import com.syfri.userservice.service.venue.ZwmkService;
 import com.syfri.userservice.utils.Base64ImageUtil;
 import com.syfri.userservice.utils.CurrentUserUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.mail.javamail.JavaMailSender;
@@ -49,6 +53,8 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 	private MailExportProperties mp;
 	@Autowired
 	private MailServiceImpl mailServiceImpl;
+	@Autowired
+	private ZwmkService zwmkService;
 
 	@RequestMapping("doExportTp")
 	public @ResponseBody Object doExportTp(@RequestBody ZgjbxxVO vo
@@ -131,6 +137,33 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 		ResultVO resultVO = ResultVO.build();
 		try {
 			resultVO.setResult(zgjbxxService.doSearchHbListByVO(vo));
+		} catch (Exception e) {
+			logger.error("{}",e.getMessage());
+		}
+		return resultVO;
+	}
+	/**
+	 * 查询画布，若使用画布缩略图需要重新写方法获取zgzwhbtp和模块信息
+	 * @param vo
+	 * @return
+	 */
+	@ApiOperation(value="查询列表",notes="列表信息")
+	@ApiImplicitParam(name="vo",value = "业务实体")
+	@PostMapping("doSearchHbMKListByVO")
+	public @ResponseBody ResultVO doSearchHbMKListByVO(@RequestBody ZgjbxxVO vo ) {
+		ResultVO resultVO = ResultVO.build();
+		try {
+			ZgZwmksVO zgZwmksVO=new ZgZwmksVO();
+			zgZwmksVO.setZgjbxxVOs(zgjbxxService.doSearchHbListByVO(vo));
+			ZwmkVO mk=new ZwmkVO();
+			mk.setStageUuid(vo.getUuid());
+			List<ZwmkVO> zwmkVOs=zwmkService.doSearchListByVO(mk);
+			JSONArray ja=new JSONArray();
+			for(ZwmkVO zwmkVO:zwmkVOs){
+				ja.add(zwmkVO.getJsonData());
+			}
+			zgZwmksVO.setZwmoJsonDatas(ja);
+			resultVO.setResult(zgZwmksVO);
 		} catch (Exception e) {
 			logger.error("{}",e.getMessage());
 		}
