@@ -27,6 +27,12 @@ public class AccountVO extends ValueObject implements Serializable{
 	private String reserve3;	//备用3
 	private String deptid;    //用户表中用户类型
 
+
+	/**采用Shiro自带的登陆方式登陆，Shiro验证登陆  by li.xue 2018/11/29 14:08*/
+	private String validateCode;
+	private String unscid;
+	private String loginType;
+
 	public AccountVO() {
 	}
 
@@ -144,5 +150,24 @@ public class AccountVO extends ValueObject implements Serializable{
 	}
 	public void setDeptid(String deptid) {
 		this.deptid = deptid;
+	}
+
+	public String getValidateCode() {
+		return validateCode;
+	}
+	public void setValidateCode(String validateCode) {
+		this.validateCode = validateCode;
+	}
+	public String getUnscid() {
+		return unscid;
+	}
+	public void setUnscid(String unscid) {
+		this.unscid = unscid;
+	}
+	public String getLoginType() {
+		return loginType;
+	}
+	public void setLoginType(String loginType) {
+		this.loginType = loginType;
 	}
 }

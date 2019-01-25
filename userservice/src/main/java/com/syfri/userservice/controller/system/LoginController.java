@@ -242,4 +242,75 @@ public class LoginController {
 		}
 		return "1";
 	}
+
+
+	/**--------------------------------------VUECLI by li.xue 2019/1/24--------------------------------------------*/
+	/**
+	 * 采用Controller登陆验证方式
+	 * by li.xue 2019/01/24 09:14
+	 */
+	@PostMapping("/vueCliLogin")
+	public @ResponseBody String vueCliLogin(HttpServletRequest request, Map<String,Object> map, @RequestBody AccountVO vo){
+		logger.info("-----POST请求方式登录222-----");
+		Subject subject = SecurityUtils.getSubject();
+		//测试当前用户是否被验证
+		String msg;
+		String messages;
+		if (!subject.isAuthenticated()) {
+			String code = (String)request.getSession().getAttribute("code");
+			if (LoginType.MYSHIRO.toString().equals(vo.getLoginType()) && code != null && !code.equals(vo.getValidateCode())){
+				msg = "kaptchaValidateFailed --> 验证码错误";
+				messages = "kaptcha";
+			}else {
+				InfoCollectToken token;
+				if (LoginType.INFOCOLLECT.toString().equals(vo.getLoginType())) {
+					token = new InfoCollectToken(vo.getUnscid(), vo.getLoginType());
+				} else {
+					token = new InfoCollectToken(vo.getUsername(), vo.getPassword(), vo.getLoginType());
+				}
+				try {
+					subject.login(token);
+					map.put("token", subject.getSession().getId());
+					msg = "登陆成功";
+					messages = "success";
+				} catch (UnknownAccountException e) {
+					msg = "UnknownAccountException --> 账号不存在";
+					messages = "unknown";
+				} catch (IncorrectCredentialsException e) {
+					msg = "IncorrectCredentialsException --> 密码不正确";
+					messages = "incorrect";
+				} catch (ExcessiveAttemptsException e) {
+					msg = "ExcessiveAttemptsException --> 密码输入错误次数超过5次";
+					messages = "excessive";
+				}
+			}
+		}else{
+			msg = "Session有效";
+			messages = "session";
+		}
+		map.put("msg", msg);
+		return messages;
+	}
+
+	/**
+	 * 采用Controller登陆推出验证方式--中文退出
+	 * by li.xue 2019/01/24 15:49
+	 */
+	@GetMapping("/vueCliLogout")
+	public @ResponseBody String vueCliLogout(){
+		Subject subject = SecurityUtils.getSubject();
+		subject.logout();
+		return "success";
+	}
+
+	/**
+	 * 采用Controller登陆推出验证方式--英文退出
+	 * by li.xue 2019/01/24 15:49
+	 */
+	@GetMapping("/vueCliLogoutENG")
+	public @ResponseBody String vueCliLogoutENG(){
+		Subject subject = SecurityUtils.getSubject();
+		subject.logout();
+		return "success";
+	}
 }

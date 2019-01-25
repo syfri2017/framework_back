@@ -109,6 +109,14 @@ public class ShiroConfig implements EnvironmentAware {
 	@Bean("securityManager")
 	public SecurityManager securityManager(SessionManager sessionManager, RedisTemplate redisTemplate){
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+
+		securityManager.setSessionManager(sessionManager);
+		/**RedisCache by li.xue 2018/12/4*/
+		securityManager.setCacheManager(redisCacheManager());
+		/**ehCache by li.xue 2018/12/4*/
+//		securityManager.setCacheManager(ehCacheManager());
+		securityManager.setRememberMeManager(rememberMeManager());
+
 		/** 单Realm
 		 * securityManager.setRealm(myShiroRealm());
 		 */
@@ -121,13 +129,6 @@ public class ShiroConfig implements EnvironmentAware {
 		list.add(myShiroRealm());
 		list.add(infoCollectRealm());
 		securityManager.setRealms(list);
-
-		securityManager.setSessionManager(sessionManager);
-		/**RedisCache by li.xue 2018/12/4*/
-		securityManager.setCacheManager(redisCacheManager());
-		/**ehCache by li.xue 2018/12/4*/
-//		securityManager.setCacheManager(ehCacheManager());
-		securityManager.setRememberMeManager(rememberMeManager());
 		return securityManager;
 	}
 
@@ -136,11 +137,11 @@ public class ShiroConfig implements EnvironmentAware {
 		logger.info("【shiro】shiroFilter start...");
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 
+		shiroFilterFactoryBean.setSecurityManager(securityManager);
+
 		//将验证码的过滤器加入到shiroFilter中
 		Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
 		filters.put("authc", new MyFormAuthenticationFilter());
-
-		shiroFilterFactoryBean.setSecurityManager(securityManager);
 
 		shiroFilterFactoryBean.setLoginUrl("/login");
 		shiroFilterFactoryBean.setSuccessUrl("/index");
@@ -188,6 +189,11 @@ public class ShiroConfig implements EnvironmentAware {
 
 		//anon:所有URL均可以匿名访问，authc：需要认证才能访问，user：配置记住我或认证通过可以访问
 		filterMap.put("/login", "authc");
+
+		/**采用Shiro自带的登陆方式登陆，Shiro验证登陆  by li.xue 2018/11/29 14:08*/
+		filterMap.put("/vueCliLogin", "anon");
+		filterMap.put("/vueCliLogout", "anon");
+
 		filterMap.put("/login3", "anon");
 		filterMap.put("/logout", "logout");
 		filterMap.put("/**", "user");
