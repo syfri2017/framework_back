@@ -8,9 +8,9 @@ public class ZwmkVO extends ValueObject implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private String stageuuid;	//画布UUID
-	private String shapeuuid;	//形状
-	private String jsondata;	//形状JSON
+	private String stageUuid;	//画布UUID
+	private String shapeUuid;	//形状
+	private String jsonData;	//形状JSON
 	private String uuid;	//主键
 	private String deleteFlag;	//删除标志
 	private String cjrid;	//创建人ID
@@ -24,24 +24,30 @@ public class ZwmkVO extends ValueObject implements Serializable{
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
 
-	public String getStageuuid(){
-		return stageuuid;
+	public String getStageUuid() {
+		return stageUuid;
 	}
-	public void setStageuuid(String stageuuid){
-		this.stageuuid = stageuuid;
+
+	public void setStageUuid(String stageUuid) {
+		this.stageUuid = stageUuid;
 	}
-	public String getShapeuuid(){
-		return shapeuuid;
+
+	public String getShapeUuid() {
+		return shapeUuid;
 	}
-	public void setShapeuuid(String shapeuuid){
-		this.shapeuuid = shapeuuid;
+
+	public void setShapeUuid(String shapeUuid) {
+		this.shapeUuid = shapeUuid;
 	}
-	public String getJsondata(){
-		return jsondata;
+
+	public String getJsonData() {
+		return jsonData;
 	}
-	public void setJsondata(String jsondata){
-		this.jsondata = jsondata;
+
+	public void setJsonData(String jsonData) {
+		this.jsonData = jsonData;
 	}
+
 	public String getUuid(){
 		return uuid;
 	}

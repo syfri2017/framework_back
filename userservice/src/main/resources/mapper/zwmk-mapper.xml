@@ -3,14 +3,14 @@
 <mapper namespace="com.syfri.userservice.dao.venue.ZwmkDAO">
 	<!--1.查询条件-->
 	<sql id="SQL_CONDITION">
-		<if test="stageuuid != null and stageuuid != '' ">
-		 and t.stageuuid = #{stageuuid}
+		<if test="stageUuid != null and stageUuid != '' ">
+		 and t.stageUuid = #{stageUuid}
 		</if>
-		<if test="shapeuuid != null and shapeuuid != '' ">
-		 and t.shapeuuid = #{shapeuuid}
+		<if test="shapeUuid != null and shapeUuid != '' ">
+		 and t.shapeUuid = #{shapeUuid}
 		</if>
-		<if test="jsondata != null and jsondata != '' ">
-		 and t.jsondata = #{jsondata}
+		<if test="jsonData != null and jsonData != '' ">
+		 and t.jsonData = #{jsonData}
 		</if>
 		<if test="uuid != null and uuid != '' ">
 		 and t.uuid = #{uuid}
@@ -52,9 +52,9 @@
 
 	<!--2.查询内容-->
 	<sql id="SQL_CONTENT">
-		t.stageuuid stageuuid,
-		t.shapeuuid shapeuuid,
-		t.jsondata jsondata,
+		t.stageUuid stageUuid,
+		t.shapeUuid shapeUuid,
+		t.jsonData jsonData,
 		t.uuid uuid,
 		t.delete_flag deleteFlag,
 		t.cjrid cjrid,
@@ -96,18 +96,18 @@
 		<selectKey resultType="String" order="BEFORE" keyProperty="uuid">
 			SELECT SYS_GUID() AS uuid FROM DUAL
 		</selectKey>
-		INSERT INTO CFPA_ZW_MK(stageuuid,shapeuuid,jsondata,uuid,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4)
-		VALUES(#{stageuuid,jdbcType=VARCHAR},#{shapeuuid,jdbcType=VARCHAR},#{jsondata,jdbcType=VARCHAR},#{uuid,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
+		INSERT INTO CFPA_ZW_MK(stageUuid,shapeUuid,jsonData,uuid,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4)
+		VALUES(#{stageUuid,jdbcType=VARCHAR},#{shapeUuid,jdbcType=VARCHAR},#{jsonData,jdbcType=VARCHAR},#{uuid,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE})
 	 </insert>
 
 	<!--7.批量插入-->
 	<insert  id="doBatchInsertByList"  parameterType="java.util.List"> 
-		INSERT INTO CFPA_ZW_MK(stageuuid,shapeuuid,jsondata,uuid,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4)
+		INSERT INTO CFPA_ZW_MK(stageUuid,shapeUuid,jsonData,uuid,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4)
 		SELECT SYS_GUID() uuid, A.* 
 		FROM ( 
 		<foreach collection="list" item="item" index="index" separator="UNION ALL" >
 		SELECT
-			#{item.stageuuid,jdbcType=VARCHAR} stageuuid,#{item.shapeuuid,jdbcType=VARCHAR} shapeuuid,#{item.jsondata,jdbcType=VARCHAR} jsondata,#{item.uuid,jdbcType=VARCHAR} uuid,'N' delete_flag,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4
+			#{item.stageUuid,jdbcType=VARCHAR} stageUuid,#{item.shapeUuid,jdbcType=VARCHAR} shapeUuid,#{item.jsonData,jdbcType=VARCHAR} jsonData,#{item.uuid,jdbcType=VARCHAR} uuid,'N' delete_flag,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4
 		FROM DUAL
 		</foreach>
 		) A
@@ -122,37 +122,39 @@
 	<update  id="doUpdateByVO"  parameterType="ZwmkVO"> 
 		UPDATE   CFPA_ZW_MK  
 		<set>
-			<if test="stageuuid != null">stageuuid=#{stageuuid},</if>
-			<if test="shapeuuid != null">shapeuuid=#{shapeuuid},</if>
-			<if test="jsondata != null">jsondata=#{jsondata},</if>
+			<if test="stageUuid != null">stageUuid=#{stageUuid},</if>
+			<if test="shapeUuid != null">shapeUuid=#{shapeUuid},</if>
+			<if test="jsonData != null">jsonData=#{jsonData},</if>
 			<if test="uuid != null">uuid=#{uuid},</if>
-			<if test="deleteFlag != null">delete_flag='N',</if>
+			<if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
 			<if test="cjrid != null">cjrid=#{cjrid},</if>
 			<if test="cjrmc != null">cjrmc=#{cjrmc},</if>
 			<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>
 			<if test="xgrid != null">xgrid=#{xgrid},</if>
 			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
 			<if test="xgsj != null">xgsj=TO_DATE(#{xgsj},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="xgsj != null">xgsj= sysdate,</if>
+			<if test="xgsj == null">xgsj= sysdate,</if>
 			<if test="reserve1 != null">reserve1=#{reserve1},</if>
 			<if test="reserve2 != null">reserve2=#{reserve2},</if>
 			<if test="reserve3 != null">reserve3=#{reserve3},</if>
 			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss')</if>
 		</set>
-		WHERE  uuid = #{uuid}
+		WHERE
+		<if test="uuid != null">uuid = #{uuid}</if>
+		<if test="uuid == null">shapeUuid=#{shapeUuid}</if>
 	</update>
 
 	<!--10.批量修改-->
 	<update id="doBatchUpdateByList"  parameterType="java.util.List">
-		INSERT INTO CFPA_ZW_MK(stageuuid,shapeuuid,jsondata,uuid,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4)
+		INSERT INTO CFPA_ZW_MK(stageUuid,shapeUuid,jsonData,uuid,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4)
 		VALUES
 		<foreach collection="list" item="item" index="index" separator="," >
-			#{item.stageuuid,jdbcType=VARCHAR} stageuuid,#{item.shapeuuid,jdbcType=VARCHAR} shapeuuid,#{item.jsondata,jdbcType=VARCHAR} jsondata,#{item.uuid,jdbcType=VARCHAR} uuid,'N' delete_flag,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4
+			#{item.stageUuid,jdbcType=VARCHAR} stageUuid,#{item.shapeUuid,jdbcType=VARCHAR} shapeUuid,#{item.jsonData,jdbcType=VARCHAR} jsonData,#{item.uuid,jdbcType=VARCHAR} uuid,'N' delete_flag,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4
 		</foreach>
 		ON DUPLICATE KEY UPDATE   
-			stageuuid = VALUES(stageuuid),
-			shapeuuid = VALUES(shapeuuid),
-			jsondata = VALUES(jsondata),
+			stageUuid = VALUES(stageUuid),
+			shapeUuid = VALUES(shapeUuid),
+			jsonData = VALUES(jsonData),
 			uuid = VALUES(uuid),
 			delete_flag = VALUES(delete_flag),
 			cjrid = VALUES(cjrid),
