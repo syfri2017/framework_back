@@ -163,7 +163,9 @@ public class ResourceServiceImpl extends BaseServiceImpl<ResourceVO> implements 
 						index2++;
 					}
 				}
-				tree.setChildren(children);
+				if(children.size() > 0) {
+					tree.setChildren(children);
+				}
 				trees.add(tree);
 				index++;
 			}
