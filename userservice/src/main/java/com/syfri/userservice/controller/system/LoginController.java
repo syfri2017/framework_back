@@ -67,7 +67,7 @@ public class LoginController {
 			userToken.setToken(token);
 			userToken.setLastAccessTime(System.currentTimeMillis());
 			userToken.setCurrentUser(CurrentUserUtil.setCurrentUser(tempVO));
-			MessageCache.putToken(token,userToken);
+			MessageCache.putToken(token, userToken);
 			response.setData(userToken);
 		}
 		return response;

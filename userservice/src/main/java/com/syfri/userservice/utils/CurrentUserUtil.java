@@ -4,6 +4,7 @@ import com.syfri.userservice.model.system.*;
 import com.syfri.userservice.service.system.*;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
  * 获取当前登录用户
  * @author li.xue  2017/12/18
  */
+@Component
 public class CurrentUserUtil {
 
 	@Autowired
@@ -62,7 +64,7 @@ public class CurrentUserUtil {
 		CurrentUser currentUser = new CurrentUser(accountVO.getUserid(), accountVO.getUsername(), accountVO.getRealname(), accountVO.getUsertype());
 
 		//获取deptid
-		UserVO userVO = currentUserUtil.userService.doFindById(accountVO.getUserid());
+		UserVO userVO = currentUserUtil.userService.doFindByVO(new UserVO(accountVO.getUserid()));
 		currentUser.setDeptid(null != userVO ? userVO.getDeptid() : null);
 
 		//获取角色字符串list
@@ -71,12 +73,16 @@ public class CurrentUserUtil {
 
 		//获取权限字符串list
 		List<String> permissions = new ArrayList();
-		List<ResourceVO> resourceList = currentUserUtil.resourceService.doFindResourceByRoleList(roleList);
-		List<PermissionVO> permissionList = currentUserUtil.permissionService.doFindPermissionByResourceList(resourceList);
-		for(PermissionVO permission : permissionList){
-			permissions.add(permission.getPermissionname());
+		if(roleList.size() > 0){
+			List<ResourceVO> resourceList = currentUserUtil.resourceService.doFindResourceByRoleList(roleList);
+			if(resourceList.size() > 0){
+				List<PermissionVO> permissionList = currentUserUtil.permissionService.doFindPermissionByResourceList(resourceList);
+				for(PermissionVO permission : permissionList){
+					permissions.add(permission.getPermissionname());
+				}
+				currentUser.setPermissions(permissions);
+			}
 		}
-		currentUser.setPermissions(permissions);
 
 		//获取组织机构
 		currentUser.setOrganizationVO(currentUserUtil.organizationService.doFindOrganizationByUserid(accountVO.getUserid()));

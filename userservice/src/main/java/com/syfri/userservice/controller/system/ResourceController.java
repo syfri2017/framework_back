@@ -16,7 +16,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.syfri.userservice.model.system.ResourceVO;
@@ -26,16 +25,12 @@ import com.syfri.baseapi.controller.BaseController;
 import java.util.List;
 
 @Api(value = "资源管理",tags = "资源管理API",description = "资源管理")
-@Controller
+@RestController
 @RequestMapping("resource")
 public class ResourceController  extends BaseController<ResourceVO>{
 
 	@Autowired
 	private ResourceService resourceService;
-
-	@Autowired
-	private Environment environment;
-
 
 	public ResourceService getBaseService() {
 		return this.resourceService;
@@ -62,7 +57,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 	@ApiImplicitParam(name="vo",value="资源对象")
 	@RequiresPermissions("system/resource:list")
 	@PostMapping("/findByVO")
-	public @ResponseBody ResultVO findByVO(@RequestBody ResourceVO resourceVO){
+	public ResultVO findByVO(@RequestBody ResourceVO resourceVO){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(resourceService.doFindResourcePermissions(resourceVO));
@@ -80,7 +75,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 	@ApiImplicitParam(name="vo",value="资源对象")
 	@RequiresPermissions("system/resource:add")
 	@PostMapping("/insertByVO")
-	public @ResponseBody ResultVO insertByVO(@RequestBody ResourceVO resourceVO){
+	public ResultVO insertByVO(@RequestBody ResourceVO resourceVO){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(resourceService.doInsertResourcePermissions(resourceVO));
@@ -98,7 +93,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 	@ApiImplicitParam(name="vo",value="资源对象")
 	@RequiresPermissions("system/resource:edit")
 	@PostMapping("/updateByVO")
-	public @ResponseBody ResultVO updateByVO(@RequestBody ResourceVO resourceVO){
+	public ResultVO updateByVO(@RequestBody ResourceVO resourceVO){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(resourceService.doUpdateResourcePermissions(resourceVO));
@@ -116,7 +111,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 	@ApiImplicitParam(name="id",value="资源主键")
 	@RequiresPermissions("system/resource:delete")
 	@PostMapping("/deleteByIds")
-	public @ResponseBody ResultVO deleteByIds(@RequestBody String id){
+	public ResultVO deleteByIds(@RequestBody String id){
 		JSONObject jsonObject = JSON.parseObject(id);
 		JSONArray ids = jsonObject.getJSONArray("ids");
 		ResultVO resultVO = ResultVO.build();
@@ -140,7 +135,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 	@ApiImplicitParam(name="vo",value="资源对象")
 	@RequiresPermissions("system/resource:list")
 	@GetMapping("/getResourceTree")
-	public @ResponseBody ResultVO getResourceTree(List<RoleVO> roleList){
+	public ResultVO getResourceTree(List<RoleVO> roleList){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(resourceService.getMenuTree(roleList));
@@ -154,7 +149,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 	@ApiOperation(value="根据角色ID查询其资源",notes="查询")
 	@ApiImplicitParam(name="id",value="角色ID")
 	@GetMapping("/getResource/{roleid}")
-	public @ResponseBody ResultVO getResource(@PathVariable String roleid){
+	public ResultVO getResource(@PathVariable String roleid){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(resourceService.doFindResourceTree(roleid));
@@ -167,7 +162,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 
 	@ApiOperation(value="获取所有资源",notes="查询")
 	@GetMapping("/getAll")
-	public @ResponseBody ResultVO getAll(){
+	public ResultVO getAll(){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(resourceService.doFindResourceTree(""));
@@ -181,7 +176,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 	@ApiOperation(value="根据用户ID查询角色子节点",notes="查询")
 	@ApiImplicitParam(name="id",value="用户ID")
 	@GetMapping("/getChildren/{roleid}")
-	public @ResponseBody ResultVO getChildrenRole(@PathVariable String roleid){
+	public ResultVO getChildrenRole(@PathVariable String roleid){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(resourceService.doFindChildren(roleid));
@@ -195,7 +190,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 	@ApiOperation(value="根据资源名称查询资源数量",notes="查询")
 	@ApiImplicitParam(name="resourcename",value="资源名")
 	@PostMapping("/getNum")
-	public @ResponseBody ResultVO getNum(@RequestBody String resourcename){
+	public ResultVO getNum(@RequestBody String resourcename){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			JSONObject jsonObject = JSON.parseObject(resourcename);
@@ -215,7 +210,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 
 	@ApiOperation(value="获取所有第一父类资源",notes="查询")
 	@GetMapping("/getParentResource")
-	public @ResponseBody ResultVO getFirstResource(){
+	public ResultVO getFirstResource(){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(resourceService.doSearchListByVO(new ResourceVO(null,"-1")));
@@ -228,7 +223,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 	@ApiOperation(value="获取所有第二父类资源",notes="查询")
 	@ApiImplicitParam(name="parentid",value="父节点ID")
 	@GetMapping("/getParentResource/{parentid}")
-	public @ResponseBody ResultVO getSecondResource(@PathVariable String parentid){
+	public ResultVO getSecondResource(@PathVariable String parentid){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(resourceService.doSearchListByVO(new ResourceVO(null, parentid)));
@@ -242,7 +237,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 	@ApiOperation(value="根据父节点取其父节点",notes="查询")
 	@ApiImplicitParam(name="parentid",value="父节点ID")
 	@GetMapping("/getParentid/{parentid}")
-	public @ResponseBody ResultVO getParentid(@PathVariable String parentid){
+	public ResultVO getParentid(@PathVariable String parentid){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			String tempParentid = resourceService.doFindByVO(new ResourceVO(parentid)).getParentid();
@@ -266,7 +261,7 @@ public class ResourceController  extends BaseController<ResourceVO>{
 	@ApiOperation(value="根据主键删除资源资源及其权限信息",notes="删除")
 	@ApiImplicitParam(name="id",value="资源主键")
 	@GetMapping("/deleteOneById/{resourceid}")
-	public @ResponseBody ResultVO deleteOneById(@PathVariable String resourceid){
+	public ResultVO deleteOneById(@PathVariable String resourceid){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			ResourceVO resourceVO = new ResourceVO();

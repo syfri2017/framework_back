@@ -130,8 +130,8 @@ spring:
     datasource:
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: oracle.jdbc.OracleDriver
-      url: jdbc:oracle:thin:@10.119.119.205:1521/XFXHDB
-#      url: jdbc:oracle:thin:@localhost:1521/orcl
+#      url: jdbc:oracle:thin:@10.119.119.205:1521/XFXHDB
+      url: jdbc:oracle:thin:@localhost:1521/orcl
       username: XFXHZH
       password: XFXHZH
 
@@ -179,3 +179,6 @@ spring:
 #    url: http://blog.didispace.com
 #  base-package: com.syfri
 #------------------------------------------------------------
+user:
+   token:
+      period: 1800
