@@ -5,6 +5,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
+import com.syfri.userservice.common.MessageCache;
+import com.syfri.userservice.common.UserToken;
+import com.syfri.userservice.model.system.ResourceTree;
 import com.syfri.userservice.model.system.RoleVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.syfri.userservice.model.system.ResourceVO;
@@ -39,19 +41,18 @@ public class ResourceController  extends BaseController<ResourceVO>{
 		return this.resourceService;
 	}
 
-	@ModelAttribute
-	public void Model(Model model){
-		if (environment.containsProperty("server.context-path")) {
-			model.addAttribute("contextPath", environment.getProperty("server.context-path"));
-		}else{
-			model.addAttribute("contextPath", "/");
-		}
-	}
-
-	@GetMapping("")
-	public String getResource(Model model, @RequestParam(value="index") String index){
-		model.addAttribute("index", index);
-		return "system/resource_list";
+	/**
+	 * 获取左侧数状菜单
+	 * by li.xue 2019/1/27 20:03
+	 * */
+	@GetMapping("/menuTree")
+	public ResultVO getMenuTree(){
+		ResultVO resultVO = ResultVO.build();
+		UserToken userToken =  MessageCache.getUserToken();
+		//根据用户角色列表获取角色资源树
+		List<ResourceTree> menuTrees = resourceService.getMenuTree(userToken.getCurrentUser().getRoles());
+		resultVO.setResult(menuTrees);
+		return resultVO;
 	}
 
 	/**

@@ -1,14 +1,15 @@
 package com.syfri.userservice.controller.system;
 
-import com.syfri.baseapi.model.ResultVO;
-import com.syfri.userservice.config.InfoCollectToken;
-import com.syfri.userservice.config.LoginType;
+import com.syfri.userservice.common.MessageCache;
+import com.syfri.userservice.common.Response;
+import com.syfri.userservice.common.UserToken;
 import com.syfri.userservice.model.system.*;
+import com.syfri.userservice.service.system.AccountService;
 import com.syfri.userservice.utils.CurrentUserUtil;
 import com.syfri.userservice.utils.ImageCodeUtil;
+import com.syfri.userservice.utils.JwtUtil;
 import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.subject.Subject;
@@ -17,8 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
@@ -31,7 +30,7 @@ import java.io.OutputStream;
 import java.util.*;
 
 @Api(value = "登录",tags = "登录API",description = "登录")
-@Controller
+@RestController
 public class LoginController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -40,132 +39,38 @@ public class LoginController {
 	protected Environment environment;
 
 	@Autowired
-	private RedisSessionDAO redisSessionDAO;
-
-	@RequestMapping("/home")
-	public String bigscreen(Model model, @RequestParam(value="index", required = false) String index){
-		if(index == null || "".equals(index)){
-			index = "1";
-		}
-		model.addAttribute("index", index);
-		return "/index";
-	}
-
-	@GetMapping("/index")
-	public String index(){
-		return "bigscreen/big_screen_all";
-	}
-
-	@GetMapping({"/","/login"})
-	public String login(){
-		logger.info("-----GET请求方式登录-----");
-		if(SecurityUtils.getSubject().isAuthenticated()){
-			return "redirect:/index";
-		}
-		return "/login";
-	}
-
-	@PostMapping("/login3")
-	public @ResponseBody Map<String,Object> login3(HttpServletRequest request,@RequestBody Map<String,Object> map){
-		logger.info("-----POST请求方式登录333-----");
-		Subject subject = SecurityUtils.getSubject();
-		//测试当前用户是否被验证
-		int code;
-		String msg;
-		String messages;
-		Map<String,Object> data = new HashMap();
-		Map<String,Object> result = new HashMap();
-		if (!subject.isAuthenticated()) {
-			String validateCode = (String)request.getSession().getAttribute("validateCode");
-			if (LoginType.MYSHIRO.toString().equals(map.get("loginType")) && validateCode != null && !validateCode.equals(map.get("validateCode"))){
-				code = 400;
-				msg = "kaptchaValidateFailed --> 验证码错误";
-				messages = "kaptcha";
-			}else {
-				InfoCollectToken token;
-				token = new InfoCollectToken((String)map.get("username"), (String)map.get("password"), (String)map.get("loginType"));
-				try {
-					subject.login(token);
-					code = 0;
-					msg = "登陆成功";
-					messages = "success";
-					ShiroUser user = CurrentUserUtil.getCurrentUser();
-					data.put("uuid",user.getUserid());
-					data.put("name",user.getUsername());
-					data.put("token", subject.getSession().getId());
-				} catch (UnknownAccountException e) {
-					code = 400;
-					msg = "UnknownAccountException --> 账号不存在";
-					messages = "unknown";
-				} catch (IncorrectCredentialsException e) {
-					code = 400;
-					msg = "IncorrectCredentialsException --> 密码不正确";
-					messages = "incorrect";
-				} catch (ExcessiveAttemptsException e) {
-					code = 400;
-					msg = "ExcessiveAttemptsException --> 密码输入错误次数超过5次";
-					messages = "excessive";
-				}
-			}
-		}else{
-			code = 0;
-			msg = "Session有效";
-			messages = "session";
-			ShiroUser user = CurrentUserUtil.getCurrentUser();
-			data.put("uuid",user.getUserid());
-			data.put("name",user.getUsername());
-			data.put("token", subject.getSession().getId());
-		}
-		logger.info(msg);
-		result.put("code",code);
-		result.put("msg", msg);
-		result.put("data",data);
-		return result;
-	}
+	protected AccountService accountService;
 
 	/**
-	 * 此方法不处理登录成功的情况，由shiro进行处理
-	 */
-	@PostMapping("/login")
-	public String login(HttpServletRequest request, String comfrom, Map<String,Object> map) throws Exception{
-		logger.info("-----POST请求方式登录-----");
-		ShiroUser user = CurrentUserUtil.getCurrentUser();
-		if(user != null){
-			return "/index";
-		}else{
-			String exception = (String) request.getAttribute("shiroLoginFailure");
-			logger.info("【loginController】" + exception);
-			String msg = "";
-			if(exception != null){
-				if(UnknownAccountException.class.getName().equals(exception)){
-					msg = "UnknownAccountException --> 账号不存在";
-				}else if(IncorrectCredentialsException.class.getName().equals(exception)){
-					msg = "IncorrectCredentialsException --> 密码不正确";
-				}else if(ExcessiveAttemptsException.class.getName().equals(exception)){
-					msg = "ExcessiveAttemptsException --> 密码输入错误次数超过5次";
-				}else if("kaptchaValidateFailed".equals(exception)){
-					msg = "kaptchaValidateFailed --> 验证码错误";
-				}else{
-					msg = "else --> " + exception;
-				}
-			}
-			map.put("msg",msg);
-			//以下是登录错误时返回login.html页面
-			//后台工程  by li.xue 2018/07/03
-			//return "/login";
-			//前台工程  by li.xue 2018/07/03
-			if("ENG".equals(comfrom)){
-				return "redirect:templates/login_ENG.html";
-			}else {
-				return "redirect:templates/login.html";
-			}
-		}
-	}
+	 * 登录login
+	 * by li.xue 2019/1/27 20:03
+	 * */
+	@PostMapping("login")
+	public Response login(@RequestBody AccountVO accountVO){
+		Response response = Response.build();
+		String password = JwtUtil.md5(accountVO.getPassword() + "-" + accountVO.getUsername());
+		accountVO.setPassword(password);
+		AccountVO tempVO = accountService.doFindByVO(accountVO);
 
-	@GetMapping("/403")
-	public String unauthorizedRole(){
-		logger.info("-----没有权限-----");
-		return "/403";
+		if(null == tempVO){
+			AccountVO tempVO2 = accountService.doFindByVO(new AccountVO(accountVO.getUsername()));
+			if(null == tempVO2){
+				response.setCode("111111");
+				response.setMessage("user not exist.");
+			}else{
+				response.setCode("222222");
+				response.setMessage("password is error.");
+			}
+		}else{
+			String token = JwtUtil.md5(tempVO.getPassword() + tempVO.getUsername());
+			UserToken userToken = new UserToken();
+			userToken.setToken(token);
+			userToken.setLastAccessTime(System.currentTimeMillis());
+			userToken.setCurrentUser(CurrentUserUtil.setCurrentUser(tempVO));
+			MessageCache.putToken(token,userToken);
+			response.setData(userToken);
+		}
+		return response;
 	}
 
 	/**
@@ -192,7 +97,7 @@ public class LoginController {
 	}
 
 	/**
-	 * logout
+	 * 退出logout
 	 */
 	@GetMapping("/logout")
 	public String logout(){
@@ -201,27 +106,7 @@ public class LoginController {
 		return "redirect:/login";
 	}
 
-	@RequestMapping("/shiro")
-	@ResponseBody
-	public ShiroUser getShiroUser(){
-		Subject subject = SecurityUtils.getSubject();
-		return (ShiroUser)subject.getPrincipal();
-	}
 
-	@GetMapping("/getMenu")
-	public @ResponseBody ResultVO getMenu(){
-		List<ResourceTree> menus = CurrentUserUtil.getCurrentUser().getResourceTrees();
-		ResultVO resultVO = ResultVO.build();
-		resultVO.setResult(menus);
-		return resultVO;
-	}
-
-	@GetMapping("/ENG/logout")
-	public String ENGlogout(){
-		Subject subject = SecurityUtils.getSubject();
-		subject.logout();
-		return "redirect:/loginENG";
-	}
 
 	/**
 	 * 查看Session是否有效
@@ -232,85 +117,14 @@ public class LoginController {
 		String sessionId = request.getSession().getId();
 		Session session;
 		try{
-			session = redisSessionDAO.readSession(sessionId);
-			Collection collection = session.getAttributeKeys();
-			if(collection.size() == 0){
-				return "0";
-			}
+//			session = redisSessionDAO.readSession(sessionId);
+//			Collection collection = session.getAttributeKeys();
+//			if(collection.size() == 0){
+//				return "0";
+//			}
 		}catch(UnknownSessionException e){
 			return "0";
 		}
 		return "1";
-	}
-
-
-	/**--------------------------------------VUECLI by li.xue 2019/1/24--------------------------------------------*/
-	/**
-	 * 采用Controller登陆验证方式
-	 * by li.xue 2019/01/24 09:14
-	 */
-	@PostMapping("/vueCliLogin")
-	public @ResponseBody String vueCliLogin(HttpServletRequest request, Map<String,Object> map, @RequestBody AccountVO vo){
-		logger.info("-----POST请求方式登录222-----");
-		Subject subject = SecurityUtils.getSubject();
-		//测试当前用户是否被验证
-		String msg;
-		String messages;
-		if (!subject.isAuthenticated()) {
-			String code = (String)request.getSession().getAttribute("code");
-			if (LoginType.MYSHIRO.toString().equals(vo.getLoginType()) && code != null && !code.equals(vo.getValidateCode())){
-				msg = "kaptchaValidateFailed --> 验证码错误";
-				messages = "kaptcha";
-			}else {
-				InfoCollectToken token;
-				if (LoginType.INFOCOLLECT.toString().equals(vo.getLoginType())) {
-					token = new InfoCollectToken(vo.getUnscid(), vo.getLoginType());
-				} else {
-					token = new InfoCollectToken(vo.getUsername(), vo.getPassword(), vo.getLoginType());
-				}
-				try {
-					subject.login(token);
-					map.put("token", subject.getSession().getId());
-					msg = "登陆成功";
-					messages = "success";
-				} catch (UnknownAccountException e) {
-					msg = "UnknownAccountException --> 账号不存在";
-					messages = "unknown";
-				} catch (IncorrectCredentialsException e) {
-					msg = "IncorrectCredentialsException --> 密码不正确";
-					messages = "incorrect";
-				} catch (ExcessiveAttemptsException e) {
-					msg = "ExcessiveAttemptsException --> 密码输入错误次数超过5次";
-					messages = "excessive";
-				}
-			}
-		}else{
-			msg = "Session有效";
-			messages = "session";
-		}
-		map.put("msg", msg);
-		return messages;
-	}
-
-	/**
-	 * 采用Controller登陆推出验证方式--中文退出
-	 * by li.xue 2019/01/24 15:49
-	 */
-	@GetMapping("/vueCliLogout")
-	public @ResponseBody String vueCliLogout(){
-		Subject subject = SecurityUtils.getSubject();
-		subject.logout();
-		return "success";
-	}
-
-	/**
-	 * 采用Controller登陆推出验证方式--英文退出
-	 * by li.xue 2019/01/24 15:49
-	 */
-	@GetMapping("/vueCliLogoutENG")
-	public @ResponseBody String vueCliLogoutENG(){
-		Subject subject = SecurityUtils.getSubject();
-		subject.logout();
-		return "success";
 	}
 }

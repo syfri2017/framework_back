@@ -36,6 +36,10 @@ public class AccountVO extends ValueObject implements Serializable{
 	public AccountVO() {
 	}
 
+	public AccountVO(String username) {
+		this.username = username;
+	}
+
 	public AccountVO(String username, String password, String realname) {
 		this.username = username;
 		this.password = password;

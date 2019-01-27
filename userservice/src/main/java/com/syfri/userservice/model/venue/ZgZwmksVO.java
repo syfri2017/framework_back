@@ -1,6 +1,6 @@
 package com.syfri.userservice.model.venue;
 
-import net.sf.json.JSONArray;
+
 
 import java.util.List;
 
@@ -11,23 +11,16 @@ import java.util.List;
  * @Date: 2019/1/15 9:49
  */
 public class ZgZwmksVO {
-    private List<ZgjbxxVO> zgjbxxVOs;
-    private JSONArray zwmoJsonDatas;
+	private List<ZgjbxxVO> zgjbxxVOs;
 
 
-    public List<ZgjbxxVO> getZgjbxxVOs() {
-        return zgjbxxVOs;
-    }
 
-    public void setZgjbxxVOs(List<ZgjbxxVO> zgjbxxVOs) {
-        this.zgjbxxVOs = zgjbxxVOs;
-    }
+	public List<ZgjbxxVO> getZgjbxxVOs() {
+		return zgjbxxVOs;
+	}
 
-    public JSONArray getZwmoJsonDatas() {
-        return zwmoJsonDatas;
-    }
+	public void setZgjbxxVOs(List<ZgjbxxVO> zgjbxxVOs) {
+		this.zgjbxxVOs = zgjbxxVOs;
+	}
 
-    public void setZwmoJsonDatas(JSONArray zwmoJsonDatas) {
-        this.zwmoJsonDatas = zwmoJsonDatas;
-    }
 }
