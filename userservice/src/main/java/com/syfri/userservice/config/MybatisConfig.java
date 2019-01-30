@@ -2,7 +2,7 @@ package com.syfri.userservice.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.github.pagehelper.PageHelper;
-import com.syfri.baseapi.filter.AccessFilter;
+import com.syfri.userservice.common.AccessFilter;
 import org.apache.ibatis.io.VFS;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -258,7 +258,7 @@ public class MybatisConfig implements EnvironmentAware {
 	@Bean
 	public FilterRegistrationBean filter(){
 		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-		registrationBean.setFilter(new AccessFilter(environment));
+		registrationBean.setFilter(new AccessFilter());
 		return registrationBean;
 	}
 

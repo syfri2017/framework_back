@@ -68,4 +68,12 @@ public final class MessageCache {
 		return(HttpServletRequest)requestAttributes.resolveReference(RequestAttributes.REFERENCE_REQUEST);
 		//return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();// 获取request
 	}
+
+	public static void removeToken(HttpServletRequest request) {
+		String token = request.getHeader(MessageCache.LOGIN_TOKEN);
+		if (token == null || token.isEmpty()) {
+			token = request.getParameter(MessageCache.LOGIN_TOKEN);
+		}
+		removeToken(token);
+	}
 }

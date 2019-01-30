@@ -100,13 +100,10 @@ public class LoginController {
 	 * 退出logout
 	 */
 	@GetMapping("/logout")
-	public String logout(){
-		Subject subject = SecurityUtils.getSubject();
-		subject.logout();
-		return "redirect:/login";
+	public Response logout(HttpServletRequest request) {
+		MessageCache.removeToken(request);
+		return Response.build();
 	}
-
-
 
 	/**
 	 * 查看Session是否有效
