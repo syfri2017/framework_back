@@ -1,6 +1,9 @@
 #server
 server:
-  port: 8804
+  port: 8809
+user:
+  token:
+    period: 3600000
 #---------短信验证码--------------------
 msg:
   validate-path: pvalidate #手机短信验证码认证请求的路径（未启用）
@@ -179,6 +182,3 @@ spring:
 #    url: http://blog.didispace.com
 #  base-package: com.syfri
 #------------------------------------------------------------
-user:
-   token:
-      period: 1800

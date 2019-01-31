@@ -58,14 +58,14 @@ public class AccessFilter implements Filter {
 			logger.info(path);
 
 			// 登陆请求无需过滤
-			if(isMatches(path) || path.equals("/")){
+			if(isMatches(path) || path.equals("/") || path.equals("/login")){
 				chain.doFilter(req, resp);
 			}else if(path.endsWith(".html")){
 				req.getRequestDispatcher("/index.html").forward(req, resp);
 			}else{
 				boolean isAuth = false;
 				Response result = Response.build();
-				result.setCode("00000000");
+				result.setCode("111111");
 
 				// 从head中获取token，如果head中的token为null，则从request中获取请求
 				String accessToken = req.getHeader(MessageCache.LOGIN_TOKEN);
@@ -76,27 +76,37 @@ public class AccessFilter implements Filter {
 				// 判断对应Token是否存在
 				if (StringUtils.isNotEmpty(accessToken) && MessageCache.containsKey(accessToken)) {
 					UserToken loginToken = MessageCache.getUserToken(accessToken);
-					long lastAccessTime = loginToken.getLastAccessTime();
-					long currentTime = System.currentTimeMillis();
+					if(loginToken != null){
+						long lastAccessTime = loginToken.getLastAccessTime();
+						long currentTime = System.currentTimeMillis();
 
-					// 判断是否过期
-					if ((currentTime-lastAccessTime) > validPeriod) {
-						MessageCache.removeToken(accessToken); //若登录token超时，则模拟退出后台登录
-					} else {
-						loginToken.setLastAccessTime(currentTime);
-						MessageCache.putToken(accessToken,loginToken);
-						isAuth = true;
+						// 判断是否过期
+						if ((currentTime-lastAccessTime) > validPeriod) {
+							MessageCache.removeToken(accessToken); //若登录token超时，则模拟退出后台登录
+						} else {
+							loginToken.setLastAccessTime(currentTime);
+							MessageCache.putToken(accessToken,loginToken);
+							isAuth = true;
+						}
+						// 登录校验通过
+						if (isAuth) {
+							chain.doFilter(request, response);
+						} else {
+							result.setCode("444444");
+							result.setMessage("登录超时，请重新登录");
+							resp.setContentType("text/html");
+							resp.getWriter().print(JSON.toJSONString(result));
+						}
+					}else{
+						result.setCode("555555");
+						result.setMessage("登录异常");
+						resp.setContentType("text/html");
+						resp.getWriter().print(JSON.toJSONString(result));
 					}
+
 				}
 
-				// 登录校验通过
-				if (isAuth) {
-					chain.doFilter(request, response);
-				} else {
-					result.setMessage("登录异常！");
-					resp.setContentType("text/html");
-					resp.getWriter().print(JSON.toJSONString(result));
-				}
+
 			}
 		}
 	}
