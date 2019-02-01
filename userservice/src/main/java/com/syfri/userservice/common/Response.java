@@ -8,7 +8,7 @@ public class Response {
 
 	public static Response build(){
 		Response response =  new Response();
-		response.setCode("000000");
+		response.setCode("00000000");
 		return response;
 	}
 

@@ -55,10 +55,10 @@ public class LoginController {
 		if(null == tempVO){
 			AccountVO tempVO2 = accountService.doFindByVO(new AccountVO(accountVO.getUsername()));
 			if(null == tempVO2){
-				response.setCode("222222");
+				response.setCode("22222222");
 				response.setMessage("user not exist.");
 			}else{
-				response.setCode("333333");
+				response.setCode("33333333");
 				response.setMessage("password is error.");
 			}
 		}else{
@@ -102,9 +102,7 @@ public class LoginController {
 	@GetMapping("/logout")
 	public Response logout(HttpServletRequest request) {
 		MessageCache.removeToken(request);
-		Response response = Response.build();
-		response.setCode("99999999");
-		return response;
+		return Response.build();
 	}
 
 	/**
