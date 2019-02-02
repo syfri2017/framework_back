@@ -3,6 +3,7 @@ package com.syfri.userservice.controller.venue;
 import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import com.syfri.baseapi.utils.MathUtil;
+import com.syfri.userservice.common.MessageCache;
 import com.syfri.userservice.config.properties.MailExportProperties;
 import com.syfri.userservice.config.properties.MailProperties;
 import com.syfri.userservice.model.prediction.QyjbxxVO;
@@ -62,7 +63,7 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 			){
 		if(vo!=null) {
 			QyjbxxVO qy=new QyjbxxVO();
-			qy.setUserid(CurrentUserUtil.getCurrentUserId());
+			qy.setUserid(MessageCache.getUserToken().getCurrentUser().getUserid());
 			ResultVO resultVO = ResultVO.build();
 			List<ZgjbxxVO> ss = zgjbxxService.doSearchHbTpListByVO(vo);
 			QyjbxxVO qvo=qyjbxxService.doFindByVO(qy);
@@ -188,8 +189,8 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 	public @ResponseBody ResultVO doInsertByVO(@RequestBody ZgjbxxVO vo) throws Exception{
 		ResultVO resultVO = ResultVO.build();
 		try {
-			vo.setCjrid(CurrentUserUtil.getCurrentUserId());
-			vo.setCjrmc(CurrentUserUtil.getCurrentUserName());
+			vo.setCjrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+			vo.setCjrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 			//插入展馆数据
 			zgjbxxService.doInsertByVO(vo);
 		} catch (Exception e) {
@@ -212,8 +213,8 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 			int sum = 0;
 			for(ZgjbxxVO vo :voList){
 				vo.setDeleteFlag("Y");
-				vo.setXgrid(CurrentUserUtil.getCurrentUserId());
-				vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
+				vo.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+				vo.setXgrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 				sum = sum + zgjbxxService.doUpdateByVO(vo);
 				//删除展位
 				ZwjbxxVO zw=new ZwjbxxVO();
@@ -238,8 +239,8 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 		ResultVO resultVO = ResultVO.build();
 		try {
 			if(vo.getUuid()!=null&&!"".equals(vo.getUuid())){
-				vo.setXgrid(CurrentUserUtil.getCurrentUserId());
-				vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
+				vo.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+				vo.setXgrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 				zgjbxxService.doUpdateByVO(vo);
 			}
 		} catch (Exception e) {

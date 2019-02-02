@@ -64,7 +64,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 	public @ResponseBody
 	boolean isInternal() {
 		QyjbxxVO qy=new QyjbxxVO();
-		qy.setUserid(CurrentUserUtil.getCurrentUserId());
+		qy.setUserid(MessageCache.getUserToken().getCurrentUser().getUserid());
 		QyjbxxVO qvo=qyjbxxService.doFindByVO(qy);
 		if(qvo!=null&&qvo.getReserve3()!=null){
 			return true;
@@ -88,7 +88,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		ResultVO resultVO = ResultVO.build();
 		try {
 			QyjbxxVO qy=new QyjbxxVO();
-			qy.setUserid(CurrentUserUtil.getCurrentUserId());
+			qy.setUserid(MessageCache.getUserToken().getCurrentUser().getUserid());
 			QyjbxxVO qvo=qyjbxxService.doFindByVO(qy);
 			if(qvo!=null&&qvo.getQyid()!=null){
 				ZwjbxxVO vo=new ZwjbxxVO();
@@ -127,7 +127,6 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 	@PostMapping("doSearchListQyByVO")
 	public @ResponseBody
 	ResultVO doSearchListQyByVO(HttpServletRequest request,@RequestBody ZwjbxxVO vo) {
-		System.out.println(MessageCache.getUserToken());
 		ResultVO resultVO = ResultVO.build();
 		try {
 			PageInfo<ZwjbxxVO> pis= zwjbxxService.doSearchQyPage(vo);
@@ -186,16 +185,16 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 					if(vo.getUuid()!=null&&!vo.getUuid().equals("")){
 						vo.setUuid(null);
 					}
-					vo.setCjrid(CurrentUserUtil.getCurrentUserId());
-					vo.setCjrmc(CurrentUserUtil.getCurrentUserName());
+					vo.setCjrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+					vo.setCjrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 					zwjbxxService.doInsertByVO(vo);
 					zwlogService.createZwlog(null,vo, ZwlogServiceImpl.INSERT,"doInsertByVO");
 				}
 			}
 			//保存展馆信息
 			if(gvo.getUuid()!=null&&!"".equals(gvo.getUuid())){
-				gvo.setXgrid(CurrentUserUtil.getCurrentUserId());
-				gvo.setXgrmc(CurrentUserUtil.getCurrentUserName());
+				gvo.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+				gvo.setXgrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 				zgjbxxService.doUpdateByVO(gvo);
 			}
 		} catch (Exception e) {
@@ -229,18 +228,18 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 				ZwmkVO mk=zwmkService.doFindByVO(s);
 				//保存展位模块信息
 				if(zw!=null&&mk!=null){
-					vo.setXgrid(CurrentUserUtil.getCurrentUserId());
-					vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
-					vo1.setXgrid(CurrentUserUtil.getCurrentUserId());
-					vo1.setXgrmc(CurrentUserUtil.getCurrentUserName());
+					vo.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+					vo.setXgrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
+					vo1.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+					vo1.setXgrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 					zwmkService.doUpdateByVO(vo1);
 					zwjbxxService.doUpdateByVO(vo);
 					zwlogService.createZwlog(zw,vo, ZwlogServiceImpl.UPDATE,"doSaveByVO");
 				}else{
-					vo.setCjrid(CurrentUserUtil.getCurrentUserId());
-					vo.setCjrmc(CurrentUserUtil.getCurrentUserName());
-					vo1.setCjrid(CurrentUserUtil.getCurrentUserId());
-					vo1.setCjrmc(CurrentUserUtil.getCurrentUserName());
+					vo.setCjrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+					vo.setCjrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
+					vo1.setCjrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+					vo1.setCjrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 					vo.setUuid(null);
 					vo1.setUuid(null);
 					zwmkService.doInsertByVO(vo1);
@@ -267,13 +266,13 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 			if(zwZwmkVO.getZwjbxxVO()!=null&&zwZwmkVO.getZwmkVO()!=null){
 				//删除展位信息
 				ZwjbxxVO vo=zwZwmkVO.getZwjbxxVO();
-				vo.setXgrid(CurrentUserUtil.getCurrentUserId());
-				vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
+				vo.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+				vo.setXgrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 				vo.setDeleteFlag("Y");
 				//删除展位模块
 				ZwmkVO vo1=zwZwmkVO.getZwmkVO();
-				vo1.setXgrid(CurrentUserUtil.getCurrentUserId());
-				vo1.setXgrmc(CurrentUserUtil.getCurrentUserName());
+				vo1.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+				vo1.setXgrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 				vo1.setDeleteFlag("Y");
 				zwmkService.doUpdateByVO(vo1);
 				zwjbxxService.doUpdateByVO(vo);
@@ -300,7 +299,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		try {
 			//判断前台是否传过来UUID值
 			if(vo.getUuid()!=null&&!"".equals(vo.getUuid())){
-				String userId=CurrentUserUtil.getCurrentUserId();
+				String userId=MessageCache.getUserToken().getCurrentUser().getUserid();
 				QyjbxxVO qy =new QyjbxxVO();
 				qy.setUserid(userId);
 				QyjbxxVO qvo=qyjbxxService.doFindByVO(qy);
@@ -311,8 +310,8 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 					if(dbzw.getZwzt()!=null&&"normal".equals(dbzw.getZwzt())){
 						vo.setQyid(qvo.getQyid());
 						vo.setZwzt("bespoke");
-						vo.setXgrid(CurrentUserUtil.getCurrentUserId());
-						vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
+						vo.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+						vo.setXgrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 						zwjbxxService.doUpdateByVO(vo);
 						ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
 						String phone=qvo.getLxrsj();
@@ -376,8 +375,8 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 						//判断是否展位是未预定状态
 						vo.setQyid(qvo.getQyid());
 						vo.setZwzt("bespoke");
-						vo.setXgrid(CurrentUserUtil.getCurrentUserId());
-						vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
+						vo.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+						vo.setXgrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 						zwjbxxService.doUpdateByVO(vo);
 						ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
 						resultVO.setResult(newdbzw);
@@ -412,8 +411,8 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 					vo.setQyid("");
 					vo.setZwzt("normal");
 					vo.setReserve2("");
-					vo.setXgrid(CurrentUserUtil.getCurrentUserId());
-					vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
+					vo.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+					vo.setXgrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 					zwjbxxService.doUpdateByVO(vo);
 					ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
 					resultVO.setResult(newdbzw);
