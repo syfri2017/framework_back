@@ -2,6 +2,8 @@ package com.syfri.userservice.model.venue;
 
 
 
+import com.alibaba.fastjson.JSONArray;
+
 import java.util.List;
 
 /**
@@ -12,15 +14,18 @@ import java.util.List;
  */
 public class ZgZwmksVO {
 	private List<ZgjbxxVO> zgjbxxVOs;
-
-
-
+	private JSONArray zwmoJsonDatas;
 	public List<ZgjbxxVO> getZgjbxxVOs() {
 		return zgjbxxVOs;
 	}
-
 	public void setZgjbxxVOs(List<ZgjbxxVO> zgjbxxVOs) {
 		this.zgjbxxVOs = zgjbxxVOs;
+	}
+	public JSONArray getZwmoJsonDatas() {
+		return zwmoJsonDatas;
+	}
+	public void setZwmoJsonDatas(JSONArray zwmoJsonDatas) {
+		this.zwmoJsonDatas = zwmoJsonDatas;
 	}
 
 }
