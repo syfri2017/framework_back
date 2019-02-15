@@ -104,9 +104,12 @@ public class AccessFilter implements Filter {
 						resp.getWriter().print(JSON.toJSONString(result));
 					}
 
+				}else{
+					result.setCode("55555555");
+					result.setMessage("登录异常");
+					resp.setContentType("text/html");
+					resp.getWriter().print(JSON.toJSONString(result));
 				}
-
-
 			}
 		}
 	}
