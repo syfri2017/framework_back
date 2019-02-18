@@ -5,6 +5,7 @@ import com.syfri.userservice.common.Response;
 import com.syfri.userservice.common.UserToken;
 import com.syfri.userservice.model.system.*;
 import com.syfri.userservice.service.system.AccountService;
+import com.syfri.userservice.utils.Constants;
 import com.syfri.userservice.utils.CurrentUserUtil;
 import com.syfri.userservice.utils.ImageCodeUtil;
 import com.syfri.userservice.utils.JwtUtil;
@@ -45,7 +46,7 @@ public class LoginController {
 	@PostMapping("login")
 	public Response login(@RequestBody AccountVO accountVO){
 		Response response = Response.build();
-		String password = JwtUtil.md5(accountVO.getPassword() + "-" + accountVO.getUsername());
+		String password = JwtUtil.md5(accountVO.getPassword() + "-" + Constants.PWD_KEY);
 		accountVO.setPassword(password);
 		AccountVO tempVO = accountService.doFindByVO(accountVO);
 

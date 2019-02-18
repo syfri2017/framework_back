@@ -2,11 +2,13 @@ package com.syfri.userservice.service.impl.system;
 
 import com.syfri.userservice.model.system.AccountRoleVO;
 import com.syfri.userservice.model.system.RoleVO;
+import com.syfri.userservice.utils.Constants;
 import com.syfri.userservice.utils.CurrentUserUtil;
-import org.apache.shiro.crypto.RandomNumberGenerator;
-import org.apache.shiro.crypto.SecureRandomNumberGenerator;
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.util.ByteSource;
+import com.syfri.userservice.utils.JwtUtil;
+//import org.apache.shiro.crypto.RandomNumberGenerator;
+//import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+//import org.apache.shiro.crypto.hash.SimpleHash;
+//import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import com.syfri.userservice.dao.system.AccountDAO;
 import com.syfri.userservice.model.system.AccountVO;
 import com.syfri.userservice.service.system.AccountService;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +43,12 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountVO> implements Ac
 	/*采用MD5对密码进行加密.*/
 	@Override
 	public AccountVO getPasswordEncry(AccountVO accountVO) {
+		/*
 		RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
 		accountVO.setSalt(randomNumberGenerator.nextBytes().toHex());
 		String newPassword = new SimpleHash(algorithmName, accountVO.getPassword(), ByteSource.Util.bytes(accountVO.getSalt()),hashIterations).toHex();
 		accountVO.setPassword(newPassword);
+		*/
 		return accountVO;
 	}
 
@@ -60,13 +65,11 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountVO> implements Ac
 	/*修改：修改账户表*/
 	@Override
 	public int doUpdateAccountByVO(AccountVO accountVO){
-		accountVO.setAlterName(CurrentUserUtil.getCurrentUserName());
-		accountVO.setAlterId(CurrentUserUtil.getCurrentUserId());
-		if(accountVO.getPassword() == null || "".equals(accountVO.getPassword())){
+		if(StringUtils.isEmpty(accountVO.getPassword())){
 			accountVO.setPassword(null);
 		}else{
-			accountVO = this.getPasswordEncry(accountVO);
-			//accountVO = ((AccountService) AopContext.currentProxy()).getPasswordEncry(accountVO);
+			accountVO.setPassword(JwtUtil.md5(accountVO.getPassword() + "-" + Constants.PWD_KEY));
+//			accountVO = this.getPasswordEncry(accountVO);
 		}
 		return accountDAO.doUpdateByVO(accountVO);
 	}
