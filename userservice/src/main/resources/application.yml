@@ -133,7 +133,7 @@ spring:
     datasource:
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: oracle.jdbc.OracleDriver
-      url: jdbc:oracle:thin:@10.119.119.205:1521/XFXHDB
+      url: jdbc:oracle:thin:@10.119.119.205:1521/XFXHDB_NEW
       username: XFXHZH
       password: XFXHZH
 
