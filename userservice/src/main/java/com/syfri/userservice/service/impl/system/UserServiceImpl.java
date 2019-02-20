@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
 @Service("userService")
@@ -47,13 +46,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserVO> implements UserServ
 	public UserVO doInsertUserRoles(UserVO userVO){
 
 		//向账户表SYS_ACCOUNT插入账户信息
-		AccountVO accountVO = new AccountVO(userVO.getUsername(), userVO.getPassword(), userVO.getRealname());
+		AccountVO accountVO = new AccountVO(userVO.getUsername(), userVO.getPassword(), userVO.getRealname(), userVO.getCreateId(), userVO.getCreateName());
 		accountVO.setUsertype(userVO.getUsertype());
 		accountService.doInsertAccountByVO(accountVO);
 
 		//向用户表SYS_USER插入用户信息
-		userVO.setCreateId(CurrentUserUtil.getCurrentUserId());
-		userVO.setCreateName(CurrentUserUtil.getCurrentUserName());
 		userVO.setUserid(accountVO.getUserid());
 		userDAO.doInsertByVO(userVO);
 		if(userVO.getOrganizationId() != null && !"".equals(userVO.getOrganizationId())){
@@ -70,7 +67,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserVO> implements UserServ
 			}
 			userVO.setRoles(roles);
 		}
-		accountService.doInsertAccountRolesBatch(accountVO.getUserid(), userVO.getRoles());
+		accountService.doInsertAccountRolesBatch(accountVO.getUserid(), userVO.getRoles(), userVO.getCreateId(), userVO.getCreateName());
 		return userVO;
 	}
 
@@ -80,6 +77,8 @@ public class UserServiceImpl extends BaseServiceImpl<UserVO> implements UserServ
 		//修改账户表
 		AccountVO accountVO = new AccountVO(userVO.getUserid(), userVO.getUsername(), userVO.getPassword(), userVO.getRealname());
 		accountVO.setUsertype(userVO.getUsertype());
+		accountVO.setAlterId(userVO.getAlterId());
+		accountVO.setAlterName(userVO.getAlterName());
 		accountService.doUpdateAccountByVO(accountVO);
 
 		//修改用户表基本信息
@@ -91,7 +90,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserVO> implements UserServ
 		//修改角色中间表信息
 		if(!"ZSYH".equals(userVO.getDeptid())){
 			accountService.doDeleteAccountRoles(userVO.getUserid());
-			accountService.doInsertAccountRolesBatch(accountVO.getUserid(), userVO.getRoles());
+			accountService.doInsertAccountRolesBatch(accountVO.getUserid(), userVO.getRoles(), userVO.getAlterId(), userVO.getAlterName());
 		}
 		return userVO;
 	}

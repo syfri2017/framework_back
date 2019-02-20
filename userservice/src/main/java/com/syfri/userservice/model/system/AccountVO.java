@@ -53,6 +53,14 @@ public class AccountVO extends ValueObject implements Serializable{
 		this.realname = realname;
 	}
 
+	public AccountVO(String username, String password, String realname, String createId, String createName) {
+		this.username = username;
+		this.password = password;
+		this.realname = realname;
+		this.createId = createId;
+		this.createName = createName;
+	}
+
 	public String getUserid(){
 		return userid;
 	}

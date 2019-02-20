@@ -18,7 +18,7 @@ public interface AccountService  extends BaseService<AccountVO>{
 	int doUpdateAccountByVO(AccountVO accountVO);
 
 	/*--批量向账户角色中间表中插入数据(中间表).--*/
-	int doInsertAccountRolesBatch(String userid, List<RoleVO> roles);
+	int doInsertAccountRolesBatch(String userid, List<RoleVO> roles, String createId, String createName);
 
 	/*--删除：删除账户同时删除其角色(中间表).--*/
 	int doDeleteAccountRoles(String pkid);

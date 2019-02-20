@@ -55,10 +55,7 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountVO> implements Ac
 	/*新增：向账户表中增加账户.*/
 	@Override
 	public int doInsertAccountByVO(AccountVO accountVO){
-		accountVO.setCreateName(CurrentUserUtil.getCurrentUserName());
-		accountVO.setCreateId(CurrentUserUtil.getCurrentUserId());
-		accountVO = this.getPasswordEncry(accountVO);
-		//accountVO = ((AccountService) AopContext.currentProxy()).getPasswordEncry(accountVO);
+		accountVO.setPassword(JwtUtil.md5(accountVO.getPassword() + "-" + Constants.PWD_KEY));
 		return accountDAO.doInsertByVO(accountVO);
 	}
 
@@ -69,22 +66,21 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountVO> implements Ac
 			accountVO.setPassword(null);
 		}else{
 			accountVO.setPassword(JwtUtil.md5(accountVO.getPassword() + "-" + Constants.PWD_KEY));
-//			accountVO = this.getPasswordEncry(accountVO);
 		}
 		return accountDAO.doUpdateByVO(accountVO);
 	}
 
 	/*向用户角色中间表批量插入数据.*/
 	@Override
-	public int doInsertAccountRolesBatch(String userid, List<RoleVO> roles){
+	public int doInsertAccountRolesBatch(String userid, List<RoleVO> roles, String createId, String createName){
 		List<AccountRoleVO> accountRoles = new ArrayList<>();
 		if(roles!=null && roles.size()>0){
 			for(RoleVO role : roles){
 				AccountRoleVO temp = new AccountRoleVO();
 				temp.setUserid(userid);
 				temp.setRoleid(role.getRoleid());
-				temp.setCreateId(CurrentUserUtil.getCurrentUserId());
-				temp.setCreateName(CurrentUserUtil.getCurrentUserName());
+				temp.setCreateId(createId);
+				temp.setCreateName(createName);
 				accountRoles.add(temp);
 			}
 			return accountDAO.doBatchInsertAccountRoles(accountRoles);
@@ -93,8 +89,8 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountVO> implements Ac
 			AccountRoleVO accountRoleVO = new AccountRoleVO();
 			accountRoleVO.setUserid(userid);
 			accountRoleVO.setRoleid("753803FC34FC4424AB6778B0F3132AAF");
-			accountRoleVO.setCreateId(CurrentUserUtil.getCurrentUserId());
-			accountRoleVO.setCreateName(CurrentUserUtil.getCurrentUserName());
+			accountRoleVO.setCreateId(createId);
+			accountRoleVO.setCreateName(createName);
 			return accountDAO.doInsertAccoutRoleInitial(accountRoleVO);
 		}
 	}
