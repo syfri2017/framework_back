@@ -4,7 +4,6 @@ import com.syfri.userservice.model.system.AccountVO;
 import com.syfri.userservice.model.system.RoleVO;
 import com.syfri.userservice.service.system.AccountService;
 import com.syfri.userservice.service.system.OrganizationService;
-import com.syfri.userservice.utils.CurrentUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
