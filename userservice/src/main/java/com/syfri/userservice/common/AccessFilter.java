@@ -60,7 +60,7 @@ public class AccessFilter implements Filter {
 			logger.info(path);
 
 			// 登陆请求无需过滤
-			if(isMatches(path) || path.equals("/") || path.equals("/login")){
+			if(isMatches(path) || path.equals("/") || path.equals("/login")|| path.contains("/signin/sendMessage")|| path.contains("/signin/sendMail")){
 				chain.doFilter(req, resp);
 			}else if(path.endsWith(".html")){
 				req.getRequestDispatcher("/index.html").forward(req, resp);
