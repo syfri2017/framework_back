@@ -39,6 +39,8 @@ public class AccessFilter implements Filter {
 		urlPatterns = new HashSet<>();
 		urlPatterns.add("/login");
 		urlPatterns.add("/imageCode");
+		urlPatterns.add("/signin/sendMessage");
+		urlPatterns.add("/signin/sendMailEng");
 		urlPatterns.add("api-docs");
 		urlPatterns.add("static");
 	}
