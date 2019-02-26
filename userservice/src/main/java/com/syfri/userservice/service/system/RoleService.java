@@ -22,7 +22,7 @@ public interface RoleService  extends BaseService<RoleVO>{
 	int doDeleteRoleResources(List<RoleVO> list);
 
 	/*--向角色资源中间表中批量增加数据.--*/
-	int insertRoleResourcesBatch(String roleid, List<ResourceVO> resources);
+	int insertRoleResourcesBatch(String roleid, List<ResourceVO> resources, String userid, String username);
 
 	/*--获取所有角色.--*/
 	List<RoleVO> doFindAll();
@@ -31,7 +31,7 @@ public interface RoleService  extends BaseService<RoleVO>{
 	List<String> getRolesByUserid(String userid);
 
 	/*--获取角色资源中间表对象.--*/
-	RoleResourceVO getRoleResourceVO(String roleid, String resourceid);
+	RoleResourceVO getRoleResourceVO(String roleid, String resourceid, String userid, String username);
 
 	/*--判断一个List对象是否含有某个对象.--*/
 	boolean getContainsResult(List<RoleResourceVO> list, RoleResourceVO roleResourceVO);

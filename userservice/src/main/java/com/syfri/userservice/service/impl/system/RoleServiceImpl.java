@@ -49,12 +49,10 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleVO> implements RoleServ
 	public RoleVO doInsertRoleResources(RoleVO roleVO){
 
 		//向角色表SYS_ROLE中增加数据
-		roleVO.setCreateId(CurrentUserUtil.getCurrentUserId());
-		roleVO.setCreateName(CurrentUserUtil.getCurrentUserName());
 		roleDAO.doInsertByVO(roleVO);
 
 		//向角色资源中间表SYS_ROLE_RESOURCE中增加数据
-		((RoleService)AopContext.currentProxy()).insertRoleResourcesBatch(roleVO.getRoleid(), roleVO.getResources());
+		((RoleService)AopContext.currentProxy()).insertRoleResourcesBatch(roleVO.getRoleid(), roleVO.getResources(), roleVO.getCreateId(), roleVO.getCreateName());
 
 		return roleVO;
 	}
@@ -64,14 +62,12 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleVO> implements RoleServ
 	public RoleVO doUpdateRoleResources(RoleVO roleVO) {
 
 		//修改角色表SYS_ROLE数据
-		roleVO.setAlterId(CurrentUserUtil.getCurrentUserId());
-		roleVO.setAlterName(CurrentUserUtil.getCurrentUserName());
 		roleDAO.doUpdateByVO(roleVO);
 
 		//修改角色资源中间表SYS_ROLE_RESOURCE数据
 		String roleid = roleVO.getRoleid();
 		roleDAO.doDeleteRoleResources(roleid);
-		((RoleService)AopContext.currentProxy()).insertRoleResourcesBatch(roleid, roleVO.getResources());
+		((RoleService)AopContext.currentProxy()).insertRoleResourcesBatch(roleid, roleVO.getResources(), roleVO.getAlterId(), roleVO.getAlterName());
 
 		//删除展商角色下的系统管理、用户管理
 		if("fireexpo".equals(roleVO.getRolename())){
@@ -99,18 +95,18 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleVO> implements RoleServ
 
 	/*批量向角色权限中间表插入数据.*/
 	@Override
-	public int insertRoleResourcesBatch(String roleid, List<ResourceVO> resources){
+	public int insertRoleResourcesBatch(String roleid, List<ResourceVO> resources, String userid, String username){
 		List<RoleResourceVO> list = new ArrayList<>();
 		if(resources!=null && resources.size()>0){
 			for(ResourceVO resource : resources){
-				RoleResourceVO temp = ((RoleService)AopContext.currentProxy()).getRoleResourceVO(roleid, resource.getResourceid());
+				RoleResourceVO temp = ((RoleService)AopContext.currentProxy()).getRoleResourceVO(roleid, resource.getResourceid(), userid, username);
 				list.add(temp);
 
 				ResourceVO resourceVO1 = resourceService.doFindByVO(new ResourceVO(resource.getResourceid()));
 				if(resourceVO1!=null){
 					String parentid1 = resourceVO1.getParentid();
 					if(!"-1".equals(parentid1)){
-						RoleResourceVO parent1 = ((RoleService)AopContext.currentProxy()).getRoleResourceVO(roleid, parentid1);
+						RoleResourceVO parent1 = ((RoleService)AopContext.currentProxy()).getRoleResourceVO(roleid, parentid1, userid, username);
 						if(!((RoleService)AopContext.currentProxy()).getContainsResult(list, parent1)){
 							list.add(parent1);
 						}
@@ -119,7 +115,7 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleVO> implements RoleServ
 						if(resourceVO2!=null){
 							String parentid2 = resourceVO2.getParentid();
 							if(!"-1".equals(parentid2)){
-								RoleResourceVO parent2 = ((RoleService)AopContext.currentProxy()).getRoleResourceVO(roleid, parentid2);
+								RoleResourceVO parent2 = ((RoleService)AopContext.currentProxy()).getRoleResourceVO(roleid, parentid2, userid, username);
 								if(!((RoleService)AopContext.currentProxy()).getContainsResult(list, parent2)){
 									list.add(parent2);
 								}
@@ -153,12 +149,12 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleVO> implements RoleServ
 
 	/*--获取角色资源中间表对象.--*/
 	@Override
-	public RoleResourceVO getRoleResourceVO(String roleid, String resourceid){
+	public RoleResourceVO getRoleResourceVO(String roleid, String resourceid, String userid, String username){
 		RoleResourceVO roleResourceVO = new RoleResourceVO();
 		roleResourceVO.setRoleid(roleid);
 		roleResourceVO.setResourceid(resourceid);
-		roleResourceVO.setCreateId(CurrentUserUtil.getCurrentUserId());
-		roleResourceVO.setCreateName(CurrentUserUtil.getCurrentUserName());
+		roleResourceVO.setCreateId(userid);
+		roleResourceVO.setCreateName(username);
 		return roleResourceVO;
 	}
 

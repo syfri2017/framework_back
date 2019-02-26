@@ -1,7 +1,6 @@
 package com.syfri.userservice.service.impl.system;
 
 import com.syfri.userservice.model.system.ResourceVO;
-import com.syfri.userservice.utils.CurrentUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -42,16 +41,12 @@ public class PermissionServiceImpl extends BaseServiceImpl<PermissionVO> impleme
 
 	/*--新增；权限.--*/
 	public PermissionVO doInsertPermission(PermissionVO permissionVO){
-		permissionVO.setCreateId(CurrentUserUtil.getCurrentUserId());
-		permissionVO.setCreateName(CurrentUserUtil.getCurrentUserName());
 		permissionDAO.doInsertByVO(permissionVO);
 		return permissionVO;
 	}
 
 	/*--修改：权限.--*/
 	public PermissionVO doUpdatePermission(PermissionVO permissionVO){
-		permissionVO.setAlterId(CurrentUserUtil.getCurrentUserId());
-		permissionVO.setAlterName(CurrentUserUtil.getCurrentUserName());
 		permissionDAO.doUpdateByVO(permissionVO);
 		return permissionVO;
 	}
