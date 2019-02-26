@@ -1,7 +1,6 @@
 package com.syfri.userservice.service.impl.system;
 
 import com.syfri.userservice.model.system.*;
-import com.syfri.userservice.utils.CurrentUserUtil;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +9,6 @@ import com.syfri.baseapi.service.impl.BaseServiceImpl;
 import com.syfri.userservice.dao.system.CodelistDAO;
 import com.syfri.userservice.service.system.CodelistService;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +43,6 @@ public class CodelistServiceImpl extends BaseServiceImpl<CodelistVO> implements 
 	/*--新增：代码集.--*/
 	@Override
 	public CodelistVO doInsertCodelist(CodelistVO codelistVO){
-		codelistVO.setCreateId(CurrentUserUtil.getCurrentUserId());
-		codelistVO.setCreateName(CurrentUserUtil.getCurrentUserName());
 		if(codelistVO.getLanguage() == null || codelistVO.getLanguage() == ""){
 			codelistVO.setLanguage("zh_CN");
 		}
@@ -57,8 +53,6 @@ public class CodelistServiceImpl extends BaseServiceImpl<CodelistVO> implements 
 	/*--修改：代码集.--*/
 	@Override
 	public CodelistVO doUpdateCodelist(CodelistVO codelistVO){
-		codelistVO.setAlterId(CurrentUserUtil.getCurrentUserId());
-		codelistVO.setAlterName(CurrentUserUtil.getCurrentUserName());
 		codelistDAO.doUpdateByVO(codelistVO);
 		return codelistVO;
 	}
@@ -85,8 +79,6 @@ public class CodelistServiceImpl extends BaseServiceImpl<CodelistVO> implements 
 	/*--新增从表：.--*/
 	@Override
 	public CodelistDetailVO doInsertCodelistDetail(CodelistDetailVO codelistDetailVO){
-		codelistDetailVO.setCreateId(CurrentUserUtil.getCurrentUserId());
-		codelistDetailVO.setCreateName(CurrentUserUtil.getCurrentUserName());
 		CodelistVO codelistVO = codelistDAO.doFindById(codelistDetailVO.getCodeid());
 		codelistDetailVO.setCodetype(codelistVO.getCodetype());
 		codelistDetailVO.setCodetypeName(codelistVO.getCodetypeName());
@@ -97,8 +89,6 @@ public class CodelistServiceImpl extends BaseServiceImpl<CodelistVO> implements 
 	/*--修改从表：.--*/
 	@Override
 	public CodelistDetailVO doUpdateCodelistDetail(CodelistDetailVO codelistDetailVO){
-		codelistDetailVO.setAlterId(CurrentUserUtil.getCurrentUserId());
-		codelistDetailVO.setAlterName(CurrentUserUtil.getCurrentUserName());
 		codelistDAO.doUpdateCodelistDetail(codelistDetailVO);
 		return codelistDetailVO;
 	}
