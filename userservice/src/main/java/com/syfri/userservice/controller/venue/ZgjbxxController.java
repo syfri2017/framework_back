@@ -1,5 +1,6 @@
 package com.syfri.userservice.controller.venue;
 
+import com.alibaba.fastjson.JSONObject;
 import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import com.syfri.baseapi.utils.MathUtil;
@@ -162,7 +163,9 @@ public class ZgjbxxController  extends BaseController<ZgjbxxVO>{
 			List<ZwmkVO> zwmkVOs=zwmkService.doSearchListByVO(mk);
 			JSONArray ja=new JSONArray();
 			for(ZwmkVO zwmkVO:zwmkVOs){
-				ja.add(zwmkVO.getJsonData());
+				JSONObject jsonObject;
+				jsonObject = JSONObject.parseObject(zwmkVO.getJsonData());
+				ja.add(jsonObject);
 			}
 			zgZwmksVO.setZwmoJsonDatas(ja);
 			resultVO.setResult(zgZwmksVO);
