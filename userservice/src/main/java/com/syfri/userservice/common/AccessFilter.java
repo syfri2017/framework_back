@@ -41,6 +41,9 @@ public class AccessFilter implements Filter {
 		urlPatterns.add("/imageCode");
 		urlPatterns.add("/signin/sendMessage");
 		urlPatterns.add("/signin/sendMailEng");
+		urlPatterns.add("/signin/getUsernameByMail");
+		urlPatterns.add("/signin/findByMail");
+		urlPatterns.add("/signin/findByUsername");
 		urlPatterns.add("api-docs");
 		urlPatterns.add("static");
 	}

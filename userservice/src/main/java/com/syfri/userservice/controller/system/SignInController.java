@@ -55,7 +55,7 @@ public class SignInController extends BaseController<AccountVO>{
 
 	@ApiOperation(value="根据username查询用户数量",notes="查询")
 	@ApiImplicitParam(name="username",value="用户名")
-	@PostMapping("/getUsernameNum/{username}/static")
+	@GetMapping("/getUsernameNum/{username}/static")
 	public @ResponseBody ResultVO getUsernameNum(@PathVariable String username){
 		ResultVO resultVO = ResultVO.build();
 		try{
@@ -212,7 +212,7 @@ public class SignInController extends BaseController<AccountVO>{
 	 * @param phone 电话号码
 	 * @return
 	 */
-	@PostMapping("/sendMessage")
+	@GetMapping("/sendMessage")
 	public ResultVO send(String phone){
 		ResultVO resultVO = ResultVO.build();
 		if(!(phone.equals("")||null == phone)){
