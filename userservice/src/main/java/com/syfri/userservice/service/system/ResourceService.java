@@ -23,7 +23,7 @@ public interface ResourceService  extends BaseService<com.syfri.userservice.mode
 	void doDeleteResourcePermissions(String resourceid);
 
 	/*--向角色资源中间表中批量增加数据.--*/
-	int insertResourcePermissionsBatch(String resourceid, List<PermissionVO> permissions);
+	int insertResourcePermissionsBatch(String resourceid, List<PermissionVO> permissions,String userId,String userName);
 
 	/*--根据角色列表构造资源树状结构.--*/
 	List<ResourceTree> getMenuTree(List<RoleVO> roleList);

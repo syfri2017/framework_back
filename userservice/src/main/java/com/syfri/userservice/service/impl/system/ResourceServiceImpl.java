@@ -47,15 +47,12 @@ public class ResourceServiceImpl extends BaseServiceImpl<ResourceVO> implements 
 	@Override
 	public ResourceVO doInsertResourcePermissions(ResourceVO resourceVO){
 
-		//向资源表SYS_RESOURCE中插入数据
-		resourceVO.setCreateId(CurrentUserUtil.getCurrentUserId());
-		resourceVO.setCreateName(CurrentUserUtil.getCurrentUserName());
 		//插入序号
 		resourceVO.setSeqno(Integer.parseInt(((ResourceService)AopContext.currentProxy()).getMaxSegno(resourceVO.getParentid()))+1);
 		resourceDAO.doInsertByVO(resourceVO);
 
 		//向资源权限表SYS_RESOURCE_PERMISSION中插入数据
-		((ResourceService)AopContext.currentProxy()).insertResourcePermissionsBatch(resourceVO.getResourceid(), resourceVO.getPermissions());
+		((ResourceService)AopContext.currentProxy()).insertResourcePermissionsBatch(resourceVO.getResourceid(), resourceVO.getPermissions(),resourceVO.getCreateId(),resourceVO.getCreateName());
 
 		return resourceVO;
 	}
@@ -65,13 +62,11 @@ public class ResourceServiceImpl extends BaseServiceImpl<ResourceVO> implements 
 	public ResourceVO doUpdateResourcePermissions(ResourceVO resourceVO){
 
 		//修改资源表SYS_RESOURCE数据
-		resourceVO.setAlterId(CurrentUserUtil.getCurrentUserId());
-		resourceVO.setAlterName(CurrentUserUtil.getCurrentUserName());
 		resourceDAO.doUpdateByVO(resourceVO);
 
 		//修改资源权限表SYS_RESOURCE_PERMISSION中数据，先删除再新增
 		resourceDAO.doDeleteResourcePermissions(resourceVO.getResourceid());
-		((ResourceService)AopContext.currentProxy()).insertResourcePermissionsBatch(resourceVO.getResourceid(), resourceVO.getPermissions());
+		((ResourceService)AopContext.currentProxy()).insertResourcePermissionsBatch(resourceVO.getResourceid(), resourceVO.getPermissions(),resourceVO.getAlterId(),resourceVO.getAlterName());
 
 		//查询并返回修改后的资源数据
 		resourceVO = resourceDAO.doFindById(resourceVO.getResourceid());
@@ -98,15 +93,15 @@ public class ResourceServiceImpl extends BaseServiceImpl<ResourceVO> implements 
 
 	/*--向角色资源中间表中批量增加数据.--*/
 	@Override
-	public int insertResourcePermissionsBatch(String resourceid, List<PermissionVO> permissions){
+	public int insertResourcePermissionsBatch(String resourceid, List<PermissionVO> permissions,String userId,String userName){
 		List<ResourcePermissionVO> list = new ArrayList<>();
 		if(permissions!=null && permissions.size()>0){
 			for(PermissionVO permission : permissions){
 				ResourcePermissionVO temp = new ResourcePermissionVO();
 				temp.setResourceid(resourceid);
 				temp.setPermissionid(permission.getPermissionid());
-				temp.setCreateId(CurrentUserUtil.getCurrentUserId());
-				temp.setCreateName(CurrentUserUtil.getCurrentUserName());
+				temp.setCreateId(userId);
+				temp.setCreateName(userName);
 				list.add(temp);
 			}
 			return resourceDAO.doInsertResourcePermissionsBatch(list);
