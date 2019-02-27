@@ -48,8 +48,6 @@ public class MailServiceImpl extends BaseServiceImpl<MailVO> implements MailServ
 	/*--新增：邮箱表格数据--*/
 	@Override
 	public MailVO doInsertMail(MailVO mailVO){
-		mailVO.setCreateId(CurrentUserUtil.getCurrentUserId());
-		mailVO.setCreateName(CurrentUserUtil.getCurrentUserName());
 		mailDAO.doInsertByVO(mailVO);
 		return mailVO;
 	}
@@ -57,8 +55,6 @@ public class MailServiceImpl extends BaseServiceImpl<MailVO> implements MailServ
 	/*--修改：修改邮箱表格数据--*/
 	@Override
 	public MailVO doUpdateMail(MailVO mailVO){
-		mailVO.setAlterId(CurrentUserUtil.getCurrentUserId());
-		mailVO.setAlterName(CurrentUserUtil.getCurrentUserName());
 		mailDAO.doUpdateByVO(mailVO);
 		return mailVO;
 	}
@@ -88,8 +84,6 @@ public class MailServiceImpl extends BaseServiceImpl<MailVO> implements MailServ
 			String today=sdf.format(new Date());
 			mailVO.setTerm(today);
 			mailVO.setAlterTime(today);
-			mailVO.setAlterId(CurrentUserUtil.getCurrentUserId());
-			mailVO.setAlterName(CurrentUserUtil.getCurrentUserName());
 			mailDAO.doUpdateByVO(mailVO);
 		}
 	}
