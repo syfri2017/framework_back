@@ -328,7 +328,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 								params.add(newdbzw.getZwh());
 								params.add(newdbzw.getZwmj());
 								SmsSingleSenderResult result = sender.sendWithParam("86", phone, boothMsgProperties.getTemplId(), params, "", "", "");
-								zwsmsService.createZwsmslog(CurrentUserUtil.getCurrentUser(),newdbzw,qvo,result);
+								zwsmsService.createZwsmslog(newdbzw,qvo,result);
 								if (result.result == 0) {
 									resultVO.setCode(EConstants.CODE.SUCCESS);
 								}
