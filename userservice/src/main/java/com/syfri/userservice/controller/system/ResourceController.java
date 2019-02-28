@@ -281,4 +281,13 @@ public class ResourceController  extends BaseController<ResourceVO>{
 		}
 		return resultVO;
 	}
+	//父资源级联下拉框数据获取 add by yushch 20190228
+	@GetMapping("/parentidMenuTree")
+	public ResultVO getParentidMenuTree(){
+		ResultVO resultVO = ResultVO.build();
+		//查看全部角色下的菜单
+		List<ResourceTree> menuTrees = resourceService.getMenuTree(null);
+		resultVO.setResult(menuTrees);
+		return resultVO;
+	}
 }
