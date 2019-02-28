@@ -44,6 +44,7 @@ public class AccessFilter implements Filter {
 		urlPatterns.add("/signin/getUsernameByMail");
 		urlPatterns.add("/signin/findByMail");
 		urlPatterns.add("/signin/findByUsername");
+		urlPatterns.add("/signin/insertByVO");
 		urlPatterns.add("api-docs");
 		urlPatterns.add("static");
 	}
