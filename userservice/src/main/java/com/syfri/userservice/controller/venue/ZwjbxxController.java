@@ -16,7 +16,6 @@ import com.syfri.userservice.model.venue.*;
 import com.syfri.userservice.service.impl.venue.ZwlogServiceImpl;
 import com.syfri.userservice.service.prediction.QyjbxxService;
 import com.syfri.userservice.service.venue.*;
-import com.syfri.userservice.utils.CurrentUserUtil;
 import com.syfri.userservice.utils.ExcelUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -536,8 +535,8 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 			if(vo.getUuid()!=null&&!"".equals(vo.getUuid())){
 				ZwjbxxVO dbzw=zwjbxxService.doFindById(vo.getUuid());
 				if(dbzw.getZwzt()!=vo.getZwzt()){
-					vo.setXgrid(CurrentUserUtil.getCurrentUserId());
-					vo.setXgrmc(CurrentUserUtil.getCurrentUserName());
+					vo.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
+					vo.setXgrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 					zwjbxxService.doUpdateByVO(vo);
 					ZwjbxxVO newdbzw=zwjbxxService.doFindById(vo.getUuid());
 					resultVO.setResult(newdbzw);
