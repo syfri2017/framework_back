@@ -48,6 +48,7 @@ public class AccessFilter implements Filter {
         urlPatterns.add("/signin/findByUnscid/");
         urlPatterns.add("/signin/getMailNum/");
         urlPatterns.add("/signin/sendMail");
+		urlPatterns.add("/doExp");
 
 		urlPatterns.add("api-docs");
 		urlPatterns.add("static");
@@ -68,7 +69,7 @@ public class AccessFilter implements Filter {
 			logger.info(path);
 
 			// 登陆请求无需过滤
-			if(isMatches(path) || path.equals("/") || path.equals("/login")|| path.contains("/signin/sendMessage")|| path.contains("/signin/sendMail")){
+			if(isMatches(path) || path.equals("/") || path.equals("/login")){
 				chain.doFilter(req, resp);
 			}else if(path.endsWith(".html")){
 				req.getRequestDispatcher("/index.html").forward(req, resp);
