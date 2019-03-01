@@ -48,8 +48,11 @@ public class AccessFilter implements Filter {
         urlPatterns.add("/signin/findByUnscid/");
         urlPatterns.add("/signin/getMailNum/");
         urlPatterns.add("/signin/sendMail");
+        urlPatterns.add("/zwjbxx/doSearchListByVO");
+        urlPatterns.add("/zgjbxx/doSearchHbListByVO");
+        urlPatterns.add("/zgjbxx/doSearchHbMKListByVO");
+        urlPatterns.add("/zgjbxx/doSearchDataListByVO");
 		urlPatterns.add("/doExp");
-
 		urlPatterns.add("api-docs");
 		urlPatterns.add("static");
 	}
