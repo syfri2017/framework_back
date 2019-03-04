@@ -1,19 +1,13 @@
 package com.syfri.userservice;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.syfri.userservice.model.venue.ZwmkVO;
 import com.syfri.userservice.service.venue.ZwmkService;
 import com.syfri.userservice.utils.FileUtil;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.junit.Test;
-
 import javax.annotation.Resource;
 import com.syfri.userservice.base.BaseJunit;
-
-import java.io.File;
-import java.io.FileReader;
 import java.util.List;
 
 
