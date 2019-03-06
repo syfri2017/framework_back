@@ -210,17 +210,18 @@ public class QyjbxxController extends BaseController<QyjbxxVO> {
 
     //add by yushch 20181014
     @ApiOperation(value = "根据userid获取企业信息", notes = "vo")
-    @PostMapping("/doFindByUserid")
+    @PostMapping("/doFindByVo")
     public @ResponseBody
     ResultVO doFindByUserid(@RequestBody QyjbxxVO vo) {
         ResultVO resultVO = ResultVO.build();
         try {
             QyjbxxVO result = qyjbxxService.doFindByVO(vo);
+            /*
             if (result != null) {
                 //将二进制转为Base64格式字符串
                 String photo64 = Base64ImageUtil.byteArr2String(result.getYyzz());
                 result.setYyzzBase64(photo64);
-            }
+            }*/
             resultVO.setResult(result);
         } catch (Exception e) {
             logger.error("{}", e.getMessage());
