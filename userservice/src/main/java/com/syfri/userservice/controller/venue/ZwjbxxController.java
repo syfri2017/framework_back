@@ -225,6 +225,14 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 				ZwmkVO s=new ZwmkVO();
 				s.setShapeUuid(vo1.getShapeUuid());
 				ZwmkVO mk=zwmkService.doFindByVO(s);
+
+				ZwjbxxVO voc=new ZwjbxxVO();
+				voc.setZwh(zwZwmkVO.getZwjbxxVO().getZwh());
+				int c=zwjbxxService.doSearchCount(voc);
+				if(c>0){
+					resultVO.setMsg("展位号重复");
+					return 	resultVO;
+				}
 				//保存展位模块信息
 				if(zw!=null&&mk!=null){
 					vo.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
@@ -248,7 +256,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 				resultVO.setResult(vo);
 			}
 		} catch (Exception e) {
-			logger.error("{}",e.getMessage());
+			resultVO.setMsg(e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
 		}
 
