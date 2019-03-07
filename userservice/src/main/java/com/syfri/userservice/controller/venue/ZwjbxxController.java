@@ -224,17 +224,24 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 				ZwjbxxVO zw=zwjbxxService.doFindById(vo.getUuid());
 				ZwmkVO s=new ZwmkVO();
 				s.setShapeUuid(vo1.getShapeUuid());
-				ZwmkVO mk=zwmkService.doFindByVO(s);
+				List<ZwmkVO> mk=zwmkService.doSearchListByVO(s);
+				int c=0;
+				if(zw!=null&&
+						zw.getZwh()!=vo.getZwh()||zw==null){
+					ZwjbxxVO voc=new ZwjbxxVO();
+					voc.setZwh(zwZwmkVO.getZwjbxxVO().getZwh());
+					c=zwjbxxService.doSearchCountExact(voc);
+				}
 
-				ZwjbxxVO voc=new ZwjbxxVO();
-				voc.setZwh(zwZwmkVO.getZwjbxxVO().getZwh());
-				int c=zwjbxxService.doSearchCount(voc);
 				if(c>0){
 					resultVO.setMsg("展位号重复");
 					return 	resultVO;
 				}
+				if(mk.size()>1){
+					return null;
+				}
 				//保存展位模块信息
-				if(zw!=null&&mk!=null){
+				if(zw!=null&&mk.size()>0){
 					vo.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
 					vo.setXgrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 					vo1.setXgrid(MessageCache.getUserToken().getCurrentUser().getUserid());
@@ -242,7 +249,8 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 					zwmkService.doUpdateByVO(vo1);
 					zwjbxxService.doUpdateByVO(vo);
 					zwlogService.createZwlog(zw,vo, ZwlogServiceImpl.UPDATE,"doSaveByVO");
-				}else{
+				}
+				if(zw==null&&(null==mk||mk.size()==0)){
 					vo.setCjrid(MessageCache.getUserToken().getCurrentUser().getUserid());
 					vo.setCjrmc(MessageCache.getUserToken().getCurrentUser().getUsername());
 					vo1.setCjrid(MessageCache.getUserToken().getCurrentUser().getUserid());
@@ -256,8 +264,10 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 				resultVO.setResult(vo);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			resultVO.setMsg(e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
+			return 	resultVO;
 		}
 
 		return 	resultVO;
@@ -288,6 +298,7 @@ public class ZwjbxxController  extends BaseController<ZwjbxxVO>{
 		} catch (Exception e) {
 			logger.error("{}",e.getMessage());
 			resultVO.setCode(EConstants.CODE.FAILURE);
+			return 	resultVO;
 		}
 		return 	resultVO;
 	}

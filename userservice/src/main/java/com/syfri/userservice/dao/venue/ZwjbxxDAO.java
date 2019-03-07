@@ -2,6 +2,7 @@ package com.syfri.userservice.dao.venue;
 
 import com.syfri.baseapi.dao.BaseDAO;
 import com.syfri.userservice.model.venue.ZwjbxxVO;
+import org.apache.poi.hssf.record.formula.functions.T;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface ZwjbxxDAO extends BaseDAO<ZwjbxxVO>{
     List<ZwjbxxVO> doFindSngdzwAndJgByVo(ZwjbxxVO zwjbxxVO);
     //查询企业选择的OD展位及价格信息
     List<ZwjbxxVO> doFindOdAndJgByVo(ZwjbxxVO zwjbxxVO);
+    /*查询记录数.*/
+    public int doSearchCountExact(ZwjbxxVO zwjbxxVO);
 }

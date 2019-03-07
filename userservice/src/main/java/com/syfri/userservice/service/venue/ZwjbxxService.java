@@ -15,4 +15,6 @@ public interface ZwjbxxService  extends BaseService<ZwjbxxVO>{
     List<ZwjbxxVO> doFindQyZwNumDesc(ZwjbxxVO zwjbxxVO);
     //查询企业选择的展位list及价格信息 add by yushch 20190116
     List<ZwjbxxVO> doFindZwAndJgByVo(ZwjbxxVO zwjbxxVO);
+    /*查询记录数.*/
+    public int doSearchCountExact(ZwjbxxVO zwjbxxVO);
 }

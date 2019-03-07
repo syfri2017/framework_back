@@ -26,6 +26,10 @@ public class ZwjbxxServiceImpl extends BaseServiceImpl<ZwjbxxVO> implements Zwjb
 		return zwjbxxDAO;
 	}
 	@Override
+	public int doSearchCountExact(ZwjbxxVO zwjbxxVO) {
+		return zwjbxxDAO.doSearchCountExact(zwjbxxVO);
+	}
+	@Override
 	public PageInfo<ZwjbxxVO> doSearchQyPage(ZwjbxxVO vo) {
 		PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
 		List<ZwjbxxVO> list = zwjbxxDAO.doSearchListQyByVO(vo);

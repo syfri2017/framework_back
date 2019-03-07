@@ -95,6 +95,100 @@
 		 and t.mczs = #{mczs}
 		</if>
 	</sql>
+	<!--1.查询条件，精确查询-->
+	<sql id="SQL_CONDITION_EXACT">
+		<if test="uuid != null and uuid != '' ">
+			and t.uuid = #{uuid}
+		</if>
+		<if test="zwlb != null and zwlb != '' ">
+			and t.zwlb = #{zwlb}'
+		</if>
+		<if test="cklx != null and cklx != '' ">
+			and t.cklx = #{cklx}
+		</if>
+		<if test="zwmj != null and zwmj != '' ">
+			and t.zwmj = #{zwmj}
+		</if>
+		<if test="zwzt != null and zwzt != '' ">
+			and t.zwzt = #{zwzt}
+		</if>
+		<if test="qyid != null and qyid != '' ">
+			and t.qyid = #{qyid}
+		</if>
+		<if test="zwkd != null and zwkd != '' ">
+			and t.zwkd = #{zwkd}
+		</if>
+		<if test="zwcd != null and zwcd != '' ">
+			and t.zwcd = #{zwcd}
+		</if>
+		<if test="zwmc != null and zwmc != '' ">
+			and t.zwmc = #{zwmc}
+		</if>
+		<if test="zwh != null and zwh != '' ">
+			and t.zwh = #{zwh}
+		</if>
+
+		<if test="deleteFlag != null and deleteFlag != '' ">
+			and t.delete_flag = #{deleteFlag}
+		</if>
+		<if test="cjrid != null and cjrid != '' ">
+			and t.cjrid = #{cjrid}
+		</if>
+		<if test="cjrmc != null and cjrmc != '' ">
+			and t.cjrmc = #{cjrmc}
+		</if>
+		<if test="cjsj != null and cjsj != '' ">
+			and t.cjsj = #{cjsj}
+		</if>
+		<if test="xgrid != null and xgrid != '' ">
+			and t.xgrid = #{xgrid}
+		</if>
+		<if test="xgrmc != null and xgrmc != '' ">
+			and t.xgrmc = #{xgrmc}
+		</if>
+		<if test="xgsj != null and xgsj != '' ">
+			and t.xgsj = #{xgsj}
+		</if>
+		<if test="reserve1 != null and reserve1 != '' ">
+			and t.reserve1 = #{reserve1}
+		</if>
+		<if test="reserve2 != null and reserve2 != '' ">
+			and t.reserve2 = #{reserve2}
+		</if>
+		<if test="reserve3 != null and reserve3 != '' ">
+			and t.reserve3 = #{reserve3}
+		</if>
+		<if test="reserve4 != null and reserve4 != '' ">
+			and t.reserve4 = #{reserve4}
+		</if>
+		<if test="zgid != null and zgid != '' ">
+			and t.zgid = #{zgid}
+		</if>
+		<if test="bhzh != null and bhzh != '' ">
+			and t.bhzh = #{bhzh}
+		</if>
+		<if test="bhzt != null and bhzt != '' ">
+			and t.bhzt = #{bhzt}
+		</if>
+		<if test="bhzc != null and bhzc != '' ">
+			and t.bhzc = #{bhzc}
+		</if>
+		<if test="bhzs != null and bhzs != '' ">
+			and t.bhzs = #{bhzs}
+		</if>
+		<if test="mczt != null and mczt != '' ">
+			and t.mczt = #{mczt}
+		</if>
+		<if test="mczh != null and mczh != '' ">
+			and t.mczh = #{mczh}
+		</if>
+		<if test="mczc != null and mczc != '' ">
+			and t.mczc = #{mczc}
+		</if>
+		<if test="mczs != null and mczs != '' ">
+			and t.mczs = #{mczs}
+		</if>
+	</sql>
 
 	<!--2.查询内容-->
 	<sql id="SQL_CONTENT">
@@ -138,6 +232,16 @@
 		</if>
 
 		<include refid="SQL_CONDITION"/>
+	</select>
+
+	<!--3.查询记录数-->
+	<select id="doSearchCountExact" parameterType="ZwjbxxVO" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM CFPA_ZW_JBXX t WHERE 1=1 AND DELETE_FLAG = 'N'
+		<if test="zgid == null or zgid == '' ">
+			and  t.reserve1 is not null
+		</if>
+
+		<include refid="SQL_CONDITION_EXACT"/>
 	</select>
 
 	<!--4.按条件查询记录-->
@@ -228,7 +332,9 @@
 			<if test="mczc != null">mczc=#{mczc},</if>
 			<if test="mczs != null">mczs=#{mczs}</if>
 		</set>
-		WHERE  UUID = #{uuid}
+		WHERE
+		<if test="uuid != null">uuid = #{uuid}</if>
+		<if test="uuid == null">reserve1=#{reserve1}</if>
 	</update>
 
 	<!--10.批量修改-->
