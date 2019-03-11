@@ -6,7 +6,7 @@ server:
 qycpjs:
   savePath: D://xfxh//upload//
   fileServerUrl: http://10.119.119.222:80
-  vueServerUrl: http://10.119.119.222:80
+  vueServerUrl:       ## http://login.fireexpo.cn:8090/upload
 #------------------------------------------------------------
 #spring
 spring:
@@ -28,13 +28,6 @@ spring:
       poolPreparedStatements: true
       maxPoolPreparedStatementPerConnectionSize: 20
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-  mail:
-    default-encoding: UTF-8
-    host: smtp.ym.163.com #邮箱SMTP服务器  QQ邮箱smtp.qq.com  网易个人免费smtp.163.com 网易企业邮箱smtp.ym.163.com
-    port: 25 #端口
-    protocol: smtp
-    username: committee@cfpa.cn
-    password: fe123456   #---------- QQ邮箱生成授权码： QQ邮箱-设置-账户- POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV服务 - 开启服务
   mybatis:
     mapperLocations: classpath:mapper/*-mapper.xml
     typeAliasesPackage: com.syfri.portalservice
@@ -47,17 +40,10 @@ spring:
     mode: LEGACYHTML5
     prefix: classpath:/templates/
     suffix: .html
-  redis:
-    host: 10.119.119.233
-    port: 6379
-    expire: 7200000
-    timeout: 0
   http:
     multipart:
       max-file-size: 20MB
       max-request-size: 100MB
-  session:
-    timeout: 7200000
 #------------------------------------------------------------
 #pagehelper分页插件设置
 pagehelper:

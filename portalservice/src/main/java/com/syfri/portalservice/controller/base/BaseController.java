@@ -4,6 +4,7 @@ package com.syfri.portalservice.controller.base;
 import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.model.ValueObject;
 import com.syfri.baseapi.service.BaseService;
+import com.syfri.portalservice.utils.StringUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -71,28 +72,28 @@ public abstract class BaseController<T extends ValueObject> {
 
 	@ApiOperation(value="查询列表",notes="列表信息")
 	@ApiImplicitParam(name="vo",value = "业务实体")
-	@PostMapping("list")
-	public @ResponseBody ResultVO list(@RequestBody T vo ) {
+	@GetMapping(value="list",produces="text/html;charset=UTF-8")
+	public @ResponseBody String list(@RequestBody(required=false) T vo ,String callback) {
 		ResultVO resultVO = ResultVO.build();
 		try {
 			resultVO.setResult(this.getBaseService().doSearchListByVO(vo));
 		} catch (Exception e) {
 			logger.error("{}",e.getMessage());
 		}
-		return resultVO;
+		return StringUtil.callbackString(callback,resultVO);
 	}
 
 	@ApiOperation(value="分页查询列表",notes="列表信息")
 	@ApiImplicitParam(name="vo",value = "业务实体")
-	@PostMapping("page")
-	public @ResponseBody ResultVO page(@RequestBody T vo ) {
+	@GetMapping(value="page",produces="text/html;charset=UTF-8")
+	public @ResponseBody String page(@RequestBody(required=false) T vo  ,String callback) {
 		ResultVO resultVO = ResultVO.build();
 		try {
 			resultVO.setResult(this.getBaseService().doSearchPage(vo));
 		} catch (Exception e) {
 			logger.error("{}",e.getMessage());
 		}
-		return resultVO;
+		return StringUtil.callbackString(callback,resultVO);
 	}
 
 	//增加明细行
