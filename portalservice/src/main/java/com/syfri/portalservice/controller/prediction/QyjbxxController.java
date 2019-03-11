@@ -6,11 +6,14 @@ import com.syfri.baseapi.model.ResultVO;
 import com.syfri.baseapi.utils.EConstants;
 import com.syfri.portalservice.config.properties.CpjsProperties;
 import com.syfri.portalservice.controller.base.BaseController;
+import com.syfri.portalservice.model.prediction.QyjbjsVO;
 import com.syfri.portalservice.model.prediction.QyjbxxVO;
 import com.syfri.portalservice.service.prediction.QyjbxxService;
 import com.syfri.portalservice.utils.Base64ImageUtil;
+import com.syfri.portalservice.utils.StringUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.hssf.record.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +33,18 @@ public class QyjbxxController extends BaseController<QyjbxxVO> {
 
     @Autowired
     private CpjsProperties cpjsProperties;
+
+    @GetMapping(value="listQyjbjsVO",produces="text/html;charset=UTF-8")
+    public @ResponseBody String listQyjbjsVO(@RequestBody(required=false) QyjbjsVO vo , String callback) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            resultVO.setResult(qyjbxxService.doSearchListQyjbjsByVO(vo));
+        } catch (Exception e) {
+            logger.error("{}",e.getMessage());
+        }
+        return StringUtil.callbackString(callback,resultVO);
+    }
+
 
     /**
      * @Description: 根据企业id获取企业信息

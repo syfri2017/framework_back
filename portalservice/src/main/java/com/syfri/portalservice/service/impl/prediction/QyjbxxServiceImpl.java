@@ -50,6 +50,11 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 		return qyjbxxDAO;
 	}
 
+	@Override
+	public List<QyjbjsVO> doSearchListQyjbjsByVO(QyjbjsVO vo) {
+		return qyjbxxDAO.doSearchListQyjbjsByVO(vo);
+	}
+
 	/*--通过用户、企业查询展商信息 by li.xue 2018/10/0 11:13.--*/
 	@Override
 	public List<QyjbxxVO> doFindZsxxByQyjbxx(QyjbxxVO qyjbxxVO) {
@@ -257,4 +262,6 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 	public List<QyjbxxVO> ifConfirmedTjfxDetail(QyjbxxVO qyjbxxVO){
 		return qyjbxxDAO.ifConfirmedTjfxDetail(qyjbxxVO);
 	}
+
+
 }

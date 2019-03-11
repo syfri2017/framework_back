@@ -517,4 +517,21 @@
             </if>
         </if>
     </select>
+
+
+    <!--4.按条件查询记录-->
+    <select id="doSearchListQyjbjsByVO" parameterType="QyjbjsVO" resultType="QyjbjsVO">
+        SELECT
+        <!--<include refid="SQL_CONTENT"/>-->
+        t.qyid qyid,
+        t.zwgsmc zwgsmc,
+        t.ywgsmc ywgsmc,
+        j.src qyjsSrc
+        FROM CFPA_QY_JBXX t
+        Left Join CFPA_QY_JS J on t.qyid = J.qyid And J.DELETE_FLAG = 'N'
+        WHERE t.DELETE_FLAG = 'N'
+        AND
+        (select count(1) from cfpa_zw_jbxx z where z.delete_flag='N' AND Z.QYID= t.qyid)>0
+        <include refid="SQL_CONDITION"/>
+    </select>
 </mapper>
