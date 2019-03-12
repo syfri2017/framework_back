@@ -53,13 +53,6 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 	@Override
 	public List<QyjbjsVO> doSearchListQyjbjsByVO(QyjbjsVO vo) {
 		List<QyjbjsVO> result=qyjbxxDAO.doSearchListQyjbjsByVO(vo);
-		for(QyjbjsVO jj:result){
-			if(null!=jj.getQyid()){
-				QycpjsVO cp=new QycpjsVO();
-				cp.setQyid(jj.getQyid());
-				jj.setQycpjsVOs(qycpjsDAO.doSearchListByVO(cp));
-			}
-		}
 		return result;
 	}
 

@@ -160,43 +160,9 @@
 		t.gsjc gsjc
 	</sql>
 
-    <!--3.查询记录数-->
-    <select id="doSearchCount" parameterType="QyjbxxVO" resultType="java.lang.Integer">
-        SELECT COUNT(0) AS NUM FROM CFPA_QY_JBXX t WHERE 1=1 AND DELETE_FLAG = 'N'
-        <include refid="SQL_CONDITION"/>
-    </select>
 
-    <!--4.按条件查询记录-->
-    <select id="doSearchListByVO" parameterType="QyjbxxVO" resultType="QyjbxxVO">
-        SELECT
-        <include refid="SQL_CONTENT"/>,
-        <if test="approveflag != null and approveflag != '' ">
-            k.tyshxydm tyshxydm,
-        </if>
-        c2.code_name sjztmc,
-        c4.code_name shztmc,
-        s.username username,
-        s.usertype usertype
-        FROM CFPA_QY_JBXX t
-        <!--数据状态-->
-        Left Join SYS_CODELIST c1 on c1.CODETYPE = 'SJZT' And c1.DELETE_FLAG = 'N'
-        Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and t.sjzt = c2.CODE_VALUE
-        <!--审核状态-->
-        Left Join SYS_CODELIST c3 on c3.CODETYPE = 'SHZT' And c3.DELETE_FLAG = 'N'
-        Left Join SYS_CODELIST_DETAIL c4 On c4.CODEID = c3.CODEID And c4.DELETE_FLAG = 'N' and t.shzt = c4.CODE_VALUE
-        <!--账户-->
-        Left Join SYS_ACCOUNT s on s.userid = t.userid AND s.DELETE_FLAG = 'N'
-        <!--统一社会信用代码-->
-        <if test="approveflag != null and approveflag != '' ">
-            Left Join CFPA_QY_KPXX k on t.qyid = k.qyid And k.DELETE_FLAG = 'N'
-        </if>
-        WHERE t.DELETE_FLAG = 'N'
-        <if test="gsmc != null and gsmc != '' ">
-            and ((t.zwgsmc LIKE concat(concat('%',#{gsmc}),'%') ESCAPE '\' and s.usertype = 'CHN')
-            or (t.ywgsmc LIKE concat(concat('%',#{gsmc}),'%') ESCAPE '\' and s.usertype = 'ENG'))
-        </if>
-        <include refid="SQL_CONDITION"/>
-    </select>
+
+
 
     <!--5.根据ID查询记录-->
     <select id="doFindById" parameterType="QyjbxxVO" resultType="QyjbxxVO">
@@ -518,20 +484,73 @@
         </if>
     </select>
 
+    <resultMap type="QyjbjsVO" id="qyjbjsVOMap">
+        <collection property="qycpjsVOs" ofType="QycpjsVO" select="listQycpjsVOs"  column="qyid">
+            <id column="uuid" property="uuid"/>
+            <result column="src" property="src"/>
+        </collection>
+    </resultMap>
 
+    <select id="listQycpjsVOs" parameterType="String"  resultType="QycpjsVO">
+        SELECT
+        c.uuid ,
+        c.src
+        FROM CFPA_QY_CPJS c
+        WHERE c.DELETE_FLAG = 'N'
+        and  c.qyid=#{qyid}
+        ORDER BY c.cjsj ASC
+    </select>
     <!--4.按条件查询记录-->
-    <select id="doSearchListQyjbjsByVO" parameterType="QyjbjsVO" resultType="QyjbjsVO">
+    <select id="doSearchListQyjbjsByVO" parameterType="QyjbjsVO" resultMap="qyjbjsVOMap">
         SELECT
         <!--<include refid="SQL_CONTENT"/>-->
-        t.qyid qyid,
+        t.qyid ,
         t.zwgsmc zwgsmc,
         t.ywgsmc ywgsmc,
         j.src qyjsSrc
         FROM CFPA_QY_JBXX t
         Left Join CFPA_QY_JS J on t.qyid = J.qyid And J.DELETE_FLAG = 'N'
-        WHERE t.DELETE_FLAG = 'N'
+       WHERE t.DELETE_FLAG = 'N'
         AND
         (select count(1) from cfpa_zw_jbxx z where z.delete_flag='N' AND Z.QYID= t.qyid)>0
+        <include refid="SQL_CONDITION"/>
+    </select>
+
+    <!--4.按条件查询记录-->
+    <select id="doSearchListByVO" parameterType="QyjbxxVO" resultType="QyjbxxVO">
+        SELECT
+        <include refid="SQL_CONTENT"/>,
+        <if test="approveflag != null and approveflag != '' ">
+            k.tyshxydm tyshxydm,
+        </if>
+        c2.code_name sjztmc,
+        c4.code_name shztmc,
+        s.username username,
+        s.usertype usertype
+        FROM CFPA_QY_JBXX t
+        <!--数据状态-->
+        Left Join SYS_CODELIST c1 on c1.CODETYPE = 'SJZT' And c1.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and t.sjzt = c2.CODE_VALUE
+        <!--审核状态-->
+        Left Join SYS_CODELIST c3 on c3.CODETYPE = 'SHZT' And c3.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c4 On c4.CODEID = c3.CODEID And c4.DELETE_FLAG = 'N' and t.shzt = c4.CODE_VALUE
+        <!--账户-->
+        Left Join SYS_ACCOUNT s on s.userid = t.userid AND s.DELETE_FLAG = 'N'
+        <!--统一社会信用代码-->
+        <if test="approveflag != null and approveflag != '' ">
+            Left Join CFPA_QY_KPXX k on t.qyid = k.qyid And k.DELETE_FLAG = 'N'
+        </if>
+        WHERE t.DELETE_FLAG = 'N'
+        <if test="gsmc != null and gsmc != '' ">
+            and ((t.zwgsmc LIKE concat(concat('%',#{gsmc}),'%') ESCAPE '\' and s.usertype = 'CHN')
+            or (t.ywgsmc LIKE concat(concat('%',#{gsmc}),'%') ESCAPE '\' and s.usertype = 'ENG'))
+        </if>
+        <include refid="SQL_CONDITION"/>
+    </select>
+
+    <!--3.查询记录数-->
+    <select id="doSearchCount" parameterType="QyjbxxVO" resultType="java.lang.Integer">
+        SELECT COUNT(0) AS NUM FROM CFPA_QY_JBXX t WHERE 1=1 AND DELETE_FLAG = 'N'
         <include refid="SQL_CONDITION"/>
     </select>
 </mapper>

@@ -236,6 +236,7 @@ public class MybatisConfig implements EnvironmentAware {
 		try{
 			return ssf.getObject();
 		}catch(Exception e){
+			e.printStackTrace();
 			throw new RuntimeException();
 		}
 	}

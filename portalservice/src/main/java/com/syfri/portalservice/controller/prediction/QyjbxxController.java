@@ -35,7 +35,7 @@ public class QyjbxxController extends BaseController<QyjbxxVO> {
     private CpjsProperties cpjsProperties;
 
     @GetMapping(value="listQyjbjsVO",produces="text/html;charset=UTF-8")
-    public @ResponseBody String listQyjbjsVO(@RequestBody(required=false) QyjbjsVO vo , String callback) {
+    public @ResponseBody String listQyjbjsVO(QyjbjsVO vo , String callback) {
         ResultVO resultVO = ResultVO.build();
         try {
             resultVO.setResult(qyjbxxService.doSearchListQyjbjsByVO(vo));
