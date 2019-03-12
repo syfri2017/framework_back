@@ -44,6 +44,19 @@ public class QyjbxxController extends BaseController<QyjbxxVO> {
         }
         return StringUtil.callbackString(callback,resultVO);
     }
+    @GetMapping(value="pageQyjbjsVO",produces="text/html;charset=UTF-8")
+    public @ResponseBody String pageQyjbjsVO( QyjbjsVO vo , String callback) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
+            List<QyjbjsVO> list = qyjbxxService.doSearchListQyjbjsByVO(vo);
+            PageInfo<QyjbjsVO> page = new PageInfo<QyjbjsVO>(list);
+            resultVO.setResult(page);
+        } catch (Exception e) {
+            logger.error("{}",e.getMessage());
+        }
+        return StringUtil.callbackString(callback,resultVO);
+    }
 
 
     /**
