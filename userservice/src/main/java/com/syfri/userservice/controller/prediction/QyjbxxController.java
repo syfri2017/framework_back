@@ -211,8 +211,7 @@ public class QyjbxxController extends BaseController<QyjbxxVO> {
     //add by yushch 20181014
     @ApiOperation(value = "根据userid获取企业信息", notes = "vo")
     @PostMapping("/doFindByVo")
-    public @ResponseBody
-    ResultVO doFindByUserid(@RequestBody QyjbxxVO vo) {
+    public @ResponseBody ResultVO doFindByVo(@RequestBody QyjbxxVO vo) {
         ResultVO resultVO = ResultVO.build();
         try {
             QyjbxxVO result = qyjbxxService.doFindByVO(vo);
