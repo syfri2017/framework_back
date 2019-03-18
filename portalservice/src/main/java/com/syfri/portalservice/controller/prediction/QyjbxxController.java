@@ -56,10 +56,6 @@ public class QyjbxxController extends BaseController<QyjbxxVO> {
         }
         return StringUtil.callbackString(callback,resultVO);
     }
-
-
-
-
     /**
      * @Description: 根据用户信息、公司名称获取企业基本信息
      * @Author: li.xue
