@@ -9,7 +9,6 @@ import com.syfri.portalservice.controller.base.BaseController;
 import com.syfri.portalservice.model.prediction.QyjbjsVO;
 import com.syfri.portalservice.model.prediction.QyjbxxVO;
 import com.syfri.portalservice.service.prediction.QyjbxxService;
-import com.syfri.portalservice.utils.Base64ImageUtil;
 import com.syfri.portalservice.utils.StringUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -59,28 +58,7 @@ public class QyjbxxController extends BaseController<QyjbxxVO> {
     }
 
 
-    /**
-     * @Description: 根据企业id获取企业信息
-     * @Author: rliu
-     * @Date: 2018/10/9 10:35
-     */
-    @ApiOperation(value = "根据企业id获取企业信息", notes = "vo")
-    @RequestMapping("/doFindJbxxById/{qyid}")
-    public @ResponseBody
-    ResultVO doFindJbxxById(@PathVariable String qyid) {
-        ResultVO resultVO = ResultVO.build();
-        try {
-            QyjbxxVO result = qyjbxxService.doFindById(qyid);
-            //将二进制转为Base64格式字符串
-            String photo64 = Base64ImageUtil.byteArr2String(result.getYyzz());
-            result.setYyzzBase64(photo64);
-            resultVO.setResult(result);
-        } catch (Exception e) {
-            logger.error("{}", e.getMessage());
-            resultVO.setCode(EConstants.CODE.FAILURE);
-        }
-        return resultVO;
-    }
+
 
     /**
      * @Description: 根据用户信息、公司名称获取企业基本信息
@@ -105,24 +83,4 @@ public class QyjbxxController extends BaseController<QyjbxxVO> {
         return resultVO;
     }
 
-    //add by yushch 20181014
-    @ApiOperation(value = "根据userid获取企业信息", notes = "vo")
-    @PostMapping("/doFindByUserid")
-    public @ResponseBody
-    ResultVO doFindByUserid(@RequestBody QyjbxxVO vo) {
-        ResultVO resultVO = ResultVO.build();
-        try {
-            QyjbxxVO result = qyjbxxService.doFindByVO(vo);
-            if (result != null) {
-                //将二进制转为Base64格式字符串
-                String photo64 = Base64ImageUtil.byteArr2String(result.getYyzz());
-                result.setYyzzBase64(photo64);
-            }
-            resultVO.setResult(result);
-        } catch (Exception e) {
-            logger.error("{}", e.getMessage());
-            resultVO.setCode(EConstants.CODE.FAILURE);
-        }
-        return resultVO;
-    }
 }
