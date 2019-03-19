@@ -12,6 +12,8 @@ import com.syfri.userservice.model.system.UserVO;
 import com.syfri.userservice.service.system.AccountService;
 import com.syfri.userservice.service.system.OrganizationService;
 import com.syfri.userservice.service.system.SignInService;
+import com.syfri.userservice.utils.Constants;
+import com.syfri.userservice.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,8 +83,7 @@ public class SignInServiceImpl extends BaseServiceImpl<AccountVO> implements Sig
 	@Override
 	public int doInsertAccountByVO(AccountVO accountVO){
 		accountVO.setCreateName("Web registration");
-		accountVO = accountService.getPasswordEncry(accountVO);
-		//accountVO = ((AccountService) AopContext.currentProxy()).getPasswordEncry(accountVO);
+		accountVO.setPassword(JwtUtil.md5(accountVO.getPassword() + "-" + Constants.PWD_KEY));
 		return accountDAO.doInsertByVO(accountVO);
 	}
 
@@ -134,8 +135,7 @@ public class SignInServiceImpl extends BaseServiceImpl<AccountVO> implements Sig
 		if(accountVO.getPassword() == null || "".equals(accountVO.getPassword())){
 			accountVO.setPassword(null);
 		}else{
-			accountVO = accountService.getPasswordEncry(accountVO);
-			//accountVO = ((AccountService) AopContext.currentProxy()).getPasswordEncry(accountVO);
+			accountVO.setPassword(JwtUtil.md5(accountVO.getPassword() + "-" + Constants.PWD_KEY));
 		}
 		return this.accountDAO.doUpdateByVO(accountVO);
 	}
