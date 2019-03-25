@@ -60,20 +60,20 @@ public abstract class BaseController<T extends ValueObject> {
 	@ApiImplicitParam(name = "id", value = "业务ID", dataType = "String", paramType = "path")
 	@GetMapping("{id}")
 	public @ResponseBody
-	ResultVO find(@PathVariable String id){
+	String find(@PathVariable String id,String callback){
 		ResultVO resultVO = ResultVO.build();
 		try{
 			resultVO.setResult(this.getBaseService().doFindById(id));
 		}catch(Exception e){
 			logger.error("{}",e.getMessage());
 		}
-		return resultVO;
+		return StringUtil.callbackString(callback,resultVO);
 	}
 
 	@ApiOperation(value="查询列表",notes="列表信息")
 	@ApiImplicitParam(name="vo",value = "业务实体")
 	@GetMapping(value="list",produces="text/html;charset=UTF-8")
-	public @ResponseBody String list(@RequestBody(required=false) T vo ,String callback) {
+	public @ResponseBody String list(T vo ,String callback) {
 		ResultVO resultVO = ResultVO.build();
 		try {
 			resultVO.setResult(this.getBaseService().doSearchListByVO(vo));
@@ -86,7 +86,7 @@ public abstract class BaseController<T extends ValueObject> {
 	@ApiOperation(value="分页查询列表",notes="列表信息")
 	@ApiImplicitParam(name="vo",value = "业务实体")
 	@GetMapping(value="page",produces="text/html;charset=UTF-8")
-	public @ResponseBody String page(@RequestBody(required=false) T vo  ,String callback) {
+	public @ResponseBody String page(T vo  ,String callback) {
 		ResultVO resultVO = ResultVO.build();
 		try {
 			resultVO.setResult(this.getBaseService().doSearchPage(vo));
