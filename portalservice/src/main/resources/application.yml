@@ -11,7 +11,7 @@ qycpjs:
 #spring
 spring:
   profiles:
-    active: dev
+    active: dev       ## produce
   druid:
     #配置druid连接池
     datasource:
@@ -54,7 +54,9 @@ pagehelper:
   auto-dialect: true
 #------------------------------------------------------------
 logging:
-  level.root: info
+  level:
+    root: info
+    com.syfri.portalservice.dao: debugger
   level.com.syfri: debug
   path: logs/
   file: portalservice.log

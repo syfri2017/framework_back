@@ -39,6 +39,7 @@ public class QyjbxxController extends BaseController<QyjbxxVO> {
         try {
             resultVO.setResult(qyjbxxService.doSearchListQyjbjsByVO(vo));
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("{}",e.getMessage());
         }
         return StringUtil.callbackString(callback,resultVO);
@@ -52,10 +53,26 @@ public class QyjbxxController extends BaseController<QyjbxxVO> {
             PageInfo<QyjbjsVO> page = new PageInfo<QyjbjsVO>(list);
             resultVO.setResult(page);
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("{}",e.getMessage());
         }
         return StringUtil.callbackString(callback,resultVO);
     }
+    @GetMapping(value="findQyjbjsVO",produces="text/html;charset=UTF-8")
+    public @ResponseBody String findQyjbjsVO( QyjbjsVO vo , String callback) {
+        ResultVO resultVO = ResultVO.build();
+        try {
+            QyjbjsVO v = qyjbxxService.doFindQyjbjsByVO(vo);
+            resultVO.setResult(v);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("{}",e.getMessage());
+        }
+        return StringUtil.callbackString(callback,resultVO);
+    }
+
+
+
     /**
      * @Description: 根据用户信息、公司名称获取企业基本信息
      * @Author: li.xue

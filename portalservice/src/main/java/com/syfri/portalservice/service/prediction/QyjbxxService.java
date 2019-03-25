@@ -30,4 +30,6 @@ public interface QyjbxxService  extends BaseService<QyjbxxVO>{
     List<QyjbxxVO> ifConfirmedTjfxDetail(QyjbxxVO qyjbxxVO);
     //获取企业信息企业介绍关联表
     public List<QyjbjsVO> doSearchListQyjbjsByVO(QyjbjsVO vo);
+
+    QyjbjsVO doFindQyjbjsByVO(QyjbjsVO vo);
 }

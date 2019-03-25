@@ -493,18 +493,29 @@
 
     <select id="listQycpjsVOs" parameterType="String"  resultType="QycpjsVO">
         SELECT
-        c.uuid ,
-        c.src
-        FROM CFPA_QY_CPJS c
-        WHERE c.DELETE_FLAG = 'N'
-        and  c.qyid=#{qyid}
-        ORDER BY c.cjsj ASC
+        t.uuid ,
+        t.src,
+        t.cpjj,
+        t.cplx,
+        c2.code_name cplxmc,
+        c4.code_name cplxmc_ENG
+        FROM CFPA_QY_CPJS t
+        <!--产品类型-->
+        Left Join SYS_CODELIST c1 on c1.CODETYPE = 'CPLX' And c1.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and t.cplx = c2.CODE_VALUE
+        <!--产品类型（英文）-->
+        Left Join SYS_CODELIST c3 on c3.CODETYPE = 'CPLX_EN' And c3.DELETE_FLAG = 'N'
+        Left Join SYS_CODELIST_DETAIL c4 On c3.CODEID = c4.CODEID And c4.DELETE_FLAG = 'N' and t.cplx = c4.CODE_VALUE
+        WHERE t.DELETE_FLAG = 'N'
+        and  t.qyid=#{qyid}
+        ORDER BY t.cjsj ASC
     </select>
     <!--4.按条件查询记录-->
     <select id="doSearchListQyjbjsByVO" parameterType="QyjbjsVO" resultMap="qyjbjsVOMap">
         SELECT
         <!--<include refid="SQL_CONTENT"/>-->
-        t.qyid ,
+        t.qyid,
+        t.qyid qjqyid,
         t.zwgsmc zwgsmc,
         t.ywgsmc ywgsmc,
         j.src qyjsSrc
@@ -513,6 +524,22 @@
        WHERE t.DELETE_FLAG = 'N'
         AND
         (select count(1) from cfpa_zw_jbxx z where z.delete_flag='N' AND Z.QYID= t.qyid)>0
+        <include refid="SQL_CONDITION"/>
+    </select>
+    <!--4.按ID查询记录-->
+    <select id="doFindQyjbjsByVO" parameterType="QyjbjsVO" resultMap="qyjbjsVOMap">
+        SELECT
+        <!--<include refid="SQL_CONTENT"/>-->
+        t.qyid qjqyid,
+        t.zwgsmc zwgsmc,
+        t.ywgsmc ywgsmc,
+        j.src qyjsSrc
+        ,j.qyjj
+        FROM CFPA_QY_JBXX t
+        Left Join CFPA_QY_JS J on t.qyid = J.qyid And J.DELETE_FLAG = 'N'
+        WHERE t.DELETE_FLAG = 'N'
+        ---  是否已选展位
+        --     AND(select count(1) from cfpa_zw_jbxx z where z.delete_flag='N' AND Z.QYID= t.qyid)>0
         <include refid="SQL_CONDITION"/>
     </select>
 

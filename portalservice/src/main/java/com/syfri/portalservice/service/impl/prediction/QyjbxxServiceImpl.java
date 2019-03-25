@@ -55,7 +55,10 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 		List<QyjbjsVO> result=qyjbxxDAO.doSearchListQyjbjsByVO(vo);
 		return result;
 	}
-
+	public QyjbjsVO doFindQyjbjsByVO(QyjbjsVO vo){
+		QyjbjsVO result=qyjbxxDAO.doFindQyjbjsByVO(vo);
+		return result;
+	}
 	/*--通过用户、企业查询展商信息 by li.xue 2018/10/0 11:13.--*/
 	@Override
 	public List<QyjbxxVO> doFindZsxxByQyjbxx(QyjbxxVO qyjbxxVO) {
