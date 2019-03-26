@@ -58,7 +58,7 @@ public abstract class BaseController<T extends ValueObject> {
 
 	@ApiOperation(value = "根据ID查询", notes = "查询一条记录")
 	@ApiImplicitParam(name = "id", value = "业务ID", dataType = "String", paramType = "path")
-	@GetMapping("{id}")
+	@GetMapping(value="{id}",produces="text/html;charset=UTF-8")
 	public @ResponseBody
 	String find(@PathVariable String id,String callback){
 		ResultVO resultVO = ResultVO.build();

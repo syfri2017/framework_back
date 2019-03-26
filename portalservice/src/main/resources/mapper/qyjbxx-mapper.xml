@@ -530,6 +530,7 @@
     <select id="doFindQyjbjsByVO" parameterType="QyjbjsVO" resultMap="qyjbjsVOMap">
         SELECT
         <!--<include refid="SQL_CONTENT"/>-->
+        t.qyid,
         t.qyid qjqyid,
         t.zwgsmc zwgsmc,
         t.ywgsmc ywgsmc,
