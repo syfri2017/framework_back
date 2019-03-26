@@ -1,6 +1,7 @@
 package com.syfri.portalservice.model.news;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 
 import com.syfri.baseapi.model.ValueObject;
 
@@ -13,6 +14,8 @@ public class NewsVO extends ValueObject implements Serializable{
 	private String xwbtEng;	//新闻标题英文
 	private String xwnr;	//新闻内容
 	private String xwnrEng;	//新闻内容英文
+	private byte[] xwnrBlob;	//新闻内容大字段
+	private byte[] xwnrEngBlob;	//新闻内容英文大字段
 	private String xwsj;	//新闻时间
 	private String xwlx;	//新闻类型
 	private String gjc;	//关键词
@@ -30,6 +33,56 @@ public class NewsVO extends ValueObject implements Serializable{
 	private String reserve2;	//备用字段2
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
+
+	public byte[] getXwnrBlob() {
+		return xwnrBlob;
+	}
+
+	public void setXwnrBlob(byte[] xwnrBlob)  throws Exception{
+		//this.xwnrBlob = xwnrBlob;
+		if(xwnrBlob !=null){
+			this.xwnr= new String(xwnrBlob,"gbk");
+		}
+	}
+
+	public byte[] getXwnrEngBlob() {
+		return xwnrEngBlob;
+	}
+
+	public void setXwnrEngBlob(byte[] xwnrEngBlob)  throws Exception{
+		this.xwnrEngBlob = xwnrEngBlob;
+
+		if(xwnrEngBlob !=null){
+			this.xwnrEng= new String(xwnrEngBlob,"gbk");
+		}
+
+	}
+
+	public String getXwnr(){
+		return xwnr;
+	}
+	public void setXwnr(String xwnr) throws Exception {
+		//this.xwnr = xwnr;
+		if(this.xwnrBlob==null){
+			this.xwnrBlob=xwnr.getBytes("gbk");
+		}else{
+			this.xwnr = xwnr;
+		}
+	}
+	public String getXwnrEng(){
+		return xwnrEng;
+	}
+	public void setXwnrEng(String xwnrEng) throws Exception{
+		//this.xwnrEng = xwnrEng;
+		if(this.xwnrEngBlob==null){
+			this.xwnrEngBlob = xwnrEng.getBytes("gbk");
+		}else{
+			this.xwnrEng = xwnrEng;
+		}
+	}
+
+
+
 
 	public String getXwid(){
 		return xwid;
@@ -49,18 +102,7 @@ public class NewsVO extends ValueObject implements Serializable{
 	public void setXwbtEng(String xwbtEng){
 		this.xwbtEng = xwbtEng;
 	}
-	public String getXwnr(){
-		return xwnr;
-	}
-	public void setXwnr(String xwnr){
-		this.xwnr = xwnr;
-	}
-	public String getXwnrEng(){
-		return xwnrEng;
-	}
-	public void setXwnrEng(String xwnrEng){
-		this.xwnrEng = xwnrEng;
-	}
+
 	public String getXwsj(){
 		return xwsj;
 	}
