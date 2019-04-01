@@ -48,10 +48,16 @@ public class QyjbxxController extends BaseController<QyjbxxVO> {
     public @ResponseBody String pageQyjbjsVO( QyjbjsVO vo , String callback) {
         ResultVO resultVO = ResultVO.build();
         try {
-            PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
-            List<QyjbjsVO> list = qyjbxxService.doSearchListQyjbjsByVO(vo);
-            PageInfo<QyjbjsVO> page = new PageInfo<QyjbjsVO>(list);
-            resultVO.setResult(page);
+//            if(vo.getReserve3().isEmpty()){
+                PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
+                List<QyjbjsVO> list = qyjbxxService.doSearchListQyjbjsByVO(vo);
+                PageInfo<QyjbjsVO> page = new PageInfo<QyjbjsVO>(list);
+                resultVO.setResult(page);
+//            }else{
+//                doSearchListQyjbjsByVOCP
+//                doCountQyjbjsByVOCP
+//            }
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("{}",e.getMessage());

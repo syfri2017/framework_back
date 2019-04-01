@@ -108,98 +108,6 @@
         Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and t.cplx = c2.CODE_VALUE
         WHERE t.DELETE_FLAG = 'N' AND t.UUID = #{value}
     </select>
-
-    <!--6.按照VO插入-->
-    <insert id="doInsertByVO" parameterType="QycpjsVO">
-        <selectKey resultType="String" order="BEFORE" keyProperty="uuid">
-            SELECT SYS_GUID() AS uuid FROM DUAL
-        </selectKey>
-        INSERT INTO
-        CFPA_QY_CPJS(uuid,qyid,cplx,cpjj,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,src)
-        VALUES(#{uuid,jdbcType=VARCHAR},#{qyid,jdbcType=VARCHAR},#{cplx,jdbcType=VARCHAR},#{cpjj,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},sysdate,#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{src,jdbcType=VARCHAR})
-    </insert>
-
-    <!--7.批量插入-->
-    <insert id="doBatchInsertByList" parameterType="java.util.List">
-        INSERT INTO
-        CFPA_QY_CPJS(uuid,qyid,cplx,cpjj,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,src)
-        SELECT SYS_GUID() uuid, A.*
-        FROM (
-        <foreach collection="list" item="item" index="index" separator="UNION ALL">
-            SELECT
-            #{item.qyid,jdbcType=VARCHAR} qyid,#{item.cplx,jdbcType=VARCHAR} cplx,#{item.cpjj,jdbcType=VARCHAR} cpjj,'N'
-            delete_flag,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR}
-            cjrmc,SYSDATE cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR}
-            xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR}
-            reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR}
-            reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.src,jdbcType=VARCHAR}
-            FROM DUAL
-        </foreach>
-        ) A
-    </insert>
-
-    <!--8.按主键逻辑删除-->
-    <update id="doDeleteById" parameterType="String">
-		UPDATE  CFPA_QY_CPJS t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.UUID = #{value}
-	</update>
-
-    <!--9.按复合条件逻辑更新-->
-    <update id="doUpdateByVO" parameterType="QycpjsVO">
-        UPDATE CFPA_QY_CPJS
-        <set>
-        <!--    <if test="uuid != null">uuid=#{uuid},</if>  -->
-            <if test="qyid != null">qyid=#{qyid},</if>
-            <if test="cplx != null">cplx=#{cplx},</if>
-            <if test="cpjj != null">cpjj=#{cpjj},</if>
-            <if test="deleteFlag != null">delete_flag=#{deleteFlag},</if>
-            <if test="cjrid != null">cjrid=#{cjrid},</if>
-            <if test="cjrmc != null">cjrmc=#{cjrmc},</if>
-            <if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>
-            <if test="xgrid != null">xgrid=#{xgrid},</if>
-            <if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-            xgsj=sysdate,
-            <if test="reserve1 != null">reserve1=#{reserve1},</if>
-            <if test="reserve2 != null">reserve2=#{reserve2},</if>
-            <if test="reserve3 != null">reserve3=#{reserve3},</if>
-            <if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
-            <if test="src != null">src=#{src}</if>
-        </set>
-        WHERE UUID = #{uuid}
-    </update>
-
-    <!--10.批量修改-->
-    <update id="doBatchUpdateByList" parameterType="java.util.List">
-        INSERT INTO
-        CFPA_QY_CPJS(uuid,qyid,cplx,cpjj,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,src)
-        VALUES
-        <foreach collection="list" item="item" index="index" separator=",">
-            #{item.uuid,jdbcType=VARCHAR} uuid,#{item.qyid,jdbcType=VARCHAR} qyid,#{item.cplx,jdbcType=VARCHAR} cplx,
-            #{item.cpjj,jdbcType=VARCHAR} cpjj,'N'
-            delete_flag,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR}
-            cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR}
-            xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR}
-            reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR}
-            reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.src,jdbcType=VARCHAR} src
-        </foreach>
-        ON DUPLICATE KEY UPDATE
-        uuid = VALUES(uuid),
-        qyid = VALUES(qyid),
-        cplx = VALUES(cplx),
-        cpjj = VALUES(cpjj),
-        delete_flag = VALUES(delete_flag),
-        cjrid = VALUES(cjrid),
-        cjrmc = VALUES(cjrmc),
-        cjsj = VALUES(cjsj),
-        xgrid = VALUES(xgrid),
-        xgrmc = VALUES(xgrmc),
-        xgsj = VALUES(xgsj),
-        reserve1 = VALUES(reserve1),
-        reserve2 = VALUES(reserve2),
-        reserve3 = VALUES(reserve3),
-        reserve4 = VALUES(reserve4),
-        src = VALUES(src)
-    </update>
-
     <!--11.根据对象查询记录-->
     <select id="doFindByVO" parameterType="QycpjsVO" resultType="QycpjsVO">
         SELECT
@@ -208,16 +116,4 @@
         WHERE t.DELETE_FLAG = 'N'
         <include refid="SQL_CONDITION"/>
     </select>
-
-    <!--按企业id删除-->
-    <update id="doDeleteByVO" parameterType="QycpjsVO">
-        UPDATE CFPA_QY_CPJS
-        <set>
-            delete_flag='Y',
-            <if test="xgrid != null">xgrid=#{xgrid},</if>
-            <if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-            xgsj=sysdate
-        </set>
-        WHERE QYID = #{qyid}
-    </update>
 </mapper>

@@ -69,11 +69,11 @@
 		<if test="xwnrEngBlob != null and xwnrEngBlob != '' ">
 			and t.xwnr_eng_blob = #{xwnrEngBlob}
 		</if>
-		<if test="xwnr != null and xwnr != '' ">
-			and t.xwnr = #{xwnr}
+		<if test="xwjs != null and xwjs != '' ">
+			and t.xwjs = #{xwjs}
 		</if>
-		<if test="xwnrEng != null and xwnrEng != '' ">
-			and t.xwnr_eng = #{xwnrEng}
+		<if test="xwjsEng != null and xwjsEng != '' ">
+			and t.xwjsEng = #{xwjsEng}
 		</if>
 	</sql>
 
@@ -101,8 +101,8 @@
 		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
 		t.xwnr_blob xwnrBlob,
 		t.xwnr_eng_blob xwnrEngBlob,
-		t.xwnr xwnr,
-		t.xwnr_eng xwnrEng
+		t.xwjs xwjs,
+		t.xwjs_eng xwjsEng
 	</sql>
 
 	<!--3.查询记录数-->
@@ -128,100 +128,6 @@
 		FROM CFPA_NEWS t
 		WHERE t.DELETE_FLAG = 'N' AND  t.xwid = #{value}
 	</select>
-
-	<!--6.按照VO插入-->
-	<insert  id="doInsertByVO"  parameterType="NewsVO">
-		<selectKey resultType="String" order="BEFORE" keyProperty="xwid">
-			SELECT SYS_GUID() AS xwid FROM DUAL
-		</selectKey>
-		INSERT INTO CFPA_NEWS(xwid,xwbt,xwbt_eng,xwsj,xwlx,gjc,iszd,isxs,issy,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,xwnr_blob,xwnr_eng_blob,xwnr,xwnr_eng)
-		VALUES(#{xwid,jdbcType=VARCHAR},#{xwbt,jdbcType=VARCHAR},#{xwbtEng,jdbcType=VARCHAR},#{xwsj,jdbcType=DATE},#{xwlx,jdbcType=VARCHAR},#{gjc,jdbcType=VARCHAR},#{iszd,jdbcType=DOUBLE},#{isxs,jdbcType=VARCHAR},#{issy,jdbcType=VARCHAR},'N',#{cjrid,jdbcType=VARCHAR},#{cjrmc,jdbcType=VARCHAR},#{cjsj,jdbcType=DATE},#{xgrid,jdbcType=VARCHAR},#{xgrmc,jdbcType=VARCHAR},#{xgsj,jdbcType=DATE},#{reserve1,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR},#{reserve3,jdbcType=VARCHAR},#{reserve4,jdbcType=DATE},#{xwnrBlob,jdbcType=VARCHAR},#{xwnrEngBlob,jdbcType=VARCHAR},#{xwnr,jdbcType=VARCHAR},#{xwnrEng,jdbcType=VARCHAR})
-	</insert>
-
-	<!--7.批量插入-->
-	<insert  id="doBatchInsertByList"  parameterType="java.util.List">
-		INSERT INTO CFPA_NEWS(xwid,xwbt,xwbt_eng,xwsj,xwlx,gjc,iszd,isxs,issy,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,xwnr_blob,xwnr_eng_blob,xwnr,xwnr_eng)
-		SELECT SYS_GUID() xwid, A.*
-		FROM (
-		<foreach collection="list" item="item" index="index" separator="UNION ALL" >
-			SELECT
-			#{item.xwid,jdbcType=VARCHAR} xwid,#{item.xwbt,jdbcType=VARCHAR} xwbt,#{item.xwbtEng,jdbcType=VARCHAR} xwbt_eng,#{item.xwsj,jdbcType=DATE} xwsj,#{item.xwlx,jdbcType=VARCHAR} xwlx,#{item.gjc,jdbcType=VARCHAR} gjc,#{item.iszd,jdbcType=DOUBLE} iszd,#{item.isxs,jdbcType=VARCHAR} isxs,#{item.issy,jdbcType=VARCHAR} issy,'N' delete_flag,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.xwnrBlob,jdbcType=VARCHAR} xwnr_blob,#{item.xwnrEngBlob,jdbcType=VARCHAR} xwnr_eng_blob,#{item.xwnr,jdbcType=VARCHAR} xwnr,#{item.xwnrEng,jdbcType=VARCHAR} xwnr_eng
-			FROM DUAL
-		</foreach>
-		) A
-	</insert>
-
-	<!--8.按主键逻辑删除-->
-	<update id="doDeleteById"  parameterType="String">
-		UPDATE  CFPA_NEWS t SET t.DELETE_FLAG = 'Y'  WHERE 1=1   AND t.xwid = #{value}
-	</update>
-
-	<!--9.按复合条件逻辑更新-->
-	<update  id="doUpdateByVO"  parameterType="NewsVO">
-		UPDATE   CFPA_NEWS
-		<set>
-			<if test="xwid != null">xwid=#{xwid},</if>
-			<if test="xwbt != null">xwbt=#{xwbt},</if>
-			<if test="xwbtEng != null">xwbt_eng=#{xwbtEng},</if>
-			<if test="xwsj != null">xwsj=TO_DATE(#{xwsj},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="xwlx != null">xwlx=#{xwlx},</if>
-			<if test="gjc != null">gjc=#{gjc},</if>
-			<if test="iszd != null">iszd=#{iszd},</if>
-			<if test="isxs != null">isxs=#{isxs},</if>
-			<if test="issy != null">issy=#{issy},</if>
-			<if test="deleteFlag != null">delete_flag='N',</if>
-			<if test="cjrid != null">cjrid=#{cjrid},</if>
-			<if test="cjrmc != null">cjrmc=#{cjrmc},</if>
-			<if test="cjsj != null">cjsj=TO_DATE(#{cjsj},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="xgrid != null">xgrid=#{xgrid},</if>
-			<if test="xgrmc != null">xgrmc=#{xgrmc},</if>
-			<if test="xgsj != null">xgsj=TO_DATE(#{xgsj},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="reserve1 != null">reserve1=#{reserve1},</if>
-			<if test="reserve2 != null">reserve2=#{reserve2},</if>
-			<if test="reserve3 != null">reserve3=#{reserve3},</if>
-			<if test="reserve4 != null">reserve4=TO_DATE(#{reserve4},'yyyy-MM-dd HH24:mi:ss'),</if>
-			<if test="xwnrBlob != null">xwnr_blob=#{xwnrBlob},</if>
-			<if test="xwnrEngBlob != null">xwnr_eng_blob=#{xwnrEngBlob},</if>
-			<if test="xwnr != null">xwnr=#{xwnr},</if>
-			<if test="xwnrEng != null">xwnr_eng=#{xwnrEng}</if>
-		</set>
-		WHERE  xwid = #{xwid}
-	</update>
-
-	<!--10.批量修改-->
-	<update id="doBatchUpdateByList"  parameterType="java.util.List">
-		INSERT INTO CFPA_NEWS(xwid,xwbt,xwbt_eng,xwsj,xwlx,gjc,iszd,isxs,issy,delete_flag,cjrid,cjrmc,cjsj,xgrid,xgrmc,xgsj,reserve1,reserve2,reserve3,reserve4,xwnr_blob,xwnr_eng_blob,xwnr,xwnr_eng)
-		VALUES
-		<foreach collection="list" item="item" index="index" separator="," >
-			#{item.xwid,jdbcType=VARCHAR} xwid,#{item.xwbt,jdbcType=VARCHAR} xwbt,#{item.xwbtEng,jdbcType=VARCHAR} xwbt_eng,#{item.xwsj,jdbcType=DATE} xwsj,#{item.xwlx,jdbcType=VARCHAR} xwlx,#{item.gjc,jdbcType=VARCHAR} gjc,#{item.iszd,jdbcType=DOUBLE} iszd,#{item.isxs,jdbcType=VARCHAR} isxs,#{item.issy,jdbcType=VARCHAR} issy,'N' delete_flag,#{item.cjrid,jdbcType=VARCHAR} cjrid,#{item.cjrmc,jdbcType=VARCHAR} cjrmc,#{item.cjsj,jdbcType=DATE} cjsj,#{item.xgrid,jdbcType=VARCHAR} xgrid,#{item.xgrmc,jdbcType=VARCHAR} xgrmc,#{item.xgsj,jdbcType=DATE} xgsj,#{item.reserve1,jdbcType=VARCHAR} reserve1,#{item.reserve2,jdbcType=VARCHAR} reserve2,#{item.reserve3,jdbcType=VARCHAR} reserve3,#{item.reserve4,jdbcType=DATE} reserve4,#{item.xwnrBlob,jdbcType=VARCHAR} xwnr_blob,#{item.xwnrEngBlob,jdbcType=VARCHAR} xwnr_eng_blob,#{item.xwnr,jdbcType=VARCHAR} xwnr,#{item.xwnrEng,jdbcType=VARCHAR} xwnr_eng
-		</foreach>
-		ON DUPLICATE KEY UPDATE
-		xwid = VALUES(xwid),
-		xwbt = VALUES(xwbt),
-		xwbt_eng = VALUES(xwbt_eng),
-		xwsj = VALUES(xwsj),
-		xwlx = VALUES(xwlx),
-		gjc = VALUES(gjc),
-		iszd = VALUES(iszd),
-		isxs = VALUES(isxs),
-		issy = VALUES(issy),
-		delete_flag = VALUES(delete_flag),
-		cjrid = VALUES(cjrid),
-		cjrmc = VALUES(cjrmc),
-		cjsj = VALUES(cjsj),
-		xgrid = VALUES(xgrid),
-		xgrmc = VALUES(xgrmc),
-		xgsj = VALUES(xgsj),
-		reserve1 = VALUES(reserve1),
-		reserve2 = VALUES(reserve2),
-		reserve3 = VALUES(reserve3),
-		reserve4 = VALUES(reserve4),
-		xwnr_blob = VALUES(xwnr_blob),
-		xwnr_eng_blob = VALUES(xwnr_eng_blob),
-		xwnr = VALUES(xwnr),
-		xwnr_eng = VALUES(xwnr_eng)
-	</update>
-
 	<!--11.根据对象查询记录-->
 	<select id="doFindByVO" parameterType="NewsVO"  resultType="NewsVO">
 		SELECT

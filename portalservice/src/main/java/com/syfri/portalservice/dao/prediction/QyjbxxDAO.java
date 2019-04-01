@@ -17,6 +17,8 @@ public interface QyjbxxDAO extends BaseDAO<QyjbxxVO>{
     //统计分析查询是否信息确认_详情
     List<QyjbxxVO> ifConfirmedTjfxDetail(QyjbxxVO qyjbxxVO);
     List<QyjbjsVO> doSearchListQyjbjsByVO(QyjbjsVO vo);
+    List<QyjbjsVO> doSearchListQyjbjsByVOCP(QyjbjsVO vo);
+    List<QyjbjsVO> doCountQyjbjsByVOCP(QyjbjsVO vo);
 
     QyjbjsVO doFindQyjbjsByVO(QyjbjsVO vo);
 }

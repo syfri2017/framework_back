@@ -55,6 +55,16 @@ public class QyjbxxServiceImpl extends BaseServiceImpl<QyjbxxVO> implements Qyjb
 		List<QyjbjsVO> result=qyjbxxDAO.doSearchListQyjbjsByVO(vo);
 		return result;
 	}
+
+	public List<QyjbjsVO> doSearchListQyjbjsByVOCP(QyjbjsVO vo) {
+		List<QyjbjsVO> result=qyjbxxDAO.doSearchListQyjbjsByVOCP(vo);
+		return result;
+	}
+	public List<QyjbjsVO> doCountQyjbjsByVOCP(QyjbjsVO vo) {
+		List<QyjbjsVO> result=qyjbxxDAO.doCountQyjbjsByVOCP(vo);
+		return result;
+	}
+
 	public QyjbjsVO doFindQyjbjsByVO(QyjbjsVO vo){
 		QyjbjsVO result=qyjbxxDAO.doFindQyjbjsByVO(vo);
 		return result;
