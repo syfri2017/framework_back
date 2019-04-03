@@ -1,7 +1,9 @@
 package com.syfri.userservice.service.impl.system;
 
+import com.syfri.userservice.model.prediction.QyjbxxVO;
 import com.syfri.userservice.model.system.AccountVO;
 import com.syfri.userservice.model.system.RoleVO;
+import com.syfri.userservice.service.prediction.QyjbxxService;
 import com.syfri.userservice.service.system.AccountService;
 import com.syfri.userservice.service.system.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,8 @@ public class UserServiceImpl extends BaseServiceImpl<UserVO> implements UserServ
 	@Autowired
 	private AccountService accountService;
 
+	@Autowired
+	private QyjbxxService qyjbxxService;
 	@Override
 	public UserDAO getBaseDAO() {
 		return userDAO;
@@ -119,6 +123,20 @@ public class UserServiceImpl extends BaseServiceImpl<UserVO> implements UserServ
 			accountService.doDeleteById(userid);
 			//删除账户角色中间表
 			accountService.doDeleteAccountRoles(userid);
+			//删除报名信息 add by yushch 20190403
+			QyjbxxVO qyjbxxVO = new QyjbxxVO();
+			qyjbxxVO.setUserid(userid);
+			//通过userid查询企业基本信息数据
+			QyjbxxVO result = qyjbxxService.doFindByVO(qyjbxxVO);
+			if(result != null){
+				qyjbxxVO.setQyid(result.getQyid());
+				qyjbxxVO.setDeleteFlag("Y");
+				qyjbxxVO.setXgrid(vo.getAlterId());
+				qyjbxxVO.setXgrmc(vo.getAlterName());
+				List<QyjbxxVO> qyjbxxVOList = new ArrayList<>();
+				qyjbxxVOList.add(qyjbxxVO);
+				qyjbxxService.doDeleteJbxx(qyjbxxVOList);
+			}
 			num++;
 		}
 		return num;
