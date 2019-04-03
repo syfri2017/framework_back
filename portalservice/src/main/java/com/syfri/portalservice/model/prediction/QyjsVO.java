@@ -25,6 +25,7 @@ public class QyjsVO extends ValueObject implements Serializable{
 	private String reserve3;	//备用字段3
 	private String reserve4;	//备用字段4
 
+
 	private String logoBase64;	//企业logo(Base64格式)
 	private List<QycpjsVO> qycpjsVOList;//企业产品介绍list
 	private String src;	//企业logosrc

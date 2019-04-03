@@ -1,5 +1,6 @@
 package com.syfri.portalservice.model.prediction;
 
+import com.syfri.portalservice.model.venue.ZwjbxxVO;
 import org.omg.CORBA.PRIVATE_MEMBER;
 
 import java.util.List;
@@ -15,6 +16,15 @@ public class QyjbjsVO extends QyjbxxVO {
     private String qyjsSrc;
     private String qyjj;
     private List<QycpjsVO> qycpjsVOs;
+    private List<ZwjbxxVO> zwjbxxVOs;
+
+    public List<ZwjbxxVO> getZwjbxxVOs() {
+        return zwjbxxVOs;
+    }
+
+    public void setZwjbxxVOs(List<ZwjbxxVO> zwjbxxVOs) {
+        this.zwjbxxVOs = zwjbxxVOs;
+    }
 
     public String getQjqyid() {
         return qjqyid;

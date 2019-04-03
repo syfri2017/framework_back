@@ -4,9 +4,9 @@ server:
 
 #---------产品图片--------------------------
 qycpjs:
-  savePath: D://xfxh//upload//
-  fileServerUrl: http://10.119.119.222:80
-  vueServerUrl:       ## http://login.fireexpo.cn:8090/upload
+  savePath: /usr/java/8804/D://xfxh//upload//
+  fileServerUrl: http://61.161.226.197:8090
+  vueServerUrl: http://61.161.226.197:8090
 #------------------------------------------------------------
 #spring
 spring:
@@ -71,7 +71,7 @@ spring:
     datasource:
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: oracle.jdbc.OracleDriver
-      url: jdbc:oracle:thin:@10.119.119.205:1521/XFXHDB_NEW
+      url: jdbc:oracle:thin:@10.119.119.205:1521/XFXHDB
 #      url: jdbc:oracle:thin:@localhost:1521/orcl
       username: XFXHZH
       password: XFXHZH

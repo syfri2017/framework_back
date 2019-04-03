@@ -8,7 +8,9 @@ import com.syfri.portalservice.config.properties.CpjsProperties;
 import com.syfri.portalservice.controller.base.BaseController;
 import com.syfri.portalservice.model.prediction.QyjbjsVO;
 import com.syfri.portalservice.model.prediction.QyjbxxVO;
+import com.syfri.portalservice.model.venue.ZwjbxxVO;
 import com.syfri.portalservice.service.prediction.QyjbxxService;
+import com.syfri.portalservice.service.venue.ZwjbxxService;
 import com.syfri.portalservice.utils.StringUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +26,8 @@ public class QyjbxxController extends BaseController<QyjbxxVO> {
 
     @Autowired
     private QyjbxxService qyjbxxService;
+    @Autowired
+    private ZwjbxxService zwjbxxService;
 
     @Override
     public QyjbxxService getBaseService() {
@@ -69,6 +73,12 @@ public class QyjbxxController extends BaseController<QyjbxxVO> {
         ResultVO resultVO = ResultVO.build();
         try {
             QyjbjsVO v = qyjbxxService.doFindQyjbjsByVO(vo);
+            if(v.getQyid()!=null&&!v.getQyid().isEmpty()){
+                ZwjbxxVO zwvo=new ZwjbxxVO();
+                zwvo.setQyid(v.getQyid());
+                List<ZwjbxxVO> dvo=zwjbxxService.doSearchListByVO(zwvo);
+                v.setZwjbxxVOs(dvo);
+            }
             resultVO.setResult(v);
         } catch (Exception e) {
             e.printStackTrace();

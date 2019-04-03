@@ -92,7 +92,9 @@
         <!--产品类型（英文）-->
         Left Join SYS_CODELIST c3 on c3.CODETYPE = 'CPLX_EN' And c3.DELETE_FLAG = 'N'
         Left Join SYS_CODELIST_DETAIL c4 On c3.CODEID = c4.CODEID And c4.DELETE_FLAG = 'N' and t.cplx = c4.CODE_VALUE
-        WHERE t.DELETE_FLAG = 'N'
+        Left Join CFPA_QY_JBXX jj on jj.qyid=t.qyid
+
+        WHERE t.DELETE_FLAG = 'N' and jj.DELETE_FLAG = 'N' and t.qyid is not null
         <include refid="SQL_CONDITION"/>
         ORDER BY t.cjsj ASC
     </select>

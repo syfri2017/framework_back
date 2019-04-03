@@ -1,8 +1,10 @@
 package com.syfri.portalservice.model.prediction;
 
 import com.syfri.baseapi.model.ValueObject;
+import com.syfri.portalservice.model.venue.ZwjbxxVO;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class QycpjsVO extends ValueObject implements Serializable{
 
@@ -29,6 +31,16 @@ public class QycpjsVO extends ValueObject implements Serializable{
 	private String cplxmc_ENG;	//产品类型名称
     private String cptpBase64;	//产品图片(Base64格式)
 	private String src;//产品图片上传到服务器路径
+
+	private List<ZwjbxxVO> zwjbxxVOs;
+
+	public List<ZwjbxxVO> getZwjbxxVOs() {
+		return zwjbxxVOs;
+	}
+
+	public void setZwjbxxVOs(List<ZwjbxxVO> zwjbxxVOs) {
+		this.zwjbxxVOs = zwjbxxVOs;
+	}
 
 	public String getUuid(){
 		return uuid;
