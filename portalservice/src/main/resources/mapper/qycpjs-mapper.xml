@@ -103,8 +103,10 @@
     <select id="doFindById" parameterType="QycpjsVO" resultType="QycpjsVO">
         SELECT
         <include refid="SQL_CONTENT"/>,
-        c2.code_name cplxmc
+        c2.code_name cplxmc,
+        qj.zwgsmc,qj.ywgsmc
         FROM CFPA_QY_CPJS t
+        Left Join CFPA_QY_JBXX qj on qj.qyid = t.qyid And qj.DELETE_FLAG = 'N'
         <!--产品类型-->
         Left Join SYS_CODELIST c1 on c1.CODETYPE = 'CPLX' And c1.DELETE_FLAG = 'N'
         Left Join SYS_CODELIST_DETAIL c2 On c1.CODEID = c2.CODEID And c2.DELETE_FLAG = 'N' and t.cplx = c2.CODE_VALUE

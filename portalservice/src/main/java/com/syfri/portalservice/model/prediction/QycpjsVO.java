@@ -31,8 +31,26 @@ public class QycpjsVO extends ValueObject implements Serializable{
 	private String cplxmc_ENG;	//产品类型名称
     private String cptpBase64;	//产品图片(Base64格式)
 	private String src;//产品图片上传到服务器路径
+	private String zwgsmc;
+	private String ywgsmc;
 
 	private List<ZwjbxxVO> zwjbxxVOs;
+
+	public String getZwgsmc() {
+		return zwgsmc;
+	}
+
+	public void setZwgsmc(String zwgsmc) {
+		this.zwgsmc = zwgsmc;
+	}
+
+	public String getYwgsmc() {
+		return ywgsmc;
+	}
+
+	public void setYwgsmc(String ywgsmc) {
+		this.ywgsmc = ywgsmc;
+	}
 
 	public List<ZwjbxxVO> getZwjbxxVOs() {
 		return zwjbxxVOs;
