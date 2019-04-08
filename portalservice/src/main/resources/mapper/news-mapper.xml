@@ -19,7 +19,7 @@
 			and t.xwlx = #{xwlx}
 		</if>
 		<if test="gjc != null and gjc != '' ">
-			and t.gjc = #{gjc}
+			and t.gjc LIKE concat(concat('%',#{gjc}),'%') ESCAPE '\'
 		</if>
 		<if test="iszd != null and iszd != '' ">
 			and t.iszd = #{iszd}

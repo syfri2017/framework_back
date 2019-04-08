@@ -95,6 +95,7 @@
         Left Join CFPA_QY_JBXX jj on jj.qyid=t.qyid
 
         WHERE t.DELETE_FLAG = 'N' and jj.DELETE_FLAG = 'N' and t.qyid is not null
+        and (select count(1) from cfpa_zw_jbxx z where z.delete_flag='N' AND Z.QYID= t.qyid)>0
         <include refid="SQL_CONDITION"/>
         ORDER BY t.cjsj ASC
     </select>
