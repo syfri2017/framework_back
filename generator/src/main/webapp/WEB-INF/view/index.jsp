@@ -61,7 +61,6 @@ String ctx = url + path + "/";
 	    <div>
 	        <div style="margin-bottom: 5px;text-align: center">
 	         	<h2>Generator生成器</h2><br>
-
 				<div style="font-weight: bold;float:left;margin-left: 200px;margin-top: 30px;">数据库配置</div>
 				<span style="margin-left: -160px">库&nbsp;&nbsp;类&nbsp;&nbsp;型：</span>
 				<select  id="dbtype" name="dbtype" class="inputs" >
@@ -78,8 +77,9 @@ String ctx = url + path + "/";
 				<input class="input" type="text" id="user" name="user" placeholder="用户名" value="XFXHZH">
 				<span class="lable">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</span>
 				<input class="input" type="password" id="pwd" name="pwd" value="XFXHZH">
-				<input class="btn btn-success" style="margin-left: 350px;" type="button"id="doGetTables" class="btn btn-info" value="获取数据"/>
+				<input class="btn btn-success" style="margin-left: 350px;" title="获取数据库配置的数据源数据" type="button"id="doGetTables" class="btn btn-info" value="获取数据"/>
 				<br>
+				<br><br>
 				<div style="font-weight: bold;float:left;margin-left: 200px;margin-top: 30px;">生成器配置</div>
 				<span class="lable" style="margin-left: -160px">项目名称：</span>
 				<input class="input" type="text" id="projectName" name="projectName" placeholder="项目名称:framework" >
@@ -93,9 +93,8 @@ String ctx = url + path + "/";
 				<span class="lable" style="margin-left: 50px;">表&nbsp;&nbsp;别&nbsp;&nbsp;名：</span>
 				<input class="input" type="text" id="prefix" name="prefix" placeholder="表别名:t">
 
-				<button id="generate" class="btn btn-info"  style="margin-left: 355px;">&nbsp;&nbsp;生&nbsp;&nbsp;成&nbsp;&nbsp;</button>
-
-	        </div>
+				<button id="generate" class="btn btn-info" title="生成生成器配置的代码模板"  style="margin-left: 355px;">&nbsp;&nbsp;生&nbsp;&nbsp;成&nbsp;&nbsp;</button>
+			</div>
 	        <table id="mmg" class="mmg">
 	            <tr>
 	                <th rowspan="" colspan=""></th>
@@ -210,7 +209,7 @@ String ctx = url + path + "/";
             			'<option value="Integer" '+fixed(val,"Integer")+' >Integer</option>'+
             			'<option value="long" '+fixed(val,"long")+'>long</option>'+
             			'<option value="String" '+fixed(val,"String")+'>String</option>'+
-            			'<option value="date" '+fixed(val,"date")+'>date</option>'+
+            			'<option value="String" '+fixed(val,"date")+'>date</option>'+
             			'<option value="byte[]" '+fixed(val,"byte[]")+'>byte[]</option>'+
             			'<option value="float" '+fixed(val,"float")+'>float</option>'+
             			'<option value="double" '+fixed(val,"double")+'>double</option>'+
