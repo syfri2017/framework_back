@@ -1,5 +1,8 @@
 package com.syfri.generator.model;
 
+import com.syfri.generator.utils.DbInfoUtil;
+import org.springframework.beans.factory.annotation.Value;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -29,6 +32,57 @@ public class GeneratorBean implements Serializable {
 
 	/*生成路径.*/
 	private String genPath = "";
+
+	/*数据库类型*/
+	private String dbtype= DbInfoUtil.ORACLE;
+	/*驱动*/
+	private String driver;
+	/*地址*/
+	private String url;
+	/*用户*/
+	private String user;
+	/*密码*/
+	private String pwd;
+
+	public String getDbtype() {
+		return dbtype;
+	}
+
+	public void setDbtype(String dbtype) {
+		this.dbtype = dbtype;
+	}
+
+	public String getDriver() {
+		return driver;
+	}
+
+	public void setDriver(String driver) {
+		this.driver = driver;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getPwd() {
+		return pwd;
+	}
+
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
 
 	/*表中的列.*/
 	private List<Column> columnList;

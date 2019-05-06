@@ -2,11 +2,9 @@ package com.syfri.generator.service;
 
 import com.syfri.generator.model.Column;
 import com.syfri.generator.model.GeneratorBean;
-import com.syfri.generator.repositry.GeneratorRepositry;
 import com.syfri.generator.template.FileTemplate;
+import com.syfri.generator.utils.DbInfoUtil;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -18,40 +16,25 @@ import java.util.regex.Pattern;
 
 @Service("generatorService")
 public class GeneratorService {
-
-	@Autowired
-	private Environment env;
-
-	@Autowired
-	private GeneratorRepositry generatorRepositry;
-
-	/**
-	 * 检查连接是否正常（=1正常）
-	 */
-	public int doTestConnection(){
-		return generatorRepositry.doTestConnection();
-	}
-
 	/**
 	 * 获取所有库中所有表
 	 */
-	public List<String> getTables(){
-		String dbName = env.getProperty("spring.datasource.url");
-		//dbName = dbName.substring(dbName.lastIndexOf("/")+1, dbName.indexOf("?"));
-		dbName = dbName.substring(dbName.lastIndexOf("/")+1);
-		return generatorRepositry.doGetTables(dbName);
-
+	public List<String> getTables(GeneratorBean gb)throws Exception{
+		return DbInfoUtil.listDBTableInfo(gb);
 	}
 
 	/**
 	 * 获取表中的字段
 	 */
-	public List<Column> getTableColumn(String tableName){
-		String dbName = env.getProperty("spring.datasource.url");
-		//dbName = dbName.substring(dbName.lastIndexOf("/")+1, dbName.indexOf("?"));
-		dbName = dbName.substring(dbName.lastIndexOf("/")+1);
-		return generatorRepositry.doGetColumns(dbName, tableName, "default");
+	public List<Column> getTableColumn(GeneratorBean gb)throws Exception{
+		return DbInfoUtil.listDBColumnsInfo(gb);
 	}
+
+	/**
+	 * 获取表中的字段
+	 */
+
+
 
 	//文件生成
 

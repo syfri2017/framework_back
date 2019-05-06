@@ -43,6 +43,13 @@ String ctx = url + path + "/";
         .lable{
         	margin-left: 50px;
         }
+		.input{
+			width: 274px;
+		}
+		.inputs{
+			width: 288px;
+		}
+
     </style>
     <!--[if lt IE 9]>
     <script src="js/vendor/html5shiv.js"></script>
@@ -54,19 +61,40 @@ String ctx = url + path + "/";
 	    <div>
 	        <div style="margin-bottom: 5px;text-align: center">
 	         	<h2>Generator生成器</h2><br>
-		        <span class="lable">项目名称：</span>
-				<input type="text" id="projectName" name="projectName" placeholder="项目名称:framework" >
+
+				<div style="font-weight: bold;float:left;margin-left: 200px;margin-top: 30px;">数据库配置</div>
+				<span style="margin-left: -160px">库&nbsp;&nbsp;类&nbsp;&nbsp;型：</span>
+				<select  id="dbtype" name="dbtype" class="inputs" >
+					<option value="ORACLE" selected>ORACLE</option>
+					<%--<option value="MYSQL">MYSQL</option>--%>
+					<%--<option value="SQLSERVER">SQLSERVER</option>--%>
+				</select>
+				<span class="lable">驱&nbsp;&nbsp;动&nbsp;&nbsp;名：</span>
+				<input class="input" type="text" id="driver" name="driver" placeholder="驱动名" value="oracle.jdbc.OracleDriver">
+				<span class="lable">地址名称：</span>
+				<input class="input" type="text" id="url" name="url"  placeholder="url名称" value="jdbc:oracle:thin:@10.119.119.205:1521/XFXHDB" ><br>
+
+				<span class="lable" style="margin-left: -160px">用&nbsp;&nbsp;户&nbsp;&nbsp;名：</span>
+				<input class="input" type="text" id="user" name="user" placeholder="用户名" value="XFXHZH">
+				<span class="lable">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</span>
+				<input class="input" type="password" id="pwd" name="pwd" value="XFXHZH">
+				<input class="btn btn-success" style="margin-left: 350px;" type="button"id="doGetTables" class="btn btn-info" value="获取数据"/>
+				<br>
+				<div style="font-weight: bold;float:left;margin-left: 200px;margin-top: 30px;">生成器配置</div>
+				<span class="lable" style="margin-left: -160px">项目名称：</span>
+				<input class="input" type="text" id="projectName" name="projectName" placeholder="项目名称:framework" >
 				<span class="lable">模块名称：</span>
-				<input type="text" id="modelName" name="modelName" placeholder="模块名称:userservice" >
+				<input class="input"type="text" id="modelName" name="modelName" placeholder="模块名称:userservice" >
 				<span class="lable">包&nbsp;&nbsp;路&nbsp;&nbsp;径：</span>
-				<input type="text" id="basePath" name="basePath" placeholder="包路径:com.syfri" style="width:260px" value="com.syfri"><br>
-				<span class="lable">对&nbsp;&nbsp;应&nbsp;&nbsp;表：</span>
-				<select id="tableName" name="tableName" onchange="doGetColumn(this.value)"></select>
-				<span class="lable">表&nbsp;&nbsp;别&nbsp;&nbsp;名：</span>
-				<input type="text" id="prefix" name="prefix" placeholder="表别名:t">
-				<span class="lable">生成路径：</span>
-				<input type="text" id="genPath" name="genPath"  placeholder="生成路径:D:\generator" style="width:260px" ><br>
-				<button id="generate" class="btn btn-info" >&nbsp;&nbsp;生&nbsp;&nbsp;成&nbsp;&nbsp;</button>
+				<input class="inputs" type="text" id="basePath" name="basePath" placeholder="包路径:com.syfri" style="width:274px" value="com.syfri"><br>
+
+				<span style="margin-left: -165px">对&nbsp;&nbsp;应&nbsp;&nbsp;表：</span>
+				<select class="inputs" id="tableName" name="tableName" onchange="doGetColumn(this.value)"></select>
+				<span class="lable" style="margin-left: 50px;">表&nbsp;&nbsp;别&nbsp;&nbsp;名：</span>
+				<input class="input" type="text" id="prefix" name="prefix" placeholder="表别名:t">
+
+				<button id="generate" class="btn btn-info"  style="margin-left: 355px;">&nbsp;&nbsp;生&nbsp;&nbsp;成&nbsp;&nbsp;</button>
+
 	        </div>
 	        <table id="mmg" class="mmg">
 	            <tr>
@@ -85,29 +113,7 @@ String ctx = url + path + "/";
     <script src="../static/js/jquery.mloading.js"></script>
 <script>
     $(document).ready(function(){
-     	var t = new Date().valueOf();
-      	$.ajax({
-       		type : "POST", //用POST方式传输
-       		url : '/doGetTables?now='+t, //目标地址
-       		data : "",
-       		async:false,
-       		success : function(data) {
-       			 var tableName = "";
-       			 $("#projectName").val(data["projectName"]);
-       			 $("#modelName").val(data["modelName"]);
-       			 $("#genPath").val(data["genPath"]);
-       			 $("#prefix").val(data["prefix"]);
-       			 var list = data["list"];
-       			 for(var i =0;i<list.length;i++){
-       				var arr = list[i].split(":");
-       				if(i==0) tableName = arr[1];
-       				$("#tableName").prepend("<option value="+arr[1]+">"+arr[0]+" ["+arr[1]+"] </option>");
-       			 }
-       			 if(""!=tableName){
-       			   doGetColumn(tableName);
-       			 }
-       		}
-       	}); 
+        doGetTables()
         $('#generate').on('click', function(){
        	    var options = {
        	    	url:'/doGenerate?now='+new Date().valueOf(),
@@ -117,6 +123,7 @@ String ctx = url + path + "/";
                 	$("body").mLoading();
                 },
                 success: function (data) {
+                    location.href="/doDownload?time="+data;
                 	$("#loadingText").html("生成成功！")
                 	setTimeout(function () {
                 		$("#loading").remove();
@@ -126,8 +133,42 @@ String ctx = url + path + "/";
             $.ajax(options);
             return false;
         });
-
+        $('#doGetTables').on('click', function(){
+            $("#tableName").empty();
+            doGetTables()
+        })
      });
+
+    function doGetTables() {
+        debugger
+
+        var t = new Date().valueOf();
+        $.ajax({
+            type : "POST", //用POST方式传输
+            url : '/doGetTables?now='+t, //目标地址
+            data: $("#form").serialize(),
+            async:false,
+            success : function(data) {
+                if(data["error"]){
+                    alert(data["error"])
+				}
+                var tableName = "";
+                $("#projectName").val(data["projectName"]);
+                $("#modelName").val(data["modelName"]);
+               // $("#genPath").val(data["genPath"]);
+                $("#prefix").val(data["prefix"]);
+                var list = data["list"];
+                for(var i =0;i<list.length;i++){
+                    var arr = list[i].split(":");
+                    if(i==0) tableName = arr[1];
+                    $("#tableName").prepend("<option value="+arr[1]+">"+arr[0]+" ["+arr[1]+"] </option>");
+                }
+                if(""!=tableName){
+                    doGetColumn(tableName);
+                }
+            }
+        });
+    }
     
         
 	function doGetColumn(tableName){
@@ -169,6 +210,8 @@ String ctx = url + path + "/";
             			'<option value="Integer" '+fixed(val,"Integer")+' >Integer</option>'+
             			'<option value="long" '+fixed(val,"long")+'>long</option>'+
             			'<option value="String" '+fixed(val,"String")+'>String</option>'+
+            			'<option value="date" '+fixed(val,"date")+'>date</option>'+
+            			'<option value="byte[]" '+fixed(val,"byte[]")+'>byte[]</option>'+
             			'<option value="float" '+fixed(val,"float")+'>float</option>'+
             			'<option value="double" '+fixed(val,"double")+'>double</option>'+
             			'</select>'
@@ -200,8 +243,14 @@ String ctx = url + path + "/";
             ] */
             , params: function(){
               return {
-            	  tableName: $('#tableName').val()
+            	  tableName: $('#tableName').val(),
+				  dbtype:$('#dbtype').val(),
+                  driver:$('#driver').val(),
+                  url:$('#url').val(),
+                  user:$('#user').val(),
+                  pwd:$('#pwd').val()
               }
+
             }
         });
 

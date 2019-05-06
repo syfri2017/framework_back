@@ -20,10 +20,10 @@ import java.util.List;
  * @Repository相当与将DAO标识为SpringBean
  * @author li.xue 2017/12/5
  */
-@Repository("generatorRepositry")
+//@Repository("generatorRepositry")
 public class GeneratorRepositry {
 
-	@Autowired
+	//@Autowired
 	private JdbcTemplate jdbcTemplate;
 
 	/**
