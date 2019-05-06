@@ -307,15 +307,6 @@
 		ORDER BY substr(t.zwh,1,4) asc,
 		to_number(TRANSLATE (replace(t.zwh,'-',''),'0123456789'||replace(t.zwh,'-',''),'0123456789')) asc
 	</select>
-	<!--13.按复合条件逻辑更新-->
-	<update  id="doDeleteByVO"  parameterType="ZwjbxxVO">
-		UPDATE   CFPA_ZW_JBXX T
-		SET
-			xgsj=sysdate,
-			delete_flag='Y'
-		WHERE t.DELETE_FLAG = 'N'
-		<include refid="SQL_CONDITION"/>
-	</update>
 
 	<!--14.企业选择的展位数量从大到小进行排序  by li.xue 2018/12/29-->
 	<select id="doFindQyZwNumDesc" parameterType="ZwjbxxVO" resultType="ZwjbxxVO">
@@ -341,6 +332,11 @@
 				FROM TEMP_ZW
 			) GROUP BY QYID
 		) B ON A.QYID = B.QYID
+
+		<if test="gsmc != null and gsmc != '' ">
+			where  A.GSMC LIKE concat(concat('%',#{gsmc}),'%') ESCAPE '\'
+		</if>
+
 		ORDER BY ZWNUM DESC ,ZWH
 	</select>
 	<!--15.查询企业选择的标准展位list及价格信息 add by yushch 20190116-->

@@ -96,6 +96,12 @@
 
         WHERE t.DELETE_FLAG = 'N' and jj.DELETE_FLAG = 'N' and t.qyid is not null
         and (select count(1) from cfpa_zw_jbxx z where z.delete_flag='N' AND Z.QYID= t.qyid)>0
+        <if test="cplxmc != null and cplxmc != '' ">
+            and c2.code_name LIKE concat(concat('%',#{cplxmc}),'%') ESCAPE '\'
+        </if>
+        <if test="cplxmc_ENG != null and cplxmc_ENG != '' ">
+            and tc4.code_name LIKE concat(concat('%',#{cplxmc_ENG}),'%') ESCAPE '\'
+        </if>
         <include refid="SQL_CONDITION"/>
         ORDER BY t.cjsj ASC
     </select>

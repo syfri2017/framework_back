@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.syfri.portalservice.dao.news.NewsfjDAO">
+<mapper namespace="com.syfri.userservice.dao.xz.XzfjDAO">
 	<!--1.查询条件-->
 	<sql id="SQL_CONDITION">
 		<if test="uuid != null and uuid != '' ">
 		 and t.uuid = #{uuid}
 		</if>
-		<if test="xwid != null and xwid != '' ">
-		 and t.xwid = #{xwid}
+		<if test="xzid != null and xzid != '' ">
+		 and t.xzid = #{xzid}
 		</if>
 		<if test="fjmc != null and fjmc != '' ">
 		 and t.fjmc = #{fjmc}
@@ -15,14 +15,14 @@
 		<if test="fjkzm != null and fjkzm != '' ">
 		 and t.fjkzm = #{fjkzm}
 		</if>
-		<if test="fjlx != null and fjlx != '' ">
-		 and t.fjlx = #{fjlx}
-		</if>
 		<if test="ms != null and ms != '' ">
 		 and t.ms = #{ms}
 		</if>
 		<if test="src != null and src != '' ">
 		 and t.src = #{src}
+		</if>
+		<if test="language != null and language != '' ">
+		 and t.language = #{language}
 		</if>
 		<if test="deleteFlag != null and deleteFlag != '' ">
 		 and t.delete_flag = #{deleteFlag}
@@ -57,20 +57,17 @@
 		<if test="reserve4 != null and reserve4 != '' ">
 		 and t.reserve4 = #{reserve4}
 		</if>
-		<if test="language != null and language != '' ">
-		 and t.language = #{language}
-		</if>
 	</sql>
 
 	<!--2.查询内容-->
 	<sql id="SQL_CONTENT">
 		t.uuid uuid,
-		t.xwid xwid,
+		t.xzid xzid,
 		t.fjmc fjmc,
 		t.fjkzm fjkzm,
-		t.fjlx fjlx,
 		t.ms ms,
 		t.src src,
+		t.language language,
 		t.delete_flag deleteFlag,
 		t.cjrid cjrid,
 		t.cjrmc cjrmc,
@@ -81,36 +78,36 @@
 		t.reserve1 reserve1,
 		t.reserve2 reserve2,
 		t.reserve3 reserve3,
-		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4,
-		t.language language
+		TO_CHAR(t.reserve4,'yyyy-MM-dd HH24:mi:ss') reserve4
 	</sql>
 
 	<!--3.查询记录数-->
-	<select id="doSearchCount" parameterType="NewsfjVO" resultType="java.lang.Integer">
-		SELECT COUNT(0) AS NUM FROM CFPA_NEWS_FJ t WHERE 1=1 AND DELETE_FLAG = 'N'
+	<select id="doSearchCount" parameterType="XzfjVO" resultType="java.lang.Integer">
+		SELECT COUNT(0) AS NUM FROM CFPA_XZ_FJ t WHERE 1=1 AND DELETE_FLAG = 'N'
 		<include refid="SQL_CONDITION"/>
 	</select>
 
 	<!--4.按条件查询记录-->
-	<select id="doSearchListByVO" parameterType="NewsfjVO"  resultType="NewsfjVO"> 
+	<select id="doSearchListByVO" parameterType="XzfjVO"  resultType="XzfjVO"> 
 		SELECT 
 			<include refid="SQL_CONTENT"/>
-		FROM CFPA_NEWS_FJ t  WHERE t.DELETE_FLAG = 'N' 
+		FROM CFPA_XZ_FJ t  WHERE t.DELETE_FLAG = 'N' 
 			<include refid="SQL_CONDITION"/>
+		ORDER  by  t.cjsj desc
 	</select>
 
 	<!--5.根据ID查询记录-->
-	<select id="doFindById" parameterType="NewsfjVO"  resultType="NewsfjVO">  
+	<select id="doFindById" parameterType="XzfjVO"  resultType="XzfjVO">  
 		SELECT 
 		<include refid="SQL_CONTENT"/>
-		FROM CFPA_NEWS_FJ t 
+		FROM CFPA_XZ_FJ t 
 		WHERE t.DELETE_FLAG = 'N' AND  t.uuid = #{value} 
 	</select>
 	<!--11.根据对象查询记录-->
-	<select id="doFindByVO" parameterType="NewsfjVO"  resultType="NewsfjVO">  
+	<select id="doFindByVO" parameterType="XzfjVO"  resultType="XzfjVO">  
 		SELECT 
 		<include refid="SQL_CONTENT"/>
-		FROM CFPA_NEWS_FJ t 
+		FROM CFPA_XZ_FJ t 
 		WHERE t.DELETE_FLAG = 'N' 
 		<include refid="SQL_CONDITION"/>
 	</select>
