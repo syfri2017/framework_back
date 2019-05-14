@@ -58,10 +58,16 @@ String ctx = url + path + "/";
 </head>
 <body style="padding: 40px;">
 	<form id="form">
-	    <div>
-	        <div style="margin-bottom: 5px;text-align: center">
+	    <div style="text-align: center;">
+			<table style="margin: auto;" width='100%' >
+	        <div style="margin-bottom: 5px;text-align: center;">
+				<tr>
 	         	<h2>Generator生成器</h2><br>
-				<div style="font-weight: bold;float:left;margin-left: 200px;margin-top: 30px;">数据库配置</div>
+				</tr>
+				<tr><td rowspan="2" nowrap="nowrap"style="text-align: center;width:20%">
+				<div style="font-weight: bold;float:left;margin-left:  53%">数据库配置</div>
+				</td>
+					<td>
 				<span style="margin-left: -160px">库&nbsp;&nbsp;类&nbsp;&nbsp;型：</span>
 				<select  id="dbtype" name="dbtype" class="inputs" >
 					<option value="ORACLE" selected>ORACLE</option>
@@ -72,29 +78,46 @@ String ctx = url + path + "/";
 				<input class="input" type="text" id="driver" name="driver" placeholder="驱动名" value="oracle.jdbc.OracleDriver">
 				<span class="lable">地址名称：</span>
 				<input class="input" type="text" id="url" name="url"  placeholder="url名称" value="jdbc:oracle:thin:@10.119.119.205:1521/XFXHDB" ><br>
+					</td>
+				</tr>
+				<tr>
 
+					<td>
 				<span class="lable" style="margin-left: -160px">用&nbsp;&nbsp;户&nbsp;&nbsp;名：</span>
-				<input class="input" type="text" id="user" name="user" placeholder="用户名" value="XFXHZH">
+				<input class="input" type="text" id="user" name="user" placeholder="用户名" value="XFXHOA">
 				<span class="lable">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</span>
-				<input class="input" type="password" id="pwd" name="pwd" value="XFXHZH">
+				<input class="input" type="password" id="pwd" name="pwd" value="XFXHOA">
 				<input class="btn btn-success" style="margin-left: 350px;" title="获取数据库配置的数据源数据" type="button"id="doGetTables" class="btn btn-info" value="获取数据"/>
-				<br>
-				<br><br>
-				<div style="font-weight: bold;float:left;margin-left: 200px;margin-top: 30px;">生成器配置</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><hr style="height:5px;border:none;border-top: ridge green;" /></td>
+				</tr>
+				<tr>
+
+					<td rowspan="2" nowrap="nowrap" style="vertical-align: middle;">
+				<div style="font-weight: bold;float:left;margin-left:  53%;">生成器配置</div>
+					</td><td>
 				<span class="lable" style="margin-left: -160px">项目名称：</span>
 				<input class="input" type="text" id="projectName" name="projectName" placeholder="项目名称:framework" >
 				<span class="lable">模块名称：</span>
 				<input class="input"type="text" id="modelName" name="modelName" placeholder="模块名称:userservice" >
 				<span class="lable">包&nbsp;&nbsp;路&nbsp;&nbsp;径：</span>
 				<input class="inputs" type="text" id="basePath" name="basePath" placeholder="包路径:com.syfri" style="width:274px" value="com.syfri"><br>
-
+					</td>
+				</tr>
+				<tr>
+					<td>
 				<span style="margin-left: -165px">对&nbsp;&nbsp;应&nbsp;&nbsp;表：</span>
 				<select class="inputs" id="tableName" name="tableName" onchange="doGetColumn(this.value)"></select>
 				<span class="lable" style="margin-left: 50px;">表&nbsp;&nbsp;别&nbsp;&nbsp;名：</span>
 				<input class="input" type="text" id="prefix" name="prefix" placeholder="表别名:t">
 
 				<button id="generate" class="btn btn-info" title="生成生成器配置的代码模板"  style="margin-left: 355px;">&nbsp;&nbsp;生&nbsp;&nbsp;成&nbsp;&nbsp;</button>
+					</td>
+				</tr>
 			</div>
+			</table>
 	        <table id="mmg" class="mmg">
 	            <tr>
 	                <th rowspan="" colspan=""></th>
@@ -139,8 +162,6 @@ String ctx = url + path + "/";
      });
 
     function doGetTables() {
-        debugger
-
         var t = new Date().valueOf();
         $.ajax({
             type : "POST", //用POST方式传输
